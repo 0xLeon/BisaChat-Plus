@@ -1,13 +1,9 @@
 /*
- * BBCode Parser 1.0.3
+ * BBCode Parser
  * Based on BBCode parser by Andre (http://blogs.stonesteps.ca/showpost.aspx?pid=33)
  * Copyright (c) 2008, Stone Steps Inc.
  */
 var BBCodeParser = {
-	get VERSION() {
-		return '103';
-	},
-	
 	openingTags: [ ],
 	noParse: false,
 	

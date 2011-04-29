@@ -1,11 +1,7 @@
 /*
- * BisaChat API 1.0.1
+ * BisaChat API
  */
 var API = {
-	get VERSION() {
-		return '101';
-	},
-	
 	getValue: function(name) {
 		var type, value;
 		if (!(value = localStorage.getItem(name))) {

@@ -496,6 +496,6 @@ var BisaChatPlus = {
 			API.w.$(optionID).parentNode.parentNode.setAttribute('title', 'Zum Ändern, Alt-Taste & '+accessKey+' drücken');
 		}
 	}
-}
+};
 
 BisaChatPlus.init();

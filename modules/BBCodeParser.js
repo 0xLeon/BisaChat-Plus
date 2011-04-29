@@ -61,6 +61,7 @@ var BBCodeParser = {
 			
 			switch (openingTag) {
 				case 'code':
+					BBCodeParser.noParse = true;
 					BBCodeParser.openingTags.push({ BBTag: openingTag, closingTag: '</code></pre>' });
 					return '<pre><code>';
 				case 'pre':
@@ -98,7 +99,7 @@ var BBCodeParser = {
 		
 		if (BBCodeParser.isValidTag(closingTag)) {
 			if (BBCodeParser.noParse) {
-				if (closingTag == 'noparse') {
+				if (closingTag == 'noparse' || closingTag == 'code') {
 					BBCodeParser.noParse = false;
 					return '';
 				}
@@ -129,4 +130,4 @@ var BBCodeParser = {
 		
 		return ((!!endtags) ? result + endtags : result);
 	}
-}
+};

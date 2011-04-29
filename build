@@ -34,11 +34,13 @@ $bcplus = str_replace('/* {packages} */', implode(",\n\t\t", $packageList), $bcp
 $result .= $bcplus;
 
 if (!isset($argv[1]) || $argv[1] != 'nocrush') {
+	echo date('d.m.Y H:i:s'). " Crushing\n";
 	$result = preg_replace_callback("~('.*?')~", 'removeStrings', $result);
 	$result = preg_replace_callback("~(// ==UserScript==.*// ==/UserScript==)~s", 'removeHeader', $result);
 	$result = preg_replace('~/\\*.*\\*/~Us', '', $result);
 	$result = preg_replace('~//.*~', '', $result);
-	#$result = str_replace(array("\r", "\n","\t"), '', $result);
+	$result = str_replace(array("\t","\r"), '', $result);
+	$result = str_replace("\n\n", "\n", $result);
 	$result = StringStack::reinsertStrings($result, 'string');
 	$result = StringStack::reinsertStrings($result, 'header');
 }

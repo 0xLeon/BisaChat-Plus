@@ -25,7 +25,6 @@ desired features:
  - BBCode Parser: img-tag (low)
  - BBCode Parser: floating tags (mid)
  - add registerModule to BisaChatPlus (mid)
- - build has to support version variables in header.js and BisaChatPlus.js
 ------------
 All source and documentation files are published under the Simplified BSD license. For more 
 information see the LICENSE file.

@@ -149,4 +149,4 @@ var LastfmConnector = {
 		API.w.$('nowPlayingButton').style.opacity = 1.0;
 		API.w.$('nowPlayingButton').disabled = false;
 	}
-}
+};

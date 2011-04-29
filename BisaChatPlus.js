@@ -9,9 +9,7 @@ var BisaChatPlus = {
 	smiliesTmp: [ ],
 	rooms: [ ],
 	packages: [
-		MessagePrefilters,
-		BBCodeParser,
-		LastfmConnector
+		/* {packages} */
 	],
 	messagePrefilters: [ ],
 	keydownListeners: { },
@@ -498,6 +496,6 @@ var BisaChatPlus = {
 			API.w.$(optionID).parentNode.parentNode.setAttribute('title', 'Zum Ändern, Alt-Taste & '+accessKey+' drücken');
 		}
 	}
-}
+};
 
 BisaChatPlus.init();

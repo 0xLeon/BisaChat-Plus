@@ -33,7 +33,7 @@ $bcplus = file_get_contents('BisaChatPlus.js');
 $bcplus = str_replace('/* {packages} */', implode(",\n\t\t", $packageList), $bcplus);
 $result .= $bcplus;
 $date = date('Y.m.d_H:i:s');
-echo date('d.m.Y H:i:s')." Writing file builds/BisaChatPlus_'.date($date).".js\n";
+echo date('d.m.Y H:i:s')." Writing file builds/BisaChatPlus_".date($date).".js\n";
 // Write file
 file_put_contents('builds/BisaChatPlus_'.date($date).'.js', $result);
-echo date('d.m.Y H:i:s'). "Finished";
+echo date('d.m.Y H:i:s'). " Finished\n";

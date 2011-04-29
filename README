@@ -23,6 +23,7 @@ desired features:
  - pick two colors with colorpicker (low)
  - BBCode Parser: img-tag (low)
  - BBCode Parser: floating tags (mid)
+ - add registerModule to BisaChatPlus
 ------------
 All source and documentation files are published under the Simplified BSD license. For more 
 information see the LICENSE file.

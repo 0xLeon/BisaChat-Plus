@@ -26,9 +26,6 @@ var BisaChatPlus = {
 			this.addEventListeners();
 			this.finish();
 		}
-		catch (e) {
-			throw e;
-		}
 		finally {
 			API.checkForUpdates('http://projects.swallow-all-lies.com/greasemonkey/files/bisachatPlus/', this, this.updateCallback);
 		}

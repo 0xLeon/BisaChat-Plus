@@ -81,4 +81,4 @@ var API = {
 	get chatUserID() {
 		return this.w.settings['userID'];
 	}
-}
+};

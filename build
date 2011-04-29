@@ -1,0 +1,44 @@
+#!/usr/bin/php
+<?php
+/**
+ * Buildscript for BisaChatPlus
+ * 
+ * @author Tim Düsterhus
+ */
+
+// find the tools
+$tools = glob('tools/*');
+// find the modules
+$modules = glob('modules/*');
+
+$result = file_get_contents('header.js');
+$packageList = array();
+echo date('d.m.Y H:i:s')." Starting build\n";
+// Add the tools first
+foreach ($tools as $tool) {
+	echo date('d.m.Y H:i:s')." Adding tool: ".$tool."\n";
+	$result .= file_get_contents($tool)."\n";
+}
+
+// Add all modules
+foreach ($modules as $module) {
+	echo date('d.m.Y H:i:s')." Adding module: ".$module."\n";
+	$result .= file_get_contents($module)."\n";
+	// add classname to packagelist
+	$packageList[] = basename($module, '.js');
+}
+
+$bcplus = file_get_contents('BisaChatPlus.js');
+// Set packagelist
+$bcplus = str_replace('/* {packages} */', implode(",\n\t\t", $packageList), $bcplus);
+$result .= $bcplus;
+
+#if (!isset($argv[1]) || $argv[1] != 'nocrush') {
+#	$result = preg_replace('~/\\*.*\\*/~Us', '', $result);
+#	$result = str_replace(array("\r", "\n","\t"), '', $result);
+#}
+$date = date('Y.m.d_H:i:s');
+echo date('d.m.Y H:i:s')." Writing file builds/BisaChatPlus_".date($date).".js\n";
+// Write file
+file_put_contents('builds/BisaChatPlus_'.date($date).'.js', $result);
+echo date('d.m.Y H:i:s'). " Finished\n";

@@ -12,7 +12,7 @@ if (typeof Function.prototype.bind === 'undefined') {
 			var argsLength = args.length, argumentsLength = arguments.length;
 			while (argumentsLength--)  args[argsLength + argumentsLength] = arguments[argumentsLength];
 			return __method.apply(context, args);
-		}
+		};
 	};
 }
 
@@ -24,5 +24,5 @@ Function.prototype.bindAsEventListener = function(context) {
 		var arrayLength = array.length, length = args.length;
 		while (length--) array[arrayLength + length] = args[length];
 		return __method.apply(context, array);
-	}
+	};
 };

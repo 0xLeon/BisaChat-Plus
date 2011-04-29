@@ -77,7 +77,7 @@ var BBCodeParser = {
 					return '<span style="text-decoration: line-through;">';
 				case 'i':
 					BBCodeParser.openingTags.push({ BBTag: openingTag, closingTag: '</span>' });
-					return '<span style="font-style: italic;">'
+					return '<span style="font-style: italic;">';
 				case 'noparse':
 					BBCodeParser.noParse = true;
 					return '';

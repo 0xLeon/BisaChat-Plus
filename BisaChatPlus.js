@@ -9,9 +9,7 @@ var BisaChatPlus = {
 	smiliesTmp: [ ],
 	rooms: [ ],
 	packages: [
-		MessagePrefilters,
-		BBCodeParser,
-		LastfmConnector
+		/* {packages} */
 	],
 	messagePrefilters: [ ],
 	keydownListeners: { },

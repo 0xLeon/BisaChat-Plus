@@ -1,0 +1,22 @@
+#!/usr/bin/php
+<?php
+$tools = glob('tools/*');
+$modules = glob('modules/*');
+
+$result = '';
+$packageList = array();
+
+foreach ($tools as $tool) {
+	$result .= file_get_contents($tool)."\n";
+}
+
+foreach ($modules as $module) {
+	$result .= file_get_contents($module)."\n";
+	$packageList[] = basename($module, '.js');
+}
+
+$bcplus = file_get_contents('BisaChatPlus.js');
+$bcplus = str_replace('/* {packages} */', implode(",\n\t\t", $packageList), $bcplus);
+$result .= $bcplus;
+
+file_put_contents('builds/BisaChatPlus_'.date('Y.m.d_H:i:s').'.js', $result);

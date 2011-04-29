@@ -18,6 +18,7 @@ known issues:
  - smiliesbox height shouldn't be fixed (low)
  - #changeRoomMenu has to be updatable (low)
  - doesn't work with FF3 (mid)
+ - Find the line that breaks the script when removing newlines (low)
 ------------
 desired features:
  - pick two colors with colorpicker (low)

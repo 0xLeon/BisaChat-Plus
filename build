@@ -32,10 +32,10 @@ $bcplus = file_get_contents('BisaChatPlus.js');
 // Set packagelist
 $bcplus = str_replace('/* {packages} */', implode(",\n\t\t", $packageList), $bcplus);
 $result .= $bcplus;
-if (!isset($argv[1]) || $argv[1] != 'nocrush') {
-	//$result = preg_replace('~/\*.*\*/~Us', '', $result);
-	$result = str_replace(array("\r", "\n","\t"), '', $result);
-}
+#if (!isset($argv[1]) || $argv[1] != 'nocrush') {
+#	$result = preg_replace('~/\\*.*\\*/~Us', '', $result);
+#	$result = str_replace(array("\r", "\n","\t"), '', $result);
+#}
 $date = date('Y.m.d_H:i:s');
 echo date('d.m.Y H:i:s')." Writing file builds/BisaChatPlus_".date($date).".js\n";
 // Write file

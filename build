@@ -6,6 +6,41 @@
  * @author Tim Düsterhus
  */
 
+// configure
+echo "Welcome to the Buildscript for Bisachat-Plus\n";
+if (file_exists('builds/.lastversion')) {
+	$lastVersion = file_get_contents('builds/.lastversion');
+}
+else {
+	$lastVersion = 'Unknown'; 
+}
+echo "Which version do you want to build (Last was ".$lastVersion.")? Enter will use it.\n";
+echo "> ";
+$version = trim(fread(STDIN, 1024));
+if (empty($version)) $version = $lastVersion;
+file_put_contents('builds/.lastversion', $version);
+echo "I will use ".$version." as the version number\n";
+
+do {
+	$minify = null;
+	echo "Do you want a minified version? (Y/N)\n";
+	echo "> ";
+	$input = strtoupper(trim(fread(STDIN, 1024)));
+	if ($input == 'Y') $minify = true;
+	else if ($input == 'N') $minify = false;
+}
+while ($minify === null);
+if ($minify) {
+	echo "I will minify the script\n";
+}
+echo "I have everything together, starting build";
+for ($i = 0; $i < 3; $i++) {
+	echo ".";
+	usleep(1E6/2);
+}
+echo "\n";
+
+// build
 // find the tools
 $tools = glob('tools/*');
 // find the modules
@@ -13,16 +48,15 @@ $modules = glob('modules/*');
 
 $result = file_get_contents('header.js');
 $packageList = array();
-echo date('d.m.Y H:i:s')." Starting build\n";
 // Add the tools first
 foreach ($tools as $tool) {
-	echo date('d.m.Y H:i:s')." Adding tool: ".$tool."\n";
+	echo "Adding tool: ".$tool."\n";
 	$result .= file_get_contents($tool)."\n";
 }
 
 // Add all modules
 foreach ($modules as $module) {
-	echo date('d.m.Y H:i:s')." Adding module: ".$module."\n";
+	echo "Adding module: ".$module."\n";
 	$result .= file_get_contents($module)."\n";
 	// add classname to packagelist
 	$packageList[] = basename($module, '.js');
@@ -32,9 +66,11 @@ $bcplus = file_get_contents('BisaChatPlus.js');
 // Set packagelist
 $bcplus = str_replace('/* {packages} */', implode(",\n\t\t", $packageList), $bcplus);
 $result .= $bcplus;
+$result = str_replace('{version}', $version, $result);
+$result = str_replace('{versionSimple}', str_replace(array(' ', '.'), '', $version), $result);
 
-if (!isset($argv[1]) || $argv[1] != 'nocrush') {
-	echo date('d.m.Y H:i:s'). " Crushing\n";
+if ($minify) {
+	echo "Minifying\n";
 	$result = preg_replace_callback("~('.*?')~", 'removeStrings', $result);
 	$result = preg_replace_callback("~(// ==UserScript==.*// ==/UserScript==)~s", 'removeHeader', $result);
 	$result = preg_replace('~/\\*.*\\*/~Us', '', $result);
@@ -45,10 +81,13 @@ if (!isset($argv[1]) || $argv[1] != 'nocrush') {
 	$result = StringStack::reinsertStrings($result, 'header');
 }
 $date = date('Y.m.d_H:i:s');
-echo date('d.m.Y H:i:s')." Writing file builds/BisaChatPlus_".date($date).".js\n";
+echo "Writing file builds/BisaChatPlus_".date($date).".js\n";
 // Write file
 file_put_contents('builds/BisaChatPlus_'.date($date).'.js', $result);
-echo date('d.m.Y H:i:s'). " Finished\n";
+echo "Finished\n";
+
+
+
 
 function removeStrings($matches) {
 	return StringStack::pushToStringStack($matches[1], 'string');

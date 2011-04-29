@@ -84,6 +84,8 @@ var BBCodeParser = {
 				case 'noparse':
 					BBCodeParser.noParse = true;
 					return '';
+				case 'quote':
+					openingTag = 'blockquote';
 				case 'q':
 				case 'blockquote':
 					BBCodeParser.openingTags.push({ BBTag: openingTag, closingTag: '</'+openingTag+'>' });

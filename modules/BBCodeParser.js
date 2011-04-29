@@ -71,7 +71,7 @@ var BBCodeParser = {
 				case 'size':
 					if (!openingTagOption || !BBCodeParser.NUMBER_REGEX.test(openingTagOption)) openingTagOption = 1;
 					BBCodeParser.openingTags.push({ BBTag: openingTag, closingTag: '</span>' });
-					return '<span style="font-size: '+Math.min(Math.max(openingTagOption, 0.7), 3)+'em;">';
+					return '<span style="font-size: '+(Math.min(Math.max(openingTagOption, 0.7), 3)*12)+'px;">';
 				case 's':
 					BBCodeParser.openingTags.push({ BBTag: openingTag, closingTag: '</span>' });
 					return '<span style="text-decoration: line-through;">';

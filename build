@@ -11,7 +11,7 @@ $tools = glob('tools/*');
 // find the modules
 $modules = glob('modules/*');
 
-$result = '';
+$result = file_get_contents('header.js');
 $packageList = array();
 echo date('d.m.Y H:i:s')." Starting build\n";
 // Add the tools first
@@ -32,6 +32,7 @@ $bcplus = file_get_contents('BisaChatPlus.js');
 // Set packagelist
 $bcplus = str_replace('/* {packages} */', implode(",\n\t\t", $packageList), $bcplus);
 $result .= $bcplus;
+
 #if (!isset($argv[1]) || $argv[1] != 'nocrush') {
 #	$result = preg_replace('~/\\*.*\\*/~Us', '', $result);
 #	$result = str_replace(array("\r", "\n","\t"), '', $result);

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           BisaChat Plus
 // @description    Add's a few more comfortable functions to BisaChat
-// @version        1.0.0
+// @version        {version}
 // @author         Stefan Hahn
 // @copyright      2011, Stefan Hahn
 // @licence        Simplified BSD License
@@ -30,16 +30,4 @@
  * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE 
  * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * -------------------------------------------------------------------------------------------------------------------
- * 
- * known issues:
- *  - smiliesbox height shouldn't be fixed (low)
- *  - #changeRoomMenu has to be updatable (low)
- *  - doesn't work with FF3 (mid)
- * 
- * desired features:
- *  - pick two colors with colorpicker (low)
- *  - BBCode Parser: img-tag (low)
- *  - BBCode Parser: floating tags (mid)
  */

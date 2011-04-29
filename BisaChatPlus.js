@@ -3,7 +3,7 @@
  */
 var BisaChatPlus = {
 	get VERSION() {
-		return '{version}';
+		return '{versionSimple}';
 	},
 	
 	smiliesTmp: [ ],

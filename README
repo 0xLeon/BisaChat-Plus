@@ -14,6 +14,16 @@ Right now, BC+ only supports Firefox 4. Firefox 3 support was dropped in the bet
 Firefox 3 just can't handle some features. Right now, the script work both in Greasemonkey and in 
 Scriptish. Personally I recommed the use of Scriptish.
 ------------
+known issues:
+ - smiliesbox height shouldn't be fixed (low)
+ - #changeRoomMenu has to be updatable (low)
+ - doesn't work with FF3 (mid)
+------------
+desired features:
+ - pick two colors with colorpicker (low)
+ - BBCode Parser: img-tag (low)
+ - BBCode Parser: floating tags (mid)
+------------
 All source and documentation files are published under the Simplified BSD license. For more 
 information see the LICENSE file.
 ------------

@@ -1,9 +1,9 @@
 /*
- * BisaChat Plus 1.0.0
+ * BisaChat Plus
  */
 var BisaChatPlus = {
 	get VERSION() {
-		return '100';
+		return '{version}';
 	},
 	
 	smiliesTmp: [ ],

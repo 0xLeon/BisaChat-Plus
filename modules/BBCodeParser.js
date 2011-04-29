@@ -4,10 +4,6 @@
  * Copyright (c) 2008, Stone Steps Inc.
  */
 var BBCodeParser = {
-	get VERSION() {
-		return '103';
-	},
-	
 	openingTags: [ ],
 	noParse: false,
 	

@@ -1,22 +1,35 @@
 #!/usr/bin/php
 <?php
+/**
+ * Buildscript for BisaChatPlus
+ * 
+ * @author Tim Düsterhus
+ */
+
+// find the tools
 $tools = glob('tools/*');
+// find the modules
 $modules = glob('modules/*');
 
 $result = '';
 $packageList = array();
 
+// Add the tools first
 foreach ($tools as $tool) {
 	$result .= file_get_contents($tool)."\n";
 }
 
+// Add all modules
 foreach ($modules as $module) {
 	$result .= file_get_contents($module)."\n";
+	// add classname to packagelist
 	$packageList[] = basename($module, '.js');
 }
 
 $bcplus = file_get_contents('BisaChatPlus.js');
+// Set packagelist
 $bcplus = str_replace('/* {packages} */', implode(",\n\t\t", $packageList), $bcplus);
 $result .= $bcplus;
 
+// Write file
 file_put_contents('builds/BisaChatPlus_'.date('Y.m.d_H:i:s').'.js', $result);

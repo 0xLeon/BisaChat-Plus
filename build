@@ -14,31 +14,43 @@ if (file_exists('builds/.lastversion')) {
 else {
 	$lastVersion = 'Unknown'; 
 }
-echo "Which version do you want to build (Last was ".$lastVersion.")? Enter will use it.\n";
-echo "> ";
-$version = trim(fread(STDIN, 1024));
-if (empty($version)) $version = $lastVersion;
-file_put_contents('builds/.lastversion', $version);
-echo "I will use ".$version." as the version number\n";
-
-do {
-	$minify = null;
-	echo "Do you want a minified version? (Y/N)\n";
+if ($argc == 1) {
+	echo "Which version do you want to build (Last was ".$lastVersion.")? Enter will use it.\n";
 	echo "> ";
-	$input = strtoupper(trim(fread(STDIN, 1024)));
-	if ($input == 'Y') $minify = true;
-	else if ($input == 'N') $minify = false;
+	$version = trim(fread(STDIN, 1024));
+	if (empty($version)) $version = $lastVersion;
+	file_put_contents('builds/.lastversion', $version);
+	echo "I will use ".$version." as the version number\n";
+
+	do {
+		$minify = null;
+		echo "Do you want a minified version? (Y/N)\n";
+		echo "> ";
+		$input = strtoupper(trim(fread(STDIN, 1024)));
+		if ($input == 'Y') $minify = true;
+		else if ($input == 'N') $minify = false;
+	}
+	while ($minify === null);
+	if ($minify) {
+		echo "I will minify the script\n";
+	}
+	echo "I have everything together, starting build";
+	for ($i = 0; $i < 3; $i++) {
+		echo ".";
+		usleep(1E6/2);
+	}
+	echo "\n\n";
 }
-while ($minify === null);
-if ($minify) {
-	echo "I will minify the script\n";
+else {
+	if ($argc == 2) {
+		$version = $lastVersion;
+		$minify = $argv[1];
+	}
+	else {
+		$version = $argv[2];
+		$minify = $argv[1];
+	}
 }
-echo "I have everything together, starting build";
-for ($i = 0; $i < 3; $i++) {
-	echo ".";
-	usleep(1E6/2);
-}
-echo "\n\n";
 
 // build
 // find the tools

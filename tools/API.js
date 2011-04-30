@@ -24,15 +24,6 @@ var API = {
 		return localStorage.setItem(name, value);
 	},
 	
-	saveUnemptyString: function(key, value) {
-		if ((typeof key == 'string') && (value != '')) {
-			return this.setValue(key, value);
-		}
-		else {
-			return false;
-		}
-	},
-	
 	checkForUpdates: function(updateServer, caller, callback) {
 		GM_xmlhttpRequest({
 			method: 'GET',

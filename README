@@ -2,16 +2,16 @@ BisaChat Plus (BC+)
 
 This userscript adds several new features to the chat located at <http://www.bisafans.de/>. 
 The basis is a full screen GUI which fits the users browser window. Furthermore this script 
-adds and module based add-on functionality. The most significant feature for new modules 
+adds a module based add-on functionality. The most significant feature for new modules 
 is the Message Prefilter. This allows you to do whatever you want with any message just before 
-it's shown to the user. So far, thar a things like BBCode and smilie hiding.
-Another important module is the last.fm module. With your last.fm username entered, that module 
-shows what you're listening to via one click. Provided that scrobbling is turned on.
+it's shown to the user. So far, there are things like BBCode and smilie hiding.
+Another important module is the last.fm module. With your last.fm username entered, this module 
+shows what you're listening to via one click, provided scrobbling is turned on.
 ------------
 Installation Information
 
 Right now, BC+ only supports Firefox 4. Firefox 3 support was dropped in the beta phase because 
-Firefox 3 just can't handle some features. Right now, the script work both in Greasemonkey and in 
+Firefox 3  can't handle some features. Right now, the script works both in Greasemonkey and in 
 Scriptish. Personally I recommed the use of Scriptish.
 ------------
 known issues:

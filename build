@@ -92,10 +92,10 @@ if ($minify) {
 	$result = StringStack::reinsertStrings($result, 'string');
 	$result = StringStack::reinsertStrings($result, 'header');
 }
-$date = date('Y.m.d_H:i:s');
-echo "Writing file builds/BisaChatPlus_".date($date).".user.js\n";
+$time = time();
+echo "Writing file builds/BisaChatPlus_".$time.".user.js\n";
 // Write file
-file_put_contents('builds/BisaChatPlus_'.date($date).'.user.js', $result);
+file_put_contents('builds/BisaChatPlus_'.$time.'.user.js', $result);
 echo "Finished\n";
 
 

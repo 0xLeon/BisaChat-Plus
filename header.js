@@ -31,11 +31,11 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE 
  * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+ 
 /*
  * bind and bindAsEventListener taken from Prototype
  * Copyright (c) 2005-2010 Sam Stephenson
  */
-
 if (typeof Function.prototype.bind === 'undefined') {
 	Function.prototype.bind = function(context) {
 		if (arguments.length < 2 && typeof arguments[0] === 'undefined') return this;

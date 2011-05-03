@@ -7,7 +7,7 @@
  */
 if (strtolower(php_sapi_name()) != 'cli') die("The build-script has to be invoked from cli\n");
 // configure
-echo "Welcome to the Buildscript for Bisachat-Plus\n";
+echo "Welcome to Buildscript for Bisachat-Plus\n";
 if (file_exists('builds/.lastversion')) {
 	$lastVersion = file_get_contents('builds/.lastversion');
 }
@@ -15,12 +15,14 @@ else {
 	$lastVersion = 'Unknown'; 
 }
 if ($argc == 1) {
-	echo "Which version do you want to build (Last was ".$lastVersion.")? Enter will use it.\n";
+	echo "Which version do you want to build (Last was ".$lastVersion.")?\n";
+	echo "Version number strings should follow the 'PHP-standarized' version number string guidline.\n";
+	echo "Enter version string and press enter:\n";
 	echo "> ";
 	$version = trim(fread(STDIN, 1024));
 	if (empty($version)) $version = $lastVersion;
 	file_put_contents('builds/.lastversion', $version);
-	echo "I will use ".$version." as the version number\n";
+	echo "I will use ".$version." as version number\n";
 
 	do {
 		$minify = null;
@@ -34,7 +36,7 @@ if ($argc == 1) {
 	if ($minify) {
 		echo "I will minify the script\n";
 	}
-	echo "I have everything together, starting build";
+	echo "I have everything i need, starting build";
 	for ($i = 0; $i < 3; $i++) {
 		echo ".";
 		usleep(1E6/2);
@@ -79,7 +81,6 @@ $bcplus = file_get_contents('BisaChatPlus.js');
 $bcplus = str_replace('/* {packages} */', implode(",\n\t\t", $packageList), $bcplus);
 $result .= $bcplus;
 $result = str_replace('{version}', $version, $result);
-$result = str_replace('{versionSimple}', str_replace(array(' ', '.'), '', $version), $result);
 
 if ($minify) {
 	echo "Minifying\n";
@@ -93,9 +94,9 @@ if ($minify) {
 	$result = StringStack::reinsertStrings($result, 'header');
 }
 $time = time();
-echo "Writing file builds/BisaChatPlus_".$time.".user.js\n";
+echo "Writing file builds/BisaChat Plus ".$version.' '.$time.".user.js\n";
 // Write file
-file_put_contents('builds/BisaChatPlus_'.$time.'.user.js', $result);
+file_put_contents('builds/BisaChat Plus '.$version.' '.$time.'.user.js', $result);
 echo "Finished\n";
 
 if ($argc == 1) {

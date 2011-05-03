@@ -3,7 +3,7 @@
  */
 var BisaChatPlus = {
 	get VERSION() {
-		return '{versionSimple}';
+		return '{version}';
 	},
 	
 	smiliesTmp: [ ],
@@ -25,7 +25,7 @@ var BisaChatPlus = {
 			this.finish();
 		}
 		finally {
-			API.checkForUpdates('http://projects.swallow-all-lies.com/greasemonkey/files/bisachatPlus/', this, this.updateCallback);
+			API.checkForUpdates('http://projects.swallow-all-lies.com/greasemonkey/files/bisachatPlus/', this, this.updateCallback, false);
 		}
 	},
 	

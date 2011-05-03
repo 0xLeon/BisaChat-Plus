@@ -24,7 +24,7 @@ var API = {
 		return localStorage.setItem(name, value);
 	},
 	
-	checkForUpdates: function(updateServer, caller, callback) {
+	checkForUpdates: function(updateServer, caller, callback, getNonStableReleases) {
 		GM_xmlhttpRequest({
 			method: 'GET',
 			url: updateServer+'?version='+caller.VERSION,

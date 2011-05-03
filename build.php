@@ -97,8 +97,11 @@ echo "Writing file builds/BisaChatPlus_".$time.".user.js\n";
 // Write file
 file_put_contents('builds/BisaChatPlus_'.$time.'.user.js', $result);
 echo "Finished\n";
-echo "Press any key to exit...";
-while (true) if ((bool)fread(STDIN, 1024)) break;
+
+if ($argc == 1) {
+	echo "Press Enter to exit...";
+	fread(STDIN, 1024); 
+}
 
 
 

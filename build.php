@@ -25,14 +25,14 @@ if ($argc == 1) {
 	echo "I will use ".$version." as version number\n";
 
 	do {
-		$minify = null;
 		echo "Do you want a minified version? (Y/N)\n";
 		echo "> ";
 		$input = strtoupper(trim(fread(STDIN, 1024)));
 		if ($input == 'Y') $minify = true;
 		else if ($input == 'N') $minify = false;
 	}
-	while ($minify === null);
+	while ($input != 'Y' && $input != 'N');
+	
 	if ($minify) {
 		echo "I will minify the script\n";
 	}
@@ -46,11 +46,11 @@ if ($argc == 1) {
 else {
 	if ($argc == 2) {
 		$version = $lastVersion;
-		$minify = $argv[1];
+		$minify = ($argv[1] == 'Y');
 	}
 	else {
 		$version = $argv[2];
-		$minify = $argv[1];
+		$minify = ($argv[1] == 'Y');
 	}
 }
 

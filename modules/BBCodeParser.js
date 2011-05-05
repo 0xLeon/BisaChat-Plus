@@ -8,7 +8,7 @@ var BBCodeParser = {
 	noParse: false,
 	
 	get TAG_NAME_REGEX() {
-		return (/^\/?(?:b|i|u|pre|samp|code|colou?r|size|noparse|s|q|blockquote|sub|sup)$/);
+		return (/^\/?(?:b|i|u|pre|samp|code|colou?r|size|noparse|s|q|blockquote|sub|sup)$/i);
 	},
 	get COLOR_REGEX() {
 		return (/^(:?black|silver|gray|white|maroon|red|purple|fuchsia|green|lime|olive|yellow|navy|blue|teal|aqua|#(?:[0-9a-f]{3})?[0-9a-f]{3})$/i);

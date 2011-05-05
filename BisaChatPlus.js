@@ -94,6 +94,9 @@ var BisaChatPlus = {
 		var optionsHeadlineDiv = new API.w.Element('div', { id: 'optionsHeadline', 'class': 'containerHead', style: 'cursor:move;' });
 		var optionsHeadline = new API.w.Element('h3');
 		var optionsContentDiv = new API.w.Element('div', { id: 'optionsContent', style: 'height:132px; padding-left:3px; overflow-y:auto;' });
+		var optionsContentPrefilterDiv = new API.w.Element('div', { id: 'optionsContentPrefilterDiv' });
+		var optionsContentTextOptionDiv = new API.w.Element('div', { id: 'optionsContentTextOptionDiv' });
+		var optionsContentHr = new API.w.Element('hr', { style: 'display: block; width: 80%' });
 		
 		optionsDiv.style.display = (API.getValue('optionsboxVisible', false)) ? '' : 'none';
 		optionsDiv.style.top = API.getValue('optionsboxTop', '-160px');
@@ -140,6 +143,9 @@ var BisaChatPlus = {
 		
 		optionsHeadlineDiv.appendChild(optionsHeadline);
 		optionsDiv.appendChild(optionsHeadlineDiv);
+		optionsContentDiv.appendChild(optionsContentPrefilterDiv);
+		optionsContentDiv.appendChild(optionsContentHr);
+		optionsContentDiv.appendChild(optionsContentTextOptionDiv);
 		optionsDiv.appendChild(optionsContentDiv);
 		
 		optionsSmallButtonLink.appendChild(optionsSmallButtonImg);
@@ -459,8 +465,8 @@ var BisaChatPlus = {
 		p.appendChild(document.createTextNode(optionText+': '));
 		p.appendChild(span);
 		p.appendChild(input);
-		if (!!API.w.$('optionsContent').firstChild) API.w.$('optionsContent').appendChild(hr);
-		API.w.$('optionsContent').appendChild(p);
+		if (!!API.w.$('optionsContentTextOptionDiv').firstChild) API.w.$('optionsContentTextOptionDiv').appendChild(hr);
+		API.w.$('optionsContentTextOptionDiv').appendChild(p);
 	},
 	
 	registerMessagePrefilter: function(optionID, optionText, accessKey, defaultValue, prefilterFunction) {
@@ -484,8 +490,8 @@ var BisaChatPlus = {
 		label.appendChild(checkbox);
 		label.appendChild(document.createTextNode(' '+optionText))
 		p.appendChild(label);
-		if (!!API.w.$('optionsContent').firstChild) API.w.$('optionsContent').appendChild(hr);
-		API.w.$('optionsContent').appendChild(p);
+		if (!!API.w.$('optionsContentPrefilterDiv').firstChild) API.w.$('optionsContentPrefilterDiv').appendChild(hr);
+		API.w.$('optionsContentPrefilterDiv').appendChild(p);
 		
 		this.messagePrefilters.push(function(event, nickname, message) {
 			prefilterFunction(event, API.w.$(optionID).checked, nickname, message);

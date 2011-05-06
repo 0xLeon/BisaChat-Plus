@@ -30,24 +30,24 @@ var BisaChatPlus = {
 	},
 	
 	addStyleRules: function() {
-		GM_addStyle('body { overflow: hidden; }');
-		GM_addStyle('html, body { height: '+API.inHeight+'px !important; }');
-		GM_addStyle('.loading, .error, #chatCopyright { border: none !important; -moz-border-radius: 0px !important; z-index: 9000; }');
-		GM_addStyle('.subTabMenu { padding: 0px !important; border-top: none !important; border-left: none !important; border-right: none !important; }');
-		GM_addStyle('.subTabMenu, .subTabMenu > * { -moz-border-radius: 0px !important; margin: -1px -1px 0px -1px !important; padding: 1px 1px -1px 1px !important; }');
-		GM_addStyle('#chatBox { margin-top: 0px; width: 100%; height: '+API.inHeight+'px; }');
-		GM_addStyle('#chatBox > .border { padding: 0px !important; border: none !important; margin: 0px !important; }');
-		GM_addStyle('#chatBox > .border > .layout-2, #chatBox .columnInner { margin: 0px !important; }');
-		GM_addStyle('#chatPrivatelist > li { display: list-item !important; }');
-		GM_addStyle('.columnContainer > .column > .columnInner { padding: 0px }');
-		GM_addStyle('#chatMessage { height: 85% !important; }');
-		GM_addStyle('#chatMessage > div[id^="chatMessage"] { height: 100% !important; padding-left: 25px; }');
-		GM_addStyle('#chatFormContainer { margin-left: 25px; margin-right: 25px }');
-		GM_addStyle('#chatMembers { margin-left: 8px; }');
-		GM_addStyle('#chatOptions { display: none; }');
-		GM_addStyle('#smiliesSmallButton, #optionsSmallButton { position: relative; }');
-		GM_addStyle('#smilies, #options { position: absolute; width: 255px; height: 155px !important; top: -160px; left: 0px; padding-left: 1px; padding-top: 1px; -moz-border-radius-bottomleft: 0px; -moz-border-radius-bottomright: 0px; }');
-		GM_addStyle('#smiliesList li { border: none !important; margin-left: 3px; margin-right: 3px; height: 30px; float: left; }');
+		API.addStyle('body { overflow: hidden; }');
+		API.addStyle('html, body { height: '+API.inHeight+'px !important; }');
+		API.addStyle('.loading, .error, #chatCopyright { border: none !important; -moz-border-radius: 0px !important; z-index: 9000; }');
+		API.addStyle('.subTabMenu { padding: 0px !important; border-top: none !important; border-left: none !important; border-right: none !important; }');
+		API.addStyle('.subTabMenu, .subTabMenu > * { -moz-border-radius: 0px !important; margin: -1px -1px 0px -1px !important; padding: 1px 1px -1px 1px !important; }');
+		API.addStyle('#chatBox { margin-top: 0px; width: 100%; height: '+API.inHeight+'px; }');
+		API.addStyle('#chatBox > .border { padding: 0px !important; border: none !important; margin: 0px !important; }');
+		API.addStyle('#chatBox > .border > .layout-2, #chatBox .columnInner { margin: 0px !important; }');
+		API.addStyle('#chatPrivatelist > li { display: list-item !important; }');
+		API.addStyle('.columnContainer > .column > .columnInner { padding: 0px }');
+		API.addStyle('#chatMessage { height: 85% !important; }');
+		API.addStyle('#chatMessage > div[id^="chatMessage"] { height: 100% !important; padding-left: 25px; }');
+		API.addStyle('#chatFormContainer { margin-left: 25px; margin-right: 25px }');
+		API.addStyle('#chatMembers { margin-left: 8px; }');
+		API.addStyle('#chatOptions { display: none; }');
+		API.addStyle('#smiliesSmallButton, #optionsSmallButton { position: relative; }');
+		API.addStyle('#smilies, #options { position: absolute; width: 255px; height: 155px !important; top: -160px; left: 0px; padding-left: 1px; padding-top: 1px; -moz-border-radius-bottomleft: 0px; -moz-border-radius-bottomright: 0px; }');
+		API.addStyle('#smiliesList li { border: none !important; margin-left: 3px; margin-right: 3px; height: 30px; float: left; }');
 		
 		API.w.$('chatPrivateControl').style.display = 'none';
 		API.w.$$('#chatBox .columnContainer')[0].style.width = API.inWidth+'px';

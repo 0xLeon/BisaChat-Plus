@@ -27,7 +27,7 @@ var API = {
 	checkForUpdates: function(updateServer, caller, callback, getNonStableReleases) {
 		GM_xmlhttpRequest({
 			method: 'GET',
-			url: updateServer+'?version='+caller.VERSION,
+			url: updateServer+'?version='+encodeURIComponent(caller.VERSION)+'&getNonStableReleases='+((getNonStableReleases) ? '1' : '0'),
 			headers: {
 				'User-agent': 'Mozilla/4.0 (compatible) Greasemonkey/Scriptish BisaChat Plus/'+caller.VERSION,
 				'Accept': 'text/xml'

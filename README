@@ -25,7 +25,6 @@ desired features:
  - BBCode Parser: img-tag (low)
  - BBCode Parser: floating tags (mid)
  - add registerModule to BisaChatPlus (mid)
- - add handling for getNonStableReleases in API.checkForUpdates (high)
 ------------
 All source and documentation files are published under the Simplified BSD license. For more 
 information see the LICENSE file.

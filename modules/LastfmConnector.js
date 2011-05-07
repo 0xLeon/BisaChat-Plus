@@ -56,7 +56,6 @@ var LastfmConnector = {
 			method: 'GET',
 			url: 'http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user='+encodeURIComponent(API.getValue('lastfmUsernameValue'))+'&limit=1&api_key=b02a99b9d7e6402de934c7ab59491171',
 			headers: {
-				'User-agent': 'Mozilla/4.0 (compatible) Greasemonkey/Scriptish BisaChat Plus/'+this.caller.VERSION+' Last.fm Connect Module',
 				'Accept': 'text/xml'
 			},
 			onload: function(response) {
@@ -109,9 +108,8 @@ var LastfmConnector = {
 				url: './index.php?form=Chat',
 				data: 'text='+encodeURIComponent(this.getTrackString())+'&ajax=1',
 				headers: {
-					'User-agent': 'Mozilla/4.0 (compatible) Greasemonkey/Scriptish BisaChat Plus/'+this.caller.VERSION+' Last.fm Connect Module',
-					'Accept': '*/*',
-					'Content-Type': 'application/x-www-form-urlencoded'
+					'Content-Type': 'application/x-www-form-urlencoded',
+					'Accept': '*/*'
 				}
 			});
 			

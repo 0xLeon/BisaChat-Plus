@@ -4,9 +4,12 @@
 var API = {
 	getValue: function(name) {
 		var type, value;
-		if (!(value = localStorage.getItem(name))) {
-			return arguments[1] || undefined;
+		
+		if (localStorage.getItem(name) === null) {
+			return ((typeof arguments[1] != 'undefined') ? arguments[1] : undefined);
 		}
+		
+		value = localStorage.getItem(name);
 		type = value[0];
 		value = value.slice(1);
 		switch (type) {

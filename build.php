@@ -60,7 +60,7 @@ $tools = glob('tools/*');
 // find the modules
 $modules = glob('modules/*');
 
-$result = file_get_contents('header.js');
+$result = file_get_contents('header.js')."\n";
 $packageList = array();
 // Add the tools first
 foreach ($tools as $tool) {

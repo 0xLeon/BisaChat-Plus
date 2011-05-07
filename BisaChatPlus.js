@@ -25,7 +25,7 @@ var BisaChatPlus = {
 			this.finish();
 		}
 		finally {
-			API.checkForUpdates('http://projects.swallow-all-lies.com/greasemonkey/files/bisachatPlus/', this, this.updateCallback, false);
+			API.checkForUpdates('http://projects.swallow-all-lies.com/greasemonkey/files/bisachatPlus/', this, this.updateCallback, API.getValue('getNonStableReleasesStatus', false));
 		}
 	},
 	
@@ -94,7 +94,7 @@ var BisaChatPlus = {
 		var optionsHeadlineDiv = new API.w.Element('div', { id: 'optionsHeadline', 'class': 'containerHead', style: 'cursor:move;' });
 		var optionsHeadline = new API.w.Element('h3');
 		var optionsContentDiv = new API.w.Element('div', { id: 'optionsContent', style: 'height:132px; padding-left:3px; overflow-y:auto;' });
-		var optionsContentPrefilterDiv = new API.w.Element('div', { id: 'optionsContentPrefilterDiv' });
+		var optionsContentBoolOptionDiv = new API.w.Element('div', { id: 'optionsContentBoolOptionDiv' });
 		var optionsContentTextOptionDiv = new API.w.Element('div', { id: 'optionsContentTextOptionDiv' });
 		var optionsContentHr = new API.w.Element('hr', { style: 'display: block; width: 80%' });
 		
@@ -143,7 +143,7 @@ var BisaChatPlus = {
 		
 		optionsHeadlineDiv.appendChild(optionsHeadline);
 		optionsDiv.appendChild(optionsHeadlineDiv);
-		optionsContentDiv.appendChild(optionsContentPrefilterDiv);
+		optionsContentDiv.appendChild(optionsContentBoolOptionDiv);
 		optionsContentDiv.appendChild(optionsContentHr);
 		optionsContentDiv.appendChild(optionsContentTextOptionDiv);
 		optionsDiv.appendChild(optionsContentDiv);
@@ -390,6 +390,7 @@ var BisaChatPlus = {
 	
 	finish: function() {
 		this.initPackages();
+		this.registerBoolOption('getNonStableReleases', 'Unstable-Updates einschließen', 'u', false, null);
 		API.w.$('chatInput').focus();
 	},
 	
@@ -469,7 +470,7 @@ var BisaChatPlus = {
 		API.w.$('optionsContentTextOptionDiv').appendChild(p);
 	},
 	
-	registerMessagePrefilter: function(optionID, optionText, accessKey, defaultValue, prefilterFunction) {
+	registerBoolOption: function(optionID, optionText, accessKey, defaultValue, switchCallback) {
 		if (!!API.w.$(optionID)) throw new Error('optionID \''+optionID+'\' already used');
 		if ((!!accessKey) && (typeof this.keydownListeners[accessKey.toLowerCase()] === 'string')) throw new Error('AccessKey \''+accessKey.toLowerCase()+'\' already used');
 		
@@ -482,25 +483,29 @@ var BisaChatPlus = {
 			API.w.$('chatInput').focus();
 		}, false);
 		
-		checkbox.addEventListener('click', function() {
+		checkbox.addEventListener('click', function(event) {
 			API.setValue(optionID+'Status', API.w.$(optionID).checked);
+			if (typeof switchCallback === 'function') switchCallback(event, API.w.$(optionID).checked);
 		}, true);
 		
 		checkbox.checked = API.getValue(optionID+'Status', defaultValue);
 		label.appendChild(checkbox);
 		label.appendChild(document.createTextNode(' '+optionText))
 		p.appendChild(label);
-		if (!!API.w.$('optionsContentPrefilterDiv').firstChild) API.w.$('optionsContentPrefilterDiv').appendChild(hr);
-		API.w.$('optionsContentPrefilterDiv').appendChild(p);
-		
-		this.messagePrefilters.push(function(event, nickname, message) {
-			prefilterFunction(event, API.w.$(optionID).checked, nickname, message);
-		});
+		if (!!API.w.$('optionsContentBoolOptionDiv').firstChild) API.w.$('optionsContentBoolOptionDiv').appendChild(hr);
+		API.w.$('optionsContentBoolOptionDiv').appendChild(p);
 		
 		if (!!accessKey) {
 			this.keydownListeners[accessKey.toLowerCase()] = optionID;
 			API.w.$(optionID).parentNode.parentNode.setAttribute('title', 'Zum Ändern, Alt-Taste & '+accessKey+' drücken');
 		}
+	},
+	
+	registerMessagePrefilter: function(optionID, optionText, accessKey, defaultValue, prefilterFunction) {
+		this.registerBoolOption(optionID, optionText, accessKey, defaultValue, null);
+		this.messagePrefilters.push(function(event, nickname, message) {
+			prefilterFunction(event, API.w.$(optionID).checked, nickname, message);
+		});
 	}
 };
 

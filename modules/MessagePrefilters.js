@@ -24,5 +24,13 @@ var MessagePrefilters = {
 				message.style.color = '#792';
 			}
 		});
+		
+		caller.registerMessagePrefilter('background', 'Hintergrund aktivieren', 'h', true, function(event, checked, nickname, message) {
+			if (checked) {
+				if (Registery.getValue('messageNumber') == null) Registery.setValue('messageNumber', 0);
+				event.target.className = 'container-' + ((Registery.getValue('messageNumber') % 2) + 1);
+				Registery.setValue('messageNumber', (Registery.getValue('messageNumber') + 1));
+			}
+		});
 	}
 };

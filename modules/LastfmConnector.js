@@ -4,8 +4,6 @@
  */
 var LastfmConnector = {
 	track: null,
-	curTrack: '',
-	lastTrackTimestamp: 0,
 	loadingTrack: false,
 	regularUpdaterHandle: null,
 	caller: null,
@@ -73,9 +71,8 @@ var LastfmConnector = {
 								var title = trackDOM.getElementsByTagName('name')[0].firstChild.nodeValue;
 								var trackURL = trackDOM.getElementsByTagName('url')[0].firstChild.nodeValue;
 								var username = xml.getElementsByTagName('recenttracks')[0].getAttribute('user');
-								var lastTrackTimestamp = xml.getElementsByTagName('track')[1].getElementsByTagName('date')[0].getAttribute('uts');
 								
-								this.track = new Array(artist, title, trackURL, username, lastTrackTimestamp);
+								this.track = new Array(artist, title, trackURL, username);
 							}
 							else {
 								throw new Error('No track playing');
@@ -118,8 +115,6 @@ var LastfmConnector = {
 				}
 			});
 			
-			this.curTrack = this.track[0]+' - '+this.track[1];
-			this.lastTrackTimestamp = this.track[4];
 			API.w.chat.getMessages();
 		}
 		else if (typeof this.track == 'string') {

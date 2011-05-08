@@ -31,7 +31,7 @@ var LastfmConnector = {
 	},
 	
 	getTrackString: function() {
-		var trackString = (((API.getValue('formatString', 'np: $artist – $title').replace(/\$artist/gi, this.track[0])).replace(/\$title/gi, this.track[1])).replace(/\$url/gi, this.track[2])).replace(/\$profil/gi, 'http://www.last.fm/user/'+encodeURIComponent(this.track[3]));
+		var trackString = (((API.Storage.getValue('formatString', 'np: $artist – $title').replace(/\$artist/gi, this.track[0])).replace(/\$title/gi, this.track[1])).replace(/\$url/gi, this.track[2])).replace(/\$profil/gi, 'http://www.last.fm/user/'+encodeURIComponent(this.track[3]));
 		
 		if (API.checkAwayStatus()) {
 		 	trackString = '/away '+trackString;
@@ -45,7 +45,7 @@ var LastfmConnector = {
 		API.w.$('nowPlayingButton').disabled = true;
 		this.loadingTrack = true;
 		
-		if (API.getValue('lastfmUsernameValue', undefined) === undefined) {
+		if (API.Storage.getValue('lastfmUsernameValue', undefined) === undefined) {
 			this.track = 'Error catching track! Username not set';
 			this.submitTrack();
 			this.loadingTrack = false;
@@ -54,7 +54,7 @@ var LastfmConnector = {
 		
 		GM_xmlhttpRequest({
 			method: 'GET',
-			url: 'http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user='+encodeURIComponent(API.getValue('lastfmUsernameValue'))+'&limit=1&api_key=b02a99b9d7e6402de934c7ab59491171',
+			url: 'http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user='+encodeURIComponent(API.Storage.getValue('lastfmUsernameValue'))+'&limit=1&api_key=b02a99b9d7e6402de934c7ab59491171',
 			headers: {
 				'Accept': 'text/xml'
 			},

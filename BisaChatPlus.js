@@ -25,7 +25,7 @@ var BisaChatPlus = {
 			this.finish();
 		}
 		finally {
-			API.checkForUpdates('http://projects.swallow-all-lies.com/greasemonkey/files/bisachatPlus/', this, this.updateCallback, API.getValue('getNonStableReleasesStatus', false));
+			API.checkForUpdates('http://projects.swallow-all-lies.com/greasemonkey/files/bisachatPlus/', this, this.updateCallback, API.Storage.getValue('getNonStableReleasesStatus', false));
 		}
 	},
 	
@@ -98,9 +98,9 @@ var BisaChatPlus = {
 		var optionsContentTextOptionDiv = new API.w.Element('div', { id: 'optionsContentTextOptionDiv' });
 		var optionsContentHr = new API.w.Element('hr', { style: 'display: block; width: 80%' });
 		
-		optionsDiv.style.display = (API.getValue('optionsboxVisible', false)) ? '' : 'none';
-		optionsDiv.style.top = API.getValue('optionsboxTop', '-160px');
-		optionsDiv.style.left = API.getValue('optionsboxLeft', '0px');
+		optionsDiv.style.display = (API.Storage.getValue('optionsboxVisible', false)) ? '' : 'none';
+		optionsDiv.style.top = API.Storage.getValue('optionsboxTop', '-160px');
+		optionsDiv.style.left = API.Storage.getValue('optionsboxLeft', '0px');
 		
 		optionsSmallButtonLink.addEventListener('click', function(event) {
 			if (event.altKey) {
@@ -190,9 +190,9 @@ var BisaChatPlus = {
 		}
 		delete this.smiliesTmp;
 		
-		smiliesDiv.style.display = (API.getValue('smiliesboxVisible', false)) ? '' : 'none';
-		smiliesDiv.style.top = API.getValue('smiliesboxTop', '-160px');
-		smiliesDiv.style.left = API.getValue('smiliesboxLeft', '0px');
+		smiliesDiv.style.display = (API.Storage.getValue('smiliesboxVisible', false)) ? '' : 'none';
+		smiliesDiv.style.top = API.Storage.getValue('smiliesboxTop', '-160px');
+		smiliesDiv.style.left = API.Storage.getValue('smiliesboxLeft', '0px');
 		
 		smiliesSmallButtonLink.addEventListener('click', function(event) {
 			if (event.altKey) {
@@ -420,9 +420,9 @@ var BisaChatPlus = {
 		var top = API.w.$(id).style.top;
 		var left = API.w.$(id).style.left;
 		
-		API.setValue(id+'boxVisible', visible);
-		API.setValue(id+'boxTop', top);
-		API.setValue(id+'boxLeft', left);
+		API.Storage.setValue(id+'boxVisible', visible);
+		API.Storage.setValue(id+'boxTop', top);
+		API.Storage.setValue(id+'boxLeft', left);
 	},
 	
 	registerTextOption: function(optionID, optionText, defaultValue) {
@@ -430,7 +430,7 @@ var BisaChatPlus = {
 		
 		var p = new API.w.Element('p');
 		var span = new API.w.Element('span', { id: optionID, title: 'Zum Ändern anklicken', style: 'cursor: pointer;' });
-		var input = new API.w.Element('input', { id: optionID+'Input', 'class': 'hidden', type: 'text', size: '8', autocomplete: 'off', value: API.getValue(optionID+'Value', defaultValue) });
+		var input = new API.w.Element('input', { id: optionID+'Input', 'class': 'hidden', type: 'text', size: '8', autocomplete: 'off', value: API.Storage.getValue(optionID+'Value', defaultValue) });
 		var hr = new API.w.Element('hr', { style: 'display: block; width: 80%' });
 		
 		span.addEventListener('mouseover', function(event) {
@@ -453,8 +453,8 @@ var BisaChatPlus = {
 		
 		input.addEventListener('keydown', function(event) {
 			if ((event.keyCode == 13) && (String(API.w.$(optionID+'Input').value)).length > 0) {
-				API.setValue(optionID+'Value', String(API.w.$(optionID+'Input').value));
-				API.w.$(optionID).firstChild.replaceData(0, API.w.$(optionID).firstChild.nodeValue.length, API.getValue(optionID+'Value', defaultValue));
+				API.Storage.setValue(optionID+'Value', String(API.w.$(optionID+'Input').value));
+				API.w.$(optionID).firstChild.replaceData(0, API.w.$(optionID).firstChild.nodeValue.length, API.Storage.getValue(optionID+'Value', defaultValue));
 				API.w.$(optionID+'Input').setAttribute('class', 'hidden');
 				API.w.$(optionID).setAttribute('class', '');
 				API.w.$('chatInput').focus();
@@ -462,7 +462,7 @@ var BisaChatPlus = {
 			}
 		}, true);
 		
-		span.appendChild(document.createTextNode(API.getValue(optionID+'Value', defaultValue)));
+		span.appendChild(document.createTextNode(API.Storage.getValue(optionID+'Value', defaultValue)));
 		p.appendChild(document.createTextNode(optionText+': '));
 		p.appendChild(span);
 		p.appendChild(input);
@@ -484,11 +484,11 @@ var BisaChatPlus = {
 		}, false);
 		
 		checkbox.addEventListener('click', function(event) {
-			API.setValue(optionID+'Status', API.w.$(optionID).checked);
+			API.Storage.setValue(optionID+'Status', API.w.$(optionID).checked);
 			if (typeof switchCallback === 'function') switchCallback(event, API.w.$(optionID).checked);
 		}, true);
 		
-		checkbox.checked = API.getValue(optionID+'Status', defaultValue);
+		checkbox.checked = API.Storage.getValue(optionID+'Status', defaultValue);
 		label.appendChild(checkbox);
 		label.appendChild(document.createTextNode(' '+optionText))
 		p.appendChild(label);

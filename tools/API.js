@@ -2,41 +2,43 @@
  * BisaChat API
  */
 var API = {
-	getValue: function(key) {
-		var type, value;
+	Storage: {
+		getValue: function(key) {
+			var type, value;
+			
+			if (localStorage.getItem(key) === null) {
+				return ((typeof arguments[1] != 'undefined') ? arguments[1] : undefined);
+			}
+			
+			value = localStorage.getItem(key);
+			type = value[0];
+			value = value.slice(1);
+			switch (type) {
+				case 'b':
+					return (value === 'true');
+				case 'n':
+					return Number(value);
+				case 'o':
+					return JSON.parse(value);
+				default:
+					return value;
+			}
+		},
 		
-		if (localStorage.getItem(key) === null) {
-			return ((typeof arguments[1] != 'undefined') ? arguments[1] : undefined);
-		}
+		setValue: function(key, value) {
+			value = (typeof value)[0] + ((typeof value === 'object') ? JSON.stringify(value) : value);
+			return localStorage.setItem(key, value);
+		},
 		
-		value = localStorage.getItem(key);
-		type = value[0];
-		value = value.slice(1);
-		switch (type) {
-			case 'b':
-				return (value === 'true');
-			case 'n':
-				return Number(value);
-			case 'o':
-				return JSON.parse(value);
-			default:
-				return value;
+		clear: localStorage.clear,
+		
+		get length() {
+			return localStorage.length;
+		},
+		
+		key: function(n) {
+			return localStorage.key(n);
 		}
-	},
-	
-	setValue: function(key, value) {
-		value = (typeof value)[0] + ((typeof value === 'object') ? JSON.stringify(value) : value);
-		return localStorage.setItem(key, value);
-	},
-	
-	clearStorage: localStorage.clear,
-	
-	get storageLength() {
-		return localStorage.length;
-	},
-	
-	storageKey: function(n) {
-		return localStorage.key(n);
 	},
 	
 	addStyle: function(CSSString) {

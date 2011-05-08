@@ -17,13 +17,15 @@ var API = {
 				return (value === 'true');
 			case 'n':
 				return Number(value);
+			case 'o':
+				return JSON.parse(value);
 			default:
 				return value;
 		}
 	},
 	
 	setValue: function(key, value) {
-		value = (typeof value)[0] + value;
+		value = (typeof value)[0] + ((typeof value === 'object') ? JSON.stringify(value) : value);
 		return localStorage.setItem(key, value);
 	},
 	

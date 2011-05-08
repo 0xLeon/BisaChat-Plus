@@ -2,14 +2,14 @@
  * BisaChat API
  */
 var API = {
-	getValue: function(name) {
+	getValue: function(key) {
 		var type, value;
 		
-		if (localStorage.getItem(name) === null) {
+		if (localStorage.getItem(key) === null) {
 			return ((typeof arguments[1] != 'undefined') ? arguments[1] : undefined);
 		}
 		
-		value = localStorage.getItem(name);
+		value = localStorage.getItem(key);
 		type = value[0];
 		value = value.slice(1);
 		switch (type) {
@@ -22,9 +22,19 @@ var API = {
 		}
 	},
 	
-	setValue: function(name, value) {
+	setValue: function(key, value) {
 		value = (typeof value)[0] + value;
-		return localStorage.setItem(name, value);
+		return localStorage.setItem(key, value);
+	},
+	
+	clearStorage: localStorage.clear,
+	
+	get storageLength() {
+		return localStorage.length;
+	},
+	
+	storageKey: function(n) {
+		return localStorage.key(n);
 	},
 	
 	addStyle: function(CSSString) {

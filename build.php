@@ -21,7 +21,6 @@ if ($argc == 1) {
 	echo "> ";
 	$version = trim(fread(STDIN, 1024));
 	if (empty($version)) $version = $lastVersion;
-	file_put_contents('builds/.lastversion', $version);
 	echo "I will use ".$version." as version number\n";
 
 	do {
@@ -46,13 +45,16 @@ if ($argc == 1) {
 else {
 	if ($argc == 2) {
 		$version = $lastVersion;
-		$minify = ($argv[1] == 'Y');
+		$minify = (strtoupper($argv[1]) == '-Y');
 	}
 	else {
-		$version = $argv[2];
-		$minify = ($argv[1] == 'Y');
+		$version = substr($argv[2], 1);
+		$minify = (strtoupper($argv[1]) == '-Y');
 	}
 }
+
+// save version
+file_put_contents('builds/.lastversion', $version);
 
 // build
 // find the tools

@@ -1,7 +1,7 @@
 /*
  * Message Prefilter Module
  */
-var MessagePrefilters = {
+Modules.MessagePrefilters = {
 	init: function(caller) {
 		caller.registerMessagePrefilter('colorlessNicknames', 'Nicknamen farblos anzeigen', 'n', false, function(event, checked, nickname, message) {
 			if (checked) {

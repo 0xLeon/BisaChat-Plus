@@ -53,35 +53,36 @@ else {
 	}
 }
 
-// save version
-file_put_contents('builds/.lastversion', $version);
-
 // build
-// find the tools
+// find namespaces
+$namespaces = glob('namespaces/*');
+// find tools
 $tools = glob('tools/*');
-// find the modules
+// find modules
 $modules = glob('modules/*');
 
+// read in header
 $result = file_get_contents('header.js')."\n";
-$packageList = array();
-// Add the tools first
+
+// add namespaces
+foreach ($namespaces as $namespace) {
+	echo "Adding namespace: ".$namespace."\n";
+	$result .= file_get_contents($namespace)."\n";
+}
+
+// add tools
 foreach ($tools as $tool) {
 	echo "Adding tool: ".$tool."\n";
 	$result .= file_get_contents($tool)."\n";
 }
 
-// Add all modules
+// add modules
 foreach ($modules as $module) {
 	echo "Adding module: ".$module."\n";
 	$result .= file_get_contents($module)."\n";
-	// add classname to packagelist
-	$packageList[] = basename($module, '.js');
 }
 
-$bcplus = file_get_contents('BisaChatPlus.js');
-// Set packagelist
-$bcplus = str_replace('/* {packages} */', implode(",\n\t\t", $packageList), $bcplus);
-$result .= $bcplus;
+$result .= file_get_contents('BisaChatPlus.js');
 $result = str_replace('{version}', $version, $result);
 
 if ($minify) {
@@ -99,6 +100,8 @@ $time = time();
 echo "Writing file builds/BisaChat Plus ".$version.' '.$time.".user.js\n";
 // Write file
 file_put_contents('builds/BisaChat Plus '.$version.' '.$time.'.user.js', $result);
+// save version
+file_put_contents('builds/.lastversion', $version);
 echo "Finished\n";
 
 if ($argc == 1) {

@@ -8,9 +8,6 @@ var BisaChatPlus = {
 	
 	smiliesTmp: [ ],
 	rooms: [ ],
-	packages: [
-		/* {packages} */
-	],
 	messagePrefilters: [ ],
 	keydownListeners: { },
 	
@@ -389,14 +386,16 @@ var BisaChatPlus = {
 	},
 	
 	finish: function() {
-		this.initPackages();
+		this.initModules();
 		this.registerBoolOption('getNonStableReleases', 'Unstable-Updates einschließen', 'u', false, null);
 		API.w.$('chatInput').focus();
 	},
 	
-	initPackages: function() {
-		for (var i = 0; i < this.packages.length; i++) {
-			this.packages[i].init(this);
+	initModules: function() {
+		var keysArray = Object.keys(Modules);
+		
+		for (var i = 0; i < keysArray.length; i++) {
+			Modules[(keysArray[i])].init(this);
 		}
 	},
 	

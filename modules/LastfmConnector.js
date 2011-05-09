@@ -2,7 +2,7 @@
  * Last.fm Connect Module
  * Based on BisaChat Last.fm Connect
  */
-var LastfmConnector = {
+Modules.LastfmConnector = {
 	track: null,
 	loadingTrack: false,
 	regularUpdaterHandle: null,

@@ -1,0 +1,4 @@
+/* 
+ * Modules Namespace
+ */
+var Modules = { };

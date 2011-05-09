@@ -4,17 +4,33 @@
 var Registry = {
 	data: { },
 	
-	getValue: function(name) {
-		if (typeof this.data[name] == 'undefined') {
+	getValue: function(key) {
+		if (typeof this.data[key] == 'undefined') {
 			var value = (typeof arguments[1] != 'undefined') ? arguments[1] : undefined;
 			
-			this.setValue(name, value);
+			this.setValue(key, value);
 		}
 		
-		return this.data[name];
+		return this.data[key];
 	},
 	
-	setValue: function(name, value) {
-		return this.data[name] = value;
+	setValue: function(key, value) {
+		return this.data[key] = value;
+	},
+	
+	unsetValue: function(key) {
+		delete this.data[key];
+	},
+	
+	clear: function() {
+		this.data = { };
+	},
+	
+	key: function(n) {
+		return Object.keys(this.data)[n];
+	},
+	
+	get length() {
+		return Object.keys(this.data).length;
 	}
 };

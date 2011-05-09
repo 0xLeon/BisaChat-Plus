@@ -30,7 +30,7 @@ var API = {
 			return localStorage.setItem(key, value);
 		},
 		
-		unsetValue: localStore.removeItem,
+		unsetValue: localStorage.removeItem,
 		
 		clear: localStorage.clear,
 		

@@ -470,7 +470,7 @@ var BisaChatPlus = {
 		API.w.$('optionsContentTextOptionDiv').appendChild(p);
 	},
 	
-	registerBoolOption: function(optionID, optionText, accessKey, defaultValue, switchCallback) {
+	registerBoolOption: function(optionID, optionText, accessKey, defaultValue, switchCallback, context) {
 		if (!!API.w.$(optionID)) throw new Error('optionID \''+optionID+'\' already used');
 		if ((!!accessKey) && (typeof this.keydownListeners[accessKey.toLowerCase()] === 'string')) throw new Error('AccessKey \''+accessKey.toLowerCase()+'\' already used');
 		
@@ -485,7 +485,7 @@ var BisaChatPlus = {
 		
 		checkbox.addEventListener('click', function(event) {
 			API.Storage.setValue(optionID+'Status', API.w.$(optionID).checked);
-			if (typeof switchCallback === 'function') switchCallback(event, API.w.$(optionID).checked);
+			if (typeof switchCallback === 'function') switchCallback.call(context, event, API.w.$(optionID).checked);
 		}, true);
 		
 		checkbox.checked = API.Storage.getValue(optionID+'Status', defaultValue);
@@ -501,10 +501,10 @@ var BisaChatPlus = {
 		}
 	},
 	
-	registerMessagePrefilter: function(optionID, optionText, accessKey, defaultValue, prefilterFunction) {
-		this.registerBoolOption(optionID, optionText, accessKey, defaultValue, null);
+	registerMessagePrefilter: function(optionID, optionText, accessKey, defaultValue, prefilterFunction, context) {
+		this.registerBoolOption(optionID, optionText, accessKey, defaultValue);
 		this.messagePrefilters.push(function(event, nickname, message) {
-			prefilterFunction(event, API.w.$(optionID).checked, nickname, message);
+			prefilterFunction.call(context, event, API.w.$(optionID).checked, nickname, message);
 		});
 	}
 };

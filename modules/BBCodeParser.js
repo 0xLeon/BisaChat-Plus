@@ -34,15 +34,15 @@ var BBCodeParser = {
 	registerMessagePrefilter: function() {
 		this.caller.registerMessagePrefilter('bbcode', 'BBCode aktivieren', 'b', false, function(event, checked, nickname, message) {
 			if (checked) {
-				message.innerHTML = BBCodeParser.parse(message.innerHTML);
+				message.innerHTML = this.parse(message.innerHTML);
 			}
 			else {
-				message.innerHTML = message.innerHTML.replace(BBCodeParser.TEXT_REGEX, function(mString, openingTag, openingTagOption, closingTag, offset, string) {
-					if (BBCodeParser.isValidTag(openingTag) || BBCodeParser.isValidTag(closingTag)) return '';
+				message.innerHTML = message.innerHTML.replace(this.TEXT_REGEX, function(mString, openingTag, openingTagOption, closingTag, offset, string) {
+					if (this.isValidTag(openingTag) || this.isValidTag(closingTag)) return '';
 					return mString;
 				});
 			}
-		});
+		}, this);
 	},
 	
 	isValidTag: function(tag) {

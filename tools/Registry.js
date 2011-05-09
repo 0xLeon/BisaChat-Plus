@@ -4,9 +4,9 @@
 var Registry = {
 	data: { },
 	
-	getValue: function(key) {
+	getValue: function(key, defaultValue) {
 		if (typeof this.data[key] == 'undefined') {
-			var value = (typeof arguments[1] != 'undefined') ? arguments[1] : undefined;
+			var value = defaultValue;
 			
 			this.setValue(key, value);
 		}

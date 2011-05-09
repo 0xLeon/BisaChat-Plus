@@ -3,11 +3,11 @@
  */
 var API = {
 	Storage: {
-		getValue: function(key) {
+		getValue: function(key, defaultValue) {
 			var type, value;
 			
 			if (localStorage.getItem(key) === null) {
-				return ((typeof arguments[1] != 'undefined') ? arguments[1] : undefined);
+				return defaultValue;
 			}
 			
 			value = localStorage.getItem(key);

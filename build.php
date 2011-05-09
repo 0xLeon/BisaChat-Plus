@@ -45,11 +45,11 @@ if ($argc == 1) {
 else {
 	if ($argc == 2) {
 		$version = $lastVersion;
-		$minify = (strtoupper($argv[1]) == '-Y');
+		$minify = (strtoupper($argv[1]) == 'Y');
 	}
 	else {
-		$version = substr($argv[2], 1);
-		$minify = (strtoupper($argv[1]) == '-Y');
+		$version = $argv[2];
+		$minify = (strtoupper($argv[1]) == 'Y');
 	}
 }
 

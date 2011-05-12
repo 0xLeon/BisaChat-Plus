@@ -29,6 +29,8 @@ var BisaChatPlus = {
 	addStyleRules: function() {
 		API.addStyle('body { overflow: hidden; }');
 		API.addStyle('html, body { height: '+API.inHeight+'px !important; }');
+		API.addStyle('.hidden { display: none; }');
+		API.addStyle('.column { border: 0px !important; }');
 		API.addStyle('.loading, .error, #chatCopyright { border: none !important; -moz-border-radius: 0px !important; z-index: 9000; }');
 		API.addStyle('.subTabMenu { padding: 0px !important; padding-top: 2px !important; border-top: none !important; border-left: none !important; border-right: none !important; }');
 		API.addStyle('.subTabMenu, .subTabMenu > * { -moz-border-radius: 0px !important; }');
@@ -46,7 +48,6 @@ var BisaChatPlus = {
 		API.addStyle('#smilies, #options { position: absolute; width: 255px; height: 155px !important; top: -160px; left: 0px; padding-left: 1px; padding-top: 1px; -moz-border-radius-bottomleft: 0px; -moz-border-radius-bottomright: 0px; }');
 		API.addStyle('#smiliesList li { border: none !important; margin-left: 3px; margin-right: 3px; height: 30px; float: left; }');
 		
-		API.w.$('chatPrivateControl').style.display = 'none';
 		API.w.$$('#chatBox .columnContainer')[0].style.width = API.inWidth+'px';
 		var boxesHeight = (API.inHeight-(parseInt(API.w.$$('#chatBox .subTabMenu')[0].offsetHeight)))+'px';
 		(API.w.$$('#chatBox > .border, #chatBox > .border > .layout-2, .columnContainer > .column > .columnInner, .columnContainer > .second > .columnInner > div:first-child, #chatMembers')).each(function(item) {

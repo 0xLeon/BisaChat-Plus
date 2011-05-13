@@ -102,7 +102,7 @@ Modules.LastfmConnector = {
 	},
 	
 	submitTrack: function() {
-		if (typeof this.track == 'object') {
+		if (typeof this.track === 'object') {
 			GM_xmlhttpRequest({
 				method: 'POST',
 				url: './index.php?form=Chat',
@@ -115,7 +115,7 @@ Modules.LastfmConnector = {
 			
 			API.w.chat.getMessages();
 		}
-		else if (typeof this.track == 'string') {
+		else if (typeof this.track === 'string') {
 			var now = new Date();
 			var time = ((now.getHours() < 10) ? '0'+now.getHours() : now.getHours())+':'+((now.getMinutes() < 10) ? '0'+now.getMinutes() : now.getMinutes())+':'+((now.getSeconds() < 10) ? '0'+now.getSeconds() : now.getSeconds());
 			

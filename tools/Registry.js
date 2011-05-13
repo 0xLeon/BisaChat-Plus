@@ -5,7 +5,7 @@ var Registry = {
 	data: { },
 	
 	getValue: function(key, defaultValue) {
-		if (typeof this.data[key] == 'undefined') {
+		if (typeof this.data[key] === 'undefined') {
 			var value = defaultValue;
 			
 			this.setValue(key, value);

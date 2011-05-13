@@ -497,7 +497,7 @@ var BisaChatPlus = {
 		
 		if (!!accessKey) {
 			this.keydownListeners[accessKey.toLowerCase()] = optionID;
-			API.w.$(optionID).parentNode.parentNode.setAttribute('title', 'Zum Ändern, Alt-Taste & '+accessKey+' drücken');
+			API.w.$(optionID).parentNode.parentNode.setAttribute('title', 'Zum Ändern, Alt-Taste & '+accessKey.toLowerCase()+' drücken');
 		}
 	},
 	

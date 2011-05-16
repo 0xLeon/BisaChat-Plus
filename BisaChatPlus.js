@@ -7,7 +7,6 @@ var BisaChatPlus = {
 	},
 	
 	smiliesTmp: [ ],
-	rooms: [ ],
 	messagePrefilters: [ ],
 	keydownListeners: { },
 	
@@ -60,15 +59,6 @@ var BisaChatPlus = {
 		var tmp = API.w.$('chatBox').cloneNode(true);
 		(API.w.$$('#smileyList ul > li')).each(function(item) {
 			this.smiliesTmp.push(item.cloneNode(true));
-		}, this);
-		
-		(API.w.$$('#chatOptions option')).each(function(item) {
-			this.rooms.push({
-				id: String(item.getAttribute('id')),
-				value: String(item.getAttribute('value')),
-				selected: item.selected,
-				identifier: String(item.innerHTML).trim()
-			});
 		}, this);
 		
 		API.w.$('headerContainer').parentNode.removeChild(API.w.$('headerContainer'));

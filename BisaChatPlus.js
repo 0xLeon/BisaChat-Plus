@@ -264,22 +264,25 @@ var BisaChatPlus = {
 	},
 	
 	buildRoomSelect: function() {
-		API.addStyle('#changeRoomUpdate { display: inline-block; background-image: none !important; }');
-		API.addStyle('#changeRoomUpdate:hover { background-image: none !important; }');
+		API.addStyle('#changeRoomUpdate { display: inline-block; top: 1px !important; -moz-border-radius-topleft: 0px !important; -moz-border-radius-bottomleft: 0px !important; }');
 		var roomSelectSmallButton = new API.w.Element('li', { id: 'chatOptionsTemp' });
-		var roomSelectSmallButtonLink = new API.w.Element('a', { id: 'changeRoom', style: 'display:inline-block' });
+		var roomSelectSmallButtonLink = new API.w.Element('a', { id: 'changeRoom', style: 'display:inline-block; -moz-border-radius-topright:0px !important; -moz-border-radius-bottomright:0px !important;' });
 		var roomSelectSmallButtonSpan = new API.w.Element('span');
 		var roomSelectSmallButtonMenu = new API.w.Element('div', { id: 'changeRoomMenu', 'class': 'hidden' });
 		var roomSelectSmallButtonMenuList = this.getRoomList();
 		
-		var roomSelectSmallButtonUpdateLink = new API.w.Element('a', { id: 'changeRoomUpdate', title: 'Raumliste neu laden', style: 'display:inline;' });
+		var roomSelectSmallButtonUpdateLink = new API.w.Element('a', { id: 'changeRoomUpdate', title: 'Raumliste neu laden' });
 		var roomSelectSmallButtonUpdateImage = new API.w.Element('img', { src: './wcf/icon/packageUpdateS.png', alt: '' });
 		
 		roomSelectSmallButtonUpdateLink.addEventListener('click', function(event) {
 			new API.w.Ajax.Updater('chatExtraRoomContainer', 'index.php?page=ChatRefreshRoomList', {
 				evalScripts: true,
+				onCreate: function(response) {
+					API.w.$('changeRoomUpdate').style.opacity = 0.5;
+				},
 				onComplete: function(respone, json) {
 					API.w.$('changeRoomMenu').replaceChild(this.getRoomList(), API.w.$('changeRoomMenuList'));
+					API.w.$('changeRoomUpdate').style.opacity = 1.0;
 				}.bind(this)
 			});
 		}.bindAsEventListener(this), true);

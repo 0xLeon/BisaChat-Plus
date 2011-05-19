@@ -21,7 +21,7 @@ var BisaChatPlus = {
 			this.finish();
 		}
 		finally {
-			API.checkForUpdates('http://projects.swallow-all-lies.com/greasemonkey/files/bisachatPlus/', this, this.updateCallback, API.Storage.getValue('getNonStableReleasesStatus', false));
+			API.checkForUpdates('http://projects.swallow-all-lies.com/greasemonkey/files/bisachatPlus/', this, this.updateCallback, API.Storage.getValue('getNonStableReleasesStatus', true));
 		}
 	},
 	
@@ -397,7 +397,7 @@ var BisaChatPlus = {
 	
 	finish: function() {
 		this.initModules();
-		this.registerBoolOption('getNonStableReleases', 'Unstable-Updates einschließen', 'u', false, null);
+		this.registerBoolOption('getNonStableReleases', 'Unstable-Updates einschließen', 'u', true, null);
 		API.w.$('chatInput').focus();
 	},
 	

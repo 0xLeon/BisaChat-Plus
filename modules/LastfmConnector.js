@@ -5,7 +5,6 @@
 Modules.LastfmConnector = {
 	track: null,
 	loadingTrack: false,
-	regularUpdaterHandle: null,
 	caller: null,
 	
 	init: function(caller) {

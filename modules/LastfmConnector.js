@@ -30,13 +30,7 @@ Modules.LastfmConnector = {
 	},
 	
 	getTrackString: function() {
-		var trackString = (((API.Storage.getValue('formatString', 'np: $artist – $title').replace(/\$artist/gi, this.track[0])).replace(/\$title/gi, this.track[1])).replace(/\$url/gi, this.track[2])).replace(/\$profil/gi, 'http://www.last.fm/user/'+encodeURIComponent(this.track[3]));
-		
-		if (API.checkAwayStatus()) {
-		 	trackString = '/away '+trackString;
-		}
-		
-		return trackString;
+		return API.Storage.getValue('formatString', 'np: $artist – $title').replace(/\$artist/gi, this.track[0]).replace(/\$title/gi, this.track[1]).replace(/\$url/gi, this.track[2]).replace(/\$profil/gi, 'http://www.last.fm/user/'+encodeURIComponent(this.track[3]));
 	},
 	
 	getTrack: function() {

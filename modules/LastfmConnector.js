@@ -5,10 +5,10 @@
 Modules.LastfmConnector = {
 	track: null,
 	loadingTrack: false,
-	caller: null,
+	callerObj: null,
 	
-	init: function(caller) {
-		this.caller = caller;
+	init: function(callerObj) {
+		this.callerObj = callerObj;
 		this.showNowPlayingButton();
 		this.registerOption();
 	},
@@ -26,7 +26,7 @@ Modules.LastfmConnector = {
 	},
 	
 	registerOption: function() {
-		this.caller.registerTextOption('lastfmUsername', 'last.fm Username', 'Not set yet');
+		this.callerObj.registerTextOption('lastfmUsername', 'last.fm Username', 'Not set yet');
 	},
 	
 	getTrackString: function() {

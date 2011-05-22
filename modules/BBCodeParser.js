@@ -23,16 +23,16 @@ Modules.BBCodeParser = {
 		return (/(?:\[([a-z]{1,16})(?:=([^\x00-\x1F"'\(\)<>\[\]]{1,256}))?\])|(?:\[\/([a-z]{1,16})\])/gi);
 	},
 	
-	caller: null,
+	callerObj: null,
 	
-	init: function(caller) {
-		this.caller = caller;
+	init: function(callerObj) {
+		this.callerObj = callerObj;
 		
 		this.registerMessagePrefilter();
 	},
 	
 	registerMessagePrefilter: function() {
-		this.caller.registerMessagePrefilter('bbcode', 'BBCode aktivieren', 'b', false, function(event, checked, nickname, message) {
+		this.callerObj.registerMessagePrefilter('bbcode', 'BBCode aktivieren', 'b', false, function(event, checked, nickname, message) {
 			if (checked) {
 				message.innerHTML = this.parse(message.innerHTML);
 			}

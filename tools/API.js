@@ -50,10 +50,10 @@ var API = {
 		this.w.$$('head')[0].appendChild(styleNode);
 	},
 	
-	checkForUpdates: function(updateServer, caller, callback, getNonStableReleases) {
+	checkForUpdates: function(updateServer, callerObj, callback, getNonStableReleases) {
 		GM_xmlhttpRequest({
 			method: 'GET',
-			url: updateServer+'?version='+encodeURIComponent(caller.VERSION)+'&getNonStableReleases='+((getNonStableReleases) ? '1' : '0'),
+			url: updateServer+'?version='+encodeURIComponent(callerObj.VERSION)+'&getNonStableReleases='+((getNonStableReleases) ? '1' : '0'),
 			headers: {
 				'Accept': 'text/xml'
 			},

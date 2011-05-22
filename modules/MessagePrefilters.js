@@ -2,8 +2,8 @@
  * Message Prefilter Module
  */
 Modules.MessagePrefilters = {
-	init: function(caller) {
-		caller.registerMessagePrefilter('colorlessNicknames', 'Nicknamen farblos anzeigen', 'n', false, function(event, checked, nickname, message) {
+	init: function(callerObj) {
+		callerObj.registerMessagePrefilter('colorlessNicknames', 'Nicknamen farblos anzeigen', 'n', false, function(event, checked, nickname, message) {
 			if (checked) {
 				var nickname = event.target.getElementsByTagName('span')[1].getElementsByTagName('span');
 				
@@ -13,26 +13,26 @@ Modules.MessagePrefilters = {
 			}
 		});
 		
-		caller.registerMessagePrefilter('hideMuschelMessages', 'Muschel-Nachrichten ausblenden', 'm', false, function(event, checked, nickname, message) {
+		callerObj.registerMessagePrefilter('hideMuschelMessages', 'Muschel-Nachrichten ausblenden', 'm', false, function(event, checked, nickname, message) {
 			if ((checked) && (nickname.toLowerCase() == 'magische miesmuschel') && (String(message.firstChild.nodeValue)[0] != '[')) {
 				event.target.parentNode.removeChild(event.target);
 			}
 		});
 		
-		caller.registerMessagePrefilter('greentext', 'Green text aktivieren', 'g', true, function(event, checked, nickname, message) {
+		callerObj.registerMessagePrefilter('greentext', 'Green text aktivieren', 'g', true, function(event, checked, nickname, message) {
 			if ((checked) && (message.firstChild.nodeType == 3) && (String(message.firstChild.nodeValue)[0] == '>')) {
 				message.style.color = '#792';
 			}
 		});
 		
-		caller.registerMessagePrefilter('background', 'Hintergrund aktivieren', 'h', true, function(event, checked, nickname, message) {
+		callerObj.registerMessagePrefilter('background', 'Hintergrund aktivieren', 'h', true, function(event, checked, nickname, message) {
 			if (checked) {
 				event.target.className += ' container-' + ((Registry.getValue('messageNumber', 0) % 2) + 1);
 				Registry.setValue('messageNumber', (Registry.getValue('messageNumber') + 1));
 			}
 		});
 		
-		caller.registerMessagePrefilter('kyon', 'Nachrichten kyonisieren', 'k', false, function(event, checked, nickname, message) {
+		callerObj.registerMessagePrefilter('kyon', 'Nachrichten kyonisieren', 'k', false, function(event, checked, nickname, message) {
 			if (checked) {
 				var node = message.firstChild;
 				

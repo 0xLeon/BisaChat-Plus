@@ -14,13 +14,13 @@ Modules.MessagePrefilters = {
 		});
 		
 		callerObj.registerMessagePrefilter('hideMuschelMessages', 'Muschel-Nachrichten ausblenden', 'm', false, function(event, checked, nickname, message) {
-			if ((checked) && (nickname.toLowerCase() == 'magische miesmuschel') && (String(message.firstChild.nodeValue)[0] != '[')) {
+			if ((checked) && (nickname.toLowerCase() === 'magische miesmuschel') && (String(message.firstChild.nodeValue)[0] != '[')) {
 				event.target.parentNode.removeChild(event.target);
 			}
 		});
 		
 		callerObj.registerMessagePrefilter('greentext', 'Green text aktivieren', 'g', true, function(event, checked, nickname, message) {
-			if ((checked) && (message.firstChild.nodeType == 3) && (String(message.firstChild.nodeValue)[0] == '>')) {
+			if ((checked) && (message.firstChild.nodeType === 3) && (String(message.firstChild.nodeValue)[0] === '>')) {
 				message.style.color = '#792';
 			}
 		});

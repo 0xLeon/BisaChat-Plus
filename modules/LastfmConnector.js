@@ -52,11 +52,11 @@ Modules.LastfmConnector = {
 				'Accept': 'text/xml'
 			},
 			onload: function(response) {
-				if (response.readyState == 4) {
+				if (response.readyState === 4) {
 					try {
 						var xml = ((!response.responseXML) ? (new DOMParser()).parseFromString(response.responseText, 'text/xml') : response.responseXML);
 						
-						if (xml.documentElement.getAttribute('status') == 'ok') {
+						if (xml.documentElement.getAttribute('status') === 'ok') {
 							if ((xml.getElementsByTagName('track').length > 0) && (xml.getElementsByTagName('track')[0].getAttribute('nowplaying'))) {
 								var trackDOM = xml.getElementsByTagName('track')[0];
 								var artist = trackDOM.getElementsByTagName('artist')[0].firstChild.nodeValue;
@@ -70,7 +70,7 @@ Modules.LastfmConnector = {
 								throw new Error('No track playing');
 							}
 						}
-						else if (xml.documentElement.getAttribute('status') == 'failed') {
+						else if (xml.documentElement.getAttribute('status') === 'failed') {
 							throw new Error(String(xml.getElementsByTagName('error')[0].firstChild.nodeValue));
 						}
 						else {

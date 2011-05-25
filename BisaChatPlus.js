@@ -105,7 +105,7 @@ var BisaChatPlus = {
 				});
 			}
 			else {
-				if (API.w.$('options').style.display == 'none') {
+				if (API.w.$('options').style.display === 'none') {
 					API.w.Effect.Appear('options', {
 						afterFinish: function() {
 							this.saveBoxStatus('options');
@@ -197,7 +197,7 @@ var BisaChatPlus = {
 				});
 			}
 			else {
-				if (API.w.$('smilies').style.display == 'none') {
+				if (API.w.$('smilies').style.display === 'none') {
 					API.w.Effect.Appear('smilies', {
 						afterFinish: function() {
 							this.saveBoxStatus('smilies');
@@ -351,7 +351,7 @@ var BisaChatPlus = {
 		
 		// message prefilter listener
 		API.w.$('chatMessage').addEventListener('DOMNodeInserted', function(event) {
-			if (event.target.nodeName.toLowerCase() == 'li') {
+			if (event.target.nodeName.toLowerCase() === 'li') {
 				var id = event.target.getAttribute('id');
 				var messageNode = API.w.$$('#'+id+' span')[1].nextSibling;
 				var message = new API.w.Element('span', { 'class': 'chatMessageText' });
@@ -367,10 +367,10 @@ var BisaChatPlus = {
 					nickname += nicknameNode[i].firstChild.nodeValue;
 				}
 				
-				if (message.firstChild.nodeType == 3) {
+				if (message.firstChild.nodeType === 3) {
 					message.firstChild.replaceData(0, message.firstChild.nodeValue.length, message.firstChild.nodeValue.trimLeft());
 					
-					if (message.firstChild.nodeValue.length == 0) message.removeChild(message.firstChild);
+					if (message.firstChild.nodeValue.length === 0) message.removeChild(message.firstChild);
 				}
 				
 				event.target.appendChild(message);
@@ -424,7 +424,7 @@ var BisaChatPlus = {
 	},
 	
 	saveBoxStatus: function(id) {
-		var visible = (API.w.$(id).style.display == 'none') ? false : true;
+		var visible = !(API.w.$(id).style.display === 'none');
 		var top = API.w.$(id).style.top;
 		var left = API.w.$(id).style.left;
 		
@@ -460,7 +460,7 @@ var BisaChatPlus = {
 		}, true);
 		
 		input.addEventListener('keydown', function(event) {
-			if ((event.keyCode == 13) && (String(API.w.$(optionID+'Input').value)).length > 0) {
+			if ((event.keyCode === 13) && (String(API.w.$(optionID+'Input').value)).length > 0) {
 				API.Storage.setValue(optionID+'Value', String(API.w.$(optionID+'Input').value));
 				API.w.$(optionID).firstChild.replaceData(0, API.w.$(optionID).firstChild.nodeValue.length, API.Storage.getValue(optionID+'Value', defaultValue));
 				API.w.$(optionID+'Input').setAttribute('class', 'hidden');

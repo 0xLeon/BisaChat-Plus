@@ -95,7 +95,7 @@ Modules.BBCodeParser = {
 		
 		if (this.isValidTag(closingTag)) {
 			if (this.noParse) {
-				if (closingTag == 'noparse' || closingTag == 'code') {
+				if (closingTag === 'noparse' || closingTag === 'code') {
 					this.noParse = false;
 					return '';
 				}

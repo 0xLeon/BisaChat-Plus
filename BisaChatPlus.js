@@ -445,7 +445,7 @@ var BisaChatPlus = {
 		
 		span.addEventListener('click', function(event) {
 			API.w.$(optionID).className = (API.w.$(optionID).className + ' hidden').trim();
-			API.w.$(optionID+'Input').className = API.w.$(optionID+'Input').className.replace(/hidden/).trim();
+			API.w.$(optionID+'Input').className = API.w.$(optionID+'Input').className.replace(/hidden/ig, '').trim();
 			API.w.$(optionID+'Input').focus();
 		}, true);
 		
@@ -458,7 +458,7 @@ var BisaChatPlus = {
 				API.Storage.setValue(optionID+'Value', String(API.w.$(optionID+'Input').value));
 				API.w.$(optionID).firstChild.replaceData(0, API.w.$(optionID).firstChild.nodeValue.length, API.Storage.getValue(optionID+'Value', defaultValue));
 				API.w.$(optionID+'Input').className = (API.w.$(optionID+'Input').className + ' hidden').trim();
-				API.w.$(optionID).className = API.w.$(optionID).className.replace(/hidden/).trim();
+				API.w.$(optionID).className = API.w.$(optionID).className.replace(/hidden/ig, '').trim();
 				API.w.$('chatInput').focus();
 				event.preventDefault();
 			}

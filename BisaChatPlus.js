@@ -46,6 +46,8 @@ var BisaChatPlus = {
 		API.addStyle('#smiliesSmallButton, #optionsSmallButton { position: relative; }');
 		API.addStyle('#smilies, #options { position: absolute; width: 255px; height: 155px !important; top: -160px; left: 0px; padding-left: 1px; padding-top: 1px; -moz-border-radius-bottomleft: 0px; -moz-border-radius-bottomright: 0px; }');
 		API.addStyle('#smiliesList li { border: none !important; margin-left: 3px; margin-right: 3px; height: 30px; float: left; }');
+		API.addStyle('.textOptionValue { cursor: pointer; }');
+		API.addStyle('.textOptionValue:hover { text-decoration: underline; }');
 		
 		API.w.$$('#chatBox .columnContainer')[0].style.width = API.inWidth+'px';
 		var boxesHeight = (API.inHeight-(parseInt(API.w.$$('#chatBox .subTabMenu')[0].offsetHeight)))+'px';
@@ -437,17 +439,9 @@ var BisaChatPlus = {
 		if (!!API.w.$(optionID)) throw new Error('optionID \''+optionID+'\' already used');
 		
 		var p = new API.w.Element('p');
-		var span = new API.w.Element('span', { id: optionID, title: 'Zum Ändern anklicken', style: 'cursor:pointer;' });
+		var span = new API.w.Element('span', { id: optionID, 'class': 'textOptionValue', title: 'Zum Ändern anklicken' });
 		var input = new API.w.Element('input', { id: optionID+'Input', 'class': 'hidden', type: 'text', size: '8', autocomplete: 'off', value: API.Storage.getValue(optionID+'Value', defaultValue) });
 		var hr = new API.w.Element('hr', { style: 'display:block; width:80%' });
-		
-		span.addEventListener('mouseover', function(event) {
-			event.target.style.textDecoration = 'underline';
-		}, false);
-		
-		span.addEventListener('mouseout', function(event) {
-			event.target.style.textDecoration = 'none';
-		}, false);
 		
 		span.addEventListener('click', function(event) {
 			API.w.$(optionID).setAttribute('class', 'hidden');

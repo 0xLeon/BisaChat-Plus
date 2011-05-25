@@ -444,8 +444,8 @@ var BisaChatPlus = {
 		var hr = new API.w.Element('hr', { style: 'display:block; width:80%' });
 		
 		span.addEventListener('click', function(event) {
-			API.w.$(optionID).setAttribute('class', 'hidden');
-			API.w.$(optionID+'Input').setAttribute('class', '');
+			API.w.$(optionID).className = (API.w.$(optionID).className + ' hidden').trim();
+			API.w.$(optionID+'Input').className = API.w.$(optionID+'Input').className.replace(/hidden/).trim();
 			API.w.$(optionID+'Input').focus();
 		}, true);
 		
@@ -457,8 +457,8 @@ var BisaChatPlus = {
 			if ((event.keyCode === 13) && (String(API.w.$(optionID+'Input').value)).length > 0) {
 				API.Storage.setValue(optionID+'Value', String(API.w.$(optionID+'Input').value));
 				API.w.$(optionID).firstChild.replaceData(0, API.w.$(optionID).firstChild.nodeValue.length, API.Storage.getValue(optionID+'Value', defaultValue));
-				API.w.$(optionID+'Input').setAttribute('class', 'hidden');
-				API.w.$(optionID).setAttribute('class', '');
+				API.w.$(optionID+'Input').className = (API.w.$(optionID+'Input').className + ' hidden').trim();
+				API.w.$(optionID).className = API.w.$(optionID).className.replace(/hidden/).trim();
 				API.w.$('chatInput').focus();
 				event.preventDefault();
 			}

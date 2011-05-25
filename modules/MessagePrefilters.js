@@ -27,7 +27,7 @@ Modules.MessagePrefilters = {
 		
 		callerObj.registerMessagePrefilter('background', 'Hintergrund aktivieren', 'h', true, function(event, checked, nickname, message) {
 			if (checked) {
-				event.target.className += ' container-' + ((Registry.getValue('messageNumber', 0) % 2) + 1);
+				event.target.className = (event.target.className+' container-'+((Registry.getValue('messageNumber', 0) % 2) + 1)).trim();
 				Registry.setValue('messageNumber', (Registry.getValue('messageNumber') + 1));
 			}
 		});

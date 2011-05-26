@@ -485,9 +485,9 @@ var BisaChatPlus = {
 			API.w.$('chatInput').focus();
 		}, false);
 		
-		checkbox.addEventListener('click', function(event) {
-			API.Storage.setValue(optionID+'Status', API.w.$(optionID).checked);
-			if (typeof switchCallback === 'function') switchCallback.call(context, event, API.w.$(optionID).checked);
+		checkbox.addEventListener('change', function(event) {
+			API.Storage.setValue(optionID+'Status', event.target.checked);
+			if (typeof switchCallback === 'function') switchCallback.call(context, event, event.target.checked);
 		}, true);
 		
 		checkbox.checked = API.Storage.getValue(optionID+'Status', defaultValue);

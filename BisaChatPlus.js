@@ -444,9 +444,12 @@ var BisaChatPlus = {
 		var hr = new API.w.Element('hr', { style: 'display:block; width:80%' });
 		
 		span.addEventListener('click', function(event) {
-			API.w.$(optionID).className = (API.w.$(optionID).className + ' hidden').trim();
-			API.w.$(optionID+'Input').className = API.w.$(optionID+'Input').className.replace(/hidden/ig, '').trim();
-			API.w.$(optionID+'Input').focus();
+			var optionSpan = event.target;
+			var optionInput = event.target.nextSibling;
+			
+			optionSpan.className = (optionSpan.className + ' hidden').trim();
+			optionInput.className = optionInput.className.replace(/hidden/ig, '').trim();
+			optionInput.focus();
 		}, true);
 		
 		input.addEventListener('focus', function(event) {
@@ -454,11 +457,14 @@ var BisaChatPlus = {
 		}, true);
 		
 		input.addEventListener('keydown', function(event) {
-			if ((event.keyCode === 13) && (String(API.w.$(optionID+'Input').value)).length > 0) {
-				API.Storage.setValue(optionID+'Value', String(API.w.$(optionID+'Input').value));
-				API.w.$(optionID).firstChild.replaceData(0, API.w.$(optionID).firstChild.nodeValue.length, API.Storage.getValue(optionID+'Value', defaultValue));
-				API.w.$(optionID+'Input').className = (API.w.$(optionID+'Input').className + ' hidden').trim();
-				API.w.$(optionID).className = API.w.$(optionID).className.replace(/hidden/ig, '').trim();
+			if ((event.keyCode === 13) && (String(event.target.value)).length > 0) {
+				var optionSpan = event.target.previousSibling;
+				var optionInput = event.target;
+				
+				API.Storage.setValue(optionSpan.getAttribute('id')+'Value', String(optionInput.value));
+				optionSpan.firstChild.replaceData(0, optionSpan.firstChild.nodeValue.length, API.Storage.getValue(optionSpan.getAttribute('id')+'Value', defaultValue));
+				optionInput.className = (optionInput.className + ' hidden').trim();
+				optionSpan.className = optionSpan.className.replace(/hidden/ig, '').trim();
 				API.w.$('chatInput').focus();
 				event.preventDefault();
 			}
@@ -486,7 +492,7 @@ var BisaChatPlus = {
 		}, false);
 		
 		checkbox.addEventListener('change', function(event) {
-			API.Storage.setValue(optionID+'Status', event.target.checked);
+			API.Storage.setValue(event.target.getAttribute('id')+'Status', event.target.checked);
 			if (typeof switchCallback === 'function') switchCallback.call(context, event, event.target.checked);
 		}, true);
 		

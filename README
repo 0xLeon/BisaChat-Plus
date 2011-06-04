@@ -16,14 +16,12 @@ Scriptish. Personally I recommed the use of Scriptish.
 ------------
 known issues:
  - smiliesbox height shouldn't be fixed (low)
- - doesn't work with FF3 (mid)
  - Find the line that breaks the script when removing newlines (low)
 ------------
 desired features:
  - pick two colors with colorpicker (low)
  - BBCode Parser: img-tag (low)
  - BBCode Parser: floating tags (mid)
- - add border between roomSelectLink and roomSelectUpdate (mid)
 ------------
 All source and documentation files are published under the Simplified BSD license. For more 
 information see the LICENSE file.

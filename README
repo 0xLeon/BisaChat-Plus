@@ -17,9 +17,9 @@ Scriptish. Personally I recommed the use of Scriptish.
 known issues:
  - smiliesbox height shouldn't be fixed (low)
  - Find the line that breaks the script when removing newlines (low)
+ - ColorPickerPlus doesn't work the way it should work
 ------------
 desired features:
- - pick two colors with colorpicker (low)
  - BBCode Parser: img-tag (low)
  - BBCode Parser: floating tags (mid)
 ------------

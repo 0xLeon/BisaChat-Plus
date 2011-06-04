@@ -3,7 +3,6 @@
  * Based on BisaChat Last.fm Connect
  */
 Modules.LastfmConnector = {
-	track: null,
 	loadingTrack: false,
 	callerObj: null,
 	
@@ -29,8 +28,8 @@ Modules.LastfmConnector = {
 		this.callerObj.registerTextOption('lastfmUsername', 'last.fm Username', 'Not set yet');
 	},
 	
-	getTrackString: function() {
-		return API.Storage.getValue('formatString', 'np: $artist – $title').replace(/\$artist/gi, this.track[0]).replace(/\$title/gi, this.track[1]).replace(/\$url/gi, this.track[2]).replace(/\$profil/gi, 'http://www.last.fm/user/'+encodeURIComponent(this.track[3]));
+	getTrackString: function(artist, title, trackURI, username) {
+		return API.Storage.getValue('formatString', 'np: $artist – $title').replace(/\$artist/gi, artist).replace(/\$title/gi, title).replace(/\$url/gi, trackURI).replace(/\$profil/gi, 'http://www.last.fm/user/'+encodeURIComponent(username));
 	},
 	
 	getTrack: function() {
@@ -39,8 +38,9 @@ Modules.LastfmConnector = {
 		this.loadingTrack = true;
 		
 		if (API.Storage.getValue('lastfmUsernameValue', undefined) === undefined) {
-			this.track = 'Error catching track! Username not set';
-			this.submitTrack();
+			this.callerObj.pushInfo('Error catching track! Username not set');
+			API.w.$('nowPlayingButton').style.opacity = 1.0;
+			API.w.$('nowPlayingButton').disabled = false;
 			this.loadingTrack = false;
 			return false;
 		}
@@ -61,10 +61,10 @@ Modules.LastfmConnector = {
 								var trackDOM = xml.getElementsByTagName('track')[0];
 								var artist = trackDOM.getElementsByTagName('artist')[0].firstChild.nodeValue;
 								var title = trackDOM.getElementsByTagName('name')[0].firstChild.nodeValue;
-								var trackURL = trackDOM.getElementsByTagName('url')[0].firstChild.nodeValue;
+								var trackURI = trackDOM.getElementsByTagName('url')[0].firstChild.nodeValue;
 								var username = xml.getElementsByTagName('recenttracks')[0].getAttribute('user');
 								
-								this.track = new Array(artist, title, trackURL, username);
+								this.submitTrack(this.getTrackString(artist, title, trackURI, username));
 							}
 							else {
 								throw new Error('No track playing');
@@ -78,41 +78,38 @@ Modules.LastfmConnector = {
 						}
 					}
 					catch (e) {
-						this.track = 'Error catching track! '+e.message;
+						this.callerObj.pushInfo('Error catching track! '+e.message);
 					}
 					finally {
-						this.submitTrack();
+						API.w.$('nowPlayingButton').style.opacity = 1.0;
+						API.w.$('nowPlayingButton').disabled = false;
 						this.loadingTrack = false;
 					}
 				}
 			}.bindAsEventListener(this),
 			onerror: function() {
-				this.track = 'Error catching track! Connection failed';
-				this.submitTrack();
+				this.callerObj.pushInfo('Error catching track! Connection failed');
+				API.w.$('nowPlayingButton').style.opacity = 1.0;
+				API.w.$('nowPlayingButton').disabled = false;
 				this.loadingTrack = false;
 			}.bindAsEventListener(this)
 		});
 	},
 	
-	submitTrack: function() {
-		if (typeof this.track === 'object') {
-			GM_xmlhttpRequest({
-				method: 'POST',
-				url: './index.php?form=Chat',
-				data: 'text='+encodeURIComponent(this.getTrackString())+'&ajax=1',
-				headers: {
-					'Content-Type': 'application/x-www-form-urlencoded',
-					'Accept': '*/*'
+	submitTrack: function(trackString) {
+		GM_xmlhttpRequest({
+			method: 'POST',
+			url: './index.php?form=Chat',
+			data: 'text='+encodeURIComponent(trackString)+'&ajax=1',
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded',
+				'Accept': '*/*'
+			},
+			onload: function(response) {
+				if (response.readyState === 4) {
+					API.w.chat.getMessages();
 				}
-			});
-			
-			API.w.chat.getMessages();
-		}
-		else if (typeof this.track === 'string') {
-			this.callerObj.pushInfo(this.track);
-		}
-		
-		API.w.$('nowPlayingButton').style.opacity = 1.0;
-		API.w.$('nowPlayingButton').disabled = false;
+			}
+		});
 	}
 };

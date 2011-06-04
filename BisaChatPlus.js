@@ -252,7 +252,7 @@ var BisaChatPlus = {
 			}
 		});
 		
-		this.registerMessagePrefilter('enablesmilies', 'Darstellung von Smileys aktivieren', 'p', false, function(event, checked, nickname, message) {
+		this.registerMessagePrefilter('enablesmilies', 'Smileys', 'Darstellung von Smileys aktivieren', 'p', false, function(event, checked, nickname, message) {
 			if (!checked) {
 				var smilies = API.w.$A(message.getElementsByTagName('img'));
 				
@@ -389,7 +389,7 @@ var BisaChatPlus = {
 				var key = String.fromCharCode(event.keyCode).toLowerCase();
 				
 				if (typeof this.keydownListeners[key] === 'string') {
-					API.w.$(this.keydownListeners[key]).checked = !API.w.$(this.keydownListeners[key]).checked;
+					API.w.$(this.keydownListeners[key]).click();
 					event.preventDefault();
 				}
 			}
@@ -398,7 +398,7 @@ var BisaChatPlus = {
 	
 	finish: function() {
 		this.initModules();
-		this.registerBoolOption('getNonStableReleases', 'Unstable-Updates einschließen', 'u', true, null);
+		this.registerBoolOption('getNonStableReleases', 'Updatesuche nach Entwicklerversionen', 'Unstable-Updates einschließen', 'u', true, null);
 		API.w.$('chatInput').focus();
 	},
 	
@@ -433,6 +433,26 @@ var BisaChatPlus = {
 		API.Storage.setValue(id+'boxVisible', visible);
 		API.Storage.setValue(id+'boxTop', top);
 		API.Storage.setValue(id+'boxLeft', left);
+	},
+	
+	pushInfo: function(infoText) {
+		var now = new Date();
+		var time = ((now.getHours() < 10) ? '0'+now.getHours() : now.getHours())+':'+((now.getMinutes() < 10) ? '0'+now.getMinutes() : now.getMinutes())+':'+((now.getSeconds() < 10) ? '0'+now.getSeconds() : now.getSeconds());
+		
+		var li = new API.w.Element('li', { 'class': 'messageType8 ownMessage' });
+		var spanOne = new API.w.Element('span', { style: 'font-size:0.8em; font-weight:normal; font-style:normal;' });
+		var spanTwo = new API.w.Element('span', { style: 'font-weight:bold;' });
+		
+		spanOne.appendChild(document.createTextNode('('+time+')'));
+		spanTwo.appendChild(document.createTextNode('Information: '));
+		
+		li.appendChild(spanOne);
+		li.appendChild(document.createTextNode(' '));
+		li.appendChild(spanTwo);
+		li.appendChild(document.createTextNode(infoText));
+		
+		API.w.$$('#chatMessage'+API.w.chat.activeUserID+' ul')[0].appendChild(li);
+		API.w.$('chatMessage'+API.w.chat.activeUserID).scrollTop = API.w.$('chatMessage'+API.w.chat.activeUserID).scrollHeight;
 	},
 	
 	registerTextOption: function(optionID, optionText, defaultValue) {
@@ -478,7 +498,7 @@ var BisaChatPlus = {
 		API.w.$('optionsContentTextOptionDiv').appendChild(p);
 	},
 	
-	registerBoolOption: function(optionID, optionText, accessKey, defaultValue, switchCallback, context) {
+	registerBoolOption: function(optionID, optionTitle, optionText, accessKey, defaultValue, switchCallback, context) {
 		if (!!API.w.$(optionID)) throw new Error('optionID \''+optionID+'\' already used');
 		if ((!!accessKey) && (typeof this.keydownListeners[accessKey.toLowerCase()] === 'string')) throw new Error('AccessKey \''+accessKey.toLowerCase()+'\' already used');
 		
@@ -493,8 +513,9 @@ var BisaChatPlus = {
 		
 		checkbox.addEventListener('change', function(event) {
 			API.Storage.setValue(event.target.getAttribute('id')+'Status', event.target.checked);
+			this.pushInfo(optionTitle+' '+((event.target.checked) ? 'aktiviert' : 'deaktiviert'));
 			if (typeof switchCallback === 'function') switchCallback.call(context, event, event.target.checked);
-		}, true);
+		}.bindAsEventListener(this), true);
 		
 		checkbox.checked = API.Storage.getValue(optionID+'Status', defaultValue);
 		label.appendChild(checkbox);
@@ -509,8 +530,8 @@ var BisaChatPlus = {
 		}
 	},
 	
-	registerMessagePrefilter: function(optionID, optionText, accessKey, defaultValue, prefilterFunction, context) {
-		this.registerBoolOption(optionID, optionText, accessKey, defaultValue);
+	registerMessagePrefilter: function(optionID, optionTitle, optionText, accessKey, defaultValue, prefilterFunction, context) {
+		this.registerBoolOption(optionID, optionTitle, optionText, accessKey, defaultValue);
 		this.messagePrefilters.push(function(event, nickname, message) {
 			prefilterFunction.call(context, event, API.w.$(optionID).checked, nickname, message);
 		});

@@ -3,7 +3,7 @@
  */
 Modules.MessagePrefilters = {
 	init: function(callerObj) {
-		callerObj.registerMessagePrefilter('colorlessNicknames', 'Nicknamen farblos anzeigen', 'n', false, function(event, checked, nickname, message) {
+		callerObj.registerMessagePrefilter('colorlessNicknames', 'Farblose Nicknamen', 'Nicknamen farblos anzeigen', 'n', false, function(event, checked, nickname, message) {
 			if (checked) {
 				var nickname = event.target.getElementsByTagName('span')[1].getElementsByTagName('span');
 				
@@ -13,26 +13,26 @@ Modules.MessagePrefilters = {
 			}
 		});
 		
-		callerObj.registerMessagePrefilter('hideMuschelMessages', 'Muschel-Nachrichten ausblenden', 'm', false, function(event, checked, nickname, message) {
+		callerObj.registerMessagePrefilter('hideMuschelMessages', 'Ausblenden von Muschel-Nachrichten', 'Muschel-Nachrichten ausblenden', 'm', false, function(event, checked, nickname, message) {
 			if ((checked) && (nickname.toLowerCase() === 'magische miesmuschel') && (String(message.firstChild.nodeValue)[0] != '[')) {
 				event.target.parentNode.removeChild(event.target);
 			}
 		});
 		
-		callerObj.registerMessagePrefilter('greentext', 'Green text aktivieren', 'g', true, function(event, checked, nickname, message) {
+		callerObj.registerMessagePrefilter('greentext', 'Green text', 'Green text aktivieren', 'g', true, function(event, checked, nickname, message) {
 			if ((checked) && (message.firstChild.nodeType === 3) && (String(message.firstChild.nodeValue)[0] === '>')) {
 				message.style.color = '#792';
 			}
 		});
 		
-		callerObj.registerMessagePrefilter('background', 'Hintergrund aktivieren', 'h', true, function(event, checked, nickname, message) {
+		callerObj.registerMessagePrefilter('background', 'Wechselnde Hintergrundfarbe bei Chatmessages', 'Hintergrund aktivieren', 'h', true, function(event, checked, nickname, message) {
 			if (checked) {
 				event.target.className = (event.target.className+' container-'+((Registry.getValue('messageNumber', 0) % 2) + 1)).trim();
 				Registry.setValue('messageNumber', (Registry.getValue('messageNumber') + 1));
 			}
 		});
 		
-		callerObj.registerMessagePrefilter('kyon', 'Nachrichten kyonisieren', 'k', false, function(event, checked, nickname, message) {
+		callerObj.registerMessagePrefilter('kyon', 'Nachrichten kyonisieren', 'Nachrichten kyonisieren', 'k', false, function(event, checked, nickname, message) {
 			if (checked) {
 				var node = message.firstChild;
 				

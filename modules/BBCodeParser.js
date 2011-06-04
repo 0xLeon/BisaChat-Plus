@@ -32,7 +32,7 @@ Modules.BBCodeParser = {
 	},
 	
 	registerMessagePrefilter: function() {
-		this.callerObj.registerMessagePrefilter('bbcode', 'BBCode aktivieren', 'b', false, function(event, checked, nickname, message) {
+		this.callerObj.registerMessagePrefilter('bbcode', 'BBCodes', 'BBCode aktivieren', 'b', false, function(event, checked, nickname, message) {
 			if (checked) {
 				message.innerHTML = this.parse(message.innerHTML);
 			}

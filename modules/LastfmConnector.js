@@ -109,23 +109,7 @@ Modules.LastfmConnector = {
 			API.w.chat.getMessages();
 		}
 		else if (typeof this.track === 'string') {
-			var now = new Date();
-			var time = ((now.getHours() < 10) ? '0'+now.getHours() : now.getHours())+':'+((now.getMinutes() < 10) ? '0'+now.getMinutes() : now.getMinutes())+':'+((now.getSeconds() < 10) ? '0'+now.getSeconds() : now.getSeconds());
-			
-			var li = new API.w.Element('li', { 'class': 'messageType8 ownMessage' });
-			var spanOne = new API.w.Element('span', { style: 'font-size:0.8em; font-weight:normal; font-style:normal;' });
-			var spanTwo = new API.w.Element('span', { style: 'font-weight:bold;' });
-			
-			spanOne.appendChild(document.createTextNode('('+time+')'));
-			spanTwo.appendChild(document.createTextNode('Information: '));
-			
-			li.appendChild(spanOne);
-			li.appendChild(document.createTextNode(' '));
-			li.appendChild(spanTwo);
-			li.appendChild(document.createTextNode(this.track));
-			
-			API.w.$$('#chatMessage'+API.w.chat.activeUserID+' ul')[0].appendChild(li);
-			API.w.$('chatMessage'+API.w.chat.activeUserID).scrollTop = API.w.$('chatMessage'+API.w.chat.activeUserID).scrollHeight;
+			this.callerObj.pushInfo(this.track);
 		}
 		
 		API.w.$('nowPlayingButton').style.opacity = 1.0;

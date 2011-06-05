@@ -64,7 +64,7 @@ Modules.LastfmConnector = {
 								var trackURI = trackDOM.getElementsByTagName('url')[0].firstChild.nodeValue;
 								var username = xml.getElementsByTagName('recenttracks')[0].getAttribute('user');
 								
-								this.submitTrack(this.getTrackString(artist, title, trackURI, username));
+								this.callerObj.pushMessage(this.getTrackString(artist, title, trackURI, username));
 							}
 							else {
 								throw new Error('No track playing');
@@ -93,23 +93,6 @@ Modules.LastfmConnector = {
 				API.w.$('nowPlayingButton').disabled = false;
 				this.loadingTrack = false;
 			}.bindAsEventListener(this)
-		});
-	},
-	
-	submitTrack: function(trackString) {
-		GM_xmlhttpRequest({
-			method: 'POST',
-			url: './index.php?form=Chat',
-			data: 'text='+encodeURIComponent(trackString)+'&ajax=1',
-			headers: {
-				'Content-Type': 'application/x-www-form-urlencoded',
-				'Accept': '*/*'
-			},
-			onload: function(response) {
-				if (response.readyState === 4) {
-					API.w.chat.getMessages();
-				}
-			}
 		});
 	}
 };

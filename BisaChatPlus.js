@@ -435,6 +435,27 @@ var BisaChatPlus = {
 		API.Storage.setValue(id+'boxLeft', left);
 	},
 	
+	pushMessage: function(messageText, onFinish, context) {
+		GM_xmlhttpRequest({
+			method: 'POST',
+			url: './index.php?form=Chat',
+			data: 'text='+encodeURIComponent(messageText)+'&ajax=1',
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded',
+				'Accept': '*/*'
+			},
+			onload: function(response) {
+				if (response.readyState === 4) {
+					API.w.chat.getMessages();
+					if (typeof onFinish === 'function') onFinish.call(context, response);
+				}
+			},
+			onerror: function(response) {
+				this.pushInfo('Nachricht »'+messageText+'« konnte nicht gesendet werden!');
+			}.bindAsEventListener(this)
+		});
+	},
+	
 	pushInfo: function(infoText) {
 		var now = new Date();
 		var time = ((now.getHours() < 10) ? '0'+now.getHours() : now.getHours())+':'+((now.getMinutes() < 10) ? '0'+now.getMinutes() : now.getMinutes())+':'+((now.getSeconds() < 10) ? '0'+now.getSeconds() : now.getSeconds());

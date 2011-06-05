@@ -32,8 +32,6 @@ Modules.ColorPickerPlus = {
 				this.pick.call(this, event.target.getAttribute('title'));
 			}.bindAsEventListener(this), false);
 		}, this);
-		
-		this.basicListenerReplaced = true;
 	},
 	
 	addEventListeners: function() {
@@ -45,7 +43,6 @@ Modules.ColorPickerPlus = {
 				new API.w.Effect.Fade('chatColorPicker');
 			}
 			
-			this.clickListenerAdded = true;
 			API.w.$('chatInput').focus();
 		}.bindAsEventListener(this), true);
 	},

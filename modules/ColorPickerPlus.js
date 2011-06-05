@@ -38,16 +38,11 @@ Modules.ColorPickerPlus = {
 	
 	addEventListeners: function() {
 		API.w.$$('#chatColorPickerContainer > a')[0].addEventListener('click', function(event) {
-			if (!!API.w.$('chatColorPicker')) {
-				if (API.w.$('chatColorPicker').style.display === 'none') {
-					new API.w.Effect.Appear('chatColorPicker');
-				}
-				else {
-					new API.w.Effect.Fade('chatColorPicker');
-				}
+			if (API.w.$('chatColorPicker').style.display === 'none') {
+				new API.w.Effect.Appear('chatColorPicker');
 			}
 			else {
-				this.callerObj.pushInfo('Der Farbwähler ist noch nicht fertig geladen!');
+				new API.w.Effect.Fade('chatColorPicker');
 			}
 			
 			this.clickListenerAdded = true;

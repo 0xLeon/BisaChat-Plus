@@ -68,12 +68,12 @@ Modules.ColorPickerPlus = {
 				this.callerObj.pushInfo('Erste Farbe '+this.colorCache+' ausgewählt. Wähle nun eine zweite Farbe.');
 			}
 			else {
-				this.callerObj.pushInfo('Zweite Farbe '+color+' ausgewählt.');
-				API.w.chat.insert('/color '+this.colorCache+' '+color, false, 0, 0, true);
+				this.colorCache = '';
+				
 				API.w.Effect.Fade('chatColorPicker');
 				API.w.$('chatInput').focus();
-				
-				this.colorCache = '';
+				this.callerObj.pushInfo('Zweite Farbe '+color+' ausgewählt.');
+				this.callerObj.pushMessage('/color '+this.colorCache+' '+color);
 			}
 		}
 		else {

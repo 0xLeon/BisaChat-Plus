@@ -551,8 +551,8 @@ var BisaChatPlus = {
 		}
 	},
 	
-	registerMessagePrefilter: function(optionID, optionTitle, optionText, accessKey, defaultValue, prefilterFunction, context) {
-		this.registerBoolOption(optionID, optionTitle, optionText, accessKey, defaultValue);
+	registerMessagePrefilter: function(optionID, optionTitle, optionText, accessKey, defaultValue, prefilterFunction, checkboxSwitchCallback, context) {
+		this.registerBoolOption(optionID, optionTitle, optionText, accessKey, defaultValue, checkboxSwitchCallback, context);
 		this.messagePrefilters.push(function(event, nickname, message) {
 			prefilterFunction.call(context, event, API.w.$(optionID).checked, nickname, message);
 		});

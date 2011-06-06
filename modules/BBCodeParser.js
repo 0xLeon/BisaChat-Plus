@@ -42,7 +42,7 @@ Modules.BBCodeParser = {
 					return mString;
 				});
 			}
-		}, this);
+		}, null, this);
 	},
 	
 	isValidTag: function(tag) {

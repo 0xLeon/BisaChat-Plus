@@ -33,14 +33,14 @@ Modules.Statistics = {
 					var onlineTimeString = '';
 					var messageCountString = '';
 					
-					onlineTimeString += (onlineTimeLengthDays > 0) ? String(onlineTimeLengthDays)+' Tage, ' : '';
-					onlineTimeString += (onlineTimeLengthHours > 0) ? String(onlineTimeLengthHours)+' Stunden, ' : '';
-					onlineTimeString += (onlineTimeLengthMinutes > 0) ? String(onlineTimeLengthMinutes)+' Minuten, ' : '';
-					onlineTimeString += String(onlineTimeLengthSeconds)+' Sekunden';
-					onlineTimeString += ' anwesend seit dem '+String(dateOnlineTimeStart.getDate())+'.'+String(dateOnlineTimeStart.getMonth()+1)+'.'+String(dateOnlineTimeStart.getFullYear())+', ';
-					onlineTimeString += ((dateOnlineTimeStart.getHours() < 10) ? '0' : '')+String(dateOnlineTimeStart.getHours())+':'+((dateOnlineTimeStart.getMinutes() < 10) ? '0' : '')+String(dateOnlineTimeStart.getMinutes())+' Uhr.';
+					onlineTimeString += (onlineTimeLengthDays > 0) ? (onlineTimeLengthDays+' Tag'+((onlineTimeLengthDays === 1) ? '' : 'e')+', ') : '';
+					onlineTimeString += (onlineTimeLengthHours > 0) ? (onlineTimeLengthHours+' Stund'+((onlineTimeLengthHours === 1) ? 'e' : 'en')+', ') : '';
+					onlineTimeString += (onlineTimeLengthMinutes > 0) ? (onlineTimeLengthMinutes+' Minut'+((onlineTimeLengthMinutes === 1) ? 'e' : 'en')+', ') : '';
+					onlineTimeString += onlineTimeLengthSeconds+' Sekund'+((onlineTimeLengthSeconds === 1) ? 'e' : 'en');
+					onlineTimeString += ' anwesend seit dem '+dateOnlineTimeStart.getDate()+'.'+(dateOnlineTimeStart.getMonth()+1)+'.'+dateOnlineTimeStart.getFullYear()+', ';
+					onlineTimeString += ((dateOnlineTimeStart.getHours() < 10) ? '0' : '')+dateOnlineTimeStart.getHours()+':'+((dateOnlineTimeStart.getMinutes() < 10) ? '0' : '')+dateOnlineTimeStart.getMinutes()+' Uhr.';
 					
-					messageCountString += 'In dieser Zeit hat '+API.w.settings['username']+' '+this.messageCount+' Nachrichten geschrieben.';
+					messageCountString += 'In dieser Zeit hat '+API.w.settings['username']+' '+this.messageCount+' Nachricht'+((this.messageCount === 1) ? '' : 'en')+' geschrieben.';
 					
 					if (message.firstChild.nodeValue.indexOf('public') > -1) {
 						API.w.chat.insert(onlineTimeString+' '+messageCountString, false, 0, 0, true);

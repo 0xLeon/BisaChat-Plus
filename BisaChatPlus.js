@@ -342,7 +342,7 @@ var BisaChatPlus = {
 	
 	addEventListeners: function() {
 		// window resize listener
-		unsafeWindow.addEventListener('resize', function() {
+		API.w.addEventListener('resize', function() {
 			API.w.$('chatBox').style.height = API.inHeight+'px';
 			API.w.$$('#chatBox .columnContainer')[0].style.width = API.inWidth+'px';
 			var boxesHeight = (API.inHeight-(parseInt(API.w.$$('#chatBox .subTabMenu')[0].offsetHeight)))+'px';

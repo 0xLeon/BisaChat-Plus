@@ -86,13 +86,13 @@ Modules.LastfmConnector = {
 						this.loadingTrack = false;
 					}
 				}
-			}.bindAsEventListener(this),
+			}.bind(this),
 			onerror: function() {
 				this.callerObj.pushInfo('Error catching track! Connection failed');
 				API.w.$('nowPlayingButton').style.opacity = 1.0;
 				API.w.$('nowPlayingButton').disabled = false;
 				this.loadingTrack = false;
-			}.bindAsEventListener(this)
+			}.bind(this)
 		});
 	}
 };

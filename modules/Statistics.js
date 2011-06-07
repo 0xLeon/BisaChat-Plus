@@ -43,7 +43,7 @@ Modules.Statistics = {
 					messageCountString += 'In dieser Zeit hat '+API.w.settings['username']+' '+this.messageCount+' Nachricht'+((this.messageCount === 1) ? '' : 'en')+' geschrieben.';
 					
 					if (message.firstChild.nodeValue.indexOf('public') > -1) {
-						API.w.chat.insert(onlineTimeString+' '+messageCountString, false, 0, 0, true);
+						this.callerObj.pushMessage(onlineTimeString+' '+messageCountString);
 					}
 					else {
 						this.callerObj.pushInfo(onlineTimeString+' '+messageCountString);

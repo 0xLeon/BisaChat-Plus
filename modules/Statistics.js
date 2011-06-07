@@ -59,7 +59,7 @@ Modules.Statistics = {
 			}
 		}, this);
 		
-		API.w.window.addEventListener('unload', function(event) {
+		unsafeWindow.addEventListener('unload', function(event) {
 			API.Storage.setValue('statisticsOnlineTimeStart', this.onlineTimeStart);
 			API.Storage.setValue('statisticsOnlineTimeLength', this.onlineTimeLength);
 			API.Storage.setValue('statisticsMessageCount', this.messageCount);

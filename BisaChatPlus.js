@@ -385,8 +385,8 @@ var BisaChatPlus = {
 		
 		// option checkboxes access key listener
 		document.addEventListener('keydown', function(event) {
-			if (event.altKey && !event.shiftKey && !event.ctrlKey && !event.metaKey) {
-				var key = String.fromCharCode(event.keyCode).toLowerCase();
+			if ((event.keyCode < 91) && event.altKey && !event.shiftKey && !event.ctrlKey && !event.metaKey) {
+				var key = String.fromCharCode(event.which).toLowerCase();
 				
 				if (typeof this.keydownListeners[key] === 'string') {
 					API.w.$(this.keydownListeners[key]).click();

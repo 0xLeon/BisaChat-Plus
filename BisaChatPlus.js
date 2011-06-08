@@ -490,7 +490,7 @@ var BisaChatPlus = {
 		API.w.$('chatMessage'+API.w.chat.activeUserID).scrollTop = API.w.$('chatMessage'+API.w.chat.activeUserID).scrollHeight;
 	},
 	
-	registerTextOption: function(optionID, optionText, defaultValue) {
+	registerTextOption: function(optionID, optionText, defaultValue, onChange, context) {
 		if (!!API.w.$(optionID)) throw new Error('optionID \''+optionID+'\' already used');
 		
 		var p = new API.w.Element('p');
@@ -520,6 +520,7 @@ var BisaChatPlus = {
 				optionSpan.firstChild.replaceData(0, optionSpan.firstChild.nodeValue.length, API.Storage.getValue(optionSpan.getAttribute('id')+'Value', defaultValue));
 				optionInput.className = (optionInput.className + ' hidden').trim();
 				optionSpan.className = optionSpan.className.replace(/hidden/ig, '').trim();
+				if (typeof onChange === 'function') onChange.call(context, String(optionInput.value));
 				API.w.$('chatInput').focus();
 				event.preventDefault();
 			}

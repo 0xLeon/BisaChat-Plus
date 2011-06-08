@@ -572,7 +572,7 @@ var BisaChatPlus = {
 		});
 	},
 	
-	registerSilentMessagePrefilter: function(prefilterFuntion, context) {
+	registerSilentMessagePrefilter: function(prefilterFunction, context) {
 		this.messagePrefilters.push(prefilterFunction.bind(context));
 	}
 };

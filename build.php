@@ -89,7 +89,7 @@ foreach ($mediaResources as $mediaResource) {
 	$mimeType = $finfo->file($mediaResource);
 	$base64Content = base64_encode(file_get_contents($mediaResource));
 	$result .= <<<MEDIA
-Media['$name'] = {
+Media.$name = {
 	mimeType: '$mimeType',
 	content: '$base64Content'
 };

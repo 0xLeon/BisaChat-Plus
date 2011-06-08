@@ -421,8 +421,9 @@ var BisaChatPlus = {
 			try {
 				Modules[(keysArray[i])].init(this);
 			}
-			catch {
+			catch (e) {
 				this.pushInfo('Modul »'+keysArray[i]+'« konnte nicht initialisiert werden.');
+				this.pushInfo(e.name+' - '+e.message);
 			}
 		}
 	},

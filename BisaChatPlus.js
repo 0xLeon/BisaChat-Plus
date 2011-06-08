@@ -557,6 +557,10 @@ var BisaChatPlus = {
 		this.messagePrefilters.push(function(event, nickname, message) {
 			prefilterFunction.call(context, event, API.w.$(optionID).checked, nickname, message);
 		});
+	},
+	
+	registerSilentMessagePrefilter: function(prefilterFuntion, context) {
+		this.messagePrefilters.push(prefilterFunction.bind(context));
 	}
 };
 

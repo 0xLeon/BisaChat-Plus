@@ -4,6 +4,7 @@
 Modules.Highlighting = {
 	callerObj: null,
 	docTitle: '',
+	periodicalExecuter: null,
 	listenerFunctions: { },
 	
 	init: function(callerObj) {
@@ -39,9 +40,18 @@ Modules.Highlighting = {
 	highlight: function(id, matchedSubStr) {
 		new Audio('data:'+Media.bing.mimeType+';base64,'+Media.bing.content).play();
 		this.docTitle = document.title;
-		document.title = 'Neue Nachricht enthält: '+matchedSubStr;
+		this.periodicalExecuter = new API.w.PeriodicalExecuter(function() {
+			if (document.title === this.docTitle) {
+				document.title = 'Neue Nachricht enthält: '+matchedSubStr;
+			}
+			else {
+				document.title = this.docTitle;
+			}
+		}.bind(this), 1.5);
 		
 		this.listenerFunctions[id] = function(event) {
+			this.periodicalExecuter.stop();
+			this.periodicalExecuter = null;
 			document.title = this.docTitle;
 			this.docTitle = '';
 			new API.w.Effect.Highlight(id);

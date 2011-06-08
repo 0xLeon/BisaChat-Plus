@@ -3,6 +3,7 @@
  */
 Modules.Highlighting = {
 	callerObj: null,
+	docTitle: '',
 	listenerFunctions: { },
 	
 	init: function(callerObj) {
@@ -26,18 +27,23 @@ Modules.Highlighting = {
 				var regExpString = API.w.$A(API.Storage.getValue('highlightingTextValue', API.w.settings['username']).split(',')).map(function(item) {
 					return API.w.RegExp.escape(item.trim());
 				}).join('|');
+				var regExp = new RegExp('\\b('+regExpString+')\\b', 'i');
 				
-				if ((new RegExp('\\b('+regExpString+')\\b', 'i')).test(message.innerHTML)) {
-					this.highlight(event.target.getAttribute('id'));
+				if (regExp.test(message.innerHTML)) {
+					this.highlight(event.target.getAttribute('id'), regExp.exec(message.innerHTML)[1]);
 				}
 			}
 		}, null, this);
 	},
 	
-	highlight: function(id) {
+	highlight: function(id, matchedSubStr) {
 		new Audio('data:'+Media.bing.mimeType+';base64,'+Media.bing.content).play();
+		this.docTitle = document.title;
+		document.title = 'Neue Nachricht enthält: '+matchedSubStr;
 		
 		this.listenerFunctions[id] = function(event) {
+			document.title = this.docTitle;
+			this.docTitle = '';
 			new API.w.Effect.Highlight(id);
 			document.removeEventListener('focus', this.listenerFunctions[id], false)
 			delete this.listenerFunctions[id];

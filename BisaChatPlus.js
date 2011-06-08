@@ -406,7 +406,12 @@ var BisaChatPlus = {
 		var keysArray = Object.keys(Modules);
 		
 		for (var i = 0; i < keysArray.length; i++) {
-			Modules[(keysArray[i])].init(this);
+			try {
+				Modules[(keysArray[i])].init(this);
+			}
+			catch {
+				this.pushInfo('Modul »'+keysArray[i]+' konnte nicht initialisiert werden.');
+			}
 		}
 	},
 	

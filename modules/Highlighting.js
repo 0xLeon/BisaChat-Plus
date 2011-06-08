@@ -1,5 +1,5 @@
 /* 
- * 
+ * Highling Module
  */
 Modules.Highlighting = {
 	callerObj: null,

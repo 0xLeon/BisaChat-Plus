@@ -58,8 +58,13 @@ else {
 $namespaces = glob('namespaces/*');
 // find tools
 $tools = glob('tools/*');
+// find media resources
+$mediaResources = glob('media/*');
 // find modules
 $modules = glob('modules/*');
+
+// fileinfo object
+$finfo = new finfo(FILEINFO_MIME_TYPE);
 
 // read in header
 $result = file_get_contents('header.js')."\n";
@@ -74,6 +79,23 @@ foreach ($namespaces as $namespace) {
 foreach ($tools as $tool) {
 	echo "Adding tool: ".$tool."\n";
 	$result .= file_get_contents($tool)."\n";
+}
+
+// add media resources
+foreach ($mediaResources as $mediaResource) {
+	echo "Adding resource: ".$mediaResource."\n";
+	
+	$name = substr(basename($mediaResource), 0, strrpos(basename($mediaResource), '.'));
+	$mimeType = $finfo->file($mediaResource);
+	$base64Content = base64_encode(file_get_contents($mediaResource));
+	$result .= <<<MEDIA
+Media['$name'] = {
+	mimeType: '$mimeType',
+	content: '$base64Content'
+};
+
+
+MEDIA;
 }
 
 // add modules

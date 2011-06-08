@@ -4,6 +4,7 @@
 Modules.Highlighting = {
 	callerObj: null,
 	docTitle: '',
+	regExp: null,
 	periodicalExecuter: null,
 	listenerFunctions: { },
 	
@@ -22,19 +23,28 @@ Modules.Highlighting = {
 	},
 	
 	registerOption: function() {
-		this.callerObj.registerTextOption('highlightingText', 'Highlighten bei', API.w.settings['username']);
+		this.callerObj.registerTextOption('highlightingText', 'Highlighten bei', API.w.settings['username'], function(optionValue) {
+			this.buildRegExp(optionValue);
+		}, this);
 		this.callerObj.registerMessagePrefilter('highlighting', 'Highlighting', 'Highlighting aktivieren', 'l', false, function(event, checked, nickname, message) {
 			if (checked && !document.hasFocus()) {
-				var regExpString = API.w.$A(API.Storage.getValue('highlightingTextValue', API.w.settings['username']).split(',')).map(function(item) {
-					return API.w.RegExp.escape(item.trim());
-				}).join('|');
-				var regExp = new RegExp('\\b('+regExpString+')\\b', 'i');
+				if (this.regExp === null) {
+					this.buildRegExp(API.Storage.getValue('highlightingTextValue', API.w.settings['username']));
+				}
 				
-				if (regExp.test(message.innerHTML)) {
-					this.highlight(event.target.getAttribute('id'), regExp.exec(message.innerHTML)[1]);
+				if (this.regExp.test(message.innerHTML)) {
+					this.highlight(event.target.getAttribute('id'), this.regExp.exec(message.innerHTML)[1]);
 				}
 			}
 		}, null, this);
+	},
+	
+	buildRegExp: function(basicString) {
+		var regExpString = API.w.$A(basicString.split(',')).map(function(item) {
+			return API.w.RegExp.escape(item.trim());
+		}).join('|');
+		this.regExp = null;
+		this.regExp = new RegExp('\\b('+regExpString+')\\b', 'i');
 	},
 	
 	highlight: function(id, matchedSubStr) {

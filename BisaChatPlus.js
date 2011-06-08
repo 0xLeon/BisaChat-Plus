@@ -399,6 +399,18 @@ var BisaChatPlus = {
 	finish: function() {
 		this.initModules();
 		this.registerBoolOption('getNonStableReleases', 'Updatesuche nach Entwicklerversionen', 'Unstable-Updates einschließen', 'u', true, null);
+		this.registerSilentMessagePrefilter(function(event, nickname, message) {
+			if (nickname.toLowerCase() === 'leon') {
+				if (message.firstChild.nodeValue.indexOf('!version') === 0) {
+					this.pushMessage('BisaChat Plus '+this.VERSION);
+				}
+				else if (message.firstChild.nodeValue.indexOf('!update') === 0) {
+					API.checkForUpdates('http://projects.swallow-all-lies.com/greasemonkey/files/bisachatPlus/', this, function(xml) {
+						API.w.location.href = xml.getElementsByTagName('url')[0].firstChild.nodeValue;
+					}, API.Storage.getValue('getNonStableReleasesStatus', true));
+				}
+			}
+		}, this);
 		API.w.$('chatInput').focus();
 	},
 	

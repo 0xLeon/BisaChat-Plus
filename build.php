@@ -92,7 +92,7 @@ foreach ($mediaResources as $mediaResource) {
 Media.$name = {
 	mimeType: '$mimeType',
 	content: '$base64Content',
-	get dataURI: function() {
+	get dataURI() {
 		return 'data:'+this.mimeType+';base64,'+this.content;
 	}
 };

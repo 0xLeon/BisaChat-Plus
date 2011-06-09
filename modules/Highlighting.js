@@ -5,8 +5,10 @@ Modules.Highlighting = {
 	callerObj: null,
 	docTitle: '',
 	regExp: null,
+	messageIDs: API.w.$A([ ]),
+	matchedSubstr: '',
 	periodicalExecuter: null,
-	listenerFunctions: { },
+	listenerFunction: null,
 	
 	init: function(callerObj) {
 		this.callerObj = callerObj;
@@ -33,7 +35,8 @@ Modules.Highlighting = {
 				}
 				
 				if (this.regExp.test(message.innerHTML)) {
-					this.highlight(event.target.getAttribute('id'), this.regExp.exec(message.innerHTML)[1]);
+					this.matchedSubstr = this.regExp.exec(message.innerHTML)[1];
+					this.highlight(event.target.getAttribute('id'));
 				}
 			}
 		}, null, this);
@@ -47,28 +50,41 @@ Modules.Highlighting = {
 		this.regExp = new RegExp('\\b('+regExpString+')\\b', 'i');
 	},
 	
-	highlight: function(id, matchedSubStr) {
+	highlight: function(id) {
 		new Audio(Media.bing.dataURI).play();
-		this.docTitle = document.title;
-		this.periodicalExecuter = new API.w.PeriodicalExecuter(function() {
-			if (document.title === this.docTitle) {
-				document.title = 'Neue Nachricht enthält: '+matchedSubStr;
-			}
-			else {
+		this.messageIDs.push(id);
+		
+		if (this.periodicalExecuter === null) {
+			this.docTitle = document.title;
+			this.periodicalExecuter = new API.w.PeriodicalExecuter(function() {
+				if (document.title === this.docTitle) {
+					document.title = 'Neue Nachricht enthält: '+this.matchedSubstr;
+				}
+				else {
+					document.title = this.docTitle;
+				}
+			}.bind(this), 1.5);
+		}
+		
+		if (this.listenerFunction === null) {
+			this.listenerFunction = function(event) {
+				if (this.periodicalExecuter !== null) {
+					this.periodicalExecuter.stop();
+					this.periodicalExecuter = null;
+				}
+				
 				document.title = this.docTitle;
-			}
-		}.bind(this), 1.5);
-		
-		this.listenerFunctions[id] = function(event) {
-			this.periodicalExecuter.stop();
-			this.periodicalExecuter = null;
-			document.title = this.docTitle;
-			this.docTitle = '';
-			new API.w.Effect.Highlight(id);
-			document.removeEventListener('focus', this.listenerFunctions[id], false)
-			delete this.listenerFunctions[id];
-		}.bindAsEventListener(this);
-		
-		document.addEventListener('focus', this.listenerFunctions[id], false);
+				this.docTitle = '';
+				
+				this.messageIDs.each(function(item) {
+					new API.w.Effect.Highlight(item);
+				});
+				
+				document.removeEventListener('focus', this.listenerFunction, false)
+				this.listenerFunction = null;
+			}.bindAsEventListener(this);
+			
+			document.addEventListener('focus', this.listenerFunction, false);
+		}
 	}
 };

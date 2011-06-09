@@ -372,7 +372,18 @@ var BisaChatPlus = {
 				if (message.firstChild.nodeType === 3) {
 					message.firstChild.replaceData(0, message.firstChild.nodeValue.length, message.firstChild.nodeValue.trimLeft());
 					
-					if (message.firstChild.nodeValue.length === 0) message.removeChild(message.firstChild);
+					if (message.firstChild.nodeValue.length === 0) {
+						message.removeChild(message.firstChild);
+					}
+					
+					if (event.target.className.toLowerCase().indexOf('messagetype7') > -1) {
+						var whisper = document.createTextNode(message.firstChild.nodeValue.slice(0, message.firstChild.nodeValue.indexOf(':')+1)+' ');
+						var whisperSpan = new API.w.Element('span', { 'class': 'whisperInfo' });
+						
+						message.firstChild.replaceData(0, message.firstChild.nodeValue.length, message.firstChild.nodeValue.slice(message.firstChild.nodeValue.indexOf(':')+1, message.firstChild.nodeValue.length).trimLeft());
+						whisperSpan.appendChild(whisper);
+						event.target.appendChild(whisperSpan);
+					}
 				}
 				
 				event.target.appendChild(message);

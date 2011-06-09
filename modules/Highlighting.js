@@ -48,7 +48,7 @@ Modules.Highlighting = {
 	},
 	
 	highlight: function(id, matchedSubStr) {
-		new Audio('data:'+Media.bing.mimeType+';base64,'+Media.bing.content).play();
+		new Audio(Media.bing.dataURI).play();
 		this.docTitle = document.title;
 		this.periodicalExecuter = new API.w.PeriodicalExecuter(function() {
 			if (document.title === this.docTitle) {

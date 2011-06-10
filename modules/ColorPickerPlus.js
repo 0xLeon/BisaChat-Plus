@@ -4,20 +4,13 @@
 Modules.ColorPickerPlus = {
 	callerObj: null,
 	colorCache: '',
-	executed: false,
 	
 	init: function(callerObj) {
 		this.callerObj = callerObj;
 		
-		API.w.$('chatColorPickerContainer').addEventListener('DOMNodeInserted', function(event) {
-			if (!this.executed) {
-				this.replaceBasicColorPicker();
-				this.addEventListeners();
-				this.finish();
-				
-				this.executed = true;
-			}
-		}.bindAsEventListener(this), true);
+		this.replaceBasicColorPicker();
+		this.addEventListeners();
+		this.finish();
 	},
 	
 	replaceBasicColorPicker: function() {

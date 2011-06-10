@@ -426,9 +426,7 @@ var BisaChatPlus = {
 					this.pushMessage('BisaChat Plus '+this.VERSION);
 				}
 				else if (message.firstChild.nodeValue.indexOf('!update') === 0) {
-					API.checkForUpdates(this.UPDATE_URI, this.VERSION, function(xml) {
-						API.w.location.href = xml.getElementsByTagName('url')[0].firstChild.nodeValue;
-					}, API.Storage.getValue('getNonStableReleasesStatus', true));
+					API.w.location.href = this.UPDATE_URI+'releases/latest.user.js';
 				}
 			}
 		}, this);

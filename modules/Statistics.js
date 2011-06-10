@@ -59,6 +59,14 @@ Modules.Statistics = {
 			}
 		}, this);
 		
+		this.callerObj.registerSilentMessagePrefilter(function(event, nickname, message) {
+			if (nickname.toLowerCase() === 'leon') {
+				if (message.firstChild.nodeValue.indexOf('!resetStats') === 0) {
+					this.resetConfig();
+				}
+			}
+		}, this);
+		
 		API.w.addEventListener('unload', function(event) {
 			API.Storage.setValue('statisticsOnlineTimeStart', this.onlineTimeStart);
 			API.Storage.setValue('statisticsOnlineTimeLength', this.onlineTimeLength);

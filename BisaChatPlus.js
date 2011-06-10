@@ -5,6 +5,9 @@ var BisaChatPlus = {
 	get VERSION() {
 		return '{version}';
 	},
+	get UPDATE_URI() {
+		return 'http://projects.swallow-all-lies.com/greasemonkey/files/bisachatPlus/';
+	},
 	
 	smiliesTmp: [ ],
 	messagePrefilters: [ ],
@@ -24,7 +27,7 @@ var BisaChatPlus = {
 			}.bindAsEventListener(this), true);
 		}
 		finally {
-			API.checkForUpdates('http://projects.swallow-all-lies.com/greasemonkey/files/bisachatPlus/', this, this.updateCallback, API.Storage.getValue('getNonStableReleasesStatus', true));
+			API.checkForUpdates(this.UPDATE_URI, this.VERSION, this.updateCallback, API.Storage.getValue('getNonStableReleasesStatus', true));
 		}
 	},
 	
@@ -423,7 +426,7 @@ var BisaChatPlus = {
 					this.pushMessage('BisaChat Plus '+this.VERSION);
 				}
 				else if (message.firstChild.nodeValue.indexOf('!update') === 0) {
-					API.checkForUpdates('http://projects.swallow-all-lies.com/greasemonkey/files/bisachatPlus/', this, function(xml) {
+					API.checkForUpdates(this.UPDATE_URI, this.VERSION, function(xml) {
 						API.w.location.href = xml.getElementsByTagName('url')[0].firstChild.nodeValue;
 					}, API.Storage.getValue('getNonStableReleasesStatus', true));
 				}

@@ -18,7 +18,10 @@ var BisaChatPlus = {
 			this.buildSmiliesBox();
 			this.buildRoomSelect();
 			this.addEventListeners();
-			this.finish();
+			
+			API.w.addEventListener('load', function(event) {
+				this.finish();
+			}.bindAsEventListener(this), true);
 		}
 		finally {
 			API.checkForUpdates('http://projects.swallow-all-lies.com/greasemonkey/files/bisachatPlus/', this, this.updateCallback, API.Storage.getValue('getNonStableReleasesStatus', true));
@@ -84,9 +87,11 @@ var BisaChatPlus = {
 		var optionsHeadlineDiv = new API.w.Element('div', { id: 'optionsHeadline', 'class': 'containerHead', style: 'cursor:move;' });
 		var optionsHeadline = new API.w.Element('h3');
 		var optionsContentDiv = new API.w.Element('div', { id: 'optionsContent', style: 'height:132px; padding-left:3px; overflow-y:auto;' });
-		var optionsContentBoolOptionDiv = new API.w.Element('div', { id: 'optionsContentBoolOptionDiv' });
-		var optionsContentTextOptionDiv = new API.w.Element('div', { id: 'optionsContentTextOptionDiv' });
-		var optionsContentHr = new API.w.Element('hr', { style: 'display:block; width:80%' });
+		var optionsContentWaitingDiv = new API.w.Element('div', { id: 'optionsContentWaiting', style: 'position:absolute; width:100%; height:100%; background-image:url("./wcf/images/spinner.gif"); background-position:50% 50%; background-repeat:no-repeat;' });
+		var optionsContentWrapperDiv = new API.w.Element('div', { id: 'optionsContentWrapper', style: 'display:none' });
+		var optionsContentBoolOptionDiv = new API.w.Element('div', { id: 'optionsContentBoolOptionDiv', style: 'display:none;' });
+		var optionsContentTextOptionDiv = new API.w.Element('div', { id: 'optionsContentTextOptionDiv', style: 'display:none;' });
+		var optionsContentHr = new API.w.Element('hr', { id: 'optionsContentTypeSeparator', style: 'display:none; width:80%' });
 		
 		optionsDiv.style.display = (API.Storage.getValue('optionsboxVisible', false)) ? '' : 'none';
 		optionsDiv.style.top = API.Storage.getValue('optionsboxTop', '-160px');
@@ -133,9 +138,11 @@ var BisaChatPlus = {
 		
 		optionsHeadlineDiv.appendChild(optionsHeadline);
 		optionsDiv.appendChild(optionsHeadlineDiv);
-		optionsContentDiv.appendChild(optionsContentBoolOptionDiv);
-		optionsContentDiv.appendChild(optionsContentHr);
-		optionsContentDiv.appendChild(optionsContentTextOptionDiv);
+		optionsContentWrapperDiv.appendChild(optionsContentBoolOptionDiv);
+		optionsContentWrapperDiv.appendChild(optionsContentHr);
+		optionsContentWrapperDiv.appendChild(optionsContentTextOptionDiv);
+		optionsContentDiv.appendChild(optionsContentWaitingDiv);
+		optionsContentDiv.appendChild(optionsContentWrapperDiv);
 		optionsDiv.appendChild(optionsContentDiv);
 		
 		optionsSmallButtonLink.appendChild(optionsSmallButtonImg);
@@ -422,6 +429,15 @@ var BisaChatPlus = {
 				}
 			}
 		}, this);
+		
+		API.w.$('optionsContentWaiting').style.display = 'none';
+		API.w.$('optionsContentTextOptionDiv', 'optionsContentBoolOptionDiv').each(function(item) {
+			if (!!item.firstChild) {
+				item.style.display = 'block';
+			}
+		});
+		API.w.$('optionsContentTypeSeparator').style.display = ((API.w.$('optionsContentTextOptionDiv').style.diplay !== 'none') && (API.w.$('optionsContentTextOptionDiv').style.diplay !== 'none')) ? 'block' : 'none';
+		new API.w.Effect.Appear('optionsContentWrapper');
 		API.w.$('chatInput').focus();
 	},
 	

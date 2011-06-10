@@ -18,9 +18,7 @@ Modules.Highlighting = {
 	},
 	
 	removeBasicHighlighting: function() {
-		window.setTimeout(function() {
-			if (typeof API.w.chat === 'object') API.w.chat.enableAnimating = false;
-		}, 2000);
+		API.w.chat.enableAnimating = false;
 		API.w.$$('.smallButtons li')[1].parentNode.removeChild(API.w.$$('.smallButtons li')[1]);
 	},
 	

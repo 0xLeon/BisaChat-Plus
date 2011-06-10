@@ -18,8 +18,18 @@ Modules.Highlighting = {
 	},
 	
 	removeBasicHighlighting: function() {
+		var basicHighlightingButton = API.w.$$('.smallButtons li')[1];
 		API.w.chat.enableAnimating = false;
-		API.w.$$('.smallButtons li')[1].parentNode.removeChild(API.w.$$('.smallButtons li')[1]);
+		
+		basicHighlightingButton.style.overflow = 'hidden';
+		new API.w.Effect.Morph(basicHighlightingButton, {
+			style: {
+				width: '0px'
+			},
+			afterFinish: function(effect) {
+				effect.element.parentNode.removeChild(effect.element);
+			}
+		});
 	},
 	
 	registerOption: function() {

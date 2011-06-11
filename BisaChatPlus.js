@@ -17,6 +17,7 @@ var BisaChatPlus = {
 		try {
 			this.addStyleRules();
 			this.breakCage();
+			this.avoidMultipleLogin();
 			this.buildOptionsBox();
 			this.buildSmiliesBox();
 			this.buildRoomSelect();
@@ -78,6 +79,26 @@ var BisaChatPlus = {
 		API.w.$$('.tabMenu')[0].parentNode.removeChild(API.w.$$('.tabMenu')[0]);
 		API.w.$('smileys').parentNode.removeChild(API.w.$('smileys'));
 		API.w.$(API.w.$('chatColorPickerContainer')).parentNode.removeChild(API.w.$('chatColorPickerContainer').nextSibling);
+	},
+	
+	avoidMultipleLogin: function() {
+		if (API.Storage.getValue('alreadyOnline', false)) {
+			API.w.$$('#chatError div')[0].innerHTML = 'Den Chat bitte nicht in mehr als einem Tab öffnen.';
+			API.w.$('chatError').style.display = '';
+			API.w.onunload = API.w.Prototype.emptyFunction;
+			API.w.Ajax.Responders.register({
+				onCreate: function(ajax, response) {
+					ajax.transport = null;
+				}
+			});
+			throw new Error('BisaChat Plus: Already online');
+		}
+		else {
+			API.Storage.setValue('alreadyOnline', true);
+			API.w.addEventListener('unload', function(event) {
+				API.Storage.setValue('alreadyOnline', false);
+			}, false);
+		}
 	},
 	
 	buildOptionsBox: function() {

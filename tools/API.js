@@ -58,12 +58,10 @@ var API = {
 				'Accept': 'text/xml'
 			},
 			onload: function(response) {
-				if (response.readyState === 4) {
-					var xml = ((!response.responseXML) ? (new DOMParser()).parseFromString(response.responseText, 'text/xml') : response.responseXML);
-					
-					if (xml.documentElement.getAttribute('newVersion') === 'true') {
-						callback(xml);
-					}
+				var xml = ((!response.responseXML) ? (new DOMParser()).parseFromString(response.responseText, 'text/xml') : response.responseXML);
+				
+				if (xml.documentElement.getAttribute('newVersion') === 'true') {
+					callback(xml);
 				}
 			}
 		});

@@ -52,39 +52,37 @@ Modules.LastfmConnector = {
 				'Accept': 'text/xml'
 			},
 			onload: function(response) {
-				if (response.readyState === 4) {
-					try {
-						var xml = ((!response.responseXML) ? (new DOMParser()).parseFromString(response.responseText, 'text/xml') : response.responseXML);
-						
-						if (xml.documentElement.getAttribute('status') === 'ok') {
-							if ((xml.getElementsByTagName('track').length > 0) && (xml.getElementsByTagName('track')[0].getAttribute('nowplaying'))) {
-								var trackDOM = xml.getElementsByTagName('track')[0];
-								var artist = trackDOM.getElementsByTagName('artist')[0].firstChild.nodeValue;
-								var title = trackDOM.getElementsByTagName('name')[0].firstChild.nodeValue;
-								var trackURI = trackDOM.getElementsByTagName('url')[0].firstChild.nodeValue;
-								var username = xml.getElementsByTagName('recenttracks')[0].getAttribute('user');
-								
-								this.callerObj.pushMessage(this.getTrackString(artist, title, trackURI, username));
-							}
-							else {
-								throw new Error('No track playing');
-							}
-						}
-						else if (xml.documentElement.getAttribute('status') === 'failed') {
-							throw new Error(String(xml.getElementsByTagName('error')[0].firstChild.nodeValue));
+				try {
+					var xml = ((!response.responseXML) ? (new DOMParser()).parseFromString(response.responseText, 'text/xml') : response.responseXML);
+					
+					if (xml.documentElement.getAttribute('status') === 'ok') {
+						if ((xml.getElementsByTagName('track').length > 0) && (xml.getElementsByTagName('track')[0].getAttribute('nowplaying'))) {
+							var trackDOM = xml.getElementsByTagName('track')[0];
+							var artist = trackDOM.getElementsByTagName('artist')[0].firstChild.nodeValue;
+							var title = trackDOM.getElementsByTagName('name')[0].firstChild.nodeValue;
+							var trackURI = trackDOM.getElementsByTagName('url')[0].firstChild.nodeValue;
+							var username = xml.getElementsByTagName('recenttracks')[0].getAttribute('user');
+							
+							this.callerObj.pushMessage(this.getTrackString(artist, title, trackURI, username));
 						}
 						else {
-							throw new Error('');
+							throw new Error('No track playing');
 						}
 					}
-					catch (e) {
-						this.callerObj.pushInfo('Error catching track! '+e.message);
+					else if (xml.documentElement.getAttribute('status') === 'failed') {
+						throw new Error(String(xml.getElementsByTagName('error')[0].firstChild.nodeValue));
 					}
-					finally {
-						API.w.$('nowPlayingButton').style.opacity = 1.0;
-						API.w.$('nowPlayingButton').disabled = false;
-						this.loadingTrack = false;
+					else {
+						throw new Error('');
 					}
+				}
+				catch (e) {
+					this.callerObj.pushInfo('Error catching track! '+e.message);
+				}
+				finally {
+					API.w.$('nowPlayingButton').style.opacity = 1.0;
+					API.w.$('nowPlayingButton').disabled = false;
+					this.loadingTrack = false;
 				}
 			}.bind(this),
 			onerror: function() {

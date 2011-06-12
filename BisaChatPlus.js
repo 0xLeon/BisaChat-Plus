@@ -83,7 +83,16 @@ var BisaChatPlus = {
 	
 	avoidMultipleLogin: function() {
 		if (API.Storage.getValue('alreadyOnline', false)) {
+			var resetLink = new API.w.Element('a');
+			
+			resetLink.addEventListener('click', function(event) {
+				API.Storage.setValue('alreadyOnline', false);
+				API.w.location.reload();
+			}, true);
+			resetLink.appendChild(document.createTextNode('Falls definitiv nur ein Chattab geöffnet ist, hier klicken.'));
 			API.w.$$('#chatError div')[0].innerHTML = 'Den Chat bitte nicht in mehr als einem Tab öffnen.';
+			API.w.$$('#chatError div')[0].appendChild((new API.w.Element('br')));
+			API.w.$$('#chatError div')[0].appendChild(resetLink);
 			API.w.$('chatError').style.display = '';
 			API.w.onunload = API.w.Prototype.emptyFunction;
 			API.w.Ajax.Responders.register({

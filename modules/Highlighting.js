@@ -15,6 +15,7 @@ Modules.Highlighting = {
 		
 		this.removeBasicHighlighting();
 		this.registerOption();
+		this.addListener();
 	},
 	
 	removeBasicHighlighting: function() {
@@ -48,6 +49,12 @@ Modules.Highlighting = {
 				}
 			}
 		}, null, this);
+	},
+	
+	addListener: function() {
+		document.addEventListener('blur', function(event) {
+			API.w.$$('#chatMessage'+API.w.chat.activeUserID+' ul')[0].appendChild((new API.w.Element('hr', { style: 'display:block; width:75%;' })));
+		}, false);
 	},
 	
 	buildRegExp: function(basicString) {

@@ -20,7 +20,6 @@ var BisaChatPlus = {
 			this.avoidMultipleLogin();
 			this.buildOptionsBox();
 			this.buildSmiliesBox();
-			this.buildRoomSelect();
 			this.addEventListeners();
 			
 			API.w.addEventListener('load', function(event) {
@@ -303,81 +302,6 @@ var BisaChatPlus = {
 				}
 			}
 		});
-	},
-	
-	buildRoomSelect: function() {
-		var roomSelectSmallButton = new API.w.Element('li', { id: 'chatOptionsTemp' });
-		var roomSelectSmallButtonLink = new API.w.Element('a', { id: 'changeRoom', style: 'display:inline-block; -moz-border-radius-topright:0px !important; -moz-border-radius-bottomright:0px !important;' });
-		var roomSelectSmallButtonSpan = new API.w.Element('span');
-		var roomSelectSmallButtonMenu = new API.w.Element('div', { id: 'changeRoomMenu', 'class': 'hidden' });
-		var roomSelectSmallButtonMenuList = this.getRoomList();
-		
-		var roomSelectSmallButtonUpdateLink = new API.w.Element('a', { id: 'changeRoomUpdate', title: 'Raumliste neu laden', style: 'display:inline-block; top:1px !important; -moz-border-radius-topleft:0px !important; -moz-border-radius-bottomleft:0px !important;' });
-		var roomSelectSmallButtonUpdateImage = new API.w.Element('img', { src: './wcf/icon/packageUpdateS.png', alt: '' });
-		
-		roomSelectSmallButtonUpdateLink.addEventListener('click', function(event) {
-			new API.w.Ajax.Updater('chatExtraRoomContainer', 'index.php?page=ChatRefreshRoomList', {
-				evalScripts: true,
-				onCreate: function(response) {
-					API.w.$('changeRoomUpdate').style.opacity = 0.5;
-				},
-				onComplete: function(respone, json) {
-					API.w.$('changeRoomMenu').replaceChild(this.getRoomList(), API.w.$('changeRoomMenuList'));
-					API.w.$('changeRoomUpdate').style.opacity = 1.0;
-				}.bind(this)
-			});
-		}.bindAsEventListener(this), true);
-		
-		roomSelectSmallButtonUpdateLink.appendChild(roomSelectSmallButtonUpdateImage);
-		
-		roomSelectSmallButtonSpan.appendChild(document.createTextNode('Aktueller Raum: '+String(roomSelectSmallButtonMenuList.getElementsByClassName('active')[0].getElementsByTagName('span')[0].firstChild.nodeValue).trim()));
-		roomSelectSmallButtonLink.appendChild(roomSelectSmallButtonSpan);
-		roomSelectSmallButtonMenu.appendChild(roomSelectSmallButtonMenuList);
-		roomSelectSmallButton.appendChild(roomSelectSmallButtonLink);
-		roomSelectSmallButton.appendChild(roomSelectSmallButtonUpdateLink);
-		roomSelectSmallButton.appendChild(roomSelectSmallButtonMenu);
-		API.w.$$('#chatForm .smallButtons ul')[0].appendChild(roomSelectSmallButton);
-		
-		API.w.popupMenuList.register('changeRoom');
-	},
-	
-	getRoomList: function() {
-		var roomSelectSmallButtonMenuList = new API.w.Element('ul', { id: 'changeRoomMenuList' });
-		
-		(API.w.$$('#chatOptions option')).each(function(item) {
-			var roomSelectSmallButtonMenuListItem = new API.w.Element('li', { id: String(item.getAttribute('id'))+'Temp' });
-			var roomSelectSmallButtonMenuListItemLink = new API.w.Element('a');
-			var roomSelectSmallButtonMenuListItemSpan = new API.w.Element('span');
-			var roomSelectSmallButtonMenuListItemInput = new API.w.Element('input', { type: 'hidden', value: String(item.getAttribute('value')) });
-			
-			roomSelectSmallButtonMenuListItem.addEventListener('click', function(event) {
-				var li = (event.target.parentNode.nodeName.toLowerCase() === 'li') ? event.target.parentNode : event.target.parentNode.parentNode;
-				
-				if (!!li.getAttribute('class')) {
-					return false;
-				}
-				else {
-					API.w.$$('#changeRoomMenu li.active')[0].setAttribute('class', '');
-					window.location.hash = li.getElementsByTagName('input')[0].getAttribute('value');
-					API.w.$$('#changeRoom > span')[0].firstChild.replaceData(0, API.w.$$('#changeRoom > span')[0].firstChild.nodeValue.length, 'Aktueller Raum: '+String(li.getElementsByTagName('span')[0].firstChild.nodeValue).trim());
-					li.setAttribute('class', 'active');
-				}
-			}, true);
-			
-			if (item.selected) roomSelectSmallButtonMenuListItem.setAttribute('class', 'active');
-			roomSelectSmallButtonMenuListItemSpan.appendChild(document.createTextNode(String(item.innerHTML).trim()));
-			roomSelectSmallButtonMenuListItemLink.appendChild(roomSelectSmallButtonMenuListItemSpan);
-			roomSelectSmallButtonMenuListItem.appendChild(roomSelectSmallButtonMenuListItemLink);
-			roomSelectSmallButtonMenuListItem.appendChild(roomSelectSmallButtonMenuListItemInput);
-			roomSelectSmallButtonMenuList.appendChild(roomSelectSmallButtonMenuListItem);
-			
-			delete roomSelectSmallButtonMenuListItem;
-			delete roomSelectSmallButtonMenuListItemLink;
-			delete roomSelectSmallButtonMenuListItemSpan;
-			delete roomSelectSmallButtonMenuListItemInput;
-		});
-		
-		return roomSelectSmallButtonMenuList;
 	},
 	
 	addEventListeners: function() {

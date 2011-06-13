@@ -12,7 +12,7 @@ Modules.SmiliesPlus = {
 	},
 	
 	buildSmiliesBox: function() {
-		var smiliesSmallButton = new API.w.Element('li', { id: 'smiliesSmallButton' });
+		var smiliesSmallButton = new API.w.Element('li', { id: 'smiliesSmallButton', style: 'display:none;' });
 		var smiliesSmallButtonLink = new API.w.Element('a', { href: 'javascript:;' });
 		var smiliesSmallButtonImg = new API.w.Element('img', { src: './wcf/images/smilies/smile.png', alt: '', style: 'width:16px; height:16px;' });
 		var smiliesSmallButtonSpan = new API.w.Element('span');
@@ -84,6 +84,8 @@ Modules.SmiliesPlus = {
 		smiliesSmallButton.appendChild(smiliesDiv);
 		API.w.$('smileys').parentNode.removeChild(API.w.$('smileys'));
 		API.w.$$('#chatForm .smallButtons ul')[0].appendChild(smiliesSmallButton);
+		
+		new API.w.Effect.Appear('smiliesSmallButton');
 	},
 	
 	addListener: function() {

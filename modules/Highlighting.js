@@ -52,8 +52,11 @@ Modules.Highlighting = {
 	},
 	
 	addListener: function() {
+		this.callerObj.registerBoolOption('blurHR', 'Horizontale Linie beim verlassen des Tabs', 'Horizontale Linie', 'r', false);
 		document.addEventListener('blur', function(event) {
-			API.w.$$('#chatMessage'+API.w.chat.activeUserID+' ul')[0].appendChild((new API.w.Element('hr', { style: 'display:block; width:75%;' })));
+			if (API.Storage.getValue('blurHRStatus', false)) {
+				API.w.$$('#chatMessage'+API.w.chat.activeUserID+' ul')[0].appendChild((new API.w.Element('hr', { style: 'display:block; width:75%;' })));
+			}
 		}, false);
 	},
 	

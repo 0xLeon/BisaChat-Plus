@@ -4,14 +4,32 @@
 Modules.Statistics = {
 	callerObj: null,
 	
+	get onlineTimeStart() {
+		return API.Storage.getValue('statisticsOnlineTimeStart', (new Date()).getTime());
+	},
+	set onlineTimeStart(value) {
+		API.Storage.setValue('statisticsOnlineTimeStart', value);
+	},
+	
+	get onlineTimeLength() {
+		return API.Storage.getValue('statisticsOnlineTimeLength', 0);
+	},
+	set onlineTimeLength(value) {
+		API.Storage.setValue('statisticsOnlineTimeLength', value);
+	},
+	
+	get messageCount() {
+		return API.Storage.getValue('statisticsMessageCount', 0);
+	},
+	set messageCount(value) {
+		API.Storage.setValue('statisticsMessageCount', value);
+	},
+	
 	init: function(callerObj) {
 		this.callerObj = callerObj;
-		this.onlineTimeStart = API.Storage.getValue('statisticsOnlineTimeStart', (new Date()).getTime());
-		this.onlineTimeLength = API.Storage.getValue('statisticsOnlineTimeLength', 0)
-		this.messageCount = API.Storage.getValue('statisticsMessageCount', 0);
 		
 		window.setInterval(function() {
-			this.onlineTimeLength += 1;
+			this.onlineTimeLength = this.onlineTimeLength + 1;
 		}.bind(this), 1000);
 		
 		this.addEventListeners();
@@ -21,7 +39,7 @@ Modules.Statistics = {
 		this.callerObj.registerMessagePrefilter('statistics', 'Statistiken', 'Statistiken aktivieren', 's', true, function(event, checked, nickname, message) {
 			if (checked && (nickname === API.w.settings['username'])) {
 				if (!!event.target.getAttribute('class').match(/\bmessageType(?:0|3|6|7)\b/)) {
-					this.messageCount += 1;
+					this.messageCount = this.messageCount + 1;
 				}
 				
 				if (message.firstChild.nodeValue.indexOf('!mystats') === 0) {
@@ -66,12 +84,6 @@ Modules.Statistics = {
 				}
 			}
 		}, this);
-		
-		API.w.addEventListener('unload', function(event) {
-			API.Storage.setValue('statisticsOnlineTimeStart', this.onlineTimeStart);
-			API.Storage.setValue('statisticsOnlineTimeLength', this.onlineTimeLength);
-			API.Storage.setValue('statisticsMessageCount', this.messageCount);
-		}.bindAsEventListener(this), false);
 	},
 	
 	resetConfig: function() {
@@ -79,9 +91,6 @@ Modules.Statistics = {
 		this.onlineTimeLength = 0;
 		this.messageCount = 0;
 		
-		API.Storage.setValue('statisticsOnlineTimeStart', this.onlineTimeStart);
-		API.Storage.setValue('statisticsOnlineTimeLength', this.onlineTimeLength);
-		API.Storage.setValue('statisticsMessageCount', this.messageCount);
 		this.callerObj.pushInfo('Statistiken zurückgesetzt.');
 	}
 };

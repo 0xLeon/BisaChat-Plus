@@ -31,15 +31,5 @@ Modules.MessagePrefilters = {
 				Registry.setValue('messageNumber', (Registry.getValue('messageNumber') + 1));
 			}
 		});
-		
-		callerObj.registerMessagePrefilter('kyon', 'Nachrichten kyonisieren', 'Nachrichten kyonisieren', 'k', false, function(event, checked, nickname, message) {
-			if (checked) {
-				var node = message.firstChild;
-				
-				do {
-					if (node.nodeType === 3) node.nodeValue = node.nodeValue.toUpperCase();
-				} while (node = node.nextSibling);
-			}
-		});
 	}
 };

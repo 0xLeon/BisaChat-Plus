@@ -1,5 +1,6 @@
 /* 
  * Room Select Plus Module
+ * Copyright (c) 2011, Stefan Hahn
  */
 Modules.RoomSelectPlus = {
 	callerObj: null,

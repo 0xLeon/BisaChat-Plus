@@ -1,5 +1,6 @@
 /*
  * BisaChat API
+ * Copyright (c) 2011, Stefan Hahn
  */
 var API = {
 	Storage: {

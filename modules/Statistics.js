@@ -1,5 +1,6 @@
 /* 
- *  Statistics Module
+ * Statistics Module
+ * Copyright (c) 2011, Stefan Hahn
  */
 Modules.Statistics = {
 	callerObj: null,

@@ -1,5 +1,6 @@
 /*
  * Message Prefilter Module
+ * Copyright (c) 2011, Stefan Hahn
  */
 Modules.MessagePrefilters = {
 	init: function(callerObj) {

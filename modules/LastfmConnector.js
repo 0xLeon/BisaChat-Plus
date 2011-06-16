@@ -1,5 +1,7 @@
 /*
  * Last.fm Connect Module
+ * Copyright (c) 2011, Stefan Hahn
+ * 
  * Based on BisaChat Last.fm Connect
  */
 Modules.LastfmConnector = {

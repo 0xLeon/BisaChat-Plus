@@ -1,5 +1,6 @@
 /* 
  * Registry
+ * Copyright (c) 2011, Stefan Hahn
  */
 var Registry = {
 	data: { },

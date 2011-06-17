@@ -70,11 +70,21 @@ Modules.Statistics = {
 				}
 			}
 		}, function(event, checked) {
+			// todo: make this shit work, too
 			if (!checked) {
-				this.resetConfig();
+				if (confirm('Willst du die Statistiken wirklich zurücksetzen?')) {
+					//this.resetConfig();
+					alert('reset stats');
+					return true;
+				}
+				else {
+					return false;
+				}
 			}
 			else {
-				this.onlineTimeStart = (new Date()).getTime();
+				//this.onlineTimeStart = (new Date()).getTime();
+				alert('reset date start');
+				return true;
 			}
 		}, this);
 		

@@ -430,8 +430,6 @@ var BisaChatPlus = {
 			}
 			
 			API.Storage.setValue(event.target.getAttribute('id')+'Status', event.target.checked);
-				
-			//if (typeof switchCallback === 'function') switchCallback.call(context, event, event.target.checked);
 		}.bindAsEventListener(this), true);
 		
 		checkbox.checked = API.Storage.getValue(optionID+'Status', defaultValue);

@@ -422,9 +422,16 @@ var BisaChatPlus = {
 		}, false);
 		
 		checkbox.addEventListener('change', function(event) {
+			if (((typeof switchCallback === 'function') && switchCallback.call(context, event, event.target.checked)) || (typeof switchCallback !== 'function')) {
+				this.pushInfo(optionTitle+' '+((event.target.checked) ? 'aktiviert' : 'deaktiviert'));
+			}
+			else {
+				event.target.checked = !event.target.checked;
+			}
+			
 			API.Storage.setValue(event.target.getAttribute('id')+'Status', event.target.checked);
-			this.pushInfo(optionTitle+' '+((event.target.checked) ? 'aktiviert' : 'deaktiviert'));
-			if (typeof switchCallback === 'function') switchCallback.call(context, event, event.target.checked);
+				
+			//if (typeof switchCallback === 'function') switchCallback.call(context, event, event.target.checked);
 		}.bindAsEventListener(this), true);
 		
 		checkbox.checked = API.Storage.getValue(optionID+'Status', defaultValue);

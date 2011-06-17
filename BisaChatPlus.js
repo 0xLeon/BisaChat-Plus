@@ -72,7 +72,7 @@ var BisaChatPlus = {
 		delete tmp;
 		
 		API.w.$$('.tabMenu')[0].parentNode.removeChild(API.w.$$('.tabMenu')[0]);
-		API.w.$(API.w.$('chatColorPickerContainer')).parentNode.removeChild(API.w.$('chatColorPickerContainer').nextSibling);
+		API.w.$('chatColorPickerContainer').parentNode.removeChild(API.w.$('chatColorPickerContainer').nextSibling);
 	},
 	
 	avoidMultipleLogin: function() {

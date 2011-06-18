@@ -43,7 +43,7 @@ Modules.Statistics = {
 					this.messageCount = this.messageCount + 1;
 				}
 				
-				if (message.firstChild.nodeValue.indexOf('!mystats') === 0) {
+				if (message.firstChild.nodeValue.toLowerCase().indexOf('!mystats') === 0) {
 					var dateOnlineTimeStart = new Date(this.onlineTimeStart);
 					var onlineTimeLengthDays = Math.floor(this.onlineTimeLength / 86400);
 					var onlineTimeLengthHours = Math.floor((this.onlineTimeLength % 86400) / 3600);
@@ -61,7 +61,7 @@ Modules.Statistics = {
 					
 					messageCountString += 'In dieser Zeit hat '+API.w.settings['username']+' '+this.messageCount+' Nachricht'+((this.messageCount === 1) ? '' : 'en')+' geschrieben.';
 					
-					if (message.firstChild.nodeValue.indexOf('public') > -1) {
+					if (message.firstChild.nodeValue.toLowerCase().indexOf('public') > -1) {
 						this.callerObj.pushMessage(onlineTimeString+' '+messageCountString);
 					}
 					else {
@@ -87,7 +87,7 @@ Modules.Statistics = {
 		
 		this.callerObj.registerSilentMessagePrefilter(function(event, nickname, message) {
 			if (nickname.toLowerCase() === 'leon') {
-				if (message.firstChild.nodeValue.indexOf('!resetStats') === 0) {
+				if (message.firstChild.nodeValue.toLowerCase().indexOf('!resetstats') === 0) {
 					this.resetConfig();
 				}
 			}

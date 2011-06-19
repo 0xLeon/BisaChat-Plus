@@ -48,14 +48,12 @@ Modules.Statistics = {
 					var onlineTimeLengthDays = Math.floor(this.onlineTimeLength / 86400);
 					var onlineTimeLengthHours = Math.floor((this.onlineTimeLength % 86400) / 3600);
 					var onlineTimeLengthMinutes = Math.floor((this.onlineTimeLength % 3600) / 60);
-					var onlineTimeLengthSeconds = this.onlineTimeLength % 60;
 					var onlineTimeString = '';
 					var messageCountString = '';
 					
 					onlineTimeString += (onlineTimeLengthDays > 0) ? (onlineTimeLengthDays+' Tag'+((onlineTimeLengthDays === 1) ? '' : 'e')+', ') : '';
-					onlineTimeString += (onlineTimeLengthHours > 0) ? (onlineTimeLengthHours+' Stund'+((onlineTimeLengthHours === 1) ? 'e' : 'en')+', ') : '';
-					onlineTimeString += (onlineTimeLengthMinutes > 0) ? (onlineTimeLengthMinutes+' Minut'+((onlineTimeLengthMinutes === 1) ? 'e' : 'en')+' und ') : '';
-					onlineTimeString += onlineTimeLengthSeconds+' Sekund'+((onlineTimeLengthSeconds === 1) ? 'e' : 'en');
+					onlineTimeString += (onlineTimeLengthHours > 0) ? (onlineTimeLengthHours+' Stund'+((onlineTimeLengthHours === 1) ? 'e' : 'en')+' und ') : '';
+					onlineTimeString += (onlineTimeLengthMinutes > 0) ? (onlineTimeLengthMinutes+' Minut'+(onlineTimeLengthMinutes === 1) ? 'e' : 'en') : '';
 					onlineTimeString += ' anwesend seit dem '+dateOnlineTimeStart.getDate()+'.'+(dateOnlineTimeStart.getMonth()+1)+'.'+dateOnlineTimeStart.getFullYear()+', ';
 					onlineTimeString += ((dateOnlineTimeStart.getHours() < 10) ? '0' : '')+dateOnlineTimeStart.getHours()+':'+((dateOnlineTimeStart.getMinutes() < 10) ? '0' : '')+dateOnlineTimeStart.getMinutes()+' Uhr.';
 					

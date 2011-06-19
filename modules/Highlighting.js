@@ -35,6 +35,7 @@ Modules.Highlighting = {
 	},
 	
 	registerOption: function() {
+		this.callerObj.registerBoolOption('blurHR', 'Horizontale Linie beim verlassen des Tabs', 'Horizontale Linie', 'r', false);
 		this.callerObj.registerTextOption('highlightingText', 'Highlighten bei', API.w.settings['username'], function(optionValue) {
 			this.buildRegExp(optionValue);
 		}, this);
@@ -53,7 +54,6 @@ Modules.Highlighting = {
 	},
 	
 	addListener: function() {
-		this.callerObj.registerBoolOption('blurHR', 'Horizontale Linie beim verlassen des Tabs', 'Horizontale Linie', 'r', false);
 		document.addEventListener('blur', function(event) {
 			if (API.Storage.getValue('blurHRStatus', false)) {
 				API.w.$$('#chatMessage'+API.w.chat.activeUserID+' ul hr').each(function(item) {

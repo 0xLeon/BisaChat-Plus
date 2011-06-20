@@ -22,6 +22,7 @@ desired features:
  - BBCode Parser: img-tag (low)
  - BBCode Parser: floating tags (low)
  - Priority Levels for modules (mid)
+ - add module Away Tools: highlight whisper and save in cache on away status (mid)
 ------------
 All source and documentation files are published under the Simplified BSD license. For more 
 information see the LICENSE file.

@@ -15,7 +15,7 @@ Modules.LastfmConnector = {
 	},
 	
 	showNowPlayingButton: function() {
-		var input = new API.w.Element('input', { id: 'nowPlayingButton', 'class': 'inputImage', type: 'image', alt: 'Post now played track', title: 'Post now played track', src: './wcf/icon/cronjobExecuteS.png' });
+		var input = new API.w.Element('input', { id: 'nowPlayingButton', 'class': 'inputImage', type: 'image', alt: 'Gerade angehörten Song posten', title: 'Gerade angehörten Song posten', src: './wcf/icon/cronjobExecuteS.png' });
 		
 		input.addEventListener('click', function() {
 			if (!this.loadingTrack) {

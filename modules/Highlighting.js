@@ -101,6 +101,7 @@ Modules.Highlighting = {
 				this.messageIDs.each(function(item) {
 					new API.w.Effect.Highlight(item);
 				});
+				this.messageIDs = API.w.$A([ ]);
 				
 				document.removeEventListener('focus', this.listenerFunction, false)
 				this.listenerFunction = null;

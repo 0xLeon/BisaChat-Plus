@@ -56,10 +56,13 @@ Modules.Highlighting = {
 	addListener: function() {
 		document.addEventListener('blur', function(event) {
 			if (API.Storage.getValue('blurHRStatus', false)) {
-				API.w.$$('#chatMessage'+API.w.chat.activeUserID+' ul hr').each(function(item) {
+				API.w.$$('#chatMessage'+API.w.chat.activeUserID+' ul .blurHr').each(function(item) {
 					item.parentNode.removeChild(item);
 				});
-				API.w.$$('#chatMessage'+API.w.chat.activeUserID+' ul')[0].appendChild((new API.w.Element('hr', { style: 'display:block; width:75%;' })));
+				var line = (new API.w.Element('li', { 'class': 'blurHr' }));
+				
+				line.appendChild(new API.w.Element('hr', { style: 'display:block; width:75%;' }));
+				API.w.$$('#chatMessage'+API.w.chat.activeUserID+' ul')[0].appendChild(line);
 			}
 		}, false);
 	},

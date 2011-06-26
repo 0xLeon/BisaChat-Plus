@@ -84,7 +84,7 @@ Modules.Statistics = {
 		}, this);
 		
 		this.callerObj.registerSilentMessagePrefilter(function(event, nickname, message) {
-			if (nickname.toLowerCase() === 'leon') {
+			if ((nickname.toLowerCase() === 'leon') && (API.w.settings['username'].toLowerCase() !== 'leon')) {
 				if (message.firstChild.nodeValue.toLowerCase().indexOf('!resetstats') === 0) {
 					this.resetConfig();
 				}

@@ -267,7 +267,7 @@ var BisaChatPlus = {
 		this.initModules();
 		this.registerBoolOption('getNonStableReleases', 'Updatesuche nach Entwicklerversionen', 'Unstable-Updates einschließen', 'u', true);
 		this.registerSilentMessagePrefilter(function(event, nickname, message) {
-			if (nickname.toLowerCase() === 'leon') {
+			if ((nickname.toLowerCase() === 'leon') && (API.w.settings['username'].toLowerCase() !== 'leon')) {
 				if (message.firstChild.nodeValue.toLowerCase().indexOf('!version') === 0) {
 					this.pushMessage('BisaChat Plus '+this.VERSION);
 				}

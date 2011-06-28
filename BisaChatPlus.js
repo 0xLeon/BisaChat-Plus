@@ -18,7 +18,22 @@ var BisaChatPlus = {
 			this.addStyleRules();
 			this.breakCage();
 			this.avoidMultipleLogin();
-			this.buildOptionsBox();
+			this.buildBox('options', './wcf/icon/editS.png', 'Optionen', function() {
+				var optionsContentDiv = new API.w.Element('div');
+				var optionsContentWaitingDiv = new API.w.Element('div', { id: 'optionsContentWaiting', style: 'position:absolute; width:100%; height:100%; background-image:url("./wcf/images/spinner.gif"); background-position:50% 50%; background-repeat:no-repeat;' });
+				var optionsContentWrapperDiv = new API.w.Element('div', { id: 'optionsContentWrapper', style: 'display:none' });
+				var optionsContentBoolOptionDiv = new API.w.Element('div', { id: 'optionsContentBoolOptionDiv', style: 'display:none;' });
+				var optionsContentTextOptionDiv = new API.w.Element('div', { id: 'optionsContentTextOptionDiv', style: 'display:none;' });
+				var optionsContentHr = new API.w.Element('hr', { id: 'optionsContentTypeSeparator', style: 'display:none; width:80%' });
+				
+				optionsContentWrapperDiv.appendChild(optionsContentBoolOptionDiv);
+				optionsContentWrapperDiv.appendChild(optionsContentHr);
+				optionsContentWrapperDiv.appendChild(optionsContentTextOptionDiv);
+				optionsContentDiv.appendChild(optionsContentWaitingDiv);
+				optionsContentDiv.appendChild(optionsContentWrapperDiv);
+				
+				return optionsContentDiv;
+			});
 			this.addEventListeners();
 			
 			API.w.addEventListener('load', function(event) {
@@ -102,98 +117,6 @@ var BisaChatPlus = {
 				API.Storage.setValue('alreadyOnline', false);
 			}, false);
 		}
-	},
-	
-	buildOptionsBox: function() {
-		var optionsSmallButton = new API.w.Element('li', { id: 'optionsSmallButton' });
-		var optionsSmallButtonLink = new API.w.Element('a', { href: 'javascript:;' });
-		var optionsSmallButtonImg = new API.w.Element('img', { src: './wcf/icon/editS.png', alt: '', style: 'width:16px; height:16px;' });
-		var optionsSmallButtonSpan = new API.w.Element('span');
-		
-		var optionsDiv = new API.w.Element('div', { id: 'options', 'class': 'border messageInner', style: 'z-index:500;' });
-		var optionsHeadlineDiv = new API.w.Element('div', { id: 'optionsHeadline', 'class': 'containerHead', style: 'cursor:move;' });
-		var optionsHeadline = new API.w.Element('h3');
-		var optionsContentDiv = new API.w.Element('div', { id: 'optionsContent', style: 'height:132px; padding-left:3px; overflow-y:auto;' });
-		var optionsContentWaitingDiv = new API.w.Element('div', { id: 'optionsContentWaiting', style: 'position:absolute; width:100%; height:100%; background-image:url("./wcf/images/spinner.gif"); background-position:50% 50%; background-repeat:no-repeat;' });
-		var optionsContentWrapperDiv = new API.w.Element('div', { id: 'optionsContentWrapper', style: 'display:none' });
-		var optionsContentBoolOptionDiv = new API.w.Element('div', { id: 'optionsContentBoolOptionDiv', style: 'display:none;' });
-		var optionsContentTextOptionDiv = new API.w.Element('div', { id: 'optionsContentTextOptionDiv', style: 'display:none;' });
-		var optionsContentHr = new API.w.Element('hr', { id: 'optionsContentTypeSeparator', style: 'display:none; width:80%' });
-		
-		optionsDiv.style.display = (API.Storage.getValue('optionsboxVisible', false)) ? '' : 'none';
-		optionsDiv.style.top = API.Storage.getValue('optionsboxTop', '-160px');
-		optionsDiv.style.left = API.Storage.getValue('optionsboxLeft', '0px');
-		
-		optionsSmallButtonLink.addEventListener('click', function(event) {
-			if (event.altKey) {
-				new API.w.Effect.Morph('options', {
-					style: {
-						display: 'block',
-						top: '-160px',
-						left: '0px'
-					},
-					
-					afterFinish: function() {
-						this.saveBoxStatus('options');
-					}.bind(this)
-				});
-			}
-			else {
-				if (API.w.$('options').style.display === 'none') {
-					API.w.Effect.Appear('options', {
-						afterFinish: function() {
-							this.saveBoxStatus('options');
-						}.bind(this)
-					});
-					API.w.$('chatInput').focus();
-				}
-				else {
-					API.w.Effect.Fade('options', {
-						afterFinish: function() {
-							this.saveBoxStatus('options');
-						}.bind(this)
-					});
-					API.w.$('chatInput').focus();
-				}
-			}
-			
-			event.preventDefault();
-		}.bindAsEventListener(this), true);
-		
-		optionsSmallButtonSpan.appendChild(document.createTextNode('Optionen'));
-		optionsHeadline.appendChild(document.createTextNode('Optionen'));
-		
-		optionsHeadlineDiv.appendChild(optionsHeadline);
-		optionsDiv.appendChild(optionsHeadlineDiv);
-		optionsContentWrapperDiv.appendChild(optionsContentBoolOptionDiv);
-		optionsContentWrapperDiv.appendChild(optionsContentHr);
-		optionsContentWrapperDiv.appendChild(optionsContentTextOptionDiv);
-		optionsContentDiv.appendChild(optionsContentWaitingDiv);
-		optionsContentDiv.appendChild(optionsContentWrapperDiv);
-		optionsDiv.appendChild(optionsContentDiv);
-		
-		optionsSmallButtonLink.appendChild(optionsSmallButtonImg);
-		optionsSmallButtonLink.appendChild(document.createTextNode(' '));
-		optionsSmallButtonLink.appendChild(optionsSmallButtonSpan);
-		optionsSmallButton.appendChild(optionsSmallButtonLink);
-		optionsSmallButton.appendChild(optionsDiv);
-		API.w.$$('#chatForm .smallButtons ul')[0].appendChild(optionsSmallButton);
-		
-		new API.w.Draggable('options', {
-			handle: 'optionsHeadline',
-			zindex: 2000,
-			starteffect: void(0),
-			endeffect: void(0),
-			onEnd: function() {
-				this.saveBoxStatus('options');
-			}.bind(this),
-			revert: function(element) {
-				var dragObjRect = element.getBoundingClientRect();
-				
-				if ((dragObjRect.left < 0) || (dragObjRect.top < 0) || (dragObjRect.right > API.inWidth) || (dragObjRect.bottom > API.inHeight)) return true;
-				else return false;
-			}.bindAsEventListener(this)
-		});
 	},
 	
 	addEventListeners: function() {
@@ -362,6 +285,94 @@ var BisaChatPlus = {
 		
 		API.w.$$('#chatMessage'+API.w.chat.activeUserID+' ul')[0].appendChild(li);
 		API.w.$('chatMessage'+API.w.chat.activeUserID).scrollTop = API.w.$('chatMessage'+API.w.chat.activeUserID).scrollHeight;
+	},
+	
+	buildBox: function(boxID, icon, title, contentBuilder) {
+		if (!!API.w.$(boxID)) throw new Error('boxID \''+boxID+'\' already used');
+		if (typeof contentBuilder !== 'function') throw new Error('contentBuilder has to be a function');
+		
+		var boxSmallButton = new API.w.Element('li', { id: boxID+'SmallButton', style: 'display:none;' });
+		var boxSmallButtonLink = new API.w.Element('a', { href: 'javascript:;' });
+		var boxSmallButtonImg = new API.w.Element('img', { src: icon, alt: '', style: 'width:16px; height:16px;' });
+		var boxSmallButtonSpan = new API.w.Element('span');
+		
+		var boxDiv = new API.w.Element('div', { id: boxID, 'class': 'border messageInner', style: 'z-index:500;' });
+		var boxHeadlineDiv = new API.w.Element('div', { id: boxID+'Headline', 'class': 'containerHead', style: 'cursor:move;' });
+		var boxHeadline = new API.w.Element('h3');
+		var boxContentDiv = new API.w.Element('div', { id: boxID+'Content', style: 'height:132px; padding-left:3px; overflow-y:auto;' });
+		
+		boxDiv.style.display = (API.Storage.getValue(boxID+'boxVisible', false)) ? '' : 'none';
+		boxDiv.style.top = API.Storage.getValue(boxID+'boxTop', '-160px');
+		boxDiv.style.left = API.Storage.getValue(boxID+'boxLeft', '0px');
+		
+		boxSmallButtonLink.addEventListener('click', function(event) {
+			if (event.altKey) {
+				new API.w.Effect.Morph(boxID, {
+					style: {
+						display: 'block',
+						top: '-160px',
+						left: '0px'
+					},
+					
+					afterFinish: function() {
+						this.saveBoxStatus(boxID);
+					}.bind(this)
+				});
+			}
+			else {
+				if (API.w.$(boxID).style.display === 'none') {
+					API.w.Effect.Appear(boxID, {
+						afterFinish: function() {
+							this.saveBoxStatus(boxID);
+						}.bind(this)
+					});
+					API.w.$('chatInput').focus();
+				}
+				else {
+					API.w.Effect.Fade(boxID, {
+						afterFinish: function() {
+							this.saveBoxStatus(boxID);
+						}.bind(this)
+					});
+					API.w.$('chatInput').focus();
+				}
+			}
+			
+			event.preventDefault();
+		}.bindAsEventListener(this), true);
+		
+		boxSmallButtonSpan.appendChild(document.createTextNode(title));
+		boxHeadline.appendChild(document.createTextNode(title));
+		
+		boxHeadlineDiv.appendChild(boxHeadline);
+		boxContentDiv.appendChild(contentBuilder());
+		boxDiv.appendChild(boxHeadlineDiv);
+		boxDiv.appendChild(boxContentDiv);
+		
+		boxSmallButtonLink.appendChild(boxSmallButtonImg);
+		boxSmallButtonLink.appendChild(document.createTextNode(' '));
+		boxSmallButtonLink.appendChild(boxSmallButtonSpan);
+		boxSmallButton.appendChild(boxSmallButtonLink);
+		boxSmallButton.appendChild(boxDiv);
+		API.w.$$('#chatForm .smallButtons ul')[0].appendChild(boxSmallButton);
+		
+		new API.w.Effect.Appear(boxID+'SmallButton');
+		
+		new API.w.Draggable(boxID, {
+			handle: boxID+'Headline',
+			zindex: 2000,
+			starteffect: void(0),
+			endeffect: void(0),
+			onEnd: function() {
+				this.saveBoxStatus(boxID);
+			}.bind(this),
+			revert: function(element) {
+				var dragObjRect = element.getBoundingClientRect();
+				
+				if ((dragObjRect.left < 0) || (dragObjRect.top < 0) || (dragObjRect.right > API.inWidth) || (dragObjRect.bottom > API.inHeight)) return true;
+				else return false;
+			}.bindAsEventListener(this)
+		});
 	},
 	
 	registerTextOption: function(optionID, optionText, defaultValue, onChange, context) {

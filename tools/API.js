@@ -8,6 +8,7 @@ var API = {
 			var type, value;
 			
 			if (localStorage.getItem(key) === null) {
+				if (defaultValue !== undefined) this.setValue(key, defaultValue);
 				return defaultValue;
 			}
 			

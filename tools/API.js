@@ -42,6 +42,27 @@ var API = {
 		
 		key: function(n) {
 			return localStorage.key(n);
+		},
+		
+		importSettings: function(obj) {
+			if (typeof obj !== 'object') throw new TypeError('obj has to be an object type');
+			
+			var keys = API.w.$A(Object.keys(obj));
+			
+			this.clear();
+			keys.each(function(key) {
+				this.setValue(key, obj[key]);
+			}, this);
+		},
+		
+		exportSettings: function() {
+			var obj = { };
+			
+			for (var i = 0; i < this.length; i++) {
+				obj[this.key(i)] = this.getValue(this.key(i));
+			}
+			
+			return obj;
 		}
 	},
 	

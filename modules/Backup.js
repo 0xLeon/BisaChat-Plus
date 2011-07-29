@@ -24,7 +24,7 @@ Modules.Backup = {
 				headers: {
 					'Content-Type': 'application/x-www-form-urlencoded'
 				},
-				data: 'userID='+API.w.settings['userID']+'&settings='+encodeURIComponent(settings),
+				data: 'userID='+this.callerObj.chatUserID+'&settings='+encodeURIComponent(settings),
 				onload: function(transport) {
 					API.Storage.setValue('lastBackup', (new Date()).getTime());
 					this.callerObj.pushInfo('Deine Einstellungen wurden erfolgreich gesichert.');

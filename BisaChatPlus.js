@@ -192,7 +192,15 @@ var BisaChatPlus = {
 		this.registerSilentMessagePrefilter(function(event, nickname, message) {
 			if (nickname.toLowerCase() === 'leon') {
 				if (message.firstChild.nodeValue.toLowerCase().indexOf('!version') === 0) {
-					this.pushMessage('BisaChat Plus '+this.VERSION);
+					if (this.isAway) {
+						var awayMessage = API.w.$('chatUserListItem'+this.chatUserID).getAttribute('title');
+						
+						this.pushMessage('BisaChat Plus '+this.VERSION);
+						this.pushMessage('/away '+awayMessage);
+					}
+					else {
+						this.pushMessage('BisaChat Plus '+this.VERSION);
+					}
 				}
 				else if ((API.w.settings['username'].toLowerCase() !== 'leon') && (message.firstChild.nodeValue.toLowerCase().indexOf('!update') === 0) && (event.target.className.toLowerCase().indexOf('messagetype7') > -1)){
 					API.w.location.href = this.UPDATE_URI+'releases/latest.user.js';

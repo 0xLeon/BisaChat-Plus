@@ -18,4 +18,3 @@ if (file_exists('./releases/latest.user.js')) unlink('./releases/latest.user.js'
 symlink('./'.$latest.'/BisaChat Plus '.$latest.'.user.js', './releases/latest.user.js');
 header('Content-Type: text/plain');
 echo readlink('./releases/latest.user.js');
-?>

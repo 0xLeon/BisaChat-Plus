@@ -30,4 +30,3 @@ else {
 	echo '<update newVersion="false">';
 }
 echo '</update>';
-?>

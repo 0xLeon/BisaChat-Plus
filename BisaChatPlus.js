@@ -469,7 +469,7 @@ var BisaChatPlus = {
 	
 	get isAway() {
 		try {
-			return !!this.w.$('chatUserListItem'+this.chatUserID).getAttribute('title');
+			return !!API.w.$('chatUserListItem'+this.chatUserID).getAttribute('title');
 		}
 		catch (e) {
 			return false;
@@ -477,7 +477,7 @@ var BisaChatPlus = {
 	},
 	
 	get chatUserID() {
-		return this.w.settings['userID'];
+		return API.w.settings['userID'];
 	}
 };
 

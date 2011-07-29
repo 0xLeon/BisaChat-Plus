@@ -90,15 +90,6 @@ var API = {
 		});
 	},
 	
-	checkAwayStatus: function() {
-		try {
-			return !!this.w.$('chatUserListItem'+this.chatUserID).getAttribute('title');
-		}
-		catch (e) {
-			return false;
-		}
-	},
-	
 	get w() {
 		return (unsafeWindow || window);
 	},
@@ -109,9 +100,5 @@ var API = {
 	
 	get inHeight() {
 		return parseInt(window.innerHeight);
-	},
-	
-	get chatUserID() {
-		return this.w.settings['userID'];
 	}
 };

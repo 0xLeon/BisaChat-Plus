@@ -465,6 +465,19 @@ var BisaChatPlus = {
 	
 	registerSilentMessagePrefilter: function(prefilterFunction, context) {
 		this.messagePrefilters.push(prefilterFunction.bind(context));
+	},
+	
+	get isAway() {
+		try {
+			return !!this.w.$('chatUserListItem'+this.chatUserID).getAttribute('title');
+		}
+		catch (e) {
+			return false;
+		}
+	},
+	
+	get chatUserID() {
+		return this.w.settings['userID'];
 	}
 };
 

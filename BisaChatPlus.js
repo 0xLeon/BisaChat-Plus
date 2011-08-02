@@ -62,7 +62,7 @@ var BisaChatPlus = {
 		API.addStyle('#chatMessage > div[id^="chatMessage"] { height: 100% !important; padding-left: 25px; }');
 		API.addStyle('#chatFormContainer { margin-left: 25px; margin-right: 25px }');
 		API.addStyle('#chatMembers { margin-left: 8px; }');
-		API.addStyle('#chatOptions, #smileys { display: none; }');
+		API.addStyle('#smileys { display: none; }');
 		API.addStyle('#smiliesSmallButton, #optionsSmallButton { position: relative; }');
 		API.addStyle('#smilies, #options { position: absolute; width: 255px; height: 155px !important; top: -160px; left: 0px; padding-left: 1px; padding-top: 1px; -moz-border-radius-bottomleft: 0px; -moz-border-radius-bottomright: 0px; }');
 		API.addStyle('#smiliesList li { border: none !important; margin-left: 3px; margin-right: 3px; height: 30px; float: left; }');
@@ -245,7 +245,7 @@ var BisaChatPlus = {
 		updateSmallButtonLink.appendChild(updateSmallButtonSpan);
 		updateSmallButton.appendChild(updateSmallButtonLink);
 		
-		API.w.$$('#chatForm .smallButtons ul')[0].appendChild(updateSmallButton);
+		API.w.$$('#chatOptions .smallButtons ul')[0].appendChild(updateSmallButton);
 	},
 	
 	saveBoxStatus: function(id) {
@@ -362,7 +362,7 @@ var BisaChatPlus = {
 		boxSmallButtonLink.appendChild(boxSmallButtonSpan);
 		boxSmallButton.appendChild(boxSmallButtonLink);
 		boxSmallButton.appendChild(boxDiv);
-		API.w.$$('#chatForm .smallButtons ul')[0].appendChild(boxSmallButton);
+		API.w.$$('#chatOptions .smallButtons ul')[0].appendChild(boxSmallButton);
 		
 		new API.w.Effect.Appear(boxID+'SmallButton');
 		

@@ -20,7 +20,7 @@ Modules.Highlighting = {
 	},
 	
 	removeBasicHighlighting: function() {
-		var basicHighlightingButton = API.w.$$('.smallButtons li')[1];
+		var basicHighlightingButton = API.w.$$('#chatOptions .smallButtons > ul > li')[2];
 		API.w.chat.enableAnimating = false;
 		
 		basicHighlightingButton.style.overflow = 'hidden';

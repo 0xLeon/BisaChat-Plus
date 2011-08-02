@@ -8,8 +8,6 @@
 // @namespace      http://projects.swallow-all-lies.com/greasemonkey/namsespaces/bisachat.plus
 // @include        http://www.bisaboard.de/index.php?page=Chat*
 // @include        http://www.bisaboard.de/?page=Chat*
-// @include        http://bisaboard.de/index.php?page=Chat*
-// @include        http://bisaboard.de/?page=Chat*
 // ==/UserScript==
 /*
  * Copyright (c) 2011, Stefan Hahn

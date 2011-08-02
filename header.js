@@ -6,10 +6,10 @@
 // @copyright      2011, Stefan Hahn
 // @licence        Simplified BSD License
 // @namespace      http://projects.swallow-all-lies.com/greasemonkey/namsespaces/bisachat.plus
-// @include        http://www.bisafans.de/bb/index.php?page=Chat*
-// @include        http://www.bisafans.de/bb/?page=Chat*
-// @include        http://bisafans.de/bb/index.php?page=Chat*
-// @include        http://bisafans.de/bb/?page=Chat*
+// @include        http://www.bisaboard.de/index.php?page=Chat*
+// @include        http://www.bisaboard.de/?page=Chat*
+// @include        http://bisaboard.de/index.php?page=Chat*
+// @include        http://bisaboard.de/?page=Chat*
 // ==/UserScript==
 /*
  * Copyright (c) 2011, Stefan Hahn

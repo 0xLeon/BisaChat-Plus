@@ -32,9 +32,13 @@ var API = {
 			return localStorage.setItem(key, value);
 		},
 		
-		unsetValue: localStorage.removeItem,
+		unsetValue: function(key) {
+			localStorage.removeItem(key);
+		},
 		
-		clear: localStorage.clear,
+		clear: function() {
+			localStorage.clear();
+		},
 		
 		get length() {
 			return localStorage.length;

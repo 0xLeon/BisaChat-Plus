@@ -4,14 +4,39 @@
  */
 Modules.Backup = {
 	callerObj: null,
+	intervalHandle: null,
 	
 	init: function(callerObj) {
 		this.callerObj = callerObj;
 		
-		this.backupSettings();
-		API.w.setInterval(function() {
+		this.callerObj.registerBoolOption('backupActive', 'Backup', 'Backup aktivieren', 'c', true, function(event, checked) {
+			if (checked) {
+				if (this.intervalHandle !== null) {
+					API.w.clearInterval(this.intervalHandle);
+					this.intervalHandle = null;
+				}
+				
+				this.backupSettings();
+				this.intervalHandle = API.w.setInterval(function() {
+					this.backupSettings();
+				}.bind(this), 60000);
+			}
+			else {
+				if (this.intervalHandle !== null) {
+					API.w.clearInterval(this.intervalHandle);
+					this.intervalHandle = null;
+				}
+			}
+			
+			return true;
+		}, this);
+		
+		if (API.Storage.getValue('backupActiveStatus', true)) {
 			this.backupSettings();
-		}.bind(this), 60000);
+			this.intervalHandle = API.w.setInterval(function() {
+				this.backupSettings();
+			}.bind(this), 60000);
+		}
 	},
 	
 	backupSettings: function() {

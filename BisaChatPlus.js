@@ -217,6 +217,8 @@ var BisaChatPlus = {
 		API.w.$('optionsContentTypeSeparator').style.display = ((API.w.$('optionsContentTextOptionDiv').style.diplay !== 'none') && (API.w.$('optionsContentTextOptionDiv').style.diplay !== 'none')) ? 'block' : 'none';
 		new API.w.Effect.Appear('optionsContentWrapper');
 		API.w.$('chatInput').focus();
+		
+		new API.w.Ajax.Updater('chatRoomSelect', './index.php?page=ChatRefreshRoomList'+API.w.SID_ARG_2ND, { evalScripts: true });
 	},
 	
 	initModules: function() {

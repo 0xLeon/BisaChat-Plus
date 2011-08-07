@@ -17,7 +17,6 @@ Scriptish. Personally I recommed the use of Scriptish.
 known issues:
  - smiliesbox height shouldn't be fixed (low)
  - Find the line that breaks the script when removing newlines (low)
- - smilies option doesn't work anymore because #chatOptions is no longer a child of #chatForm (high)
  - user online list doesn't use available height completly (high)
 ------------
 desired features:

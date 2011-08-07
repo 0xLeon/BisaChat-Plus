@@ -50,6 +50,7 @@ var BisaChatPlus = {
 		API.addStyle('html, body { height: '+API.inHeight+'px !important; }');
 		API.addStyle('.hidden { display: none; }');
 		API.addStyle('.column { border: 0px !important; }');
+		API.addStyle('#smileys { display: none; }');
 		API.addStyle('.loading, .error, #chatCopyright { border: none !important; -moz-border-radius: 0px !important; z-index: 9000; }');
 		API.addStyle('.subTabMenu { padding: 0px !important; padding-top: 2px !important; border-top: none !important; border-left: none !important; border-right: none !important; }');
 		API.addStyle('.subTabMenu, .subTabMenu > * { -moz-border-radius: 0px !important; }');
@@ -62,10 +63,8 @@ var BisaChatPlus = {
 		API.addStyle('#chatMessage > div[id^="chatMessage"] { height: 100% !important; padding-left: 25px; }');
 		API.addStyle('#chatFormContainer { margin-left: 25px; margin-right: 25px }');
 		API.addStyle('#chatMembers { margin-left: 8px; }');
-		API.addStyle('#smileys { display: none; }');
-		API.addStyle('#smiliesSmallButton, #optionsSmallButton { position: relative; }');
-		API.addStyle('#smilies, #options { position: absolute; width: 255px; height: 155px !important; top: -160px; left: 0px; padding-left: 1px; padding-top: 1px; -moz-border-radius-bottomleft: 0px; -moz-border-radius-bottomright: 0px; }');
-		API.addStyle('#smiliesList li { border: none !important; margin-left: 3px; margin-right: 3px; height: 30px; float: left; }');
+		API.addStyle('.boxSmallButton { position: relative; }');
+		API.addStyle('.bcplusBox { position: absolute; width: 255px; height: 155px !important; top: -160px; left: 0px; padding-left: 1px; padding-top: 1px; -moz-border-radius-bottomleft: 0px; -moz-border-radius-bottomright: 0px; }');
 		API.addStyle('.textOptionValue { cursor: pointer; }');
 		API.addStyle('.textOptionValue:hover { text-decoration: underline; }');
 		
@@ -301,12 +300,12 @@ var BisaChatPlus = {
 		if (!!API.w.$(boxID)) throw new Error('boxID \''+boxID+'\' already used');
 		if (typeof contentBuilder !== 'function') throw new Error('contentBuilder has to be a function');
 		
-		var boxSmallButton = new API.w.Element('li', { id: boxID+'SmallButton', style: 'display:none;' });
+		var boxSmallButton = new API.w.Element('li', { id: boxID+'SmallButton', 'class': 'boxSmallButton', style: 'display:none;' });
 		var boxSmallButtonLink = new API.w.Element('a', { href: 'javascript:;' });
 		var boxSmallButtonImg = new API.w.Element('img', { src: icon, alt: '', style: 'width:16px; height:16px;' });
 		var boxSmallButtonSpan = new API.w.Element('span');
 		
-		var boxDiv = new API.w.Element('div', { id: boxID, 'class': 'border messageInner', style: 'z-index:500;' });
+		var boxDiv = new API.w.Element('div', { id: boxID, 'class': 'border messageInner bcplusBox', style: 'z-index:500;' });
 		var boxHeadlineDiv = new API.w.Element('div', { id: boxID+'Headline', 'class': 'containerHead', style: 'cursor:move;' });
 		var boxHeadline = new API.w.Element('h3');
 		var boxContentDiv = new API.w.Element('div', { id: boxID+'Content', style: 'height:132px; padding-left:3px; overflow-y:auto;' });

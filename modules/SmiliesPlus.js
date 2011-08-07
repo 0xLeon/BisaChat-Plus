@@ -8,6 +8,7 @@ Modules.SmiliesPlus = {
 	init: function(callerObj) {
 		this.callerObj = callerObj;
 		
+		API.addStyle('#smiliesList li { border: none !important; margin-left: 3px; margin-right: 3px; height: 30px; float: left; }');
 		this.callerObj.buildBox('smilies', './wcf/images/smilies/smile.png', 'Smileys', function() {
 			var smiliesListDiv = new API.w.Element('div', { id: 'smiliesList' });
 			var smiliesUl = new API.w.Element('ul', { 'class': 'smileys' });

@@ -1,6 +1,6 @@
 BisaChat Plus (BC+)
 
-This userscript adds several new features to the chat located at <http://www.bisafans.de/>. 
+This userscript adds several new features to the chat located at <http://www.bisaboard.de/>. 
 The basis is a full screen GUI which fits the users browser window. Furthermore this script 
 adds a module based add-on functionality. The most significant feature for new modules 
 is the Message Prefilter. This allows you to do whatever you want with any message just before 

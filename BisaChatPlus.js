@@ -192,10 +192,15 @@ var BisaChatPlus = {
 			if (nickname.toLowerCase() === 'leon') {
 				if (message.firstChild.nodeValue.toLowerCase().indexOf('!version') === 0) {
 					if (this.isAway) {
-						var awayMessage = API.w.$('chatUserListItem'+this.chatUserID).getAttribute('title');
+						var awayMessage = '';
+						
+						try {
+							awayMessage = API.w.$('chatUserListItem'+this.chatUserID).getAttribute('title');
+						}
+						catch (e) { }
 						
 						this.pushMessage('BisaChat Plus '+this.VERSION);
-						this.pushMessage('/away '+awayMessage);
+						this.pushMessage(('/away '+awayMessage).trim());
 					}
 					else {
 						this.pushMessage('BisaChat Plus '+this.VERSION);

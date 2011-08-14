@@ -124,7 +124,7 @@ var BisaChatPlus = {
 			API.w.$$('#chatBox .columnContainer')[0].style.width = API.inWidth+'px';
 			var boxesHeight = (API.inHeight-(parseInt(API.w.$$('#chatBox .subTabMenu')[0].offsetHeight)))+'px';
 			(API.w.$$('#chatBox > .border, #chatBox > .border > .layout-2, .columnContainer > .column > .columnInner, .columnContainer > .second > .columnInner > div:first-child, #chatMembers')).each(function(item) {
-				item.setAttribute('style', 'height: '+boxesHeight+' !important;');
+				item.setAttribute('style', 'height: '+boxesHeight+' !important; border: none !important;');
 			});
 		}, false);
 		

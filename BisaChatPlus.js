@@ -71,8 +71,7 @@ var BisaChatPlus = {
 		API.w.$$('#chatBox .columnContainer')[0].style.width = API.inWidth+'px';
 		var boxesHeight = (API.inHeight-(parseInt(API.w.$$('#chatBox .subTabMenu')[0].offsetHeight)))+'px';
 		(API.w.$$('#chatBox > .border, #chatBox > .border > .layout-2, .columnContainer > .column > .columnInner, .columnContainer > .second > .columnInner > div:first-child, #chatMembers')).each(function(item) {
-			item.style.border = 'none';
-			item.style.height = boxesHeight;
+			item.setAttribute('style', 'height: '+boxesHeight+' !important; border: none !important;');
 		});
 	},
 	
@@ -125,7 +124,7 @@ var BisaChatPlus = {
 			API.w.$$('#chatBox .columnContainer')[0].style.width = API.inWidth+'px';
 			var boxesHeight = (API.inHeight-(parseInt(API.w.$$('#chatBox .subTabMenu')[0].offsetHeight)))+'px';
 			(API.w.$$('#chatBox > .border, #chatBox > .border > .layout-2, .columnContainer > .column > .columnInner, .columnContainer > .second > .columnInner > div:first-child, #chatMembers')).each(function(item) {
-				item.style.height = boxesHeight;
+				item.setAttribute('style', 'height: '+boxesHeight+' !important;');
 			});
 		}, false);
 		

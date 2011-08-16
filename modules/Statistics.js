@@ -39,7 +39,7 @@ Modules.Statistics = {
 	addEventListeners: function() {
 		this.callerObj.registerMessagePrefilter('statistics', 'Statistiken', 'Statistiken aktivieren', 's', true, function(event, checked, nickname, message) {
 			if (checked && (nickname === API.w.settings.username)) {
-				if (!!event.target.getAttribute('class').match(/\bmessageType(?:0|3|6|7)\b/)) {
+				if (!!event.target.getAttribute('class').match(/\bmessageType(?:0|6|7)\b/)) {
 					this.messageCount = this.messageCount + 1;
 				}
 				

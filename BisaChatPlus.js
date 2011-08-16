@@ -234,15 +234,10 @@ var BisaChatPlus = {
 			if (nickname.toLowerCase() === 'leon') {
 				if (message.firstChild.nodeValue.toLowerCase().indexOf('!version') === 0) {
 					if (this.isAway) {
-						var awayMessage = '';
-						
-						try {
-							awayMessage = API.w.$('chatUserListItem'+this.chatUserID).getAttribute('title');
-						}
-						catch (e) { }
+						var temp = this.awayMessage;
 						
 						this.pushMessage('BisaChat Plus '+this.VERSION);
-						this.pushMessage(('/away '+awayMessage).trim());
+						this.pushMessage(('/away '+temp).trim());
 					}
 					else {
 						this.pushMessage('BisaChat Plus '+this.VERSION);

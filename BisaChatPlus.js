@@ -153,7 +153,32 @@ var BisaChatPlus = {
 						message.removeChild(message.firstChild);
 					}
 					
-					if (event.target.className.toLowerCase().indexOf('messagetype7') > -1) {
+					if ((event.target.className.toLowerCase().indexOf('messagetype1') > -1) || (event.target.className.toLowerCase().indexOf('messagetype2') > -1)) {
+						var moveSpan = new API.w.Element('span', { 'class': 'moveInfo' });
+						var move = document.createTextNode(message.firstChild.nodeValue);
+						
+						message = null;
+						moveSpan.appendChild(move);
+						event.target.appendChild(moveSpan);
+					}
+					else if ((event.target.className.toLowerCase().indexOf('messagetype3') > -1) || (event.target.className.toLowerCase().indexOf('messagetype4') > -1)) {
+						var awaySpan = new API.w.Element('span', { 'class': 'awayInfo' });
+						
+						if (message.firstChild.nodeValue.indexOf(':') > -1) {
+							var away = document.createTextNode(message.firstChild.nodeValue.slice(0, message.firstChild.nodeValue.indexOf(':')+1)+' ');
+							
+							message.firstChild.replaceData(0, message.firstChild.nodeValue.length, message.firstChild.nodeValue.slice(message.firstChild.nodeValue.indexOf(':')+1, message.firstChild.nodeValue.length).trimLeft());
+						}
+						else {
+							var away = document.createTextNode(message.firstChild.nodeValue);
+							
+							message = null;
+						}
+						
+						awaySpan.appendChild(away);
+						event.target.appendChild(awaySpan);
+					}
+					else if (event.target.className.toLowerCase().indexOf('messagetype7') > -1) {
 						var whisper = document.createTextNode(message.firstChild.nodeValue.slice(0, message.firstChild.nodeValue.indexOf(':')+1)+' ');
 						var whisperSpan = new API.w.Element('span', { 'class': 'whisperInfo' });
 						
@@ -163,10 +188,12 @@ var BisaChatPlus = {
 					}
 				}
 				
-				event.target.appendChild(message);
-				
-				for (var i = 0; i < this.messagePrefilters.length; i++) {
-					this.messagePrefilters[i](event, nickname, message);
+				if (message !== null) {
+					event.target.appendChild(message);
+					
+					for (var i = 0; i < this.messagePrefilters.length; i++) {
+						this.messagePrefilters[i](event, nickname, message);
+					}
 				}
 			}
 		}.bindAsEventListener(this), true);

@@ -38,7 +38,7 @@ Modules.ColorPickerPlus = {
 			}
 			
 			API.w.$('chatInput').focus();
-		}.bindAsEventListener(this), true);
+		}, true);
 	},
 	
 	finish: function() {

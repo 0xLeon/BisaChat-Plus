@@ -384,7 +384,7 @@ var BisaChatPlus = {
 				
 				if ((dragObjRect.left < 0) || (dragObjRect.top < 0) || (dragObjRect.right > API.inWidth) || (dragObjRect.bottom > API.inHeight)) return true;
 				else return false;
-			}.bindAsEventListener(this)
+			}
 		});
 	},
 	

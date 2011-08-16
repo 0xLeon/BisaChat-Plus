@@ -10,6 +10,9 @@ var BisaChatPlus = {
 		return 'http://projects.swallow-all-lies.com/greasemonkey/files/bisachatPlus/';
 	},
 	
+	isAway: false,
+	awayMessage: '',
+	
 	messagePrefilters: [ ],
 	keydownListeners: { },
 	
@@ -128,7 +131,7 @@ var BisaChatPlus = {
 			});
 		}, false);
 		
-		// message prefilter listener
+		// message prefilter/away status listener
 		API.w.$('chatMessage').addEventListener('DOMNodeInserted', function(event) {
 			if (event.target.nodeName.toLowerCase() === 'li') {
 				var id = event.target.getAttribute('id');
@@ -177,6 +180,18 @@ var BisaChatPlus = {
 						
 						awaySpan.appendChild(away);
 						event.target.appendChild(awaySpan);
+						
+						// switch away status
+						if (nickname === API.w.settings.username) {
+							if (event.target.className.toLowerCase().indexOf('messagetype3') > -1) {
+								this.awayMessage = (message === null) ? '' : message.firstChild.nodeValue;
+								this.isAway = true;
+							}
+							else {
+								this.awayMessage = '';
+								this.isAway = false;
+							}
+						}
 					}
 					else if (event.target.className.toLowerCase().indexOf('messagetype7') > -1) {
 						var whisper = document.createTextNode(message.firstChild.nodeValue.slice(0, message.firstChild.nodeValue.indexOf(':')+1)+' ');
@@ -513,15 +528,6 @@ var BisaChatPlus = {
 	
 	registerSilentMessagePrefilter: function(prefilterFunction, context) {
 		return (this.messagePrefilters.push(prefilterFunction.bind(context))-1);
-	},
-	
-	get isAway() {
-		try {
-			return !!API.w.$('chatUserListItem'+this.chatUserID).getAttribute('title');
-		}
-		catch (e) {
-			return false;
-		}
 	},
 	
 	get chatUserID() {

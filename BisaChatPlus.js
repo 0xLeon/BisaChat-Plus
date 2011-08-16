@@ -212,6 +212,7 @@ var BisaChatPlus = {
 	},
 	
 	finish: function() {
+		this.killTimeout();
 		this.initModules();
 		this.registerBoolOption('getNonStableReleases', 'Updatesuche nach Entwicklerversionen', 'Unstable-Updates einschließen', 'u', true);
 		this.registerSilentMessagePrefilter(function(event, nickname, message) {
@@ -249,6 +250,13 @@ var BisaChatPlus = {
 		API.w.$('chatInput').focus();
 		
 		new API.w.Ajax.Updater('chatRoomSelect', './index.php?page=ChatRefreshRoomList'+API.w.SID_ARG_2ND, { evalScripts: true });
+	},
+	
+	killTimeout: function() {
+		if (API.w.settings.timeout > 0) {
+			API.w.clearTimeout(API.w.chat.timeoutTimer);
+			API.w.settings.timeout = 0;
+		}
 	},
 	
 	initModules: function() {

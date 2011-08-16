@@ -64,6 +64,7 @@ Modules.ColorPickerPlus = {
 		else {
 			new API.w.Effect.Fade('chatColorPicker');
 			API.w.$('chatInput').focus();
+			this.colorCache = '';
 		}
 	}
 };

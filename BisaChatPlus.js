@@ -506,13 +506,13 @@ var BisaChatPlus = {
 	
 	registerMessagePrefilter: function(optionID, optionTitle, optionText, accessKey, defaultValue, prefilterFunction, checkboxSwitchCallback, context) {
 		this.registerBoolOption(optionID, optionTitle, optionText, accessKey, defaultValue, checkboxSwitchCallback, context);
-		this.messagePrefilters.push(function(event, nickname, message) {
+		return (this.messagePrefilters.push(function(event, nickname, message) {
 			prefilterFunction.call(context, event, API.w.$(optionID).checked, nickname, message);
-		});
+		})-1);
 	},
 	
 	registerSilentMessagePrefilter: function(prefilterFunction, context) {
-		this.messagePrefilters.push(prefilterFunction.bind(context));
+		return (this.messagePrefilters.push(prefilterFunction.bind(context))-1);
 	},
 	
 	get isAway() {

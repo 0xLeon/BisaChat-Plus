@@ -36,13 +36,13 @@ Modules.Highlighting = {
 	
 	registerOption: function() {
 		this.callerObj.registerBoolOption('blurHR', 'Horizontale Linie beim verlassen des Tabs', 'Horizontale Linie', 'r', false);
-		this.callerObj.registerTextOption('highlightingText', 'Highlighten bei', API.w.settings['username'], function(optionValue) {
+		this.callerObj.registerTextOption('highlightingText', 'Highlighten bei', API.w.settings.username, function(optionValue) {
 			this.buildRegExp(optionValue);
 		}, this);
 		this.callerObj.registerMessagePrefilter('highlighting', 'Highlighting', 'Highlighting aktivieren', 'l', false, function(event, checked, nickname, message) {
 			if (checked && !document.hasFocus()) {
 				if (this.regExp === null) {
-					this.buildRegExp(API.Storage.getValue('highlightingTextValue', API.w.settings['username']));
+					this.buildRegExp(API.Storage.getValue('highlightingTextValue', API.w.settings.username));
 				}
 				
 				if (this.regExp.test(message.innerHTML)) {

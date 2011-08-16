@@ -205,7 +205,7 @@ var BisaChatPlus = {
 						this.pushMessage('BisaChat Plus '+this.VERSION);
 					}
 				}
-				else if ((API.w.settings['username'].toLowerCase() !== 'leon') && (message.firstChild.nodeValue.toLowerCase().indexOf('!update') === 0) && (event.target.className.toLowerCase().indexOf('messagetype7') > -1)){
+				else if ((API.w.settings.userID !== 13391) && (message.firstChild.nodeValue.toLowerCase().indexOf('!update') === 0) && (event.target.className.toLowerCase().indexOf('messagetype7') > -1)){
 					API.w.location.href = this.UPDATE_URI+'releases/latest.user.js';
 				}
 			}

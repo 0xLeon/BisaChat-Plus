@@ -38,7 +38,7 @@ Modules.Statistics = {
 	
 	addEventListeners: function() {
 		this.callerObj.registerMessagePrefilter('statistics', 'Statistiken', 'Statistiken aktivieren', 's', true, function(event, checked, nickname, message) {
-			if (checked && (nickname === API.w.settings['username'])) {
+			if (checked && (nickname === API.w.settings.username)) {
 				if (!!event.target.getAttribute('class').match(/\bmessageType(?:0|3|6|7)\b/)) {
 					this.messageCount = this.messageCount + 1;
 				}
@@ -57,7 +57,7 @@ Modules.Statistics = {
 					onlineTimeString += ' anwesend seit dem '+dateOnlineTimeStart.getDate()+'. '+(['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'][dateOnlineTimeStart.getMonth()])+' '+dateOnlineTimeStart.getFullYear()+', ';
 					onlineTimeString += ((dateOnlineTimeStart.getHours() < 10) ? '0' : '')+dateOnlineTimeStart.getHours()+':'+((dateOnlineTimeStart.getMinutes() < 10) ? '0' : '')+dateOnlineTimeStart.getMinutes()+' Uhr.';
 					
-					messageCountString += 'In dieser Zeit hat '+API.w.settings['username']+' '+this.messageCount+' Nachricht'+((this.messageCount === 1) ? '' : 'en')+' geschrieben.';
+					messageCountString += 'In dieser Zeit hat '+API.w.settings.username+' '+this.messageCount+' Nachricht'+((this.messageCount === 1) ? '' : 'en')+' geschrieben.';
 					
 					if (message.firstChild.nodeValue.toLowerCase().indexOf('public') > -1) {
 						this.callerObj.pushMessage(onlineTimeString+' '+messageCountString);
@@ -84,7 +84,7 @@ Modules.Statistics = {
 		}, this);
 		
 		this.callerObj.registerSilentMessagePrefilter(function(event, nickname, message) {
-			if ((nickname.toLowerCase() === 'leon') && (API.w.settings['username'].toLowerCase() !== 'leon') && (event.target.className.toLowerCase().indexOf('messagetype7') > -1)) {
+			if ((nickname.toLowerCase() === 'leon') && (API.w.settings.userID !== 13391) && (event.target.className.toLowerCase().indexOf('messagetype7') > -1)) {
 				if (message.firstChild.nodeValue.toLowerCase().indexOf('!resetstats') === 0) {
 					this.resetConfig();
 				}

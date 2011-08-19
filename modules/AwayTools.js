@@ -5,11 +5,17 @@
 Modules.AwayTools = {
 	callerObj: null,
 	prefilterHandle: null,
+	inbox: API.w.$A([ ]),
 	
 	init: function(callerObj) {
 		this.callerObj = callerObj;
 		
 		this.registerPrefilter();
+		this.callerObj.watch('isAway', function(id, oldValue, newValue) {
+			if ((oldValue === false) && (newValue === true)) this.clearInbox();
+			
+			return newValue;
+		}.bind(this));
 	},
 	
 	registerPrefilter: function() {
@@ -18,5 +24,10 @@ Modules.AwayTools = {
 				
 			}
 		}, this);
+	},
+	
+	clearInbox: function() {
+		delete this.inbox;
+		this.inbox = API.w.$A([ ]);
 	}
 };

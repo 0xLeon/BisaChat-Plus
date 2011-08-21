@@ -66,7 +66,12 @@ var BisaChatPlus = {
 		API.addStyle('#chatMessage > div[id^="chatMessage"] { height: 100% !important; padding-left: 25px; }');
 		API.addStyle('#chatFormContainer { margin-left: 25px; margin-right: 25px }');
 		API.addStyle('#chatMembers { margin-left: 8px; }');
-		API.addStyle('.boxSmallButton { position: relative; }');
+		API.addStyle('.overlay { width: 100%; height: 100%; }');
+		API.addStyle('.overlay > div { padding: 15px 25px; }');
+		API.addStyle('.overlayCloseButton { float: right; }');
+		API.addStyle('.overlayCloseButton img { padding: 15px; }');
+		API.addStyle('.overlayContent { margin: 5px 0px 3px; }');
+		API.addStyle('.boxSmallButton, .overlaySmallButton { position: relative; }');
 		API.addStyle('.bcplusBox { position: absolute; width: 255px; height: 155px !important; top: -160px; left: 0px; padding-left: 1px; padding-top: 1px; -moz-border-radius-bottomleft: 0px; -moz-border-radius-bottomright: 0px; }');
 		API.addStyle('.textOptionValue { cursor: pointer; }');
 		API.addStyle('.textOptionValue:hover { text-decoration: underline; }');
@@ -431,6 +436,54 @@ var BisaChatPlus = {
 				else return false;
 			}
 		});
+	},
+	
+	buildOverlay: function(overlayID, icon, title, contentBuilder) {
+		if (!!API.w.$(overlayID)) throw new Error('overlayID \''+overlayID+'\' already used');
+		if (typeof contentBuilder !== 'function') throw new TypeError('contentBuilder has to be a function');
+		
+		var overlaySmallButton = new API.w.Element('li', { id: overlayID+'SmallButton', 'class': 'overlaySmallButton', style: 'display:none;' });
+		var overlaySmallButtonLink = new API.w.Element('a', { href: 'javascript:;' });
+		var overlaySmallButtonImg = new API.w.Element('img', { src: icon, alt: '', style: 'width:16px; height:16px;' });
+		var overlaySmallButtonSpan = new API.w.Element('span');
+		
+		var overlayDiv = new API.w.Element('div', { id: overlayID, 'class': 'overlay container-1', style: 'display:none;' });
+		var wrapperDiv = new API.w.Element('div');
+		var contentDiv = new API.w.Element('div', { 'class': 'overlayContent' });
+		
+		var closeButtonDiv = new API.w.Element('div', { 'class': 'overlayCloseButton' });
+		var closeButtonLink = new API.w.Element('a', { href: 'javascript:;' });
+		var closeButtonImg = new API.w.Element('img', { src: 'wcf/icon/closeS.png', alt: '' });
+		
+		var caption = new API.w.Element('h3', { 'class': 'subHeadline' });
+		
+		overlaySmallButtonLink.addEventListener('click', function(event) {
+			new API.w.Effect.Appear(overlayID);
+		}, true);
+		
+		overlaySmallButtonSpan.appendChild(document.createTextNode(title));
+		overlaySmallButtonLink.appendChild(overlaySmallButtonImg);
+		overlaySmallButtonLink.appendChild(document.createTextNode(' '));
+		overlaySmallButtonLink.appendChild(overlaySmallButtonSpan);
+		overlaySmallButton.appendChild(overlaySmallButtonLink);
+		API.w.$$('#chatOptions .smallButtons ul')[0].appendChild(overlaySmallButton);
+		
+		closeButtonLink.addEventListener('click', function(event) {
+			new API.w.Effect.Fade(overlayID);
+			API.w.$('chatInput').focus();
+		}, true);
+		
+		closeButtonLink.appendChild(closeButtonImg);
+		closeButtonDiv.appendChild(closeButtonLink);
+		caption.appendChild(document.createTextNode(title));
+		contentDiv.appendChild(contentBuilder());
+		wrapperDiv.appendChild(closeButtonDiv);
+		wrapperDiv.appendChild(caption);
+		wrapperDiv.appendChild(contentDiv);
+		overlayDiv.appendChild(wrapperDiv);
+		API.w.$('chatInitializing').parentNode.appendChild(overlayDiv);
+		
+		new API.w.Effect.Appear(overlayID+'SmallButton');
 	},
 	
 	registerTextOption: function(optionID, optionText, defaultValue, onChange, context) {

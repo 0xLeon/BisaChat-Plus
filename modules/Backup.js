@@ -45,7 +45,7 @@ Modules.Backup = {
 	},
 	
 	buildOverlay: function() {
-		this.callerobj.buildOverlay('backup', './wcf/icon/dbImportL.png', 'Backup', function() {
+		this.callerObj.buildOverlay('backup', './wcf/icon/dbImportL.png', 'Backup', function() {
 			return (document.createTextNode('Backup'));
 		});
 	},

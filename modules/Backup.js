@@ -9,6 +9,17 @@ Modules.Backup = {
 	init: function(callerObj) {
 		this.callerObj = callerObj;
 		
+		this.registerOptions();
+		
+		if (API.Storage.getValue('backupActiveStatus', true)) {
+			this.backupSettings();
+			this.intervalHandle = API.w.setInterval(function() {
+				this.backupSettings();
+			}.bind(this), 60000);
+		}
+	},
+	
+	registerOptions: function() {
 		this.callerObj.registerBoolOption('backupActive', 'Backup', 'Backup aktivieren', 'c', true, function(event, checked) {
 			if (checked) {
 				if (this.intervalHandle !== null) {
@@ -30,13 +41,6 @@ Modules.Backup = {
 			
 			return true;
 		}, this);
-		
-		if (API.Storage.getValue('backupActiveStatus', true)) {
-			this.backupSettings();
-			this.intervalHandle = API.w.setInterval(function() {
-				this.backupSettings();
-			}.bind(this), 60000);
-		}
 	},
 	
 	backupSettings: function() {

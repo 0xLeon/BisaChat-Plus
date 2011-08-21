@@ -58,7 +58,7 @@ var BisaChatPlus = {
 		API.addStyle('.subTabMenu { padding: 0px !important; padding-top: 2px !important; border-top: none !important; border-left: none !important; border-right: none !important; }');
 		API.addStyle('.subTabMenu, .subTabMenu > * { -moz-border-radius: 0px !important; }');
 		API.addStyle('#chatBox { margin-top: 0px; width: 100%; height: '+API.inHeight+'px; }');
-		API.addStyle('#chatBox > .border { padding: 0px !important; border: none !important; margin: 0px !important; }');
+		API.addStyle('#chatBox > .border { padding: 0px !important; border: none !important; margin: 0px !important; position: relative; }');
 		API.addStyle('#chatBox > .border > .layout-2, #chatBox .columnInner { margin: 0px !important; }');
 		API.addStyle('#chatPrivatelist > li { display: list-item !important; }');
 		API.addStyle('.columnContainer > .column > .columnInner { padding: 0px }');
@@ -66,7 +66,7 @@ var BisaChatPlus = {
 		API.addStyle('#chatMessage > div[id^="chatMessage"] { height: 100% !important; padding-left: 25px; }');
 		API.addStyle('#chatFormContainer { margin-left: 25px; margin-right: 25px }');
 		API.addStyle('#chatMembers { margin-left: 8px; }');
-		API.addStyle('.overlay { width: 100%; height: 100%; }');
+		API.addStyle('.overlay { width: 100%; height: 100%; margin: 0px !important; clear: both; }');
 		API.addStyle('.overlay > div { padding: 15px 25px; }');
 		API.addStyle('.overlayCloseButton { float: right; }');
 		API.addStyle('.overlayCloseButton img { padding: 15px; }');

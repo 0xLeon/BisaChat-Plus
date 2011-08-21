@@ -10,6 +10,7 @@ Modules.Backup = {
 		this.callerObj = callerObj;
 		
 		this.registerOptions();
+		this.buildOverlay();
 		
 		if (API.Storage.getValue('backupActiveStatus', true)) {
 			this.backupSettings();
@@ -41,6 +42,12 @@ Modules.Backup = {
 			
 			return true;
 		}, this);
+	},
+	
+	buildOverlay: function() {
+		this.callerobj.buildOverlay('backup', './wcf/icon/dbImportL.png', 'Backup', function() {
+			return (document.createTextNode('Backup'));
+		});
 	},
 	
 	backupSettings: function() {

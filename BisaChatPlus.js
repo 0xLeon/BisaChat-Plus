@@ -438,7 +438,7 @@ var BisaChatPlus = {
 		});
 	},
 	
-	buildOverlay: function(overlayID, icon, title, contentBuilder) {
+	buildOverlay: function(overlayID, icon, title, contentBuilder, beforeShow) {
 		if (!!API.w.$(overlayID)) throw new Error('overlayID \''+overlayID+'\' already used');
 		if (typeof contentBuilder !== 'function') throw new TypeError('contentBuilder has to be a function');
 		
@@ -458,6 +458,7 @@ var BisaChatPlus = {
 		var caption = new API.w.Element('h3', { 'class': 'subHeadline' });
 		
 		overlaySmallButtonLink.addEventListener('click', function(event) {
+			if (typeof beforeShow === 'function') beforeShow.call();
 			new API.w.Effect.Appear(overlayID);
 		}, true);
 		

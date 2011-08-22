@@ -83,10 +83,12 @@ Modules.MessageBox = {
 	},
 	
 	overlayContentBuilder: function() {
-		var node = null;
+		var node = new API.w.Element('p');
+		
+		node.appendChild(document.createTextNode('Keine Nachrichten vorhanden.'));
 		
 		if (this.inbox.length > 0) {
-			var node = new API.w.Element('ul', { style: 'list-style-type:none;' });
+			node = new API.w.Element('ul', { style: 'list-style-type:none;' });
 			
 			this.inbox.each(function(item, key) {
 				var li = new API.w.Element('li', { id: 'whisperMessage'+key });
@@ -107,11 +109,6 @@ Modules.MessageBox = {
 				li.appendChild(messageSpan);
 				node.appendChild(li);
 			}, this);
-		}
-		else {
-			var node = new API.w.Element('p');
-			
-			node.appendChild(document.createTextNode('Keine Nachrichten vorhanden.'));
 		}
 		
 		return node;

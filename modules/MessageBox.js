@@ -1,8 +1,8 @@
 /* 
- * Away Tools Module
+ * Message Box Module
  * Copyright (c) 2011, Stefan Hahn
  */
-Modules.AwayTools = {
+Modules.MessageBox = {
 	callerObj: null,
 	prefilterHandle: null,
 	inbox: API.w.$A([ ]),

@@ -106,6 +106,7 @@ Modules.Backup = {
 								},
 								onload: function(innerTransport) {
 									API.Storage.importSettings(innerTransport.responseJSON);
+									API.w.location.reload();
 								}
 							});
 						}, true);

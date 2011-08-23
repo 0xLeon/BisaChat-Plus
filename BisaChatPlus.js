@@ -477,12 +477,18 @@ var BisaChatPlus = {
 		closeButtonLink.appendChild(closeButtonImg);
 		closeButtonDiv.appendChild(closeButtonLink);
 		caption.appendChild(document.createTextNode(title));
-		contentDiv.appendChild(contentBuilder());
 		wrapperDiv.appendChild(closeButtonDiv);
 		wrapperDiv.appendChild(caption);
 		wrapperDiv.appendChild(contentDiv);
 		overlayDiv.appendChild(wrapperDiv);
 		API.w.$('chatInitializing').parentNode.appendChild(overlayDiv);
+		
+		try {
+			contentDiv.appendChild(contentBuilder());
+		}
+		catch (e) {
+			contentBuilder(contentDiv);
+		}
 		
 		new API.w.Effect.Appear(overlayID+'SmallButton');
 	},

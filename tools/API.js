@@ -1,9 +1,23 @@
-/*
+/**
  * BisaChat API
+ * Provides useful functions for userscripts
+ *
  * Copyright (c) 2011, Stefan Hahn
  */
 var API = {
+	/**
+	 * Storage engine for persistent value storage
+	 * 
+	 * @type	{Object}
+	 */
 	Storage: {
+		/**
+		 * Gets saved value from persistent storage
+		 * 
+		 * @param	{String}	key
+		 * @param	{mixed}		[defaultValue]
+		 * @returns	{mixed}
+		 */
 		getValue: function(key, defaultValue) {
 			var type, value;
 			
@@ -27,27 +41,62 @@ var API = {
 			}
 		},
 		
+		/**
+		 * Saves value persistent
+		 * 
+		 * @param	{String}	key
+		 * @param	{mixed}		value
+		 * @returns	{undefined}
+		 */
 		setValue: function(key, value) {
 			value = (typeof value)[0] + ((typeof value === 'object') ? JSON.stringify(value) : value);
 			return localStorage.setItem(key, value);
 		},
 		
+		/**
+		 * Deletes value from persistent storage
+		 * 
+		 * @param	{String}	key
+		 * @returns	{undefined}
+		 */
 		unsetValue: function(key) {
 			localStorage.removeItem(key);
 		},
 		
+		/**
+		 * Deletes all data from persistent storage
+		 * 
+		 * @returns	{undefined}
+		 */
 		clear: function() {
 			localStorage.clear();
 		},
 		
+		/**
+		 * Amount of saved key value pairs
+		 * 
+		 * @type	{Number}
+		 */
 		get length() {
 			return localStorage.length;
 		},
 		
+		/**
+		 * Returns n-th key
+		 * 
+		 * @param	{Number}	n
+		 * @returns	{String}
+		 */
 		key: function(n) {
 			return localStorage.key(n);
 		},
 		
+		/**
+		 * Replace all data in persistent storage with properties of passed object
+		 * 
+		 * @param	{Object}	Object	Hash-like object
+		 * @returns	{undefined}			Returns nothing
+		 */
 		importSettings: function(obj) {
 			if (typeof obj !== 'object') throw new TypeError('obj has to be an object type');
 			
@@ -59,6 +108,11 @@ var API = {
 			}, this);
 		},
 		
+		/**
+		 * Returns all key value pairs from persistent storage
+		 * 
+		 * @returns	{Object}	Hash-like object with every key as property
+		 */
 		exportSettings: function() {
 			var obj = { };
 			
@@ -70,6 +124,12 @@ var API = {
 		}
 	},
 	
+	/**
+	 * Add style rules to document
+	 * 
+	 * @param	{String}	CSSString	Valid CSS style rules
+	 * @returns	{undefined}				Returns nothing
+	 */
 	addStyle: function(CSSString) {
 		var styleNode = new this.w.Element('style', { 'type': 'text/css' });
 		
@@ -77,6 +137,15 @@ var API = {
 		this.w.$$('head')[0].appendChild(styleNode);
 	},
 	
+	/**
+	 * Checks for latest version of userscript
+	 * 
+	 * @param	{String}	updateServer			Valid URI pointing to an update server
+	 * @param	{String}	version					Version number string
+	 * @param	{Function}	callback				Gets called if there's a new version, response xml dom passed as first argument
+	 * @param	{Boolean}	[getNonStableReleases]	Indicates wether or not to include developer versions in update checking
+	 * @returns {undefined}							Returns nothing
+	 */
 	checkForUpdates: function(updateServer, version, callback, getNonStableReleases) {
 		GM_xmlhttpRequest({
 			method: 'GET',
@@ -94,14 +163,29 @@ var API = {
 		});
 	},
 	
+	/**
+	 * Unrestricted window object
+	 * 
+	 * @type	{Object}
+	 */
 	get w() {
 		return (unsafeWindow || window);
 	},
 	
+	/**
+	 * Width available inside browser content
+	 * 
+	 * @type	{Number}
+	 */
 	get inWidth() {
 		return parseInt(window.innerWidth);
 	},
 	
+	/**
+	 * Height available inside browser content
+	 * 
+	 * @type	{Number}
+	 */
 	get inHeight() {
 		return parseInt(window.innerHeight);
 	}

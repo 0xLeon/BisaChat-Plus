@@ -303,6 +303,13 @@ var BisaChatPlus = {
 		API.w.$$('#chatOptions .smallButtons ul')[0].appendChild(updateSmallButton);
 	},
 	
+	/**
+	 * Saves position and display status of a node
+	 * Useful for draggable objects
+	 * 
+	 * @param	{String}	id	Valid DOMNode ID
+	 * @returns	{undefined}		Returns nothing
+	 */
 	saveBoxStatus: function(id) {
 		var visible = !(API.w.$(id).style.display === 'none');
 		var top = API.w.$(id).style.top;
@@ -313,6 +320,14 @@ var BisaChatPlus = {
 		API.Storage.setValue(id+'boxLeft', left);
 	},
 	
+	/**
+	 * Post chat message
+	 * 
+	 * @param	{String}	messageText	Text which to post in chat stream
+	 * @param	{Function}	[onFinish]	Gets called after successful posting, ajax transport object passed as first argument
+	 * @param	{Object}	[context]	Indicates where »this« points within onFinish callback
+	 * @returns	{undefined}				Returns nothing
+	 */
 	pushMessage: function(messageText, onFinish, context) {
 		new API.w.Ajax.Request('./index.php?form=Chat', {
 			parameters: {
@@ -330,6 +345,12 @@ var BisaChatPlus = {
 		});
 	},
 	
+	/**
+	 * Shows information to the user only
+	 * 
+	 * @param	{String}	infoText	Text which to post in the user's chat stream
+	 * @returns	{undefined}				Returns nothing
+	 */
 	pushInfo: function(infoText) {
 		var now = new Date();
 		var time = ((now.getHours() < 10) ? '0'+now.getHours() : now.getHours())+':'+((now.getMinutes() < 10) ? '0'+now.getMinutes() : now.getMinutes())+':'+((now.getSeconds() < 10) ? '0'+now.getSeconds() : now.getSeconds());
@@ -350,6 +371,15 @@ var BisaChatPlus = {
 		API.w.$('chatMessage'+API.w.chat.activeUserID).scrollTop = API.w.$('chatMessage'+API.w.chat.activeUserID).scrollHeight;
 	},
 	
+	/**
+	 * Builds a toggable and draggable box with corresponding small button
+	 * 
+	 * @param	{String}	boxID			ID for box DOM node
+	 * @param	{String}	icon			URI to icon image, 16*16px recommended
+	 * @param	{String}	title			small button and box title text
+	 * @param	{Function}	contentBuilder	Generates box content, has to return a DOM node
+	 * @returns	{undefined}					Returns nothing
+	 */
 	buildBox: function(boxID, icon, title, contentBuilder) {
 		if (!!API.w.$(boxID)) throw new Error('boxID \''+boxID+'\' already used');
 		if (typeof contentBuilder !== 'function') throw new Error('contentBuilder has to be a function');
@@ -438,6 +468,16 @@ var BisaChatPlus = {
 		});
 	},
 	
+	/**
+	 * Builds a toggable overlay with corresponding small button
+	 * 
+	 * @param	{String}	overlayID		ID for overlay DOM node
+	 * @param	{String}	icon			URI to icon image, 16*16px recommended
+	 * @param	{String}	title			small button and overlay text
+	 * @param	{Function}	contentBuilder	Generates overlay content, either has to return a DOM node OR accept conent node reference as first parameter
+	 * @param	{Function}	[beforeShow]	Called every time the overlay gets displayed
+	 * @returns	{undefined}					Returns nothing
+	 */
 	buildOverlay: function(overlayID, icon, title, contentBuilder, beforeShow) {
 		if (!!API.w.$(overlayID)) throw new Error('overlayID \''+overlayID+'\' already used');
 		if (typeof contentBuilder !== 'function') throw new TypeError('contentBuilder has to be a function');
@@ -493,6 +533,15 @@ var BisaChatPlus = {
 		new API.w.Effect.Appear(overlayID+'SmallButton');
 	},
 	
+	/**
+	 * Builds a GUI element for user-defined text content, useful for short texts
+	 * 
+	 * @param	{String}	optionID		ID for optionSpan DOM node
+	 * @param	{String}	optionText		Short description which is displayed in front of actual value
+	 * @param	{String}	defaultValue	Text option value if nothing is saved in storage
+	 * @param	{Function}	[onChange]		Called when new value is set, new value passed as first argument
+	 * @param	{Object}	[context]		Indicates where »this« points within onChange callback
+	 */
 	registerTextOption: function(optionID, optionText, defaultValue, onChange, context) {
 		if (!!API.w.$(optionID)) throw new Error('optionID \''+optionID+'\' already used');
 		
@@ -537,6 +586,17 @@ var BisaChatPlus = {
 		API.w.$('optionsContentTextOptionDiv').appendChild(p);
 	},
 	
+	/**
+	 * Builds a GUI element for switchable options
+	 * 
+	 * @param	{String}	optionID			ID for optionInput DOM node
+	 * @param	{String}	optionTitle			Short description which is shown in chat stream when option is switched
+	 * @param	{String}	optionText			Short description which is displayed in front of actual value
+	 * @param	{String}	accessKey			One letter which indicates the acess key
+	 * @param	{Boolean}	defaultValue		Option status when there is nothing in storage
+	 * @param	{Function}	[switchCallback]	Called when option is about to be switched, option is only switched if switchCallback returns boolean true
+	 * @param	{Object}	[context]			Indicates where »this« points within switchCallback
+	 */
 	registerBoolOption: function(optionID, optionTitle, optionText, accessKey, defaultValue, switchCallback, context) {
 		if (!!API.w.$(optionID)) throw new Error('optionID \''+optionID+'\' already used');
 		if ((!!accessKey) && (typeof this.keydownListeners[accessKey.toLowerCase()] === 'string')) throw new Error('AccessKey \''+accessKey.toLowerCase()+'\' already used');
@@ -574,6 +634,18 @@ var BisaChatPlus = {
 		}
 	},
 	
+	/**
+	 * Builds a GUI element for switchable options combined with an prefilter applied to every chat message
+	 * 
+	 * @param	{String}	optionID					ID for optionInput DOM node
+	 * @param	{String}	optionTitle					Short description which is shown in chat stream when option is switched
+	 * @param	{String}	optionText					Short description which is displayed in front of actual value
+	 * @param	{String}	accessKey					One letter which indicates the acess key
+	 * @param	{Boolean}	defaultValue				Option status when there is nothing in storage
+	 * @param	{Function}	prefilterFunction			Called when new messages get appened to chat stream but only, if they contain actual user generated content (not on enter messages etc.); has to acceppt four parameters: event{Object}: event object of inserted message, checked{Boolean}: indicates if the corresponding checkbox is checked, nickname{String}: plain nickname, message{Object}: reference to actual message node
+	 * @param	{Function}	[checkboxSwitchCallback]	Called when option is about to be switched, option is only switched if switchCallback returns boolean true
+	 * @param	{Object}	[context]					Indicates where »this« points within prefilterFunction and switchCallback
+	 */
 	registerMessagePrefilter: function(optionID, optionTitle, optionText, accessKey, defaultValue, prefilterFunction, checkboxSwitchCallback, context) {
 		this.registerBoolOption(optionID, optionTitle, optionText, accessKey, defaultValue, checkboxSwitchCallback, context);
 		return (this.messagePrefilters.push(function(event, nickname, message) {
@@ -581,10 +653,21 @@ var BisaChatPlus = {
 		})-1);
 	},
 	
+	/**
+	 * Apply prefilter without generating a GUI element
+	 * 
+	 * @param	{Function}	prefilterFunction	Called when new messages get appened to chat stream but only, if they contain actual user generated content (not on enter messages etc.); has to acceppt four parameters: event{Object}: event object of inserted message, checked{Boolean}: indicates if the corresponding checkbox is checked, nickname{String}: plain nickname, message{Object}: reference to actual message node
+	 * @param	{Object}	[context]			Indicates where »this« points within prefilterFunction and switchCallback
+	 */
 	registerSilentMessagePrefilter: function(prefilterFunction, context) {
 		return (this.messagePrefilters.push(prefilterFunction.bind(context))-1);
 	},
 	
+	/**
+	 * user ID
+	 * 
+	 * @type	{Number}
+	 */
 	get chatUserID() {
 		return API.w.settings['userID'];
 	}

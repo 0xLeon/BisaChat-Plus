@@ -98,7 +98,7 @@ Modules.Backup = {
 						backupTimeString += ((backupTimeObj.getHours() < 10) ? '0' : '')+backupTimeObj.getHours()+':'+((backupTimeObj.getMinutes() < 10) ? '0' : '')+backupTimeObj.getMinutes()+' Uhr';
 						
 						a.addEventListener('click', function(event) {
-							GM_xmlhttprequest({
+							GM_xmlhttpRequest({
 								method: 'GET',
 								url: 'http://projects.swallow-all-lies.com/greasemonkey/files/bisachatPlus/backup/getBackup.php?action=getData&userID='+API.w.settings.userID+'&index='+event.target.getElementsByTagName('input')[0].getAttribute('value'),
 								headers: {

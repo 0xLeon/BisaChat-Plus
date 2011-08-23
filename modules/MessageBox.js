@@ -36,7 +36,7 @@ Modules.MessageBox = {
 				
 				this.inbox.push({
 					timestamp: this.parseDate(API.w.$$('#'+event.target.getAttribute('id')+' span')[0].firstChild.nodeValue.trim().slice(1, -1)),
-					nickname: nickname,
+					nickname: event.target.querySelector('span[onclick]').cloneNode(true),
 					messageHTML: message.innerHTML
 				});
 				API.Storage.setValue('messageBoxData', this.inbox);
@@ -100,12 +100,12 @@ Modules.MessageBox = {
 				var messageTime = ((messageDateObj.getHours() < 10) ? '0'+messageDateObj.getHours() : messageDateObj.getHours())+':'+((messageDateObj.getMinutes() < 10) ? '0'+messageDateObj.getMinutes() : messageDateObj.getMinutes())+':'+((messageDateObj.getSeconds() < 10) ? '0'+messageDateObj.getSeconds() : messageDateObj.getSeconds());
 				
 				timeSpan.appendChild(document.createTextNode('('+messageTime+')'));
-				infoSpan.appendChild(document.createTextNode(item.nickname+':'));
+				infoSpan.appendChild(item.nickname.cloneNode(true));
 				messageSpan.innerHTML = item.messageHTML;
 				li.appendChild(timeSpan);
 				li.appendChild(document.createTextNode(' '));
 				li.appendChild(infoSpan);
-				li.appendChild(document.createTextNode(' '));
+				li.appendChild(document.createTextNode(': '));
 				li.appendChild(messageSpan);
 				node.appendChild(li);
 			}, this);

@@ -87,7 +87,7 @@ Modules.Backup = {
 					
 					API.w.$A(xml.getElementsByTagName('entry')).each(function(item) {
 						var p = new API.w.Element('p');
-						var a = new API.w.Element('a', { href: 'javascript:;' });
+						var a = new API.w.Element('a', { href: 'javascript:;', title: 'Klicken zum einspielen der Datensicherung' });
 						var input = new API.w.Element('input', { 'type': 'hidden', value: String(item.getElementsByTagName('index')[0].firstChild.nodeValue) });
 						var span = new API.w.Element('span');
 						

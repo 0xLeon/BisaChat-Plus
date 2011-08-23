@@ -325,7 +325,7 @@ var BisaChatPlus = {
 	 * 
 	 * @param	{String}	messageText	Text which to post in chat stream
 	 * @param	{Function}	[onFinish]	Gets called after successful posting, ajax transport object passed as first argument
-	 * @param	{Object}	[context]	Indicates where »this« points within onFinish callback
+	 * @param	{Object}	[context]	Indicates where 'this' points within onFinish callback
 	 * @returns	{undefined}				Returns nothing
 	 */
 	pushMessage: function(messageText, onFinish, context) {
@@ -474,7 +474,7 @@ var BisaChatPlus = {
 	 * @param	{String}	overlayID		ID for overlay DOM node
 	 * @param	{String}	icon			URI to icon image, 16*16px recommended
 	 * @param	{String}	title			small button and overlay text
-	 * @param	{Function}	contentBuilder	Generates overlay content, either has to return a DOM node OR accept conent node reference as first parameter
+	 * @param	{Function}	contentBuilder	Generates overlay content, either has to return a DOM node OR accept content node reference as first parameter
 	 * @param	{Function}	[beforeShow]	Called every time the overlay gets displayed
 	 * @returns	{undefined}					Returns nothing
 	 */
@@ -540,7 +540,7 @@ var BisaChatPlus = {
 	 * @param	{String}	optionText		Short description which is displayed in front of actual value
 	 * @param	{String}	defaultValue	Text option value if nothing is saved in storage
 	 * @param	{Function}	[onChange]		Called when new value is set, new value passed as first argument
-	 * @param	{Object}	[context]		Indicates where »this« points within onChange callback
+	 * @param	{Object}	[context]		Indicates where 'this' points within onChange callback
 	 */
 	registerTextOption: function(optionID, optionText, defaultValue, onChange, context) {
 		if (!!API.w.$(optionID)) throw new Error('optionID \''+optionID+'\' already used');
@@ -595,7 +595,7 @@ var BisaChatPlus = {
 	 * @param	{String}	accessKey			One letter which indicates the acess key
 	 * @param	{Boolean}	defaultValue		Option status when there is nothing in storage
 	 * @param	{Function}	[switchCallback]	Called when option is about to be switched, option is only switched if switchCallback returns boolean true
-	 * @param	{Object}	[context]			Indicates where »this« points within switchCallback
+	 * @param	{Object}	[context]			Indicates where 'this' points within switchCallback
 	 */
 	registerBoolOption: function(optionID, optionTitle, optionText, accessKey, defaultValue, switchCallback, context) {
 		if (!!API.w.$(optionID)) throw new Error('optionID \''+optionID+'\' already used');
@@ -644,7 +644,7 @@ var BisaChatPlus = {
 	 * @param	{Boolean}	defaultValue				Option status when there is nothing in storage
 	 * @param	{Function}	prefilterFunction			Called when new messages get appened to chat stream but only, if they contain actual user generated content (not on enter messages etc.); has to acceppt four parameters: event{Object}: event object of inserted message, checked{Boolean}: indicates if the corresponding checkbox is checked, nickname{String}: plain nickname, message{Object}: reference to actual message node
 	 * @param	{Function}	[checkboxSwitchCallback]	Called when option is about to be switched, option is only switched if switchCallback returns boolean true
-	 * @param	{Object}	[context]					Indicates where »this« points within prefilterFunction and switchCallback
+	 * @param	{Object}	[context]					Indicates where 'this' points within prefilterFunction and switchCallback
 	 */
 	registerMessagePrefilter: function(optionID, optionTitle, optionText, accessKey, defaultValue, prefilterFunction, checkboxSwitchCallback, context) {
 		this.registerBoolOption(optionID, optionTitle, optionText, accessKey, defaultValue, checkboxSwitchCallback, context);
@@ -657,7 +657,7 @@ var BisaChatPlus = {
 	 * Apply prefilter without generating a GUI element
 	 * 
 	 * @param	{Function}	prefilterFunction	Called when new messages get appened to chat stream but only, if they contain actual user generated content (not on enter messages etc.); has to acceppt four parameters: event{Object}: event object of inserted message, checked{Boolean}: indicates if the corresponding checkbox is checked, nickname{String}: plain nickname, message{Object}: reference to actual message node
-	 * @param	{Object}	[context]			Indicates where »this« points within prefilterFunction and switchCallback
+	 * @param	{Object}	[context]			Indicates where 'this' points within prefilterFunction
 	 */
 	registerSilentMessagePrefilter: function(prefilterFunction, context) {
 		return (this.messagePrefilters.push(prefilterFunction.bind(context))-1);

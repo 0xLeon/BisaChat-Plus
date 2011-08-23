@@ -112,7 +112,7 @@ Modules.Backup = {
 						}, true);
 						
 						span.appendChild(document.createTextNode('Datensicherung vom '+backupTimeString));
-						a.appendChild(input);
+						span.appendChild(input);
 						a.appendChild(span);
 						p.appendChild(a);
 						node.appendChild(p);

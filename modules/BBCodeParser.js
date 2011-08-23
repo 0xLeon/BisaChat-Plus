@@ -39,10 +39,12 @@ Modules.BBCodeParser = {
 				message.innerHTML = this.parse(message.innerHTML);
 			}
 			else {
-				message.innerHTML = message.innerHTML.replace(this.TEXT_REGEX, function(mString, openingTag, openingTagOption, closingTag, offset, string) {
-					if (this.isValidTag(openingTag) || this.isValidTag(closingTag)) return '';
-					return mString;
-				});
+				message.innerHTML = message.innerHTML.replace(this.TEXT_REGEX, (function(context) {
+					return function(mString, openingTag, openingTagOption, closingTag, offset, string) {
+						if (context.isValidTag(openingTag) || context.isValidTag(closingTag)) return '';
+						return mString;
+					}
+				})(this));
 			}
 		}, null, this);
 	},

@@ -14,6 +14,18 @@ Modules.MessageBox = {
 		this.getData();
 		this.registerPrefilter();
 		this.buildOverlay();
+		this.callerObj.watch('isAway', function(id, oldValue, newValue) {
+			if ((oldValue === false) && (newValue === true) && !!(API.w.$$('#messageBox .overlayContent ul')[0])) {
+				if (API.w.$$('#messageBox .overlayContent ul')[0].lastChild.firstChild.nodeName.toLowerCase() !== 'hr') {
+					var li = new API.w.Element('li');
+					
+					li.appendChild(new API.w.Element('hr', { style: 'display:block; width:80%;' }));
+					API.w.$$('#messageBox .overlayContent ul')[0].appendChild(li);
+				}
+			}
+			
+			return newValue;
+		}.bind(this));
 	},
 	
 	getData: function() {

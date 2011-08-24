@@ -3,17 +3,52 @@
  * Copyright (c) 2011, Stefan Hahn
  */
 var BisaChatPlus = {
+	/**
+	 * BisaChat Plus Version
+	 * 
+	 * @type	{String}
+	 */
 	get VERSION() {
 		return '{version}';
 	},
+	
+	/**
+	 * Update URI
+	 * 
+	 * @type	{String}
+	 */
 	get UPDATE_URI() {
 		return 'http://projects.swallow-all-lies.com/greasemonkey/files/bisachatPlus/';
 	},
 	
+	/**
+	 * Indicates wether or not the user is away
+	 * 
+	 * @type	{Boolean}
+	 */
 	isAway: false,
+	
+	/**
+	 * If available, contains the user's away status message
+	 * 
+	 * @type	{String}
+	 */
 	awayMessage: '',
 	
+	/**
+	 * Array of all registered prefilter functions
+	 * 
+	 * @private
+	 * @type	{Array}
+	 */
 	messagePrefilters: [ ],
+	
+	/**
+	 * Hash-like object of all access key listeners with access key as key
+	 * 
+	 * @private
+	 * @type	{Object}
+	 */
 	keydownListeners: { },
 	
 	init: function() {

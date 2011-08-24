@@ -619,7 +619,7 @@ var BisaChatPlus = {
 	 * @param	{String}	optionID			ID for optionInput DOM node
 	 * @param	{String}	optionTitle			Short description which is shown in chat stream when option is switched
 	 * @param	{String}	optionText			Short description which is displayed in front of actual value
-	 * @param	{String}	accessKey			One letter which indicates the acess key
+	 * @param	{String}	[accessKey]			One letter which indicates the acess key
 	 * @param	{Boolean}	defaultValue		Option status when there is nothing in storage
 	 * @param	{Function}	[switchCallback]	Called when option is about to be switched, option is only switched if switchCallback returns boolean true
 	 * @param	{Object}	[context]			Indicates where 'this' points within switchCallback
@@ -667,7 +667,7 @@ var BisaChatPlus = {
 	 * @param	{String}	optionID					ID for optionInput DOM node
 	 * @param	{String}	optionTitle					Short description which is shown in chat stream when option is switched
 	 * @param	{String}	optionText					Short description which is displayed in front of actual value
-	 * @param	{String}	accessKey					One letter which indicates the acess key
+	 * @param	{String}	[accessKey]					One letter which indicates the acess key
 	 * @param	{Boolean}	defaultValue				Option status when there is nothing in storage
 	 * @param	{Function}	prefilterFunction			Called when new messages get appened to chat stream but only, if they contain actual user generated content (not on enter messages etc.); has to acceppt four parameters: event{Object}: event object of inserted message, checked{Boolean}: indicates if the corresponding checkbox is checked, nickname{String}: plain nickname, message{Object}: reference to actual message node
 	 * @param	{Function}	[checkboxSwitchCallback]	Called when option is about to be switched, option is only switched if switchCallback returns boolean true

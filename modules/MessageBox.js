@@ -86,7 +86,11 @@ Modules.MessageBox = {
 		node.appendChild(document.createTextNode('Keine Nachrichten vorhanden.'));
 		
 		if (this.inbox.length > 0) {
-			node = new API.w.Element('ul', { style: 'list-style-type:none;' });
+			node = new API.w.Element('div');
+			var ul = new API.w.Element('ul', { style: 'list-style-type:none;' })
+			
+			var p = new API.w.Element('p', { 'class': 'smallButton' });
+			var a = new API.w.Element('a', { href: 'javascript:;' });
 			
 			this.inbox.each(function(item, key) {
 				var li = new API.w.Element('li', { id: 'whisperMessage'+key });
@@ -105,8 +109,25 @@ Modules.MessageBox = {
 				li.appendChild(infoSpan);
 				li.appendChild(document.createTextNode(' '));
 				li.appendChild(messageSpan);
-				node.appendChild(li);
+				ul.appendChild(li);
 			}, this);
+			
+			a.addEventListener('click', function(event) {
+				this.clearInbox();
+				new API.w.Effect.Fade(API.w.$$('#messageBox .overlayContent')[0].firstChild, {
+					afterFinish: function(effect) {
+						effect.element.parentNode.removeChild(effect.element);
+						API.w.$$('#messageBox .overlayContent')[0].style.display = 'none';
+						API.w.$$('#messageBox .overlayContent')[0].appendChild(this.overlayContentBuilder());
+						new API.w.Effect.Appear(API.w.$$('#messageBox .overlayContent')[0]);
+					}.bind(this)
+				});
+			}.bindAsEventListener(this), true);
+			
+			a.appendChild(document.createTextNode('Alle Nachrichten löschen'));
+			p.appendChild(a);
+			node.appendChild(ul);
+			node.appendChild(a);
 		}
 		
 		return node;

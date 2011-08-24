@@ -648,7 +648,7 @@ var BisaChatPlus = {
 	/**
 	 * Apply prefilter without generating a GUI element
 	 * 
-	 * @param	{Function}	prefilterFunction	Called when new messages get appened to chat stream but only, if they contain actual user generated content (not on enter messages etc.); has to acceppt four parameters: event{Object}: event object of inserted message, checked{Boolean}: indicates if the corresponding checkbox is checked, nickname{String}: plain nickname, message{Object}: reference to actual message node
+	 * @param	{Function}	prefilterFunction	Called when new messages get appened to chat stream but only, if they contain actual user generated content (not on enter messages etc.); has to acceppt three parameters: event{Object}: event object of inserted message, nickname{String}: plain nickname, message{Object}: reference to actual message node
 	 * @param	{Object}	[context]			Indicates where 'this' points within prefilterFunction
 	 */
 	registerSilentMessagePrefilter: function(prefilterFunction, context) {

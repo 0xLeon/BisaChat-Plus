@@ -13,16 +13,34 @@ Modules.TimeoutKiller = {
 	},
 	
 	registerPrefilters: function() {
-		this.callerObj.registerSilentMessagePrefilter(function(event, nickname, message) {
-			if (event.target.className.toLowerCase().indexOf('ownmessage') > -1) {
-				if (this.antiTimeoutHandler !== null) {
-					API.w.clearTimeout(this.antiTimeoutHandler);
-					this.antiTimeoutHandler = null;
-				}
-				this.antiTimeoutHandler = API.w.setTimeout(function() {
-					this.callerObj.pushMessage('/f '+API.w.settings.username+', Anti-Timeout-Message');
-				}.bind(this), 300000);
+		this.callerObj.registerMessagePrefilter('timeoutKiller', 'Timeout-Killer', 'Timeout-Killer aktivieren', 't', true, function(event, checked, nickname, message) {
+			if (checked && (event.target.className.toLowerCase().indexOf('ownmessage') > -1)) {
+				this.startKiller();
 			}
+		}, 
+		function(event, checked) {
+			if (checked) {
+				this.startKiller();
+			}
+			else {
+				this.stopKiller();
+			}
+			
+			return true;
 		}, this);
+	},
+	
+	startKiller: function() {
+		this.stopKiller();
+		this.antiTimeoutHandler = API.w.setTimeout(function() {
+			this.callerObj.pushMessage('/f '+API.w.settings.username+', Timeout-Killer-Message');
+		}.bind(this), 300000);
+	},
+	
+	stopKiller: function() {
+		if (this.antiTimeoutHandler !== null) {
+			API.w.clearTimeout(this.antiTimeoutHandler);
+			this.antiTimeoutHandler = null;
+		}
 	}
 };

@@ -49,6 +49,13 @@ Modules.MessageBox = {
 				API.Storage.setValue('messageBoxData', this.inbox);
 				this.unread++;
 				
+				if (this.inbox.length === 1) {
+					API.w.$$('#messageBox .overlayContent')[0].replaceChild(this.overlayContentBuilder(), API.w.$$('#messageBox .overlayContent')[0].firstChild);
+				}
+				else {
+					this.appendMessage(this.inbox.last(), this.inbox.length, API.w.$$('#messageBox .overlayContent ul')[0]);
+				}
+				
 				if (!!API.w.$('messageBoxSmallButton')) {
 					this.updateSpan();
 				}
@@ -61,7 +68,6 @@ Modules.MessageBox = {
 			return this.overlayContentBuilder();
 		}.bind(this),
 		function() {
-			API.w.$$('#messageBox .overlayContent')[0].replaceChild(this.overlayContentBuilder(), API.w.$$('#messageBox .overlayContent')[0].firstChild);
 			this.unread = 0;
 			this.updateSpan();
 		}.bind(this));
@@ -93,23 +99,7 @@ Modules.MessageBox = {
 			var a = new API.w.Element('a', { href: 'javascript:;' });
 			
 			this.inbox.each(function(item, key) {
-				var li = new API.w.Element('li', { id: 'whisperMessage'+key });
-				var timeSpan = new API.w.Element('span', { style: 'font-size:0.8em' });
-				var infoSpan = new API.w.Element('span', { style: 'font-weight:bold;' });
-				var messageSpan = new API.w.Element('span', { 'class': 'chatMessageText' });
-				
-				var messageDateObj = new Date(item.timestamp);
-				var messageTime = ((messageDateObj.getHours() < 10) ? '0'+messageDateObj.getHours() : messageDateObj.getHours())+':'+((messageDateObj.getMinutes() < 10) ? '0'+messageDateObj.getMinutes() : messageDateObj.getMinutes())+':'+((messageDateObj.getSeconds() < 10) ? '0'+messageDateObj.getSeconds() : messageDateObj.getSeconds());
-				
-				timeSpan.appendChild(document.createTextNode('('+messageTime+')'));
-				infoSpan.innerHTML = item.nickname;
-				messageSpan.innerHTML = item.message;
-				li.appendChild(timeSpan);
-				li.appendChild(document.createTextNode(' '));
-				li.appendChild(infoSpan);
-				li.appendChild(document.createTextNode(' '));
-				li.appendChild(messageSpan);
-				ul.appendChild(li);
+				this.appendMessage(item, key, ul);
 			}, this);
 			
 			a.addEventListener('click', function(event) {
@@ -131,5 +121,25 @@ Modules.MessageBox = {
 		}
 		
 		return node;
+	},
+	
+	appendMessage: function(messageObj, index, targetNode) {
+		var li = new API.w.Element('li', { id: 'whisperMessage'+index });
+		var timeSpan = new API.w.Element('span', { style: 'font-size:0.8em' });
+		var infoSpan = new API.w.Element('span', { style: 'font-weight:bold;' });
+		var messageSpan = new API.w.Element('span', { 'class': 'chatMessageText' });
+		
+		var messageDateObj = new Date(messageObj.timestamp);
+		var messageTime = ((messageDateObj.getHours() < 10) ? '0'+messageDateObj.getHours() : messageDateObj.getHours())+':'+((messageDateObj.getMinutes() < 10) ? '0'+messageDateObj.getMinutes() : messageDateObj.getMinutes())+':'+((messageDateObj.getSeconds() < 10) ? '0'+messageDateObj.getSeconds() : messageDateObj.getSeconds());
+		
+		timeSpan.appendChild(document.createTextNode('('+messageTime+')'));
+		infoSpan.innerHTML = messageObj.nickname;
+		messageSpan.innerHTML = messageObj.message;
+		li.appendChild(timeSpan);
+		li.appendChild(document.createTextNode(' '));
+		li.appendChild(infoSpan);
+		li.appendChild(document.createTextNode(' '));
+		li.appendChild(messageSpan);
+		targetNode.appendChild(li);
 	}
 };

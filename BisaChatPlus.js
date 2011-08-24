@@ -105,7 +105,7 @@ var BisaChatPlus = {
 		API.addStyle('.overlay > div { padding: 15px 25px; }');
 		API.addStyle('.overlayCloseButton { float: right; }');
 		API.addStyle('.overlayCloseButton img { padding: 15px; }');
-		API.addStyle('.overlayContent { margin: 5px 0px 3px; }');
+		API.addStyle('.overlayContent { margin: 5px 0px 3px; max-height: '+(API.inHeight-110)+'px; overflow: auto; }');
 		API.addStyle('.boxSmallButton, .overlaySmallButton { position: relative; }');
 		API.addStyle('.bcplusBox { position: absolute; width: 255px; height: 155px !important; top: -160px; left: 0px; padding-left: 1px; padding-top: 1px; -moz-border-radius-bottomleft: 0px; -moz-border-radius-bottomright: 0px; }');
 		API.addStyle('.textOptionValue { cursor: pointer; }');

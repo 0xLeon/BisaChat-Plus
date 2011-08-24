@@ -663,6 +663,12 @@ var BisaChatPlus = {
 		return (this.messagePrefilters.push(prefilterFunction.bind(context))-1);
 	},
 	
+	/**
+	 * Parses message date strings and returns an unix timestamp
+	 * 
+	 * @param	{String}	timeString	Valid time string, should look like this: <hours>:<minutes>:<seconds>
+	 * @returns	{Number}				unix timestamp in miliseconds
+	 */
 	parseMessageDate: function(timeString) {
 		var timeArray = timeString.split(':');
 		var today = new Date();

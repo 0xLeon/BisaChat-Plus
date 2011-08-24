@@ -35,7 +35,7 @@ Modules.MessageBox = {
 				(new Audio(Media.bing.dataURI)).play();
 				
 				this.inbox.push({
-					timestamp: this.parseDate(API.w.$$('#'+event.target.getAttribute('id')+' span')[0].firstChild.nodeValue.trim().slice(1, -1)),
+					timestamp: this.callerObj.parseMessageDate(API.w.$$('#'+event.target.getAttribute('id')+' span')[0].firstChild.nodeValue.trim().slice(1, -1)),
 					nickname: event.target.querySelector('span[onclick]').innerHTML.trim(),
 					message: message.innerHTML.trim()
 				});
@@ -71,15 +71,6 @@ Modules.MessageBox = {
 		
 		if (this.unread > 0) text += ' ('+this.unread+')';
 		API.w.$$('#messageBoxSmallButton span')[0].firstChild.replaceData(0, API.w.$$('#messageBoxSmallButton span')[0].firstChild.nodeValue.length, text);
-	},
-	
-	parseDate: function(timeString) {
-		var timeArray = timeString.split(':');
-		var today = new Date();
-		
-		if (timeArray.length !== 3) throw new Error('invalid timeString »'+timeString+'«');
-		
-		return ((new Date(today.getFullYear(), today.getMonth(), today.getDate(), Number(timeArray[0]), Number(timeArray[1]), Number(timeArray[2]))).getTime());
 	},
 	
 	overlayContentBuilder: function() {

@@ -663,6 +663,15 @@ var BisaChatPlus = {
 		return (this.messagePrefilters.push(prefilterFunction.bind(context))-1);
 	},
 	
+	parseMessageDate: function(timeString) {
+		var timeArray = timeString.split(':');
+		var today = new Date();
+		
+		if (timeArray.length !== 3) throw new Error('invalid timeString »'+timeString+'«');
+		
+		return ((new Date(today.getFullYear(), today.getMonth(), today.getDate(), Number(timeArray[0]), Number(timeArray[1]), Number(timeArray[2]))).getTime());
+	},
+	
 	/**
 	 * user ID
 	 * 

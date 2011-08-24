@@ -40,7 +40,7 @@ Modules.Highlighting = {
 			this.buildRegExp(optionValue);
 		}, this);
 		this.callerObj.registerMessagePrefilter('highlighting', 'Highlighting', 'Highlighting aktivieren', 'l', false, function(event, checked, nickname, message) {
-			if (checked && !document.hasFocus()) {
+			if (checked && !document.hasFocus() && (nickname.toLowerCase() !== 'chatbot')) {
 				if (this.regExp === null) {
 					this.buildRegExp(API.Storage.getValue('highlightingTextValue', API.w.settings.username));
 				}

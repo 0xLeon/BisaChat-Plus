@@ -621,7 +621,7 @@ var BisaChatPlus = {
 	 * @param	{String}	optionText			Short description which is displayed in front of actual value
 	 * @param	{String}	[accessKey]			One letter which indicates the acess key
 	 * @param	{Boolean}	defaultValue		Option status when there is nothing in storage
-	 * @param	{Function}	[switchCallback]	Called when option is about to be switched, option is only switched if switchCallback returns boolean true
+	 * @param	{Function}	[switchCallback]	Called when option is about to be switched, option is only switched if switchCallback returns boolean true, two arguments passed: event{Object}: checkbox change event object, checked{Boolean}: wether or not the box is checked
 	 * @param	{Object}	[context]			Indicates where 'this' points within switchCallback
 	 */
 	registerBoolOption: function(optionID, optionTitle, optionText, accessKey, defaultValue, switchCallback, context) {
@@ -669,8 +669,8 @@ var BisaChatPlus = {
 	 * @param	{String}	optionText					Short description which is displayed in front of actual value
 	 * @param	{String}	[accessKey]					One letter which indicates the acess key
 	 * @param	{Boolean}	defaultValue				Option status when there is nothing in storage
-	 * @param	{Function}	prefilterFunction			Called when new messages get appened to chat stream but only, if they contain actual user generated content (not on enter messages etc.); has to acceppt four parameters: event{Object}: event object of inserted message, checked{Boolean}: indicates if the corresponding checkbox is checked, nickname{String}: plain nickname, message{Object}: reference to actual message node
-	 * @param	{Function}	[checkboxSwitchCallback]	Called when option is about to be switched, option is only switched if switchCallback returns boolean true
+	 * @param	{Function}	prefilterFunction			Called when new messages get appened to chat stream but only, if they contain actual user generated content (not on enter messages etc.); has to accept four parameters: event{Object}: event object of inserted message, checked{Boolean}: indicates if the corresponding checkbox is checked, nickname{String}: plain nickname, message{Object}: reference to actual message node
+	 * @param	{Function}	[checkboxSwitchCallback]	Called when option is about to be switched, option is only switched if switchCallback returns boolean true, two arguments passed: event{Object}: checkbox change event object, checked{Boolean}: wether or not the box is checked
 	 * @param	{Object}	[context]					Indicates where 'this' points within prefilterFunction and switchCallback
 	 */
 	registerMessagePrefilter: function(optionID, optionTitle, optionText, accessKey, defaultValue, prefilterFunction, checkboxSwitchCallback, context) {
@@ -683,7 +683,7 @@ var BisaChatPlus = {
 	/**
 	 * Apply prefilter without generating a GUI element
 	 * 
-	 * @param	{Function}	prefilterFunction	Called when new messages get appened to chat stream but only, if they contain actual user generated content (not on enter messages etc.); has to acceppt three parameters: event{Object}: event object of inserted message, nickname{String}: plain nickname, message{Object}: reference to actual message node
+	 * @param	{Function}	prefilterFunction	Called when new messages get appened to chat stream but only, if they contain actual user generated content (not on enter messages etc.); has to accept three parameters: event{Object}: event object of inserted message, nickname{String}: plain nickname, message{Object}: reference to actual message node
 	 * @param	{Object}	[context]			Indicates where 'this' points within prefilterFunction
 	 */
 	registerSilentMessagePrefilter: function(prefilterFunction, context) {

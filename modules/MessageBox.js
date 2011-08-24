@@ -14,11 +14,6 @@ Modules.MessageBox = {
 		this.getData();
 		this.registerPrefilter();
 		this.buildOverlay();
-		this.callerObj.watch('isAway', function(id, oldValue, newValue) {
-			if ((oldValue === false) && (newValue === true)) this.clearInbox();
-			
-			return newValue;
-		}.bind(this));
 	},
 	
 	getData: function() {

@@ -93,13 +93,15 @@ Modules.MessageBox = {
 		
 		if (this.inbox.length > 0) {
 			node = new API.w.Element('div');
-			var ul = new API.w.Element('ul', { style: 'list-style-type:none;' })
+			var messageUl = new API.w.Element('ul', { style: 'list-style-type:none;' });
 			
-			var p = new API.w.Element('p', { 'class': 'smallButton' });
+			var buttonWrapper = new API.w.Element('div', { 'class': 'smallButtons' });
+			var buttonUl = new API.w.Element('ul');
+			var li = new API.w.Element('li', { style: 'float:left;' });
 			var a = new API.w.Element('a', { href: 'javascript:;' });
 			
 			this.inbox.each(function(item, key) {
-				this.appendMessage(item, key, ul);
+				this.appendMessage(item, key, messageUl);
 			}, this);
 			
 			a.addEventListener('click', function(event) {
@@ -115,9 +117,11 @@ Modules.MessageBox = {
 			}.bindAsEventListener(this), true);
 			
 			a.appendChild(document.createTextNode('Alle Nachrichten löschen'));
-			p.appendChild(a);
-			node.appendChild(ul);
-			node.appendChild(a);
+			li.appendChild(a);
+			buttonUl.appendChild(li);
+			buttonWrapper.appendChild(buttonUl);
+			node.appendChild(messageUl);
+			node.appendChild(buttonWrapper);
 		}
 		
 		return node;

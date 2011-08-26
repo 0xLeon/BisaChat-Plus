@@ -148,7 +148,7 @@ var API = {
 					elements.push(this.$(arguments[i]));
 				}
 				
-				return elements;
+				return API.w.$A(elements);
 			}
 
 			if (typeof element === 'string') {

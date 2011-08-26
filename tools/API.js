@@ -125,6 +125,58 @@ var API = {
 	},
 	
 	/**
+	 * Selector Engine
+	 * Provides methods for selecting elements with DOM tree
+	 * 
+	 * @type	{Object}
+	 */
+	Selector: {
+		/**
+		 * Gets element nodes via ID
+		 * Accepts as many parameters as you want
+		 * Returns an array of all found nodes
+		 * 
+		 * Based on Prototype function
+		 * Copyright (c) 2005-2010 Sam Stephenson
+		 * 
+		 * @param	{Object|String}		element		Node or ID string
+		 * @returns	{Object|Array}					Single element node or array of nodes
+		 */
+		$: function(element) {
+			if (arguments.length > 1) {
+				for (var i = 0, elements = [], length = arguments.length; i < length; i++) {
+					elements.push(this.$(arguments[i]));
+				}
+				
+				return elements;
+			}
+
+			if (typeof element === 'string') {
+				element = document.getElementById(element);
+			}
+			
+			return element;
+		},
+		
+		/**
+		 * Gets element nodes via CSS expression
+		 * Accepts as many parameters as you want
+		 * Returns an array of all found nodes
+		 * 
+		 * Based on Prototype function
+		 * Copyright (c) 2005-2010 Sam Stephenson
+		 * 
+		 * @param	{String}	cssExpression		CSS expression
+		 * @returns	{Array}							Array of nodes
+		 */
+		$$: function() {
+			var expression = API.w.$A(arguments).join(', ');
+			
+			return API.w.$A(document.documentElement.querySelectorAll(expression));
+		}
+	},
+	
+	/**
 	 * Add style rules to document
 	 * 
 	 * @param	{String}	CSSString	Valid CSS style rules
@@ -190,3 +242,7 @@ var API = {
 		return parseInt(window.innerHeight);
 	}
 };
+
+// wrappers for selector functions
+window.$ = API.Selector.$;
+window.$$ = API.Selector.$$;

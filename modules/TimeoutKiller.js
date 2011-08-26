@@ -16,6 +16,10 @@ Modules.TimeoutKiller = {
 		this.callerObj.registerMessagePrefilter('timeoutKiller', 'Timeout-Killer', 'Timeout-Killer aktivieren', 't', true, function(event, checked, nickname, message) {
 			if (checked && (event.target.className.toLowerCase().indexOf('ownmessage') > -1)) {
 				this.startKiller();
+				
+				if ((event.target.className.toLowerCase().indexOf('messagetype7') > -1) && (message.firstChild.nodeValue === this.message)) {
+					event.target.parentNode.removeChild(event.target);
+				}
 			}
 		}, 
 		function(event, checked) {
@@ -33,9 +37,8 @@ Modules.TimeoutKiller = {
 	startKiller: function() {
 		this.stopKiller();
 		this.antiTimeoutHandler = API.w.setTimeout(function() {
-			this.callerObj.pushMessage('/f '+API.w.settings.username+', '+this.generateMessage(15), function() {
-				this.callerObj.pushInfo('Dies war eine Timeout-Killing-Message');
-			}, this);
+			this.message = this.generateMessage(15);
+			this.callerObj.pushMessage('/f '+API.w.settings.username+', '+this.message);
 		}.bind(this), 300000);
 	},
 	

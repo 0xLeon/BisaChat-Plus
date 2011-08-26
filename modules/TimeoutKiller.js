@@ -33,7 +33,9 @@ Modules.TimeoutKiller = {
 	startKiller: function() {
 		this.stopKiller();
 		this.antiTimeoutHandler = API.w.setTimeout(function() {
-			this.callerObj.pushMessage('/f '+API.w.settings.username+', Timeout-Killer-Message');
+			this.callerObj.pushMessage('/f '+API.w.settings.username+', '+this.generateMessage(15), function() {
+				this.callerObj.pushInfo('Dies war eine Timeout-Killing-Message');
+			}, this);
 		}.bind(this), 300000);
 	},
 	
@@ -42,5 +44,15 @@ Modules.TimeoutKiller = {
 			API.w.clearTimeout(this.antiTimeoutHandler);
 			this.antiTimeoutHandler = null;
 		}
+	},
+	
+	generateMessage: function(length) {
+		var message = '';
+		
+		while (length--) {
+			message += String.fromCharCode(parseInt(Math.round(33 + Math.random() * 93)));
+		}
+		
+		return message;
 	}
 };

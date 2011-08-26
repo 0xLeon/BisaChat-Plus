@@ -5,6 +5,7 @@
 Modules.TimeoutKiller = {
 	callerObj: null,
 	antiTimeoutHandler: null,
+	message: '',
 	
 	init: function(callerObj) {
 		this.callerObj = callerObj;

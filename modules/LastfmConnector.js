@@ -23,7 +23,7 @@ Modules.LastfmConnector = {
 			}
 		}.bindAsEventListener(this), true);
 		
-		API.w.$$('#chatForm p')[0].insertBefore(input, API.w.$('chatLoading'));
+		$$('#chatForm p')[0].insertBefore(input, $('chatLoading'));
 	},
 	
 	registerOption: function() {
@@ -35,14 +35,14 @@ Modules.LastfmConnector = {
 	},
 	
 	getTrack: function() {
-		API.w.$('nowPlayingButton').style.opacity = 0.3;
-		API.w.$('nowPlayingButton').disabled = true;
+		$('nowPlayingButton').style.opacity = 0.3;
+		$('nowPlayingButton').disabled = true;
 		this.loadingTrack = true;
 		
 		if (API.Storage.getValue('lastfmUsernameValue', undefined) === undefined) {
 			this.callerObj.pushInfo('Error catching track! Username not set');
-			API.w.$('nowPlayingButton').style.opacity = 1.0;
-			API.w.$('nowPlayingButton').disabled = false;
+			$('nowPlayingButton').style.opacity = 1.0;
+			$('nowPlayingButton').disabled = false;
 			this.loadingTrack = false;
 			return false;
 		}
@@ -82,15 +82,15 @@ Modules.LastfmConnector = {
 					this.callerObj.pushInfo('Error catching track! '+e.message);
 				}
 				finally {
-					API.w.$('nowPlayingButton').style.opacity = 1.0;
-					API.w.$('nowPlayingButton').disabled = false;
+					$('nowPlayingButton').style.opacity = 1.0;
+					$('nowPlayingButton').disabled = false;
 					this.loadingTrack = false;
 				}
 			}.bind(this),
 			onerror: function() {
 				this.callerObj.pushInfo('Error catching track! Connection failed');
-				API.w.$('nowPlayingButton').style.opacity = 1.0;
-				API.w.$('nowPlayingButton').disabled = false;
+				$('nowPlayingButton').style.opacity = 1.0;
+				$('nowPlayingButton').disabled = false;
 				this.loadingTrack = false;
 			}.bind(this)
 		});

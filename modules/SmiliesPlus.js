@@ -9,12 +9,12 @@ Modules.SmiliesPlus = {
 		this.callerObj = callerObj;
 		
 		API.addStyle('#smiliesList li { border: none !important; margin-left: 3px; margin-right: 3px; height: 30px; float: left; }');
-		if (API.Storage.getValue('smiliesActiveStatus', false)) API.w.$('chatForm').appendChild(new API.w.Element('input', { id: 'enablesmilies', name: 'enablesmilies', type: 'hidden', value: 'on' }));
+		if (API.Storage.getValue('smiliesActiveStatus', false)) $('chatForm').appendChild(new API.w.Element('input', { id: 'enablesmilies', name: 'enablesmilies', type: 'hidden', value: 'on' }));
 		this.callerObj.buildBox('smilies', './wcf/images/smilies/smile.png', 'Smileys', function() {
 			var smiliesListDiv = new API.w.Element('div', { id: 'smiliesList' });
 			var smiliesUl = new API.w.Element('ul', { 'class': 'smileys' });
 			
-			(API.w.$$('#smileyList ul > li')).each(function(item) {
+			$$('#smileyList ul > li').each(function(item) {
 				smiliesUl.appendChild(item.cloneNode(true));
 			});
 			
@@ -38,11 +38,11 @@ Modules.SmiliesPlus = {
 			}
 		}, function(event, checked) {
 			if (checked) {
-				if (!!API.w.$('enablesmilies')) API.w.$('enablesmilies').parentNode.removeChild(API.w.$('enablesmilies'));
-				API.w.$('chatForm').appendChild(new API.w.Element('input', { id: 'enablesmilies', name: 'enablesmilies', type: 'hidden', value: 'on' }));
+				if (!!$('enablesmilies')) $('enablesmilies').parentNode.removeChild($('enablesmilies'));
+				$('chatForm').appendChild(new API.w.Element('input', { id: 'enablesmilies', name: 'enablesmilies', type: 'hidden', value: 'on' }));
 			}
 			else {
-				if (!!API.w.$('enablesmilies')) API.w.$('enablesmilies').parentNode.removeChild(API.w.$('enablesmilies'));
+				if (!!$('enablesmilies')) $('enablesmilies').parentNode.removeChild($('enablesmilies'));
 			}
 			
 			return true;

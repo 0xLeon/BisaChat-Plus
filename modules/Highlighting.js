@@ -20,7 +20,7 @@ Modules.Highlighting = {
 	},
 	
 	removeBasicHighlighting: function() {
-		var basicHighlightingButton = API.w.$$('#chatOptions .smallButtons > ul > li')[2];
+		var basicHighlightingButton = $$('#chatOptions .smallButtons > ul > li')[2];
 		API.w.chat.enableAnimating = false;
 		
 		basicHighlightingButton.style.overflow = 'hidden';
@@ -56,13 +56,13 @@ Modules.Highlighting = {
 	addListener: function() {
 		document.addEventListener('blur', function(event) {
 			if (API.Storage.getValue('blurHRStatus', false)) {
-				API.w.$$('#chatMessage'+API.w.chat.activeUserID+' ul .blurHr').each(function(item) {
+				$$('#chatMessage'+API.w.chat.activeUserID+' ul .blurHr').each(function(item) {
 					item.parentNode.removeChild(item);
 				});
 				var line = (new API.w.Element('li', { 'class': 'blurHr' }));
 				
 				line.appendChild(new API.w.Element('hr', { style: 'display:block; width:75%;' }));
-				API.w.$$('#chatMessage'+API.w.chat.activeUserID+' ul')[0].appendChild(line);
+				$$('#chatMessage'+API.w.chat.activeUserID+' ul')[0].appendChild(line);
 			}
 		}, false);
 	},

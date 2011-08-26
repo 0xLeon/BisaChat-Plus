@@ -186,7 +186,7 @@ var API = {
 		var styleNode = new this.w.Element('style', { 'type': 'text/css' });
 		
 		styleNode.appendChild(document.createTextNode(CSSString));
-		this.w.$$('head')[0].appendChild(styleNode);
+		this.Selector.$$('head')[0].appendChild(styleNode);
 	},
 	
 	/**

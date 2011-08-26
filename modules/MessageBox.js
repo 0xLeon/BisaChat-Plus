@@ -15,12 +15,12 @@ Modules.MessageBox = {
 		this.registerPrefilter();
 		this.buildOverlay();
 		this.callerObj.watch('isAway', function(id, oldValue, newValue) {
-			if ((oldValue === false) && (newValue === true) && !!(API.w.$$('#messageBox .overlayContent ul')[0])) {
-				if (API.w.$$('#messageBox .overlayContent ul')[0].lastChild.firstChild.nodeName.toLowerCase() !== 'hr') {
+			if ((oldValue === false) && (newValue === true) && !!($$('#messageBox .overlayContent ul')[0])) {
+				if ($$('#messageBox .overlayContent ul')[0].lastChild.firstChild.nodeName.toLowerCase() !== 'hr') {
 					var li = new API.w.Element('li');
 					
 					li.appendChild(new API.w.Element('hr', { style: 'display:block; width:80%;' }));
-					API.w.$$('#messageBox .overlayContent ul')[0].appendChild(li);
+					$$('#messageBox .overlayContent ul')[0].appendChild(li);
 				}
 			}
 			
@@ -42,7 +42,7 @@ Modules.MessageBox = {
 				(new Audio(Media.bing.dataURI)).play();
 				
 				this.inbox.push({
-					timestamp: this.callerObj.parseMessageDate(API.w.$$('#'+event.target.getAttribute('id')+' span')[0].firstChild.nodeValue.trim().slice(1, -1)),
+					timestamp: this.callerObj.parseMessageDate($$('#'+event.target.getAttribute('id')+' span')[0].firstChild.nodeValue.trim().slice(1, -1)),
 					nickname: event.target.querySelector('span[onclick]').innerHTML.trim(),
 					message: message.innerHTML.trim()
 				});
@@ -50,13 +50,13 @@ Modules.MessageBox = {
 				this.unread++;
 				
 				if (this.inbox.length === 1) {
-					API.w.$$('#messageBox .overlayContent')[0].replaceChild(this.overlayContentBuilder(), API.w.$$('#messageBox .overlayContent')[0].firstChild);
+					$$('#messageBox .overlayContent')[0].replaceChild(this.overlayContentBuilder(), $$('#messageBox .overlayContent')[0].firstChild);
 				}
 				else {
-					this.appendMessage(this.inbox.last(), this.inbox.length, API.w.$$('#messageBox .overlayContent ul')[0]);
+					this.appendMessage(this.inbox.last(), this.inbox.length, $$('#messageBox .overlayContent ul')[0]);
 				}
 				
-				if (!!API.w.$('messageBoxSmallButton')) {
+				if (!!$('messageBoxSmallButton')) {
 					this.updateSpan();
 				}
 			}
@@ -83,7 +83,7 @@ Modules.MessageBox = {
 		var text = 'Message Box';
 		
 		if (this.unread > 0) text += ' ('+this.unread+')';
-		API.w.$$('#messageBoxSmallButton span')[0].firstChild.replaceData(0, API.w.$$('#messageBoxSmallButton span')[0].firstChild.nodeValue.length, text);
+		$$('#messageBoxSmallButton span')[0].firstChild.replaceData(0, $$('#messageBoxSmallButton span')[0].firstChild.nodeValue.length, text);
 	},
 	
 	overlayContentBuilder: function() {
@@ -106,11 +106,11 @@ Modules.MessageBox = {
 			
 			a.addEventListener('click', function(event) {
 				this.clearInbox();
-				new API.w.Effect.Fade(API.w.$$('#messageBox .overlayContent')[0].firstChild, {
+				new API.w.Effect.Fade($$('#messageBox .overlayContent')[0].firstChild, {
 					afterFinish: function(effect) {
 						effect.element.parentNode.removeChild(effect.element);
-						API.w.$$('#messageBox .overlayContent')[0].style.display = 'none';
-						API.w.$$('#messageBox .overlayContent')[0].appendChild(this.overlayContentBuilder());
+						$$('#messageBox .overlayContent')[0].style.display = 'none';
+						$$('#messageBox .overlayContent')[0].appendChild(this.overlayContentBuilder());
 						new API.w.Effect.Appear(API.w.$$('#messageBox .overlayContent')[0]);
 					}.bind(this)
 				});

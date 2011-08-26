@@ -111,24 +111,24 @@ var BisaChatPlus = {
 		API.addStyle('.textOptionValue { cursor: pointer; }');
 		API.addStyle('.textOptionValue:hover { text-decoration: underline; }');
 		
-		API.w.$$('#chatBox .columnContainer')[0].style.width = API.inWidth+'px';
-		var boxesHeight = (API.inHeight-(parseInt(API.w.$$('#chatBox .subTabMenu')[0].offsetHeight)))+'px';
-		(API.w.$$('#chatBox > .border, #chatBox > .border > .layout-2, .columnContainer > .column > .columnInner, .columnContainer > .second > .columnInner > div:first-child, #chatMembers')).each(function(item) {
+		$$('#chatBox .columnContainer')[0].style.width = API.inWidth+'px';
+		var boxesHeight = (API.inHeight-(parseInt($$('#chatBox .subTabMenu')[0].offsetHeight)))+'px';
+		$$('#chatBox > .border, #chatBox > .border > .layout-2, .columnContainer > .column > .columnInner, .columnContainer > .second > .columnInner > div:first-child, #chatMembers').each(function(item) {
 			item.setAttribute('style', 'height: '+boxesHeight+' !important; border: none !important;');
 		});
 	},
 	
 	breakCage: function() {
-		var tmp = API.w.$('chatBox').cloneNode(true);
+		var tmp = $('chatBox').cloneNode(true);
 		
-		API.w.$('headerContainer').parentNode.removeChild(API.w.$('headerContainer'));
-		API.w.$('mainContainer').parentNode.removeChild(API.w.$('mainContainer'));
-		API.w.$('footerContainer').parentNode.removeChild(API.w.$('footerContainer'));
-		API.w.$$('body')[0].appendChild(tmp);
+		$('headerContainer').parentNode.removeChild($('headerContainer'));
+		$('mainContainer').parentNode.removeChild($('mainContainer'));
+		$('footerContainer').parentNode.removeChild($('footerContainer'));
+		$$('body')[0].appendChild(tmp);
 		delete tmp;
 		
-		API.w.$$('.tabMenu')[0].parentNode.removeChild(API.w.$$('.tabMenu')[0]);
-		API.w.$('chatColorPickerContainer').parentNode.removeChild(API.w.$('chatColorPickerContainer').nextSibling);
+		$$('.tabMenu')[0].parentNode.removeChild($$('.tabMenu')[0]);
+		$('chatColorPickerContainer').parentNode.removeChild($('chatColorPickerContainer').nextSibling);
 	},
 	
 	avoidMultipleLogin: function() {
@@ -140,10 +140,10 @@ var BisaChatPlus = {
 				API.w.location.reload();
 			}, true);
 			resetLink.appendChild(document.createTextNode('Falls definitiv nur ein Chattab geöffnet ist, hier klicken.'));
-			API.w.$$('#chatError div')[0].innerHTML = 'Den Chat bitte nicht in mehr als einem Tab öffnen.';
-			API.w.$$('#chatError div')[0].appendChild((new API.w.Element('br')));
-			API.w.$$('#chatError div')[0].appendChild(resetLink);
-			API.w.$('chatError').style.display = '';
+			$$('#chatError div')[0].innerHTML = 'Den Chat bitte nicht in mehr als einem Tab öffnen.';
+			$$('#chatError div')[0].appendChild((new API.w.Element('br')));
+			$$('#chatError div')[0].appendChild(resetLink);
+			$('chatError').style.display = '';
 			API.w.onunload = API.w.Prototype.emptyFunction;
 			API.w.Ajax.Responders.register({
 				onCreate: function(ajax, response) {
@@ -163,19 +163,19 @@ var BisaChatPlus = {
 	addEventListeners: function() {
 		// window resize listener
 		API.w.addEventListener('resize', function() {
-			API.w.$('chatBox').style.height = API.inHeight+'px';
-			API.w.$$('#chatBox .columnContainer')[0].style.width = API.inWidth+'px';
-			var boxesHeight = (API.inHeight-(parseInt(API.w.$$('#chatBox .subTabMenu')[0].offsetHeight)))+'px';
-			(API.w.$$('#chatBox > .border, #chatBox > .border > .layout-2, .columnContainer > .column > .columnInner, .columnContainer > .second > .columnInner > div:first-child, #chatMembers')).each(function(item) {
+			$('chatBox').style.height = API.inHeight+'px';
+			$$('#chatBox .columnContainer')[0].style.width = API.inWidth+'px';
+			var boxesHeight = (API.inHeight-(parseInt($$('#chatBox .subTabMenu')[0].offsetHeight)))+'px';
+			($$('#chatBox > .border, #chatBox > .border > .layout-2, .columnContainer > .column > .columnInner, .columnContainer > .second > .columnInner > div:first-child, #chatMembers')).each(function(item) {
 				item.setAttribute('style', 'height: '+boxesHeight+' !important; border: none !important;');
 			});
 		}, false);
 		
 		// message prefilter/away status listener
-		API.w.$('chatMessage').addEventListener('DOMNodeInserted', function(event) {
+		$('chatMessage').addEventListener('DOMNodeInserted', function(event) {
 			if (event.target.nodeName.toLowerCase() === 'li') {
 				var id = event.target.getAttribute('id');
-				var messageNode = API.w.$$('#'+id+' span')[1].nextSibling;
+				var messageNode = $$('#'+id+' span')[1].nextSibling;
 				var message = new API.w.Element('span', { 'class': 'chatMessageText' });
 				
 				var nicknameNode = event.target.getElementsByTagName('span')[1].getElementsByTagName('span');
@@ -183,7 +183,7 @@ var BisaChatPlus = {
 				
 				do {
 					message.appendChild(messageNode.parentNode.removeChild(messageNode).cloneNode(true));
-				} while (messageNode = API.w.$$('#'+id+' span')[1].nextSibling);
+				} while (messageNode = $$('#'+id+' span')[1].nextSibling);
 				
 				for (var i = 0; i < nicknameNode.length; i++) {
 					nickname += nicknameNode[i].firstChild.nodeValue;
@@ -259,7 +259,7 @@ var BisaChatPlus = {
 				var key = String.fromCharCode(event.which).toLowerCase();
 				
 				if (typeof this.keydownListeners[key] === 'string') {
-					API.w.$(this.keydownListeners[key]).click();
+					$(this.keydownListeners[key]).click();
 					event.preventDefault();
 				}
 			}
@@ -288,15 +288,15 @@ var BisaChatPlus = {
 			}
 		}, this);
 		
-		API.w.$('optionsContentWaiting').style.display = 'none';
-		API.w.$('optionsContentTextOptionDiv', 'optionsContentBoolOptionDiv').each(function(item) {
+		$('optionsContentWaiting').style.display = 'none';
+		$('optionsContentTextOptionDiv', 'optionsContentBoolOptionDiv').each(function(item) {
 			if (!!item.firstChild) {
 				item.style.display = 'block';
 			}
 		});
-		API.w.$('optionsContentTypeSeparator').style.display = ((API.w.$('optionsContentTextOptionDiv').style.diplay !== 'none') && (API.w.$('optionsContentTextOptionDiv').style.diplay !== 'none')) ? 'block' : 'none';
+		$('optionsContentTypeSeparator').style.display = (($('optionsContentTextOptionDiv').style.diplay !== 'none') && ($('optionsContentTextOptionDiv').style.diplay !== 'none')) ? 'block' : 'none';
 		new API.w.Effect.Appear('optionsContentWrapper');
-		API.w.$('chatInput').focus();
+		$('chatInput').focus();
 		
 		new API.w.Ajax.Updater('chatRoomSelect', './index.php?page=ChatRefreshRoomList'+API.w.SID_ARG_2ND, { evalScripts: true });
 	},
@@ -327,7 +327,7 @@ var BisaChatPlus = {
 		updateSmallButtonLink.appendChild(updateSmallButtonSpan);
 		updateSmallButton.appendChild(updateSmallButtonLink);
 		
-		API.w.$$('#chatOptions .smallButtons ul')[0].appendChild(updateSmallButton);
+		$$('#chatOptions .smallButtons ul')[0].appendChild(updateSmallButton);
 	},
 	
 	/**
@@ -338,9 +338,9 @@ var BisaChatPlus = {
 	 * @returns	{undefined}		Returns nothing
 	 */
 	saveBoxStatus: function(id) {
-		var visible = !(API.w.$(id).style.display === 'none');
-		var top = API.w.$(id).style.top;
-		var left = API.w.$(id).style.left;
+		var visible = !($(id).style.display === 'none');
+		var top = $(id).style.top;
+		var left = $(id).style.left;
 		
 		API.Storage.setValue(id+'boxVisible', visible);
 		API.Storage.setValue(id+'boxTop', top);
@@ -394,8 +394,8 @@ var BisaChatPlus = {
 		li.appendChild(spanTwo);
 		li.appendChild(document.createTextNode(infoText));
 		
-		API.w.$$('#chatMessage'+API.w.chat.activeUserID+' ul')[0].appendChild(li);
-		API.w.$('chatMessage'+API.w.chat.activeUserID).scrollTop = API.w.$('chatMessage'+API.w.chat.activeUserID).scrollHeight;
+		$$('#chatMessage'+API.w.chat.activeUserID+' ul')[0].appendChild(li);
+		$('chatMessage'+API.w.chat.activeUserID).scrollTop = $('chatMessage'+API.w.chat.activeUserID).scrollHeight;
 	},
 	
 	/**
@@ -408,7 +408,7 @@ var BisaChatPlus = {
 	 * @returns	{undefined}					Returns nothing
 	 */
 	buildBox: function(boxID, icon, title, contentBuilder) {
-		if (!!API.w.$(boxID)) throw new Error('boxID \''+boxID+'\' already used');
+		if (!!$(boxID)) throw new Error('boxID \''+boxID+'\' already used');
 		if (typeof contentBuilder !== 'function') throw new Error('contentBuilder has to be a function');
 		
 		var boxSmallButton = new API.w.Element('li', { id: boxID+'SmallButton', 'class': 'boxSmallButton', style: 'display:none;' });
@@ -440,13 +440,13 @@ var BisaChatPlus = {
 				});
 			}
 			else {
-				if (API.w.$(boxID).style.display === 'none') {
+				if ($(boxID).style.display === 'none') {
 					API.w.Effect.Appear(boxID, {
 						afterFinish: function() {
 							this.saveBoxStatus(boxID);
 						}.bind(this)
 					});
-					API.w.$('chatInput').focus();
+					$('chatInput').focus();
 				}
 				else {
 					API.w.Effect.Fade(boxID, {
@@ -454,7 +454,7 @@ var BisaChatPlus = {
 							this.saveBoxStatus(boxID);
 						}.bind(this)
 					});
-					API.w.$('chatInput').focus();
+					$('chatInput').focus();
 				}
 			}
 			
@@ -474,7 +474,7 @@ var BisaChatPlus = {
 		boxSmallButtonLink.appendChild(boxSmallButtonSpan);
 		boxSmallButton.appendChild(boxSmallButtonLink);
 		boxSmallButton.appendChild(boxDiv);
-		API.w.$$('#chatOptions .smallButtons ul')[0].appendChild(boxSmallButton);
+		$$('#chatOptions .smallButtons ul')[0].appendChild(boxSmallButton);
 		
 		new API.w.Effect.Appear(boxID+'SmallButton');
 		
@@ -506,7 +506,7 @@ var BisaChatPlus = {
 	 * @returns	{undefined}					Returns nothing
 	 */
 	buildOverlay: function(overlayID, icon, title, contentBuilder, beforeShow) {
-		if (!!API.w.$(overlayID)) throw new Error('overlayID \''+overlayID+'\' already used');
+		if (!!$(overlayID)) throw new Error('overlayID \''+overlayID+'\' already used');
 		if (typeof contentBuilder !== 'function') throw new TypeError('contentBuilder has to be a function');
 		
 		var overlaySmallButton = new API.w.Element('li', { id: overlayID+'SmallButton', 'class': 'overlaySmallButton', style: 'display:none;' });
@@ -534,11 +534,11 @@ var BisaChatPlus = {
 		overlaySmallButtonLink.appendChild(document.createTextNode(' '));
 		overlaySmallButtonLink.appendChild(overlaySmallButtonSpan);
 		overlaySmallButton.appendChild(overlaySmallButtonLink);
-		API.w.$$('#chatOptions .smallButtons ul')[0].appendChild(overlaySmallButton);
+		$$('#chatOptions .smallButtons ul')[0].appendChild(overlaySmallButton);
 		
 		closeButtonLink.addEventListener('click', function(event) {
 			new API.w.Effect.Fade(overlayID);
-			API.w.$('chatInput').focus();
+			$('chatInput').focus();
 		}, true);
 		
 		closeButtonLink.appendChild(closeButtonImg);
@@ -548,7 +548,7 @@ var BisaChatPlus = {
 		wrapperDiv.appendChild(caption);
 		wrapperDiv.appendChild(contentDiv);
 		overlayDiv.appendChild(wrapperDiv);
-		API.w.$('chatInitializing').parentNode.appendChild(overlayDiv);
+		$('chatInitializing').parentNode.appendChild(overlayDiv);
 		
 		try {
 			contentDiv.appendChild(contentBuilder());
@@ -570,7 +570,7 @@ var BisaChatPlus = {
 	 * @param	{Object}	[context]		Indicates where 'this' points within onChange callback
 	 */
 	registerTextOption: function(optionID, optionText, defaultValue, onChange, context) {
-		if (!!API.w.$(optionID)) throw new Error('optionID \''+optionID+'\' already used');
+		if (!!$(optionID)) throw new Error('optionID \''+optionID+'\' already used');
 		
 		var p = new API.w.Element('p');
 		var span = new API.w.Element('span', { id: optionID, 'class': 'textOptionValue', title: 'Zum Ändern anklicken' });
@@ -600,7 +600,7 @@ var BisaChatPlus = {
 				optionInput.className = (optionInput.className + ' hidden').trim();
 				optionSpan.className = optionSpan.className.replace(/hidden/ig, '').trim();
 				if (typeof onChange === 'function') onChange.call(context, String(optionInput.value));
-				API.w.$('chatInput').focus();
+				$('chatInput').focus();
 				event.preventDefault();
 			}
 		}, true);
@@ -609,8 +609,8 @@ var BisaChatPlus = {
 		p.appendChild(document.createTextNode(optionText+': '));
 		p.appendChild(span);
 		p.appendChild(input);
-		if (!!API.w.$('optionsContentTextOptionDiv').firstChild) API.w.$('optionsContentTextOptionDiv').appendChild(hr);
-		API.w.$('optionsContentTextOptionDiv').appendChild(p);
+		if (!!$('optionsContentTextOptionDiv').firstChild) $('optionsContentTextOptionDiv').appendChild(hr);
+		$('optionsContentTextOptionDiv').appendChild(p);
 	},
 	
 	/**
@@ -625,7 +625,7 @@ var BisaChatPlus = {
 	 * @param	{Object}	[context]			Indicates where 'this' points within switchCallback
 	 */
 	registerBoolOption: function(optionID, optionTitle, optionText, accessKey, defaultValue, switchCallback, context) {
-		if (!!API.w.$(optionID)) throw new Error('optionID \''+optionID+'\' already used');
+		if (!!$(optionID)) throw new Error('optionID \''+optionID+'\' already used');
 		if ((!!accessKey) && (typeof this.keydownListeners[accessKey.toLowerCase()] === 'string')) throw new Error('AccessKey \''+accessKey.toLowerCase()+'\' already used');
 		
 		var p = new API.w.Element('p');
@@ -634,7 +634,7 @@ var BisaChatPlus = {
 		var hr = new API.w.Element('hr', { style: 'display:block; width:80%' });
 		
 		checkbox.addEventListener('focus', function() {
-			API.w.$('chatInput').focus();
+			$('chatInput').focus();
 		}, false);
 		
 		checkbox.addEventListener('change', function(event) {
@@ -652,12 +652,12 @@ var BisaChatPlus = {
 		label.appendChild(checkbox);
 		label.appendChild(document.createTextNode(' '+optionText))
 		p.appendChild(label);
-		if (!!API.w.$('optionsContentBoolOptionDiv').firstChild) API.w.$('optionsContentBoolOptionDiv').appendChild(hr);
-		API.w.$('optionsContentBoolOptionDiv').appendChild(p);
+		if (!!$('optionsContentBoolOptionDiv').firstChild) $('optionsContentBoolOptionDiv').appendChild(hr);
+		$('optionsContentBoolOptionDiv').appendChild(p);
 		
 		if (!!accessKey) {
 			this.keydownListeners[accessKey.toLowerCase()] = optionID;
-			API.w.$(optionID).parentNode.parentNode.setAttribute('title', 'Zum Ändern, Alt-Taste & '+accessKey.toLowerCase()+' drücken');
+			$(optionID).parentNode.parentNode.setAttribute('title', 'Zum Ändern, Alt-Taste & '+accessKey.toLowerCase()+' drücken');
 		}
 	},
 	
@@ -676,7 +676,7 @@ var BisaChatPlus = {
 	registerMessagePrefilter: function(optionID, optionTitle, optionText, accessKey, defaultValue, prefilterFunction, checkboxSwitchCallback, context) {
 		this.registerBoolOption(optionID, optionTitle, optionText, accessKey, defaultValue, checkboxSwitchCallback, context);
 		return (this.messagePrefilters.push(function(event, nickname, message) {
-			prefilterFunction.call(context, event, API.w.$(optionID).checked, nickname, message);
+			prefilterFunction.call(context, event, $(optionID).checked, nickname, message);
 		})-1);
 	},
 	

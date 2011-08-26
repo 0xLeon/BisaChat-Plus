@@ -49,7 +49,7 @@ Modules.Backup = {
 			this.overlayContentBuilder(overlayContentNode);
 		}.bind(this),
 		function() {
-			this.overlayContentBuilder(API.w.$$('#backup .overlayContent')[0]);
+			this.overlayContentBuilder($$('#backup .overlayContent')[0]);
 		}.bind(this));
 	},
 	

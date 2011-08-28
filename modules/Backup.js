@@ -5,10 +5,12 @@
 Modules.Backup = {
 	callerObj: null,
 	intervalHandle: null,
+	buttonWidth: '',
 	
 	init: function(callerObj) {
 		this.callerObj = callerObj;
 		
+		API.addStyle('#backupSmallButton { overflow: hidden; }');
 		this.registerOptions();
 		this.buildOverlay();
 		
@@ -28,6 +30,17 @@ Modules.Backup = {
 					this.intervalHandle = null;
 				}
 				
+				if ($('backupSmallButton').style.display === 'none') {
+					new API.w.Effect.Morph('backupSmallButton', {
+						style: {
+							width: this.buttonWidth
+						},
+						beforeSetup: function(effect) {
+							effect.element.style.display = '';
+						}
+					});
+				}
+				
 				this.backupSettings();
 				this.intervalHandle = API.w.setInterval(function() {
 					this.backupSettings();
@@ -37,6 +50,20 @@ Modules.Backup = {
 				if (this.intervalHandle !== null) {
 					API.w.clearInterval(this.intervalHandle);
 					this.intervalHandle = null;
+				}
+				
+				if ($('backupSmallButton').style.display !== 'none') {
+					new API.w.Effect.Morph('backupSmallButton', {
+						style: {
+							width: '0px'
+						},
+						beforeSetup: function(effect) {
+							this.buttonWidth = API.w.getComputedStyle(effect.element).getPropertyValue('width');
+						}.bind(this),
+						afterFinish: function(effect) {
+							effect.element.style.display = 'none';
+						}
+					});
 				}
 			}
 			
@@ -51,6 +78,20 @@ Modules.Backup = {
 		function() {
 			this.overlayContentBuilder($$('#backup .overlayContent')[0]);
 		}.bind(this));
+		
+		if (!API.Storage.getValue('backupActiveStatus', true)) {
+			new API.w.Effect.Morph('backupSmallButton', {
+				style: {
+					width: '0px'
+				},
+				beforeSetup: function(effect) {
+					this.buttonWidth = API.w.getComputedStyle(effect.element).getPropertyValue('width');
+				}.bind(this),
+				afterFinish: function(effect) {
+					effect.element.style.display = 'none';
+				}
+			});
+		}
 	},
 	
 	backupSettings: function() {

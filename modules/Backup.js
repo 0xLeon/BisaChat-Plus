@@ -20,6 +20,19 @@ Modules.Backup = {
 				this.backupSettings();
 			}.bind(this), 60000);
 		}
+		else {
+			new API.w.Effect.Morph('backupSmallButton', {
+				style: {
+					width: '0px'
+				},
+				beforeSetup: function(effect) {
+					this.buttonWidth = API.w.getComputedStyle(effect.element).getPropertyValue('width');
+				}.bind(this),
+				afterFinish: function(effect) {
+					effect.element.style.display = 'none';
+				}
+			});
+		}
 	},
 	
 	registerOptions: function() {
@@ -78,20 +91,6 @@ Modules.Backup = {
 		function() {
 			this.overlayContentBuilder($$('#backup .overlayContent')[0]);
 		}.bind(this));
-		
-		if (!API.Storage.getValue('backupActiveStatus', true)) {
-			new API.w.Effect.Morph('backupSmallButton', {
-				style: {
-					width: '0px'
-				},
-				beforeSetup: function(effect) {
-					this.buttonWidth = API.w.getComputedStyle(effect.element).getPropertyValue('width');
-				}.bind(this),
-				afterFinish: function(effect) {
-					effect.element.style.display = 'none';
-				}
-			});
-		}
 	},
 	
 	backupSettings: function() {

@@ -275,8 +275,9 @@ var BisaChatPlus = {
 					if (this.isAway) {
 						var temp = this.awayMessage;
 						
-						this.pushMessage('BisaChat Plus '+this.VERSION);
-						this.pushMessage(('/away '+temp).trim());
+						this.pushMessage('BisaChat Plus '+this.VERSION, function() {
+							this.pushMessage(('/away '+temp).trim());
+						}, this);
 					}
 					else {
 						this.pushMessage('BisaChat Plus '+this.VERSION);

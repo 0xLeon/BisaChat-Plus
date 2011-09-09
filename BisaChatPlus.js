@@ -196,7 +196,7 @@ var BisaChatPlus = {
 						message.removeChild(message.firstChild);
 					}
 					
-					if ((event.target.className.toLowerCase().indexOf('messagetype1') > -1) || (event.target.className.toLowerCase().indexOf('messagetype2') > -1)) {
+					if (((event.target.className.toLowerCase().indexOf('messagetype1') > -1) && (event.target.className.toLowerCase().indexOf('messagetype11') < 0)) || (event.target.className.toLowerCase().indexOf('messagetype2') > -1)) {
 						var moveSpan = new API.w.Element('span', { 'class': 'moveInfo' });
 						var move = document.createTextNode(message.firstChild.nodeValue);
 						

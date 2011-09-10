@@ -176,6 +176,7 @@ var BisaChatPlus = {
 			if (event.target.nodeName.toLowerCase() === 'li') {
 				var id = event.target.getAttribute('id');
 				var messageNode = $$('#'+id+' span')[1].nextSibling;
+				var messageType = Number(event.target.className.match(/\bmessagetype(\d+)\b/i)[1]);
 				var message = new API.w.Element('span', { 'class': 'chatMessageText' });
 				
 				var nicknameNode = event.target.getElementsByTagName('span')[1].getElementsByTagName('span');
@@ -196,7 +197,7 @@ var BisaChatPlus = {
 						message.removeChild(message.firstChild);
 					}
 					
-					if (((event.target.className.toLowerCase().indexOf('messagetype1') > -1) && (event.target.className.toLowerCase().indexOf('messagetype11') < 0)) || (event.target.className.toLowerCase().indexOf('messagetype2') > -1)) {
+					if ((messageType === 1) || (messageType === 2)) {
 						var moveSpan = new API.w.Element('span', { 'class': 'moveInfo' });
 						var move = document.createTextNode(message.firstChild.nodeValue);
 						
@@ -204,7 +205,7 @@ var BisaChatPlus = {
 						moveSpan.appendChild(move);
 						event.target.appendChild(moveSpan);
 					}
-					else if ((event.target.className.toLowerCase().indexOf('messagetype3') > -1) || (event.target.className.toLowerCase().indexOf('messagetype4') > -1)) {
+					else if ((messageType === 3) || (messageType === 4)) {
 						var awaySpan = new API.w.Element('span', { 'class': 'awayInfo' });
 						
 						if (message.firstChild.nodeValue.indexOf(':') > -1) {
@@ -223,7 +224,7 @@ var BisaChatPlus = {
 						
 						// switch away status
 						if (nickname === API.w.settings.username) {
-							if (event.target.className.toLowerCase().indexOf('messagetype3') > -1) {
+							if (messageType === 3) {
 								this.awayMessage = (message === null) ? '' : message.firstChild.nodeValue;
 								this.isAway = true;
 							}
@@ -233,7 +234,7 @@ var BisaChatPlus = {
 							}
 						}
 					}
-					else if (event.target.className.toLowerCase().indexOf('messagetype7') > -1) {
+					else if (messageType === 7) {
 						var whisper = document.createTextNode(message.firstChild.nodeValue.slice(0, message.firstChild.nodeValue.indexOf(':')+1)+' ');
 						var whisperSpan = new API.w.Element('span', { 'class': 'whisperInfo' });
 						

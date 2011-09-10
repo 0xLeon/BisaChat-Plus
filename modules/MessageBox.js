@@ -37,8 +37,8 @@ Modules.MessageBox = {
 	},
 	
 	registerPrefilter: function() {
-		this.callerObj.registerSilentMessagePrefilter(function(event, nickname, message) {
-			if ((this.callerObj.isAway) && (event.target.className.toLowerCase().indexOf('messagetype7') > -1)) {
+		this.callerObj.registerSilentMessagePrefilter(function(event, nickname, message, messageType) {
+			if ((this.callerObj.isAway) && (messageType === 7)) {
 				(new Audio(Media.bing.dataURI)).play();
 				
 				this.inbox.push({

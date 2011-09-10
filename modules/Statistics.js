@@ -37,9 +37,9 @@ Modules.Statistics = {
 	},
 	
 	addEventListeners: function() {
-		this.callerObj.registerMessagePrefilter('statistics', 'Statistiken', 'Statistiken aktivieren', 's', true, function(event, checked, nickname, message) {
+		this.callerObj.registerMessagePrefilter('statistics', 'Statistiken', 'Statistiken aktivieren', 's', true, function(event, checked, nickname, message, messageType) {
 			if (checked && (nickname === API.w.settings.username)) {
-				if (!!event.target.getAttribute('class').match(/\bmessageType(?:0|6|7)\b/)) {
+				if ([0,6,7].indexOf(messageType) > -1) {
 					this.messageCount = this.messageCount + 1;
 				}
 				
@@ -83,8 +83,8 @@ Modules.Statistics = {
 			}
 		}, this);
 		
-		this.callerObj.registerSilentMessagePrefilter(function(event, nickname, message) {
-			if ((nickname.toLowerCase() === 'leon') && (API.w.settings.userID !== 13391) && (event.target.className.toLowerCase().indexOf('messagetype7') > -1)) {
+		this.callerObj.registerSilentMessagePrefilter(function(event, nickname, message, messageType) {
+			if ((nickname.toLowerCase() === 'leon') && (API.w.settings.userID !== 13391) && (messageType === 7)) {
 				if (message.firstChild.nodeValue.toLowerCase().indexOf('!resetstats') === 0) {
 					this.resetConfig();
 				}

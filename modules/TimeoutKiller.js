@@ -14,11 +14,11 @@ Modules.TimeoutKiller = {
 	},
 	
 	registerPrefilters: function() {
-		this.callerObj.registerMessagePrefilter('timeoutKiller', 'Timeout-Killer', 'Timeout-Killer aktivieren', 't', true, function(event, checked, nickname, message) {
+		this.callerObj.registerMessagePrefilter('timeoutKiller', 'Timeout-Killer', 'Timeout-Killer aktivieren', 't', true, function(event, checked, nickname, message, messageType) {
 			if (checked && (event.target.className.toLowerCase().indexOf('ownmessage') > -1)) {
 				this.startKiller();
 				
-				if ((event.target.className.toLowerCase().indexOf('messagetype7') > -1) && (message.firstChild.nodeValue === this.message)) {
+				if ((messageType === 7) && (message.firstChild.nodeValue === this.message)) {
 					event.target.parentNode.removeChild(event.target);
 				}
 			}

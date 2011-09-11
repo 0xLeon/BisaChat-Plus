@@ -39,7 +39,7 @@ Modules.Highlighting = {
 		this.callerObj.registerTextOption('highlightingText', 'Highlighten bei', API.w.settings.username, function(optionValue) {
 			this.buildRegExp(optionValue);
 		}, this);
-		this.callerObj.registerMessagePrefilter('highlighting', 'Highlighting', 'Highlighting aktivieren', 'l', false, function(event, checked, nickname, message) {
+		this.callerObj.registerMessagePrefilter('highlighting', 'Highlighting', 'Highlighting aktivieren', 'l', false, function(event, checked, nickname, message, messageType) {
 			if (checked && (!document.hasFocus() || this.callerObj.isAway) && (nickname.toLowerCase() !== 'chatbot')) {
 				if (this.regExp === null) {
 					this.buildRegExp(API.Storage.getValue('highlightingTextValue', API.w.settings.username));
@@ -47,6 +47,10 @@ Modules.Highlighting = {
 				
 				if (this.regExp.test(message.innerHTML)) {
 					this.matchedSubstr = this.regExp.exec(message.innerHTML)[1];
+					this.highlight(event.target.getAttribute('id'));
+				}
+				else if (messageType === 7) {
+					this.matchedSubstr = 'Flüsternachricht';
 					this.highlight(event.target.getAttribute('id'));
 				}
 			}

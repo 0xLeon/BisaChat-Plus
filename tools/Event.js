@@ -48,8 +48,10 @@ var Event = {
 	 * @returns	{undefined}				Returns nothing
 	 */
 	fire: function(name, eventObj) {
-		this.events.get(name).each(function(item) {
-			item(eventObj);
-		});
+		if (!!this.events.get(name)) {
+			this.events.get(name).each(function(item) {
+				item(eventObj);
+			});
+		}
 	}
 };

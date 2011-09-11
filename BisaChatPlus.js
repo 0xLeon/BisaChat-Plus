@@ -232,6 +232,8 @@ var BisaChatPlus = {
 								this.awayMessage = '';
 								this.isAway = false;
 							}
+							
+							Event.fire('awayStatusChange', this);
 						}
 					}
 					else if (messageType === 7) {

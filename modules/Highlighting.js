@@ -40,7 +40,7 @@ Modules.Highlighting = {
 			this.buildRegExp(optionValue);
 		}, this);
 		this.callerObj.registerMessagePrefilter('highlighting', 'Highlighting', 'Highlighting aktivieren', 'l', false, function(event, checked, nickname, message) {
-			if (checked && !document.hasFocus() && (nickname.toLowerCase() !== 'chatbot')) {
+			if (checked && (!document.hasFocus() || this.callerObj.isAway) && (nickname.toLowerCase() !== 'chatbot')) {
 				if (this.regExp === null) {
 					this.buildRegExp(API.Storage.getValue('highlightingTextValue', API.w.settings.username));
 				}
@@ -90,27 +90,47 @@ Modules.Highlighting = {
 				}
 			}.bind(this), 1.5);
 		}
-		
 		if (this.listenerFunction === null) {
-			this.listenerFunction = function(event) {
-				if (this.periodicalExecuter !== null) {
-					this.periodicalExecuter.stop();
-					this.periodicalExecuter = null;
-				}
+			if (this.callerObj.isAway) {
+				this.listenerFunction = Event.register('awayStatusChange', function(event) {
+					if (this.periodicalExecuter !== null) {
+						this.periodicalExecuter.stop();
+						this.periodicalExecuter = null;
+					}
+					
+					document.title = this.docTitle;
+					this.docTitle = '';
+					
+					this.messageIDs.each(function(item) {
+						new API.w.Effect.Highlight(item);
+					});
+					this.messageIDs = API.w.$A([ ]);
+					
+					Event.unregister('awayStatusChange', this.listenerFunction);
+					this.listenerFunction = null;
+				}, this);
+			}
+			else if (!document.hasFocus()) {
+				this.listenerFunction = function(event) {
+					if (this.periodicalExecuter !== null) {
+						this.periodicalExecuter.stop();
+						this.periodicalExecuter = null;
+					}
+					
+					document.title = this.docTitle;
+					this.docTitle = '';
+					
+					this.messageIDs.each(function(item) {
+						new API.w.Effect.Highlight(item);
+					});
+					this.messageIDs = API.w.$A([ ]);
+					
+					document.removeEventListener('focus', this.listenerFunction, false)
+					this.listenerFunction = null;
+				}.bindAsEventListener(this);
 				
-				document.title = this.docTitle;
-				this.docTitle = '';
-				
-				this.messageIDs.each(function(item) {
-					new API.w.Effect.Highlight(item);
-				});
-				this.messageIDs = API.w.$A([ ]);
-				
-				document.removeEventListener('focus', this.listenerFunction, false)
-				this.listenerFunction = null;
-			}.bindAsEventListener(this);
-			
-			document.addEventListener('focus', this.listenerFunction, false);
+				document.addEventListener('focus', this.listenerFunction, false);
+			}
 		}
 	}
 };

@@ -14,8 +14,8 @@ Modules.MessageBox = {
 		this.getData();
 		this.registerPrefilter();
 		this.buildOverlay();
-		this.callerObj.watch('isAway', function(id, oldValue, newValue) {
-			if ((oldValue === false) && (newValue === true) && !!($$('#messageBox .overlayContent ul')[0])) {
+		Event.register('awayStatusChange', function(event) {
+			if ((event.isAway === true) && !!($$('#messageBox .overlayContent ul')[0])) {
 				if ($$('#messageBox .overlayContent ul')[0].lastChild.firstChild.nodeName.toLowerCase() !== 'hr') {
 					var li = new API.w.Element('li');
 					
@@ -23,9 +23,7 @@ Modules.MessageBox = {
 					$$('#messageBox .overlayContent ul')[0].appendChild(li);
 				}
 			}
-			
-			return newValue;
-		}.bind(this));
+		});
 	},
 	
 	getData: function() {

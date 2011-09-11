@@ -37,8 +37,6 @@ Modules.MessageBox = {
 	registerPrefilter: function() {
 		this.callerObj.registerSilentMessagePrefilter(function(event, nickname, message, messageType) {
 			if ((this.callerObj.isAway) && (messageType === 7)) {
-				(new Audio(Media.bing.dataURI)).play();
-				
 				this.inbox.push({
 					timestamp: this.callerObj.parseMessageDate($$('#'+event.target.getAttribute('id')+' span')[0].firstChild.nodeValue.trim().slice(1, -1)),
 					nickname: event.target.querySelector('span[onclick]').innerHTML.trim(),

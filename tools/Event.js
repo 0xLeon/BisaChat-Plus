@@ -14,7 +14,7 @@ var Event = {
 	events: API.w.$H({}),
 	
 	/**
-	 * Register and event handler for an event
+	 * Register an event handler for an event
 	 * 
 	 * @param	{String]	name		event name
 	 * @param	{Function}	handler		event handler function, has to accept one parameter of type Object

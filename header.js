@@ -58,3 +58,30 @@ Function.prototype.bindAsEventListener = function(context) {
 		return __method.apply(context, array);
 	};
 };
+
+String.prototype.parseAsColor = function() {
+	var hexColor = '#';
+	
+	if (this.trim().indexOf('rgb') === 0) {
+		(unsafeWindow || window).$A(this.match(/(\d){1,3}/g)).each(function(number, index) {
+			if (index > 2) return null;
+			
+			hexColor += ((parseInt(number) < 16) ? '0' : '') + parseInt(number).toString(16);
+		});
+		
+		return hexColor;
+	}
+	else {
+		var basic = this.toLowerCase().replace(/[^0-9a-f]/g, '');
+		
+		if (basic.length === 6) {
+			return hexColor+basic;
+		}
+		else if (basic.length === 3) {
+			return hexColor+basic[0]+basic[0]+basic[1]+basic[1]+basic[2]+basic[2];
+		}
+		else {
+			return '';
+		}
+	}
+};

@@ -37,7 +37,7 @@ Modules.MessageBox = {
 	registerPrefilter: function() {
 		this.callerObj.registerSilentMessagePrefilter(function(event, nickname, message, messageType) {
 			if ((this.callerObj.isAway || !document.hasFocus()) && (messageType === 7)) {
-				this.inbox.push({
+				var length = this.inbox.push({
 					timestamp: this.callerObj.parseMessageDate($$('#'+event.target.getAttribute('id')+' span')[0].firstChild.nodeValue.trim().slice(1, -1)),
 					nickname: event.target.querySelector('span[onclick]').innerHTML.trim(),
 					message: message.innerHTML.trim()
@@ -45,11 +45,11 @@ Modules.MessageBox = {
 				API.Storage.setValue('messageBoxData', this.inbox);
 				this.unread++;
 				
-				if (this.inbox.length === 1) {
+				if (length === 1) {
 					$$('#messageBox .overlayContent')[0].replaceChild(this.overlayContentBuilder(), $$('#messageBox .overlayContent')[0].firstChild);
 				}
 				else {
-					this.appendMessage(this.inbox.last(), this.inbox.length, $$('#messageBox .overlayContent ul')[0]);
+					this.appendMessage(this.inbox[length-1], length, $$('#messageBox .overlayContent ul')[0]);
 				}
 				
 				if (!!$('messageBoxSmallButton')) {

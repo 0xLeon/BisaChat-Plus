@@ -66,7 +66,7 @@ String.prototype.parseAsColor = function() {
 		(unsafeWindow || window).$A(this.match(/(\d){1,3}/g)).each(function(number, index) {
 			if (index > 2) return null;
 			
-			hexColor += ((parseInt(number) < 16) ? '0' : '') + parseInt(number).toString(16);
+			hexColor += ((parseInt(number, 10) < 16) ? '0' : '') + parseInt(number, 10).toString(16);
 		});
 		
 		return hexColor;

@@ -15,14 +15,12 @@ Modules.MessageBox = {
 		this.registerPrefilter();
 		this.buildOverlay();
 		Event.register('awayStatusChange', function(event) {
-			if ((event.isAway === true) && !!($$('#messageBox .overlayContent ul')[0])) {
+			if (event.isAway === true) {
 				this.appendHr();
 			}
 		}, this);
 		document.addEventListener('blur', function() {
-			if (!!$$('#messageBox .overlayContent ul')[0]) {
-				this.appendHr();
-			}
+			this.appendHr();
 		}.bindAsEventListener(this), false);
 	},
 	
@@ -145,7 +143,7 @@ Modules.MessageBox = {
 	},
 	
 	appendHr: function() {
-		if ($$('#messageBox .overlayContent ul')[0].lastChild.firstChild.nodeName.toLowerCase() !== 'hr') {
+		if (!!($$('#messageBox .overlayContent ul')[0]) && ($$('#messageBox .overlayContent ul')[0].lastChild.firstChild.nodeName.toLowerCase() !== 'hr')) {
 			var li = new API.w.Element('li');
 			
 			li.appendChild(new API.w.Element('hr', { style: 'display:block; width:80%;' }));

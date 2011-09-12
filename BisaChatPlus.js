@@ -89,7 +89,7 @@ var BisaChatPlus = {
 		API.addStyle('.hidden { display: none; }');
 		API.addStyle('.column { border: 0px !important; }');
 		API.addStyle('#smileys { display: none; }');
-		API.addStyle('.loading, .error, #chatCopyright { border: none !important; -moz-border-radius: 0px !important; z-index: 9000; }');
+		API.addStyle('.loading, .error, .overlay, #chatCopyright { border: none !important; -moz-border-radius: 0px !important; z-index: 9000; }');
 		API.addStyle('.subTabMenu { padding: 0px !important; padding-top: 2px !important; border-top: none !important; border-left: none !important; border-right: none !important; }');
 		API.addStyle('.subTabMenu, .subTabMenu > * { -moz-border-radius: 0px !important; }');
 		API.addStyle('#chatBox { margin-top: 0px; width: 100%; height: '+API.inHeight+'px; }');

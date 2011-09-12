@@ -16,14 +16,14 @@ Modules.MessageBox = {
 		this.buildOverlay();
 		Event.register('awayStatusChange', function(event) {
 			if ((event.isAway === true) && !!($$('#messageBox .overlayContent ul')[0])) {
-				if ($$('#messageBox .overlayContent ul')[0].lastChild.firstChild.nodeName.toLowerCase() !== 'hr') {
-					var li = new API.w.Element('li');
-					
-					li.appendChild(new API.w.Element('hr', { style: 'display:block; width:80%;' }));
-					$$('#messageBox .overlayContent ul')[0].appendChild(li);
-				}
+				this.appendHr();
 			}
-		});
+		}, this);
+		document.addEventListener('blur', function() {
+			if (!!$$('#messageBox .overlayContent ul')[0]) {
+				this.appendHr();
+			}
+		}.bindAsEventListener(this), false);
 	},
 	
 	getData: function() {
@@ -142,5 +142,14 @@ Modules.MessageBox = {
 		li.appendChild(document.createTextNode(': '));
 		li.appendChild(messageSpan);
 		targetNode.appendChild(li);
+	},
+	
+	appendHr: function() {
+		if ($$('#messageBox .overlayContent ul')[0].lastChild.firstChild.nodeName.toLowerCase() !== 'hr') {
+			var li = new API.w.Element('li');
+			
+			li.appendChild(new API.w.Element('hr', { style: 'display:block; width:80%;' }));
+			$$('#messageBox .overlayContent ul')[0].appendChild(li);
+		}
 	}
 };

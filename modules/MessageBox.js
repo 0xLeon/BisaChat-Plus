@@ -106,7 +106,7 @@ Modules.MessageBox = {
 						effect.element.parentNode.removeChild(effect.element);
 						$$('#messageBox .overlayContent')[0].style.display = 'none';
 						$$('#messageBox .overlayContent')[0].appendChild(this.overlayContentBuilder());
-						new API.w.Effect.Appear(API.w.$$('#messageBox .overlayContent')[0]);
+						new API.w.Effect.Appear($$('#messageBox .overlayContent')[0]);
 					}.bind(this)
 				});
 			}.bindAsEventListener(this), true);

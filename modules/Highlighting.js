@@ -7,7 +7,7 @@ Modules.Highlighting = {
 	docTitle: '',
 	regExp: null,
 	messageIDs: API.w.$A([ ]),
-	matchedSubstr: '',
+	title: '',
 	periodicalExecuter: null,
 	listenerFunction: null,
 	
@@ -46,7 +46,7 @@ Modules.Highlighting = {
 				}
 				
 				if (this.regExp.test(message.innerHTML)) {
-					this.matchedSubstr = this.regExp.exec(message.innerHTML)[1];
+					this.title = 'Neue Nachricht enthält: '+this.regExp.exec(message.innerHTML)[1];
 					this.highlight(event.target.getAttribute('id'));
 					
 					if (!!Modules.MessageBox && (messageType !== 7)) {
@@ -72,7 +72,7 @@ Modules.Highlighting = {
 					}
 				}
 				else if (messageType === 7) {
-					this.matchedSubstr = 'Flüsternachricht';
+					this.title = 'Du wurdest angeflüstert'
 					this.highlight(event.target.getAttribute('id'));
 				}
 			}
@@ -109,7 +109,7 @@ Modules.Highlighting = {
 			this.docTitle = document.title;
 			this.periodicalExecuter = new API.w.PeriodicalExecuter(function() {
 				if (document.title === this.docTitle) {
-					document.title = 'Neue Nachricht enthält: '+this.matchedSubstr;
+					document.title = this.title;
 				}
 				else {
 					document.title = this.docTitle;

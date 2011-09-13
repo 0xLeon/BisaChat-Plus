@@ -130,7 +130,7 @@ Modules.Highlighting = {
 					this.messageIDs.each(function(item) {
 						new API.w.Effect.Highlight(item);
 					});
-					this.messageIDs = API.w.$A([ ]);
+					this.messageIDs.clear();
 					
 					Event.unregister('awayStatusChange', this.listenerFunction);
 					this.listenerFunction = null;
@@ -149,7 +149,7 @@ Modules.Highlighting = {
 					this.messageIDs.each(function(item) {
 						new API.w.Effect.Highlight(item);
 					});
-					this.messageIDs = API.w.$A([ ]);
+					this.messageIDs.clear();
 					
 					document.removeEventListener('focus', this.listenerFunction, false)
 					this.listenerFunction = null;

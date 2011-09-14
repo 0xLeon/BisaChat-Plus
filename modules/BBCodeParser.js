@@ -6,7 +6,7 @@
  * Copyright (c) 2008, Stone Steps Inc.
  */
 Modules.BBCodeParser = {
-	openingTags: [ ],
+	openingTags: API.w.$A([]),
 	noParse: false,
 	
 	get TAG_NAME_REGEX() {
@@ -107,7 +107,7 @@ Modules.BBCodeParser = {
 				return '['+closingTag+']';
 			}
 			
-			if (!this.openingTags.length || this.openingTags[this.openingTags.length-1].BBTag != closingTag) return '<span style="color: red">[/'+closingTag+']</span>';
+			if (!this.openingTags.length || this.openingTags.last().BBTag != closingTag) return '<span style="color: red">[/'+closingTag+']</span>';
 			
 			return this.openingTags.pop().closingTag;
 		}
@@ -129,7 +129,7 @@ Modules.BBCodeParser = {
 			while (!!this.openingTags.length) endtags += this.openingTags.pop().closingTag;
 		}
 		
-		this.openingTags = [ ];
+		this.openingTags.clear();
 		this.noParse = false;
 		
 		return ((!!endtags) ? result + endtags : result);

@@ -72,8 +72,10 @@ Modules.Highlighting = {
 					}
 				}
 				else if (messageType === 7) {
-					this.title = 'Du wurdest angeflüstert'
-					this.highlight(event.target.getAttribute('id'));
+					if (!Modules.TimeoutKiller || (!!Modules.TimeoutKiller && (Modules.TimeoutKiller.message !== message.firstChild.nodeValue))) {
+						this.title = 'Du wurdest angeflüstert'
+						this.highlight(event.target.getAttribute('id'));
+					}
 				}
 			}
 		}, null, this);

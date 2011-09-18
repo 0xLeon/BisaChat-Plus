@@ -35,24 +35,26 @@ Modules.MessageBox = {
 	registerPrefilter: function() {
 		this.callerObj.registerSilentMessagePrefilter(function(event, nickname, message, messageType) {
 			if ((this.callerObj.isAway || !document.hasFocus()) && (messageType === 7)) {
-				var name = event.target.querySelector('span[onclick]').innerHTML.trim();
-				var length = this.inbox.push({
-					timestamp: this.callerObj.parseMessageDate($$('#'+event.target.getAttribute('id')+' span')[0].firstChild.nodeValue.trim().slice(1, -1)),
-					nickname: ((name.lastIndexOf(':') === (name.length - 1)) ? name.slice(0, -1) : name),
-					message: message.innerHTML.trim()
-				});
-				API.Storage.setValue('messageBoxData', this.inbox);
-				this.unread++;
-				
-				if (length === 1) {
-					$$('#messageBox .overlayContent')[0].replaceChild(this.overlayContentBuilder(), $$('#messageBox .overlayContent')[0].firstChild);
-				}
-				else {
-					this.appendMessage(this.inbox[length-1], length, $$('#messageBox .overlayContent ul')[0]);
-				}
-				
-				if (!!$('messageBoxSmallButton')) {
-					this.updateSpan();
+				if (!Modules.TimeoutKiller || (!!Modules.TimeoutKiller && (Modules.TimeoutKiller.message !== message.firstChild.nodeValue))) {
+					var name = event.target.querySelector('span[onclick]').innerHTML.trim();
+					var length = this.inbox.push({
+						timestamp: this.callerObj.parseMessageDate($$('#'+event.target.getAttribute('id')+' span')[0].firstChild.nodeValue.trim().slice(1, -1)),
+						nickname: ((name.lastIndexOf(':') === (name.length - 1)) ? name.slice(0, -1) : name),
+						message: message.innerHTML.trim()
+					});
+					API.Storage.setValue('messageBoxData', this.inbox);
+					this.unread++;
+					
+					if (length === 1) {
+						$$('#messageBox .overlayContent')[0].replaceChild(this.overlayContentBuilder(), $$('#messageBox .overlayContent')[0].firstChild);
+					}
+					else {
+						this.appendMessage(this.inbox[length-1], length, $$('#messageBox .overlayContent ul')[0]);
+					}
+					
+					if (!!$('messageBoxSmallButton')) {
+						this.updateSpan();
+					}
 				}
 			}
 		}, this);

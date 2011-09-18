@@ -64,6 +64,7 @@ Modules.ScriptingEngine = {
 	getColoredName: function(name) {
 		var returnValue = '';
 		
+		API.w.chat.loading = true;
 		new API.w.Ajax.Request('./index.php?form=Chat', {
 			parameters: {
 				text: ('/info '+name).trim(),
@@ -98,7 +99,10 @@ Modules.ScriptingEngine = {
 							}
 						}, this);
 						response.responseJSON.messages = messages.without(messages[infoKey]);
-						if (!!response.responseJSON.messages.length) API.w.chat.handleMessageUpdate(response.responseJSON.messages);
+						API.w.chat.loading = false;
+						if (!!response.responseJSON.messages.length) {
+							API.w.chat.handleMessageUpdate(response.responseJSON.messages);
+						}
 					}.bind(this),
 					onFailure: function() {
 						API.w.chat.failure();

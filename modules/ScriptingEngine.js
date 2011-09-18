@@ -34,7 +34,7 @@ Modules.ScriptingEngine = {
 					var command = request.parameters.text.trim().slice(1, request.parameters.text.trim().indexOf(' '));
 					
 					if (!!this.commands.get(command)) {
-						request.options.postBody = 'text='+encodeURIComponent(this.parse(command, request.parameters.text.trim().slice(request.parameters.text.trim().indexOf(' ')+1)))+'&ajax=1'
+						request.options.postBody = 'text='+encodeURIComponent(this.parse(command, request.parameters.text.trim().slice(request.parameters.text.trim().indexOf(' ')+1)))+((!!Modules.SmiliesPlus) ? ((!!$('enablesmilies')) ? '&enablesmilies=on' : '') : (($('enablesmilies').checked) ? '&enablesmilies=on' : ''))+'&ajax=1'
 					}
 				}
 			}.bind(this)

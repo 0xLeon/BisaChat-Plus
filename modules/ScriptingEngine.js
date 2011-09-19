@@ -10,6 +10,9 @@ Modules.ScriptingEngine = {
 	init: function(callerObj) {
 		this.callerObj = callerObj;
 		
+		API.addStyle('#scriptingEngine dl dt { font-weight: bold; clear: both; }');
+		API.addStyle('#scriptingEngine dl hr { display: block; width: 80%; float: left; }');
+		API.addStyle('#scriptingEngine dl dd:last-child { display: none; }');
 		this.registerPrefilter();
 		this.buildOverlay();
 	},
@@ -48,7 +51,49 @@ Modules.ScriptingEngine = {
 	},
 	
 	overlayContentBuilder: function() {
-		return new API.w.Element('div');
+		var node = new API.w.Element('div');
+		var p = new API.w.Element('p');
+		
+		p.appendChild(document.createTextNode('Keine Befehle vorhanden.'));
+		node.appendChild(p);
+		
+		if (this.commands.size() > 0) {
+			node = new API.w.Element('div');
+			var commandsDl = new API.w.Element('dl');
+			
+			this.commands.each(function(command) {
+				commandsDt = new API.w.Element('dt');
+				commandsDd = new API.w.Element('dd');
+				commandsDdHr = new API.w.Element('dd');
+				
+				commandsDt.appendChild(document.createTextNode(command.key));
+				commandsDd.appendChild(document.createTextNode(command.value));
+				commandsDdHr.appendChild(new API.w.Element('hr'));
+				commandsDl.appendChild(commandsDt);
+				commandsDl.appendChild(commandsDd);
+				commandsDl.appendChild(commandsDdHr);
+			}, this);
+			
+			node.appendChild(commandsDl);
+		}
+		
+		var buttonWrapper = new API.w.Element('div', { 'class': 'smallButtons' });
+		var buttonUl = new API.w.Element('ul');
+		var buttonLi = new API.w.Element('li', { style: 'float:left;' });
+		var buttonLink = new API.w.Element('a', { href: 'javascript:;' });
+		var buttonImg = new API.w.Element('img', { src: './wcf/icon/addS.png', style: 'width: 16px; height: 16px;' });
+		var buttonSpan = new API.w.Element('span');
+		
+		buttonSpan.appendChild(document.createTextNode('Befehl hinzufügen'));
+		buttonLink.appendChild(buttonImg);
+		buttonLink.appendChild(document.createTextNode(' '));
+		buttonLink.appendChild(buttonSpan);
+		buttonLi.appendChild(buttonLink);
+		buttonUl.appendChild(buttonLi);
+		buttonWrapper.appendChild(buttonUl);
+		node.appendChild(buttonWrapper);
+		
+		return node;
 	},
 	
 	parse: function(command, parameter) {

@@ -256,9 +256,16 @@ var BisaChatPlus = {
 			}
 		}.bindAsEventListener(this), true);
 		
-		// option checkboxes access key listener
+		// option checkboxes access key/overlay close listener
 		document.addEventListener('keydown', function(event) {
-			if ((event.keyCode > 64) && (event.keyCode < 91) && event.altKey && !event.shiftKey && !event.ctrlKey && !event.metaKey) {
+			if (event.keyCode === 27) {
+				$$('.overlay').each(function(overlay) {
+					if (overlay.style.display !== 'none') {
+						new API.w.Effect.Fade(overlay);
+					}
+				});
+			}
+			else if ((event.keyCode > 64) && (event.keyCode < 91) && event.altKey && !event.shiftKey && !event.ctrlKey && !event.metaKey) {
 				var key = String.fromCharCode(event.which).toLowerCase();
 				
 				if (typeof this.keydownListeners[key] === 'string') {
@@ -522,7 +529,7 @@ var BisaChatPlus = {
 		var wrapperDiv = new API.w.Element('div');
 		var contentDiv = new API.w.Element('div', { 'class': 'overlayContent' });
 		
-		var closeButtonDiv = new API.w.Element('div', { 'class': 'overlayCloseButton' });
+		var closeButtonDiv = new API.w.Element('div', { 'class': 'overlayCloseButton', title: 'Zum Schließen, ESC-Taste drücken' });
 		var closeButtonLink = new API.w.Element('a', { href: 'javascript:;' });
 		var closeButtonImg = new API.w.Element('img', { src: 'wcf/icon/closeS.png', alt: '' });
 		

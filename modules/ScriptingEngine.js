@@ -42,7 +42,7 @@ Modules.ScriptingEngine = {
 	},
 	
 	buildOverlay: function() {
-		this.callerObj.buildOverlay('scriptingEngine', './wcf/icon/pmFullS.png', 'Scripting Engine', function() {
+		this.callerObj.buildOverlay('scriptingEngine', './wcf/icon/codeS.png', 'Scripting Engine', function() {
 			return this.overlayContentBuilder();
 		}.bind(this));
 	},

@@ -262,6 +262,7 @@ var BisaChatPlus = {
 				$$('.overlay').each(function(overlay) {
 					if (overlay.style.display !== 'none') {
 						new API.w.Effect.Fade(overlay);
+						$('chatInput').focus();
 					}
 				});
 			}

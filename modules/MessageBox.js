@@ -94,6 +94,7 @@ Modules.MessageBox = {
 			var buttonUl = new API.w.Element('ul');
 			var li = new API.w.Element('li', { style: 'float:left;' });
 			var a = new API.w.Element('a', { href: 'javascript:;' });
+			var span = new API.w.Element('span');
 			
 			this.inbox.each(function(item, key) {
 				this.appendMessage(item, key, messageUl);
@@ -111,7 +112,8 @@ Modules.MessageBox = {
 				});
 			}.bindAsEventListener(this), true);
 			
-			a.appendChild(document.createTextNode('Alle Nachrichten löschen'));
+			span.appendChild(document.createTextNode('Alle Nachrichten löschen'));
+			a.appendChild(span);
 			li.appendChild(a);
 			buttonUl.appendChild(li);
 			buttonWrapper.appendChild(buttonUl);

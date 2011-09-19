@@ -86,6 +86,7 @@ var BisaChatPlus = {
 	addStyleRules: function() {
 		API.addStyle('body { overflow: hidden; }');
 		API.addStyle('html, body { height: '+API.inHeight+'px !important; }');
+		API.addStyle('*:focus { outline: 0px !important; }');
 		API.addStyle('.hidden { display: none; }');
 		API.addStyle('.column { border: 0px !important; }');
 		API.addStyle('#smileys { display: none; }');

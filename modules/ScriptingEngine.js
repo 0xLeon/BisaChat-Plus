@@ -20,7 +20,7 @@ Modules.ScriptingEngine = {
 	registerPrefilter: function() {
 		this.callerObj.registerSilentMessagePrefilter(function(event, nickname, message, messageType) {
 			var name = API.w.$A(event.target.querySelectorAll('span[onclick] > span')).map(function(item) {
-				return '[color='+String(item.style.color).parseAsColor()+']'+item.firstChild.nodeValue+'[/color]';
+				return '[color='+item.style.color.parseAsColor()+']'+item.firstChild.nodeValue+'[/color]';
 			}).join('');
 			
 			if (!this.nameCache.get(nickname) || (this.nameCache.get(nickname) !== name)) {
@@ -130,7 +130,7 @@ Modules.ScriptingEngine = {
 								}
 								else {
 									API.w.$A(div.querySelectorAll('ul li:first-child span')).each(function(span) {
-										returnValue += '[color='+String(span.style.color).parseAsColor()+']'+span.firstChild.nodeValue+'[/color]';
+										returnValue += '[color='+span.style.color.parseAsColor()+']'+span.firstChild.nodeValue+'[/color]';
 									});
 								}
 								

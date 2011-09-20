@@ -59,9 +59,9 @@ Modules.ScriptingEngine = {
 			var commandsDl = new API.w.Element('dl');
 			
 			this.commands.each(function(command) {
-				commandsDt = new API.w.Element('dt');
-				commandsDd = new API.w.Element('dd');
-				commandsDdHr = new API.w.Element('dd');
+				var commandsDt = new API.w.Element('dt');
+				var commandsDd = new API.w.Element('dd');
+				var commandsDdHr = new API.w.Element('dd');
 				
 				commandsDt.appendChild(document.createTextNode(command.key));
 				commandsDd.appendChild(document.createTextNode(command.value));

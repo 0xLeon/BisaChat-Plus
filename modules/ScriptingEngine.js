@@ -19,15 +19,12 @@ Modules.ScriptingEngine = {
 	
 	registerPrefilter: function() {
 		this.callerObj.registerSilentMessagePrefilter(function(event, nickname, message, messageType) {
-			var name = API.w.$A(event.target.querySelectorAll('span[onclick] > span'));
-			var tmp = '';
+			var name = API.w.$A(event.target.querySelectorAll('span[onclick] > span')).map(function(item) {
+				return '[color='+String(item.style.color).parseAsColor()+']'+item.firstChild.nodeValue+'[/color]';
+			}).join('');
 			
 			if (!this.nameCache.get(nickname) || (this.nameCache.get(nickname) !== name)) {
-				name.each(function(item) {
-					tmp += '[color='+String(item.style.color).parseAsColor()+']'+item.firstChild.nodeValue+'[/color]';
-				});
-				
-				this.nameCache.set(nickname, tmp);
+				this.nameCache.set(nickname, name);
 			}
 		}, this);
 		

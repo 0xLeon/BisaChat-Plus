@@ -251,6 +251,14 @@ Modules.ScriptingEngine = {
 				afterFinish: function() {
 					this.commands.unset(commandName);
 					API.Storage.setValue('scriptingEngineCommands', this.commands._object);
+					
+					if (this.commands.size() === 0) {
+						var p = new API.w.Element('p', { style: 'display: none;' });
+			
+						p.appendChild(document.createTextNode('Keine Befehle vorhanden.'));
+						targetList.parentNode.replaceChild(p, targetList);
+						new API.w.Effect.Appear($$('#scriptingEngine p')[0]);
+					}
 				}.bind(this)
 			});
 		}.bindAsEventListener(this), true);

@@ -10,7 +10,8 @@ Modules.ScriptingEngine = {
 	init: function(callerObj) {
 		this.callerObj = callerObj;
 		
-		API.addStyle('#scriptingEngine dl dt { font-weight: bold; clear: both; }');
+		API.addStyle('#scriptingEngine dl dt { clear: both; }');
+		API.addStyle('#scriptingEngine dl dt span { font-weight: bold; }');
 		API.addStyle('#scriptingEngine dl hr { display: block; width: 80%; float: left; }');
 		API.addStyle('#scriptingEngine dl dt input { width: 8% }');
 		API.addStyle('#scriptingEngine dl dd input { width: 11% }');
@@ -83,10 +84,36 @@ Modules.ScriptingEngine = {
 									API.Storage.setValue('scriptingEngineCommands', this.commands._object);
 									
 									var newCommandDt = new API.w.Element('dt', { style: 'display: none;' });
+									var newCommandSpan = new API.w.Element('span');
 									var	newCommandDd = new API.w.Element('dd', { style: 'display: none;' });
 									var newCommandDdHr = new API.w.Element('dd');
 									
-									newCommandDt.appendChild(document.createTextNode(inputs[0].value.trim()));
+									var newCommandDeleteButtonLink = new API.w.Element('a', { href: 'javascript:;' });
+									var newCommandDeleteButtonImg = new API.w.Element('img', { src: './wcf/icon/deleteS.png', style: 'width: 16px; height: 16px;', alt: '' });
+									
+									newCommandDeleteButtonLink.addEventListener('click', function(event) {
+										var dt = ((event.target.nodeName.toLowerCase() === 'img') ? event.target.parentNode.parentNode : event.target.parentNode);
+										var dd = dt.nextSibling;
+										var ddHr = dd.nextSibling;
+										var commandName = dt.querySelector('span').firstChild.nodeValue;
+										
+										new API.w.Effect.Parallel(API.w.$A([
+											new API.w.Effect.Fade(dt, { sync: true, afterFinish: function(effect) { effect.element.parentNode.removeChild(effect.element); } }),
+											new API.w.Effect.Fade(dd, { sync: true, afterFinish: function(effect) { effect.element.parentNode.removeChild(effect.element); } }),
+											new API.w.Effect.Fade(ddHr, { sync: true, afterFinish: function(effect) { effect.element.parentNode.removeChild(effect.element); } })
+										]), {
+											afterFinish: function() {
+												this.commands.unset(commandName);
+												API.Storage.setValue('scriptingEngineCommands', this.commands._object);
+											}.bind(this)
+										});
+									}.bindAsEventListener(this), true);
+									
+									newCommandDeleteButtonLink.appendChild(newCommandDeleteButtonImg);
+									newCommandSpan.appendChild(document.createTextNode(inputs[0].value.trim()));
+									newCommandDt.appendChild(newCommandDeleteButtonLink);
+									newCommandDt.appendChild(document.createTextNode(' '));
+									newCommandDt.appendChild(newCommandSpan);
 									newCommandDd.appendChild(document.createTextNode(inputs[1].value.trim()));
 									newCommandDdHr.appendChild(new API.w.Element('hr'));
 									$$('#scriptingEngine dl')[0].appendChild(newCommandDt);
@@ -155,10 +182,36 @@ Modules.ScriptingEngine = {
 			
 			this.commands.each(function(command) {
 				var commandsDt = new API.w.Element('dt');
+				var commandsSpan = new API.w.Element('span');
 				var commandsDd = new API.w.Element('dd');
 				var commandsDdHr = new API.w.Element('dd');
 				
-				commandsDt.appendChild(document.createTextNode(command.key));
+				var commandDeleteButtonLink = new API.w.Element('a', { href: 'javascript:;' });
+				var commandDeleteButtonImg = new API.w.Element('img', { src: './wcf/icon/deleteS.png', style: 'width: 16px; height: 16px;', alt: '' });
+				
+				commandDeleteButtonLink.addEventListener('click', function(event) {
+					var dt = ((event.target.nodeName.toLowerCase() === 'img') ? event.target.parentNode.parentNode : event.target.parentNode);
+					var dd = dt.nextSibling;
+					var ddHr = dd.nextSibling;
+					var commandName = dt.querySelector('span').firstChild.nodeValue;
+					
+					new API.w.Effect.Parallel(API.w.$A([
+						new API.w.Effect.Fade(dt, { sync: true, afterFinish: function(effect) { effect.element.parentNode.removeChild(effect.element); } }),
+						new API.w.Effect.Fade(dd, { sync: true, afterFinish: function(effect) { effect.element.parentNode.removeChild(effect.element); } }),
+						new API.w.Effect.Fade(ddHr, { sync: true, afterFinish: function(effect) { effect.element.parentNode.removeChild(effect.element); } })
+					]), {
+						afterFinish: function() {
+							this.commands.unset(commandName);
+							API.Storage.setValue('scriptingEngineCommands', this.commands._object);
+						}.bind(this)
+					});
+				}.bindAsEventListener(this), true);
+				
+				commandDeleteButtonLink.appendChild(commandDeleteButtonImg);
+				commandsSpan.appendChild(document.createTextNode(command.key));
+				commandsDt.appendChild(commandDeleteButtonLink);
+				commandsDt.appendChild(document.createTextNode(' '));
+				commandsDt.appendChild(commandsSpan);
 				commandsDd.appendChild(document.createTextNode(command.value));
 				commandsDdHr.appendChild(new API.w.Element('hr'));
 				commandsDl.appendChild(commandsDt);

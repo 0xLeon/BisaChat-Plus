@@ -39,12 +39,7 @@ Modules.BBCodeParser = {
 				message.innerHTML = this.parse(message.innerHTML);
 			}
 			else {
-				message.innerHTML = message.innerHTML.replace(this.TEXT_REGEX, (function(context) {
-					return function(mString, openingTag, openingTagOption, closingTag, offset, string) {
-						if (context.isValidTag(openingTag) || context.isValidTag(closingTag)) return '';
-						return mString;
-					}
-				})(this));
+				message.innerHTML = this.stripTags(message.innerHTML);
 			}
 		}, null, this);
 	},
@@ -133,5 +128,16 @@ Modules.BBCodeParser = {
 		this.noParse = false;
 		
 		return ((!!endtags) ? result + endtags : result);
+	},
+	
+	stripTags: function(text) {
+		text = text.replace(this.TEXT_REGEX, (function(context) {
+			return function(mString, openingTag, openingTagOption, closingTag, offset, string) {
+				if (context.isValidTag(openingTag) || context.isValidTag(closingTag)) return '';
+				return mString;
+			}
+		})(this));
+		
+		return text;
 	}
 };

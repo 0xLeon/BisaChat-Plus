@@ -80,13 +80,7 @@ Modules.ScriptingEngine = {
 						new API.w.Effect.Fade(dt.nextSibling, { sync: true, afterFinish: function(effect) { effect.element.parentNode.removeChild(effect.element); } })
 					]), {
 						afterFinish: function() {
-							if (this.commands.size() === 0) {
-								var p = new API.w.Element('p', { style: 'display: none;' });
-								
-								p.appendChild(document.createTextNode('Keine Befehle vorhanden.'));
-								$$('#scriptingEngine dl')[0].parentNode.replaceChild(p, $$('#scriptingEngine dl')[0]);
-								new API.w.Effect.Appear($$('#scriptingEngine p')[0]);
-							}
+							this.checkListEmpty($$('#scriptingEngine dl')[0]);
 						}.bind(this)
 					});
 				}.bindAsEventListener(this), true);
@@ -276,13 +270,7 @@ Modules.ScriptingEngine = {
 					this.commands.unset(commandName);
 					API.Storage.setValue('scriptingEngineCommands', this.commands._object);
 					
-					if (this.commands.size() === 0) {
-						var p = new API.w.Element('p', { style: 'display: none;' });
-						
-						p.appendChild(document.createTextNode('Keine Befehle vorhanden.'));
-						targetList.parentNode.replaceChild(p, targetList);
-						new API.w.Effect.Appear($$('#scriptingEngine p')[0]);
-					}
+					this.checkListEmpty(targetList);
 				}.bind(this)
 			});
 		}.bindAsEventListener(this), true);
@@ -297,5 +285,15 @@ Modules.ScriptingEngine = {
 		targetList.appendChild(commandDt);
 		targetList.appendChild(commandDd);
 		targetList.appendChild(commandDdHr);
+	},
+	
+	checkListEmpty: function(targetList) {
+		if (this.commands.size() === 0) {
+			var p = new API.w.Element('p', { style: 'display: none;' });
+			
+			p.appendChild(document.createTextNode('Keine Befehle vorhanden.'));
+			targetList.parentNode.replaceChild(p, targetList);
+			new API.w.Effect.Appear($$('#scriptingEngine p')[0]);
+		}
 	}
 };

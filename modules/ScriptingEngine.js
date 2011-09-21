@@ -69,6 +69,28 @@ Modules.ScriptingEngine = {
 				var commandAddInput = new API.w.Element('input', { 'class': 'inputText', type: 'text', size: 7, value: '' });
 				var commandAddTextInput = new API.w.Element('input', { 'class': 'inputText', type: 'text', size: 12, value: '' });
 				
+				var commandAddDeleteButtonLink = new API.w.Element('a', { href: 'javascript:;' });
+				var commandAddDeleteButtonImg = new API.w.Element('img', { src: './wcf/icon/deleteS.png', style: 'width: 16px; height: 16px;', alt: '' });
+				
+				commandAddDeleteButtonLink.addEventListener('click', function(event) {
+					var dt = ((event.target.nodeName.toLowerCase() === 'img') ? event.target.parentNode.parentNode : event.target.parentNode);
+					
+					new API.w.Effect.Parallel(API.w.$A([
+						new API.w.Effect.Fade(dt, { sync: true, afterFinish: function(effect) { effect.element.parentNode.removeChild(effect.element); } }),
+						new API.w.Effect.Fade(dt.nextSibling, { sync: true, afterFinish: function(effect) { effect.element.parentNode.removeChild(effect.element); } })
+					]), {
+						afterFinish: function() {
+							if (this.commands.size() === 0) {
+								var p = new API.w.Element('p', { style: 'display: none;' });
+								
+								p.appendChild(document.createTextNode('Keine Befehle vorhanden.'));
+								$$('#scriptingEngine dl')[0].parentNode.replaceChild(p, $$('#scriptingEngine dl')[0]);
+								new API.w.Effect.Appear($$('#scriptingEngine p')[0]);
+							}
+						}.bind(this)
+					});
+				}.bindAsEventListener(this), true);
+				
 				API.w.$A([commandAddInput, commandAddTextInput]).each(function(input) {
 					input.addEventListener('focus', function(event) {
 						event.target.select();
@@ -110,6 +132,8 @@ Modules.ScriptingEngine = {
 					}.bindAsEventListener(this), true);
 				}, this);
 				
+				commandAddDeleteButtonLink.appendChild(commandAddDeleteButtonImg);
+				commandAddDt.appendChild(commandAddDeleteButtonLink);
 				commandAddDt.appendChild(commandAddInput);
 				commandAddDd.appendChild(commandAddTextInput);
 				commandDl.appendChild(commandAddDt);
@@ -254,7 +278,7 @@ Modules.ScriptingEngine = {
 					
 					if (this.commands.size() === 0) {
 						var p = new API.w.Element('p', { style: 'display: none;' });
-			
+						
 						p.appendChild(document.createTextNode('Keine Befehle vorhanden.'));
 						targetList.parentNode.replaceChild(p, targetList);
 						new API.w.Effect.Appear($$('#scriptingEngine p')[0]);

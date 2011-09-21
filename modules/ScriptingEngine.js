@@ -53,6 +53,22 @@ Modules.ScriptingEngine = {
 		var node = new API.w.Element('div');
 		var p = new API.w.Element('p');
 		
+		var buttonWrapper = new API.w.Element('div', { 'class': 'smallButtons' });
+		var buttonUl = new API.w.Element('ul');
+		var buttonLi = new API.w.Element('li', { style: 'float:left;' });
+		var buttonLink = new API.w.Element('a', { href: 'javascript:;' });
+		var buttonImg = new API.w.Element('img', { src: './wcf/icon/addS.png', style: 'width: 16px; height: 16px;' });
+		var buttonSpan = new API.w.Element('span');
+		
+		buttonSpan.appendChild(document.createTextNode('Befehl hinzufügen'));
+		buttonLink.appendChild(buttonImg);
+		buttonLink.appendChild(document.createTextNode(' '));
+		buttonLink.appendChild(buttonSpan);
+		buttonLi.appendChild(buttonLink);
+		buttonUl.appendChild(buttonLi);
+		buttonWrapper.appendChild(buttonUl);
+		node.appendChild(buttonWrapper);
+		
 		p.appendChild(document.createTextNode('Keine Befehle vorhanden.'));
 		node.appendChild(p);
 		
@@ -75,22 +91,6 @@ Modules.ScriptingEngine = {
 			
 			node.appendChild(commandsDl);
 		}
-		
-		var buttonWrapper = new API.w.Element('div', { 'class': 'smallButtons' });
-		var buttonUl = new API.w.Element('ul');
-		var buttonLi = new API.w.Element('li', { style: 'float:left;' });
-		var buttonLink = new API.w.Element('a', { href: 'javascript:;' });
-		var buttonImg = new API.w.Element('img', { src: './wcf/icon/addS.png', style: 'width: 16px; height: 16px;' });
-		var buttonSpan = new API.w.Element('span');
-		
-		buttonSpan.appendChild(document.createTextNode('Befehl hinzufügen'));
-		buttonLink.appendChild(buttonImg);
-		buttonLink.appendChild(document.createTextNode(' '));
-		buttonLink.appendChild(buttonSpan);
-		buttonLi.appendChild(buttonLink);
-		buttonUl.appendChild(buttonLi);
-		buttonWrapper.appendChild(buttonUl);
-		node.appendChild(buttonWrapper);
 		
 		return node;
 	},

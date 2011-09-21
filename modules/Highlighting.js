@@ -45,8 +45,10 @@ Modules.Highlighting = {
 					this.buildRegExp(API.Storage.getValue('highlightingTextValue', API.w.settings.username));
 				}
 				
-				if (this.regExp.test(message.innerHTML)) {
-					this.title = 'Neue Nachricht enthält: '+this.regExp.exec(message.innerHTML)[1];
+				var text = ((!!Modules.BBCodeParser && !!Modules.BBCodeParser.stripTags) ? Modules.BBCodeParser.stripTags(message.textContent) : message.textContent);
+				
+				if (this.regExp.test(text)) {
+					this.title = 'Neue Nachricht enthält: '+this.regExp.exec(text)[1];
 					this.highlight(event.target.getAttribute('id'));
 					
 					if (!!Modules.MessageBox && (messageType !== 7)) {

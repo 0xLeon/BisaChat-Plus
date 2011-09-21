@@ -5,7 +5,7 @@
 Modules.ScriptingEngine = {
 	callerObj: null,
 	nameCache: API.w.$H({}),
-	commands: API.w.$H({}),
+	commands: API.w.$H(API.Storage.getValue('scriptingEngineCommands', {})),
 	
 	init: function(callerObj) {
 		this.callerObj = callerObj;
@@ -58,6 +58,87 @@ Modules.ScriptingEngine = {
 		var buttonLink = new API.w.Element('a', { href: 'javascript:;' });
 		var buttonImg = new API.w.Element('img', { src: './wcf/icon/addS.png', style: 'width: 16px; height: 16px;' });
 		var buttonSpan = new API.w.Element('span');
+		
+		buttonLink.addEventListener('click', function(event) {
+			if (!$$('#scriptingEngine dl dd:last-child')[0] || ($$('#scriptingEngine dl dd:last-child')[0].previousSibling.firstChild.nodeType === 3)) {
+				var commandDl = (($$('#scriptingEngine dl')[0]) || (new API.w.Element('dl')));
+				var commandAddDt = new API.w.Element('dt', { style: 'display: none;' });
+				var	commandAddDd = new API.w.Element('dd', { style: 'display: none;' });
+				var commandAddInput = new API.w.Element('input', { 'class': 'inputText', type: 'text', size: 7, value: '' });
+				var commandAddTextInput = new API.w.Element('input', { 'class': 'inputText', type: 'text', size: 12, value: '' });
+				
+				API.w.$A([commandAddInput, commandAddTextInput]).each(function(input) {
+					input.addEventListener('focus', function(event) {
+						event.target.select();
+					}, true);
+					
+					input.addEventListener('keydown', function(event) {
+						var inputs = $$('#scriptingEngine dl input');
+						
+						if (event.keyCode === 13) {
+							if (inputs.all(function(n) { return (n.value.trim().length > 0); })) {
+								if (!this.commands.get(inputs[0].value.trim())) {
+									this.commands.set(inputs[0].value.trim(), inputs[1].value.trim());
+									API.Storage.setValue('scriptingEngineCommands', this.commands._object);
+									
+									var newCommandDt = new API.w.Element('dt', { style: 'display: none;' });
+									var	newCommandDd = new API.w.Element('dd', { style: 'display: none;' });
+									var newCommandDdHr = new API.w.Element('dd');
+									
+									newCommandDt.appendChild(document.createTextNode(inputs[0].value.trim()));
+									newCommandDd.appendChild(document.createTextNode(inputs[1].value.trim()));
+									newCommandDdHr.appendChild(new API.w.Element('hr'));
+									$$('#scriptingEngine dl')[0].appendChild(newCommandDt);
+									$$('#scriptingEngine dl')[0].appendChild(newCommandDd);
+									
+									new API.w.Effect.Parallel(API.w.$A([
+										new API.w.Effect.Fade(inputs[0].parentNode, { sync: true, afterFinish: function(effect) { effect.element.parentNode.removeChild(effect.element); } }),
+										new API.w.Effect.Fade(inputs[1].parentNode, { sync: true, afterFinish: function(effect) { effect.element.parentNode.removeChild(effect.element); } })
+									]), {
+										afterFinish: function() {
+											new API.w.Effect.Parallel(API.w.$A([
+												new API.w.Effect.Appear($$('#scriptingEngine dl dt').last(), { sync: true }),
+												new API.w.Effect.Appear($$('#scriptingEngine dl dd').last(), { sync: true , afterFinish: function() { $$('#scriptingEngine dl')[0].appendChild(newCommandDdHr); } })
+											]));
+										}
+									});
+								}
+								else {
+									API.w.alert('Fehler beim Speichern des Befehls.'+"\n"+'Ein Befehl mit diesem Bezeichner existiert bereits!');
+									$$('#scriptingEngine dl input')[0].focus();
+								}
+							}
+							else {
+								API.w.alert('Fehler beim Speichern des Befehls.'+"\n"+'Bitte kontrolliere die Eingabefelder!');
+								$$('#scriptingEngine dl input')[0].focus();
+							}
+						}
+					}.bindAsEventListener(this), true);
+				}, this);
+				
+				commandAddDt.appendChild(commandAddInput);
+				commandAddDd.appendChild(commandAddTextInput);
+				commandDl.appendChild(commandAddDt);
+				commandDl.appendChild(commandAddDd);
+				
+				if (!commandDl.parentNode) {
+					$$('#scriptingEngine p')[0].parentNode.replaceChild(commandDl, $$('#scriptingEngine p')[0]);
+				}
+				
+				new API.w.Effect.Parallel(API.w.$A([
+					new API.w.Effect.Appear($$('#scriptingEngine dl dt').last(), { sync: true }),
+					new API.w.Effect.Appear($$('#scriptingEngine dl dd').last(), { sync: true })
+				]), {
+					afterFinish: function() {
+						$$('#scriptingEngine dl dt input').last().focus();
+					}
+				});
+			}
+			else {
+				API.w.alert('Bitte benutz die schon vorhandenen Eingabefelder!');
+				$$('#scriptingEngine dl input')[0].focus();
+			}
+		}.bindAsEventListener(this), true);
 		
 		buttonSpan.appendChild(document.createTextNode('Befehl hinzufügen'));
 		buttonLink.appendChild(buttonImg);

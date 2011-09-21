@@ -51,7 +51,6 @@ Modules.ScriptingEngine = {
 	
 	overlayContentBuilder: function() {
 		var node = new API.w.Element('div');
-		var p = new API.w.Element('p');
 		
 		var buttonWrapper = new API.w.Element('div', { 'class': 'smallButtons' });
 		var buttonUl = new API.w.Element('ul');
@@ -69,11 +68,7 @@ Modules.ScriptingEngine = {
 		buttonWrapper.appendChild(buttonUl);
 		node.appendChild(buttonWrapper);
 		
-		p.appendChild(document.createTextNode('Keine Befehle vorhanden.'));
-		node.appendChild(p);
-		
 		if (this.commands.size() > 0) {
-			node = new API.w.Element('div');
 			var commandsDl = new API.w.Element('dl');
 			
 			this.commands.each(function(command) {
@@ -90,6 +85,12 @@ Modules.ScriptingEngine = {
 			}, this);
 			
 			node.appendChild(commandsDl);
+		}
+		else {
+			var p = new API.w.Element('p');
+			
+			p.appendChild(document.createTextNode('Keine Befehle vorhanden.'));
+			node.appendChild(p);
 		}
 		
 		return node;

@@ -10,9 +10,10 @@ shows what you're listening to via one click, provided scrobbling is turned on.
 ------------
 Installation Information
 
-Right now, BC+ only supports Firefox 4. Firefox 3 support was dropped in the beta phase because 
-Firefox 3  can't handle some features. Right now, the script works both in Greasemonkey and in 
-Scriptish. Personally I recommed the use of Scriptish.
+Right now, BC+ supports Firefox 4 and higher only. The script works both in Greasemonkey and in 
+Scriptish. Personally I recommed the use of Scriptish. Other userscript-able browsers (Opera and 
+Chrome) will be supportet by BisChat Plus 2.0, which is about to be released at the of the year 
+2011.
 ------------
 known issues:
  - smiliesbox height shouldn't be fixed (low)
@@ -22,8 +23,8 @@ desired features:
  - BBCode Parser: img-tag (low)
  - BBCode Parser: floating tags (low)
  - Priority Levels for modules (mid)
- - add module Scripting Engine (mid)
  - add function for registering commands (mid)
+ - Backup: add ability to delete backup data (high)
 ------------
 All source and documentation files are published under the Simplified BSD license. For more 
 information see the LICENSE file.

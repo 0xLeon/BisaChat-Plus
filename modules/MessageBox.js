@@ -94,7 +94,7 @@ Modules.MessageBox = {
 			var buttonUl = new API.w.Element('ul');
 			var li = new API.w.Element('li', { style: 'float:left;' });
 			var a = new API.w.Element('a', { href: 'javascript:;' });
-			var img = new API.w.Element('img', { src: './wcf/icon/deleteS.png', style: 'width: 16px; height: 16px;' });
+			var img = new API.w.Element('img', { src: './wcf/icon/deleteS.png', style: 'width: 16px; height: 16px;', alt: '' });
 			var span = new API.w.Element('span');
 			
 			this.inbox.each(function(item, key) {

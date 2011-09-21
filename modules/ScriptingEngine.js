@@ -14,7 +14,7 @@ Modules.ScriptingEngine = {
 		API.addStyle('#scriptingEngine dl hr { display: block; width: 80%; float: left; }');
 		API.addStyle('#scriptingEngine dl dt input { width: 8% }');
 		API.addStyle('#scriptingEngine dl dd input { width: 11% }');
-		API.addStyle('#scriptingEngine dl dd:last-child { display: none; }');
+		API.addStyle('#scriptingEngine dl dd:last-child hr { display: none; }');
 		this.registerPrefilter();
 		this.buildOverlay();
 	},

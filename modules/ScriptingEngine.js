@@ -33,10 +33,11 @@ Modules.ScriptingEngine = {
 		API.w.Ajax.Responders.register({
 			onCreate: function(request, response) {
 				if ((request.url.indexOf('form=Chat') > -1) && (request.parameters.text.trim().indexOf('/') === 0)) {
-					var command = request.parameters.text.trim().slice(1, request.parameters.text.trim().indexOf(' '));
+					var command = request.parameters.text.trim().slice(1, ((request.parameters.text.trim().indexOf(' ') === -1) ? (request.parameters.text.trim().length) : request.parameters.text.trim().indexOf(' ')));
+					var parameter = ((request.parameters.text.trim().indexOf(' ') === -1) ? '' : request.parameters.text.trim().slice(request.parameters.text.trim().indexOf(' ')+1));
 					
 					if (!!this.commands.get(command)) {
-						request.options.postBody = 'text='+encodeURIComponent(this.parse(command, request.parameters.text.trim().slice(request.parameters.text.trim().indexOf(' ')+1)))+((!!Modules.SmiliesPlus) ? ((!!$('enablesmilies')) ? '&enablesmilies=on' : '') : (($('enablesmilies').checked) ? '&enablesmilies=on' : ''))+'&ajax=1'
+						request.options.postBody = 'text='+encodeURIComponent(this.parse(command, parameter))+((!!Modules.SmiliesPlus) ? ((!!$('enablesmilies')) ? '&enablesmilies=on' : '') : (($('enablesmilies').checked) ? '&enablesmilies=on' : ''))+'&ajax=1'
 					}
 				}
 			}.bind(this)

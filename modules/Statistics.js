@@ -113,6 +113,7 @@ Modules.Statistics = {
 	stopOnlineTimeLengthCounter: function() {
 		if (this.onlineTimeLengthCounterHandle !== null) {
 			API.w.clearInterval(this.onlineTimeLengthCounterHandle);
+			this.onlineTimeLengthCounterHandle = null;
 		}
 	}
 };

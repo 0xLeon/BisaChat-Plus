@@ -65,7 +65,7 @@ Modules.Highlighting = {
 							$$('#messageBox .overlayContent')[0].replaceChild(Modules.MessageBox.overlayContentBuilder(), $$('#messageBox .overlayContent')[0].firstChild);
 						}
 						else {
-							Modules.MessageBox.appendMessage(Modules.MessageBox.inbox[length-1], length, $$('#messageBox .overlayContent ul')[0]);
+							Modules.MessageBox.appendMessage(Modules.MessageBox.inbox.last(), length, $$('#messageBox .overlayContent ul')[0]);
 						}
 						
 						if (!!$('messageBoxSmallButton')) {

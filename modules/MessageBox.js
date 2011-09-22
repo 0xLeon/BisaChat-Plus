@@ -50,7 +50,7 @@ Modules.MessageBox = {
 					$$('#messageBox .overlayContent')[0].replaceChild(this.overlayContentBuilder(), $$('#messageBox .overlayContent')[0].firstChild);
 				}
 				else {
-					this.appendMessage(this.inbox[length-1], length, $$('#messageBox .overlayContent ul')[0]);
+					this.appendMessage(this.inbox.last(), length, $$('#messageBox .overlayContent ul')[0]);
 				}
 				
 				if (!!$('messageBoxSmallButton')) {

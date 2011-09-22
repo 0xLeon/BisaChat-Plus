@@ -28,13 +28,7 @@ Modules.SmiliesPlus = {
 	addListener: function() {
 		this.callerObj.registerMessagePrefilter('smiliesActive', 'Smileys', 'Darstellung von Smileys aktivieren', 'p', false, function(event, checked, nickname, message) {
 			if (!checked) {
-				var smilies = API.w.$A(message.getElementsByTagName('img'));
-				
-				if (smilies.length > 0) {
-					smilies.each(function(item) {
-						message.replaceChild(document.createTextNode(String(item.getAttribute('alt'))), item);
-					});
-				}
+				this.replaceImageSmilies(message);
 			}
 		}, function(event, checked) {
 			if (checked) {
@@ -47,5 +41,15 @@ Modules.SmiliesPlus = {
 			
 			return true;
 		});
+	},
+	
+	replaceImageSmilies: function(node) {
+		var smilies = API.w.$A(node.querySelectorAll('img'));
+		
+		if (smilies.length > 0) {
+			smilies.each(function(item) {
+				node.replaceChild(document.createTextNode(item.getAttribute('alt')), item);
+			});
+		}
 	}
 };

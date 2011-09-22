@@ -9,7 +9,7 @@ Modules.SmiliesPlus = {
 		this.callerObj = callerObj;
 		
 		API.addStyle('#smiliesList li { border: none !important; margin-left: 3px; margin-right: 3px; height: 30px; float: left; }');
-		if (API.Storage.getValue('smiliesActiveStatus', false)) $('chatForm').appendChild(new API.w.Element('input', { id: 'enablesmilies', name: 'enablesmilies', type: 'hidden', value: 'on' }));
+		this.setStatus(API.Storage.getValue('smiliesActiveStatus', false));
 		this.callerObj.buildBox('smilies', './wcf/images/smilies/smile.png', 'Smileys', function() {
 			var smiliesListDiv = new API.w.Element('div', { id: 'smiliesList' });
 			var smiliesUl = new API.w.Element('ul', { 'class': 'smileys' });
@@ -31,16 +31,10 @@ Modules.SmiliesPlus = {
 				this.replaceImageSmilies(message);
 			}
 		}, function(event, checked) {
-			if (checked) {
-				if (!!$('enablesmilies')) $('enablesmilies').parentNode.removeChild($('enablesmilies'));
-				$('chatForm').appendChild(new API.w.Element('input', { id: 'enablesmilies', name: 'enablesmilies', type: 'hidden', value: 'on' }));
-			}
-			else {
-				if (!!$('enablesmilies')) $('enablesmilies').parentNode.removeChild($('enablesmilies'));
-			}
+			this.setStatus(checked);
 			
 			return true;
-		});
+		}, this);
 	},
 	
 	replaceImageSmilies: function(node) {
@@ -50,6 +44,16 @@ Modules.SmiliesPlus = {
 			smilies.each(function(item) {
 				node.replaceChild(document.createTextNode(item.getAttribute('alt')), item);
 			});
+		}
+	},
+	
+	setStatus: function(state) {
+		if (state) {
+			if (!!$('enablesmilies')) $('enablesmilies').parentNode.removeChild($('enablesmilies'));
+			$('chatForm').appendChild(new API.w.Element('input', { id: 'enablesmilies', name: 'enablesmilies', type: 'hidden', value: 'on' }));
+		}
+		else {
+			if (!!$('enablesmilies')) $('enablesmilies').parentNode.removeChild($('enablesmilies'));
 		}
 	}
 };

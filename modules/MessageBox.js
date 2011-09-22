@@ -5,7 +5,7 @@
 Modules.MessageBox = {
 	callerObj: null,
 	prefilterHandle: null,
-	inbox: API.w.$A([ ]),
+	inbox: null,
 	unread: 0,
 	
 	init: function(callerObj) {
@@ -25,11 +25,7 @@ Modules.MessageBox = {
 	},
 	
 	getData: function() {
-		var data = JSON.parse(API.Storage.getValue('messageBoxData', '[]'));
-		
-		for (var i = 0; i < data.length; i++) {
-			this.inbox.push(data[i]);
-		}
+		this.inbox = API.w.$A(JSON.parse(API.Storage.getValue('messageBoxData', '[]'))).clone();
 	},
 	
 	registerPrefilter: function() {

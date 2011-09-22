@@ -122,16 +122,16 @@ Modules.Backup = {
 				var xml = ((!transport.responseXML) ? (new DOMParser()).parseFromString(transport.responseText, 'text/xml') : transport.responseXML);
 				var node = null;
 				
-				if (xml.getElementsByTagName('entry').length > 0) {
+				if (xml.querySelectorAll('entry').length > 0) {
 					node = new API.w.Element('div');
 					
-					API.w.$A(xml.getElementsByTagName('entry')).each(function(item) {
+					API.w.$A(xml.querySelectorAll('entry')).each(function(item) {
 						var p = new API.w.Element('p');
 						var a = new API.w.Element('a', { href: 'javascript:;', title: 'Klicken zum einspielen der Datensicherung' });
-						var input = new API.w.Element('input', { 'type': 'hidden', value: String(item.getElementsByTagName('index')[0].firstChild.nodeValue) });
+						var input = new API.w.Element('input', { 'type': 'hidden', value: String(item.querySelector('index').firstChild.nodeValue) });
 						var span = new API.w.Element('span');
 						
-						var backupTimeObj = new Date(Math.floor(Number(item.getElementsByTagName('timestamp')[0].firstChild.nodeValue) * 1000));
+						var backupTimeObj = new Date(Math.floor(Number(item.querySelector('timestamp').firstChild.nodeValue) * 1000));
 						var backupTimeString = '';
 						
 						backupTimeString += backupTimeObj.getDate()+'. '+(['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'][backupTimeObj.getMonth()])+' '+backupTimeObj.getFullYear()+', ';

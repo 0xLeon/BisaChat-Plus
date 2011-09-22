@@ -6,16 +6,14 @@ Modules.MessagePrefilters = {
 	init: function(callerObj) {
 		callerObj.registerMessagePrefilter('colorlessNicknames', 'Farblose Nicknamen', 'Nicknamen farblos anzeigen', 'n', false, function(event, checked, nickname, message) {
 			if (checked) {
-				var nickname = event.target.getElementsByTagName('span')[1].getElementsByTagName('span');
-				
-				for (var i = 0; i < nickname.length; i++) {
-					nickname[i].style.color = '';
-				}
+				API.w.$A(event.target.querySelector('span[onclick] > span')).each(function(item) {
+					item.style.color = '';
+				});
 			}
 		});
 		
 		callerObj.registerMessagePrefilter('greentext', 'Green text', 'Green text aktivieren', 'g', true, function(event, checked, nickname, message) {
-			if ((checked) && (message.firstChild.nodeType === 3) && (String(message.firstChild.nodeValue)[0] === '>')) {
+			if ((checked) && (message.firstChild.nodeType === 3) && (message.firstChild.nodeValue[0] === '>')) {
 				message.style.color = '#792';
 			}
 		});

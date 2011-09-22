@@ -58,12 +58,12 @@ Modules.LastfmConnector = {
 					var xml = ((!response.responseXML) ? (new DOMParser()).parseFromString(response.responseText, 'text/xml') : response.responseXML);
 					
 					if (xml.documentElement.getAttribute('status') === 'ok') {
-						if ((xml.getElementsByTagName('track').length > 0) && (xml.getElementsByTagName('track')[0].getAttribute('nowplaying'))) {
-							var trackDOM = xml.getElementsByTagName('track')[0];
-							var artist = trackDOM.getElementsByTagName('artist')[0].firstChild.nodeValue;
-							var title = trackDOM.getElementsByTagName('name')[0].firstChild.nodeValue;
-							var trackURI = trackDOM.getElementsByTagName('url')[0].firstChild.nodeValue;
-							var username = xml.getElementsByTagName('recenttracks')[0].getAttribute('user');
+						if ((xml.querySelectorAll('track').length > 0) && (xml.querySelector('recenttracks > track:first-child').getAttribute('nowplaying') === 'true')) {
+							var trackDOM = xml.querySelector('recenttracks > track:first-child');
+							var artist = trackDOM.querySelector('artist').firstChild.nodeValue;
+							var title = trackDOM.querySelector('name').firstChild.nodeValue;
+							var trackURI = trackDOM.querySelector('url').firstChild.nodeValue;
+							var username = xml.querySelector('recenttracks').getAttribute('user');
 							
 							this.callerObj.pushMessage(this.getTrackString(artist, title, trackURI, username));
 						}
@@ -72,7 +72,7 @@ Modules.LastfmConnector = {
 						}
 					}
 					else if (xml.documentElement.getAttribute('status') === 'failed') {
-						throw new Error(String(xml.getElementsByTagName('error')[0].firstChild.nodeValue));
+						throw new Error(String(xml.querySelector('error').firstChild.nodeValue));
 					}
 					else {
 						throw new Error('');

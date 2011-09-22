@@ -1,12 +1,12 @@
 /* 
- * Highling Module
+ * Highlighting Module
  * Copyright (c) 2011, Stefan Hahn
  */
 Modules.Highlighting = {
 	callerObj: null,
 	docTitle: '',
 	regExp: null,
-	messageIDs: API.w.$A([ ]),
+	messageIDs: API.w.$A([]),
 	title: '',
 	periodicalExecuter: null,
 	listenerFunction: null,

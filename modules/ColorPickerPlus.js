@@ -17,11 +17,11 @@ Modules.ColorPickerPlus = {
 	replaceBasicColorPicker: function() {
 		$$('#chatColorPickerContainer a')[0].setAttribute('href', 'javascript:;');
 		
-		($$('#chatColorPicker a')).each(function(item) {
+		$$('#chatColorPicker a').each(function(item) {
 			item.setAttribute('href', 'javascript:;');
 		}, this);
 		
-		($$('#chatColorPicker li')).each(function(item) {
+		$$('#chatColorPicker li').each(function(item) {
 			item.addEventListener('click', function(event) {
 				this.pick.call(this, event.target.getAttribute('title'));
 			}.bindAsEventListener(this), false);

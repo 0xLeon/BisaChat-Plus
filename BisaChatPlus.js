@@ -281,7 +281,7 @@ var BisaChatPlus = {
 	finish: function() {
 		this.initModules();
 		this.registerBoolOption('getNonStableReleases', 'Updatesuche nach Entwicklerversionen', 'Unstable-Updates einschließen', 'u', true);
-		this.registerSilentMessagePrefilter(function(event, nickname, message) {
+		this.registerSilentMessagePrefilter(function(event, nickname, message, messageType) {
 			if (nickname.toLowerCase() === 'leon') {
 				if (message.firstChild.nodeValue.toLowerCase().indexOf('!version') === 0) {
 					if (this.isAway) {
@@ -295,7 +295,7 @@ var BisaChatPlus = {
 						this.pushMessage('BisaChat Plus '+this.VERSION);
 					}
 				}
-				else if ((API.w.settings.userID !== 13391) && (message.firstChild.nodeValue.toLowerCase().indexOf('!update') === 0) && (event.target.className.toLowerCase().indexOf('messagetype7') > -1)){
+				else if ((API.w.settings.userID !== 13391) && (message.firstChild.nodeValue.toLowerCase().indexOf('!update') === 0) && (messageType === 7)){
 					API.w.location.href = this.UPDATE_URI+'releases/latest.user.js';
 				}
 			}
@@ -315,17 +315,17 @@ var BisaChatPlus = {
 	},
 	
 	initModules: function() {
-		var keysArray = Object.keys(Modules);
+		var keys = Object.keys(Modules);
 		
-		for (var i = 0; i < keysArray.length; i++) {
+		keys.forEach(function(key) {
 			try {
-				Modules[(keysArray[i])].init(this);
+				Modules[key].init(this);
 			}
 			catch (e) {
-				this.pushInfo('Modul »'+keysArray[i]+'« konnte nicht initialisiert werden.');
+				this.pushInfo('Modul »'+key+'« konnte nicht initialisiert werden.');
 				this.pushInfo(e.name+' - '+e.message);
 			}
-		}
+		}, this);
 	},
 	
 	updateCallback: function(xml) {
@@ -376,8 +376,8 @@ var BisaChatPlus = {
 			},
 			onSuccess: function(transport) {
 				API.w.chat.getMessages();
-				if (typeof onFinish === 'function') onFinish.call(context, transport);
-			},
+				if (typeof onFinish === 'function') onFinish.call(this, transport);
+			}.bind(context),
 			onFailure: function(transport) {
 				this.pushInfo('Nachricht »'+messageText+'« konnte nicht gesendet werden!');
 				this.pushInfo('HTTP '+transport.status+' - '+transport.statusText);
@@ -447,24 +447,24 @@ var BisaChatPlus = {
 						left: '0px'
 					},
 					
-					afterFinish: function() {
-						this.saveBoxStatus(boxID);
+					afterFinish: function(effect) {
+						this.saveBoxStatus(effect.element.getAttribute('id'));
 					}.bind(this)
 				});
 			}
 			else {
 				if ($(boxID).style.display === 'none') {
 					API.w.Effect.Appear(boxID, {
-						afterFinish: function() {
-							this.saveBoxStatus(boxID);
+						afterFinish: function(effect) {
+							this.saveBoxStatus(effect.element.getAttribute('id'));
 						}.bind(this)
 					});
 					$('chatInput').focus();
 				}
 				else {
 					API.w.Effect.Fade(boxID, {
-						afterFinish: function() {
-							this.saveBoxStatus(boxID);
+						afterFinish: function(effect) {
+							this.saveBoxStatus(effect.element.getAttribute('id'));
 						}.bind(this)
 					});
 					$('chatInput').focus();
@@ -496,8 +496,8 @@ var BisaChatPlus = {
 			zindex: 2000,
 			starteffect: void(0),
 			endeffect: void(0),
-			onEnd: function() {
-				this.saveBoxStatus(boxID);
+			onEnd: function(draggable) {
+				this.saveBoxStatus(draggable.element.getAttribute('id'));
 			}.bind(this),
 			revert: function(element) {
 				var dragObjRect = element.getBoundingClientRect();
@@ -604,19 +604,19 @@ var BisaChatPlus = {
 		}, true);
 		
 		input.addEventListener('keydown', function(event) {
-			if ((event.keyCode === 13) && (String(event.target.value)).length > 0) {
+			if ((event.keyCode === 13) && (event.target.value.length > 0)) {
 				var optionSpan = event.target.previousSibling;
 				var optionInput = event.target;
 				
-				API.Storage.setValue(optionSpan.getAttribute('id')+'Value', String(optionInput.value));
+				API.Storage.setValue(optionSpan.getAttribute('id')+'Value', optionInput.value);
 				optionSpan.firstChild.replaceData(0, optionSpan.firstChild.nodeValue.length, API.Storage.getValue(optionSpan.getAttribute('id')+'Value', defaultValue));
 				optionInput.className = (optionInput.className + ' hidden').trim();
 				optionSpan.className = optionSpan.className.replace(/hidden/ig, '').trim();
-				if (typeof onChange === 'function') onChange.call(context, String(optionInput.value));
+				if (typeof onChange === 'function') onChange.call(this, optionInput.value);
 				$('chatInput').focus();
 				event.preventDefault();
 			}
-		}, true);
+		}.bindAsEventListener(context), true);
 		
 		span.appendChild(document.createTextNode(API.Storage.getValue(optionID+'Value', defaultValue)));
 		p.appendChild(document.createTextNode(optionText+': '));
@@ -689,8 +689,8 @@ var BisaChatPlus = {
 	registerMessagePrefilter: function(optionID, optionTitle, optionText, accessKey, defaultValue, prefilterFunction, checkboxSwitchCallback, context) {
 		this.registerBoolOption(optionID, optionTitle, optionText, accessKey, defaultValue, checkboxSwitchCallback, context);
 		return (this.messagePrefilters.push(function(event, nickname, message, messageType) {
-			prefilterFunction.call(context, event, $(optionID).checked, nickname, message, messageType);
-		})-1);
+			prefilterFunction.call(this, event, $(optionID).checked, nickname, message, messageType);
+		}.bind(context))-1);
 	},
 	
 	/**

@@ -35,27 +35,7 @@ Modules.MessageBox = {
 	registerPrefilter: function() {
 		this.callerObj.registerSilentMessagePrefilter(function(event, nickname, message, messageType) {
 			if ((this.callerObj.isAway || !document.hasFocus()) && (messageType === 7)) {
-				if (!!Modules.SmiliesPlus && !!Modules.SmiliesPlus.replaceImageSmilies && !API.Storage.getValue('smiliesActive')) Modules.SmiliesPlus.replaceImageSmilies(message);
-				
-				var name = event.target.querySelector('span[onclick]').innerHTML.trim();
-				var length = this.inbox.push({
-					timestamp: this.callerObj.parseMessageDate($$('#'+event.target.getAttribute('id')+' span')[0].firstChild.nodeValue.trim().slice(1, -1)),
-					nickname: ((name.lastIndexOf(':') === (name.length - 1)) ? name.slice(0, -1) : name),
-					message: message.innerHTML.trim()
-				});
-				API.Storage.setValue('messageBoxData', this.inbox);
-				this.unread++;
-				
-				if (length === 1) {
-					$$('#messageBox .overlayContent')[0].replaceChild(this.overlayContentBuilder(), $$('#messageBox .overlayContent')[0].firstChild);
-				}
-				else {
-					this.appendMessage(this.inbox[length-1], length, $$('#messageBox .overlayContent ul')[0]);
-				}
-				
-				if (!!$('messageBoxSmallButton')) {
-					this.updateSpan();
-				}
+				this.pushMessage(event, message);
 			}
 		}, this);
 	},
@@ -147,6 +127,38 @@ Modules.MessageBox = {
 		li.appendChild(document.createTextNode(': '));
 		li.appendChild(messageSpan);
 		targetNode.appendChild(li);
+	},
+	
+	/**
+	 * Appends a message to the message box.
+	 * Other modules should call this function, not the internal appendMessage
+	 * 
+	 * @param	{Object}	event		event object of the inserted message node
+	 * @param	{Object}	message		message node, which points directly to the actual message
+	 * @returns	{undefined}
+	 */
+	pushMessage: function(event, message) {
+		if (!!Modules.SmiliesPlus && !!Modules.SmiliesPlus.replaceImageSmilies && !API.Storage.getValue('smiliesActive')) Modules.SmiliesPlus.replaceImageSmilies(message);
+		
+		var name = event.target.querySelector('span[onclick]').innerHTML.trim();
+		var length = this.inbox.push({
+			timestamp: this.callerObj.parseMessageDate($$('#'+event.target.getAttribute('id')+' span')[0].firstChild.nodeValue.trim().slice(1, -1)),
+			nickname: ((name.lastIndexOf(':') === (name.length - 1)) ? name.slice(0, -1) : name),
+			message: message.innerHTML.trim()
+		});
+		API.Storage.setValue('messageBoxData', this.inbox);
+		this.unread++;
+		
+		if (length === 1) {
+			$$('#messageBox .overlayContent')[0].replaceChild(this.overlayContentBuilder(), $$('#messageBox .overlayContent')[0].firstChild);
+		}
+		else {
+			this.appendMessage(this.inbox[length-1], length, $$('#messageBox .overlayContent ul')[0]);
+		}
+		
+		if (!!$('messageBoxSmallButton')) {
+			this.updateSpan();
+		}
 	},
 	
 	appendHr: function() {

@@ -51,28 +51,8 @@ Modules.Highlighting = {
 					this.title = 'Neue Nachricht enthält: '+this.regExp.exec(text)[1];
 					this.highlight(event.target.getAttribute('id'));
 					
-					if (!!Modules.MessageBox && (messageType !== 7)) {
-						if (!!Modules.SmiliesPlus && !!Modules.SmiliesPlus.replaceImageSmilies && !API.Storage.getValue('smiliesActive')) Modules.SmiliesPlus.replaceImageSmilies(message);
-						
-						var name = event.target.querySelector('span[onclick]').innerHTML.trim();
-						var length = Modules.MessageBox.inbox.push({
-							timestamp: this.callerObj.parseMessageDate($$('#'+event.target.getAttribute('id')+' span')[0].firstChild.nodeValue.trim().slice(1, -1)),
-							nickname: ((name.lastIndexOf(':') === (name.length - 1)) ? name.slice(0, -1) : name),
-							message: message.innerHTML.trim()
-						});
-						API.Storage.setValue('messageBoxData', Modules.MessageBox.inbox);
-						Modules.MessageBox.unread++;
-						
-						if (length === 1) {
-							$$('#messageBox .overlayContent')[0].replaceChild(Modules.MessageBox.overlayContentBuilder(), $$('#messageBox .overlayContent')[0].firstChild);
-						}
-						else {
-							Modules.MessageBox.appendMessage(Modules.MessageBox.inbox[length-1], length, $$('#messageBox .overlayContent ul')[0]);
-						}
-						
-						if (!!$('messageBoxSmallButton')) {
-							Modules.MessageBox.updateSpan();
-						}
+					if (!!Modules.MessageBox && !!Modules.MessageBox.pushMessage && (messageType !== 7)) {
+						Modules.MessageBox.pushMessage(event, message);
 					}
 				}
 				else if (messageType === 7) {

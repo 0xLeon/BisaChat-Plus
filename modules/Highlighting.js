@@ -52,6 +52,8 @@ Modules.Highlighting = {
 					this.highlight(event.target.getAttribute('id'));
 					
 					if (!!Modules.MessageBox && (messageType !== 7)) {
+						if (!!Modules.SmiliesPlus && !!Modules.SmiliesPlus.replaceImageSmilies && !API.Storage.getValue('smiliesActive')) Modules.SmiliesPlus.replaceImageSmilies(message);
+						
 						var name = event.target.querySelector('span[onclick]').innerHTML.trim();
 						var length = Modules.MessageBox.inbox.push({
 							timestamp: this.callerObj.parseMessageDate($$('#'+event.target.getAttribute('id')+' span')[0].firstChild.nodeValue.trim().slice(1, -1)),

@@ -4,6 +4,7 @@
  */
 Modules.Statistics = {
 	callerObj: null,
+	onlineTimeLengthCounterHandle: null,
 	
 	get onlineTimeStart() {
 		return API.Storage.getValue('statisticsOnlineTimeStart', (new Date()).getTime());
@@ -29,9 +30,9 @@ Modules.Statistics = {
 	init: function(callerObj) {
 		this.callerObj = callerObj;
 		
-		window.setInterval(function() {
-			this.onlineTimeLength = this.onlineTimeLength + 1;
-		}.bind(this), 1000);
+		if (API.Storage.getValue('statisticsStatus', true)) {
+			this.startOnlineTimeLengthCounter();
+		}
 		
 		this.addEventListeners();
 	},
@@ -71,6 +72,7 @@ Modules.Statistics = {
 			if (!checked) {
 				if (confirm('Willst du die Statistiken wirklich zurücksetzen?')) {
 					this.resetConfig();
+					this.stopOnlineTimeLengthCounter();
 					return true;
 				}
 				else {
@@ -79,6 +81,7 @@ Modules.Statistics = {
 			}
 			else {
 				this.onlineTimeStart = (new Date()).getTime();
+				this.startOnlineTimeLengthCounter();
 				return true;
 			}
 		}, this);
@@ -98,5 +101,18 @@ Modules.Statistics = {
 		this.messageCount = 0;
 		
 		this.callerObj.pushInfo('Statistiken zurückgesetzt.');
+	},
+	
+	startOnlineTimeLengthCounter: function() {
+		this.stopOnlineTimeLengthCounter();
+		this.onlineTimeLengthCounterHandle = API.w.setInterval(function() {
+			this.onlineTimeLength = this.onlineTimeLength + 1;
+		}.bind(this), 1000);
+	},
+	
+	stopOnlineTimeLengthCounter: function() {
+		if (this.onlineTimeLengthCounterHandle !== null) {
+			API.w.clearInterval(this.onlineTimeLengthCounterHandle);
+		}
 	}
 };

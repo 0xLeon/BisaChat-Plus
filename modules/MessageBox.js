@@ -35,6 +35,8 @@ Modules.MessageBox = {
 	registerPrefilter: function() {
 		this.callerObj.registerSilentMessagePrefilter(function(event, nickname, message, messageType) {
 			if ((this.callerObj.isAway || !document.hasFocus()) && (messageType === 7)) {
+				if (!!Modules.SmiliesPlus && !!Modules.SmiliesPlus.replaceImageSmilies && !API.Storage.getValue('smiliesActive')) Modules.SmiliesPlus.replaceImageSmilies(message);
+				
 				var name = event.target.querySelector('span[onclick]').innerHTML.trim();
 				var length = this.inbox.push({
 					timestamp: this.callerObj.parseMessageDate($$('#'+event.target.getAttribute('id')+' span')[0].firstChild.nodeValue.trim().slice(1, -1)),

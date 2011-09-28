@@ -41,7 +41,7 @@ Modules.Statistics = {
 		this.callerObj.registerMessagePrefilter('statistics', 'Statistiken', 'Statistiken aktivieren', 's', true, function(event, checked, nickname, message, messageType) {
 			if (checked && (nickname === API.w.settings.username)) {
 				if ([0,6,7].indexOf(messageType) > -1) {
-					this.messageCount = this.messageCount + 1;
+					this.messageCount++;
 				}
 				
 				if (message.firstChild.nodeValue.toLowerCase().indexOf('!mystats') === 0) {
@@ -106,7 +106,7 @@ Modules.Statistics = {
 	startOnlineTimeLengthCounter: function() {
 		this.stopOnlineTimeLengthCounter();
 		this.onlineTimeLengthCounterHandle = API.w.setInterval(function() {
-			this.onlineTimeLength = this.onlineTimeLength + 1;
+			this.onlineTimeLength++;
 		}.bind(this), 1000);
 	},
 	

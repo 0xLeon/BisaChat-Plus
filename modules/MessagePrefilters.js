@@ -6,7 +6,7 @@ Modules.MessagePrefilters = {
 	init: function(callerObj) {
 		callerObj.registerMessagePrefilter('colorlessNicknames', 'Farblose Nicknamen', 'Nicknamen farblos anzeigen', 'n', false, function(event, checked, nickname, message) {
 			if (checked) {
-				API.w.$A(event.target.getElementsByTagName('span')[1].getElementsByTagName('span')).each(function(item) {
+				API.w.$A(event.target.querySelectorAll('span[onclick] > span')).each(function(item) {
 					item.style.color = '';
 				});
 			}

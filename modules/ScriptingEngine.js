@@ -183,11 +183,19 @@ Modules.ScriptingEngine = {
 	parse: function(command, parameter) {
 		var text = this.commands.get(command);
 		
-		if ((text.indexOf('%user%') > -1) && !this.nameCache.get(parameter)) {
-			this.nameCache.set(parameter, this.getColoredName(parameter));
+		if (text.indexOf('%mp3%') > -1) {
+			text = '*winamptret*';
 		}
 		
-		return '/me '+text.replace(/%user%/ig, this.nameCache.get(parameter));
+		if (text.indexOf('%user%') > -1) {
+			if (!this.nameCache.get(parameter)) {
+				this.nameCache.set(parameter, this.getColoredName(parameter));
+			}
+			
+			text = text.replace(/%user%/ig, this.nameCache.get(parameter));
+		}
+		
+		return '/me '+text;
 	},
 	
 	getColoredName: function(name) {

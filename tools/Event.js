@@ -23,7 +23,7 @@ var Event = {
 	 */
 	register: function(name, handler, context) {
 		if (typeof this.events.get(name) === 'undefined') {
-			this.events.set(name, API.w.$A([]));
+			this.events.set(name, []);
 		}
 		
 		return (this.events.get(name).push(handler.bind(context))-1);
@@ -49,7 +49,7 @@ var Event = {
 	 */
 	fire: function(name, eventObj) {
 		if (!!this.events.get(name)) {
-			this.events.get(name).each(function(item) {
+			this.events.get(name).forEach(function(item) {
 				item(eventObj);
 			});
 		}

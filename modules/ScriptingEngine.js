@@ -85,7 +85,7 @@ Modules.ScriptingEngine = {
 					});
 				}.bindAsEventListener(this), true);
 				
-				API.w.$A([commandAddInput, commandAddTextInput]).each(function(input) {
+				[commandAddInput, commandAddTextInput].forEach(function(input) {
 					input.addEventListener('focus', function(event) {
 						event.target.select();
 					}, true);

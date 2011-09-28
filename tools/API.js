@@ -100,10 +100,10 @@ var API = {
 		importSettings: function(obj) {
 			if (typeof obj !== 'object') throw new TypeError('obj has to be an object type');
 			
-			var keys = API.w.$A(Object.keys(obj));
+			var keys = Object.keys(obj);
 			
 			this.clear();
-			keys.each(function(key) {
+			keys.forEach(function(key) {
 				this.setValue(key, obj[key]);
 			}, this);
 		},

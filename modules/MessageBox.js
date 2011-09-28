@@ -98,8 +98,8 @@ Modules.MessageBox = {
 			li.appendChild(a);
 			buttonUl.appendChild(li);
 			buttonWrapper.appendChild(buttonUl);
-			node.appendChild(messageUl);
 			node.appendChild(buttonWrapper);
+			node.appendChild(messageUl);
 		}
 		
 		return node;
@@ -149,7 +149,7 @@ Modules.MessageBox = {
 			$$('#messageBox .overlayContent')[0].replaceChild(this.overlayContentBuilder(), $$('#messageBox .overlayContent')[0].firstChild);
 		}
 		else {
-			this.appendMessage(this.inbox[length-1], length, $$('#messageBox .overlayContent ul')[0]);
+			this.appendMessage(this.inbox[length-1], length, $$('#messageBox .overlayContent ul')[1]);
 		}
 		
 		if (!!$('messageBoxSmallButton')) {
@@ -158,11 +158,11 @@ Modules.MessageBox = {
 	},
 	
 	appendHr: function() {
-		if (!!($$('#messageBox .overlayContent ul')[0]) && ($$('#messageBox .overlayContent ul')[0].lastChild.firstChild.nodeName.toLowerCase() !== 'hr')) {
+		if (!!($$('#messageBox .overlayContent ul')[1]) && ($$('#messageBox .overlayContent ul')[1].lastChild.firstChild.nodeName.toLowerCase() !== 'hr')) {
 			var li = new API.w.Element('li');
 			
 			li.appendChild(new API.w.Element('hr', { style: 'display:block; width:80%;' }));
-			$$('#messageBox .overlayContent ul')[0].appendChild(li);
+			$$('#messageBox .overlayContent ul')[1].appendChild(li);
 		}
 	}
 };

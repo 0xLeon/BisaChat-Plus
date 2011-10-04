@@ -24,5 +24,13 @@ Modules.MessagePrefilters = {
 				Registry.setValue('messageNumber', (Registry.getValue('messageNumber') + 1));
 			}
 		});
+		
+		callerObj.registerSilentMessagePrefilter(function(event, nickname, message, messageType) {
+			if (messageType === 10) {
+				var span = event.target.querySelector('span[onclick]');
+				
+				span.setAttribute('onclick', 'chat.insert(\'/team \', false)');
+			}
+		});
 	}
 };

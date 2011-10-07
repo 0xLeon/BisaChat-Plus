@@ -4,7 +4,6 @@
  */
 Modules.ScriptingEngine = {
 	callerObj: null,
-	nameCache: API.w.$H({}),
 	commands: API.w.$H(API.Storage.getValue('scriptingEngineCommands', {})),
 	
 	init: function(callerObj) {
@@ -21,16 +20,6 @@ Modules.ScriptingEngine = {
 	},
 	
 	registerPrefilter: function() {
-		this.callerObj.registerSilentMessagePrefilter(function(event, nickname, message, messageType) {
-			var name = API.w.$A(event.target.querySelectorAll('span[onclick] > span')).map(function(item) {
-				return '[color='+item.style.color.parseAsColor()+']'+item.firstChild.nodeValue+'[/color]';
-			}).join('');
-			
-			if (!this.nameCache.get(nickname) || (this.nameCache.get(nickname) !== name)) {
-				this.nameCache.set(nickname, name);
-			}
-		}, this);
-		
 		API.w.Ajax.Responders.register({
 			onCreate: function(request, response) {
 				if ((request.url.indexOf('form=Chat') > -1) && (request.parameters.text.trim().indexOf('/') === 0)) {
@@ -187,71 +176,9 @@ Modules.ScriptingEngine = {
 			text = '*winamptret*';
 		}
 		
-		if (text.indexOf('%user%') > -1) {
-			if (!this.nameCache.get(parameter)) {
-				this.nameCache.set(parameter, this.getColoredName(parameter));
-			}
-			
-			text = text.replace(/%user%/ig, this.nameCache.get(parameter));
-		}
+		text = text.replace(/%user%/ig, '[user]'+parameter+'[/user]');
 		
 		return '/me '+text;
-	},
-	
-	getColoredName: function(name) {
-		var returnValue = '';
-		
-		API.w.chat.loading = true;
-		new API.w.Ajax.Request('./index.php?form=Chat', {
-			parameters: {
-				text: ('/info '+name).trim(),
-				ajax: 1
-			},
-			onSuccess: function() {
-				new API.w.Ajax.Request('index.php?page=ChatMessage&id='+API.w.chat.id+API.w.SID_ARG_2ND, {
-					method: 'get',
-					onSuccess: function(response) {
-						var messages = API.w.$A(response.responseJSON.messages);
-						var infoKey = 0;
-						
-						messages.each(function(item, key) {
-							if ((Number(item.type) === 8) && (Number(item.privateID) === API.w.settings.userID)) {
-								var div = new API.w.Element('div');
-								
-								div.innerHTML = item.text;
-								
-								if (div.firstChild.nodeType === 3) {
-									returnValue = name;
-								}
-								else {
-									API.w.$A(div.querySelectorAll('ul li:first-child span')).each(function(span) {
-										returnValue += '[color='+span.style.color.parseAsColor()+']'+span.firstChild.nodeValue+'[/color]';
-									});
-								}
-								
-								infoKey = key;
-								API.w.chat.id = item.id;
-								delete div;
-								throw API.w.$break;
-							}
-						}, this);
-						response.responseJSON.messages = messages.without(messages[infoKey]);
-						API.w.chat.loading = false;
-						if (!!response.responseJSON.messages.length) {
-							API.w.chat.handleMessageUpdate(response.responseJSON.messages);
-						}
-					}.bind(this),
-					onFailure: function() {
-						API.w.chat.failure();
-					},
-					sanitizeJSON: true,
-					asynchronous: false
-				});
-			}.bind(this),
-			asynchronous: false
-		});
-		
-		return returnValue;
 	},
 	
 	buildCommandListElements: function(command, text, visible, targetList) {

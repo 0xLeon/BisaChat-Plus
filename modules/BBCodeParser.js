@@ -1,9 +1,9 @@
 /*
  * BBCode Parser
- * Copyright (c) 2011, Stefan Hahn
+ * Copyright (C) 2011 Stefan Hahn
  * 
  * Based on BBCode parser by Andre (http://blogs.stonesteps.ca/showpost.aspx?pid=33)
- * Copyright (c) 2008, Stone Steps Inc.
+ * Copyright (C) 2008 Stone Steps Inc.
  */
 Modules.BBCodeParser = {
 	openingTags: API.w.$A([]),

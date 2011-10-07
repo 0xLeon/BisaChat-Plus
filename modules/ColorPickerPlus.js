@@ -1,6 +1,6 @@
 /* 
  * Color Picker Plus Module
- * Copyright (c) 2011, Stefan Hahn
+ * Copyright (C) 2011 Stefan Hahn
  */
 Modules.ColorPickerPlus = {
 	callerObj: null,

@@ -1,6 +1,6 @@
 /*
  * BisaChat Plus
- * Copyright (c) 2011, Stefan Hahn
+ * Copyright (C) 2011 Stefan Hahn
  */
 var BisaChatPlus = {
 	/**

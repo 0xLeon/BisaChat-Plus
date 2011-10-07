@@ -1,6 +1,6 @@
 /* 
  * Backup Module
- * Copyright (c) 2011, Stefan Hahn
+ * Copyright (C) 2011 Stefan Hahn
  */
 Modules.Backup = {
 	callerObj: null,

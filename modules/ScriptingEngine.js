@@ -1,6 +1,6 @@
 /* 
  * Scripting Engine Module
- * Copyright (c) 2011, Stefan Hahn
+ * Copyright (C) 2011 Stefan Hahn
  */
 Modules.ScriptingEngine = {
 	callerObj: null,

@@ -98,7 +98,7 @@ Modules.BBCodeParser = {
 				API.w.chat.loading = true;
 				new API.w.Ajax.Request('./index.php?form=Chat', {
 					parameters: {
-						text: ('/info '+content).trim(),
+						text: '/info '+content,
 						ajax: 1
 					},
 					onSuccess: function() {
@@ -118,11 +118,11 @@ Modules.BBCodeParser = {
 											returnValue = content;
 										}
 										else {
-											returnValue += '<strong>';
+											returnValue += '<strong><a href="./index.php?page=user&username='+encodeURIComponent(content.trim())+'">';
 											API.w.$A(div.querySelectorAll('ul li:first-child span')).each(function(span) {
 												returnValue += '<span style="color: '+span.style.color.parseAsColor()+';">'+span.firstChild.nodeValue+'</span>';
 											});
-											returnValue += '</strong>';
+											returnValue += '</a></strong>';
 										}
 										
 										infoKey = key;

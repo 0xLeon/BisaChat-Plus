@@ -55,8 +55,8 @@ Modules.ScriptingEngine = {
 				var commandDl = (($$('#scriptingEngine dl')[0]) || (new API.w.Element('dl')));
 				var commandAddDt = new API.w.Element('dt', { style: 'display: none;' });
 				var	commandAddDd = new API.w.Element('dd', { style: 'display: none;' });
-				var commandAddInput = new API.w.Element('input', { 'class': 'inputText', type: 'text', size: 7, value: '' });
-				var commandAddTextInput = new API.w.Element('input', { 'class': 'inputText', type: 'text', size: 12, value: '' });
+				var commandAddInput = new API.w.Element('input', { 'class': 'inputText', type: 'text', size: 7, value: 'Befehlsname', style: 'font-style: italic;' });
+				var commandAddTextInput = new API.w.Element('input', { 'class': 'inputText', type: 'text', size: 12, value: 'Befehlstext', style: 'font-style: italic;' });
 				
 				var commandAddDeleteButtonLink = new API.w.Element('a', { href: 'javascript:;' });
 				var commandAddDeleteButtonImg = new API.w.Element('img', { src: './wcf/icon/deleteS.png', style: 'width: 16px; height: 16px;', alt: '' });
@@ -76,7 +76,19 @@ Modules.ScriptingEngine = {
 				
 				[commandAddInput, commandAddTextInput].forEach(function(input) {
 					input.addEventListener('focus', function(event) {
+						if ((event.target.value === 'Befehlsname') || (event.target.value === 'Befehlstext')) {
+							event.target.value = '';
+						}
+						
+						event.target.style.fontStyle = 'normal';
 						event.target.select();
+					}, true);
+					
+					input.addEventListener('blur', function(event) {
+						if (event.target.value === '') {
+							event.target.style.fontStyle = 'italic';
+							event.target.value = ['', '', '', '', '', '', '', 'Befehlsname', '', '', '', '', 'Befehlstext'][parseInt(event.target.size)];
+						}
 					}, true);
 					
 					input.addEventListener('keydown', function(event) {

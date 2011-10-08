@@ -118,7 +118,7 @@ Modules.BBCodeParser = {
 											returnValue = content;
 										}
 										else {
-											returnValue += '<strong><a href="./index.php?page=user&username='+encodeURIComponent(content.trim())+'">';
+											returnValue += '<strong><a href="./index.php?page=user&username='+encodeURIComponent(content.trim())+'" target="_blank">';
 											API.w.$A(div.querySelectorAll('ul li:first-child span')).each(function(span) {
 												returnValue += '<span style="color: '+span.style.color.parseAsColor()+';">'+span.firstChild.nodeValue+'</span>';
 											});

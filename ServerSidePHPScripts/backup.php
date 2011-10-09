@@ -1,39 +1,45 @@
 <?php
-set_error_handler(function($errorNo, $message, $filename, $lineNo) {
-	header('HTTP/1.1 500 Internal Server Error');
-	exit(0);
-}, E_ALL);
+require_once('./include/errorHandler.inc.php');
+require_once('./include/login.inc.php');
 
-if (!empty($_POST['userID']) && !empty($_POST['settings'])) {
-	$userID = intval($_POST['userID']);
+if (isset($_POST['username']) && isset($_POST['password'])) {
+	checkLogin($_POST['username'], $_POST['password']);
 	
-	if (file_exists('./data/'.$userID)) {
-		$data = unserialize(file_get_contents('./data/'.$userID));
+	if (isset($_POST['settings'])) {
+		$username = $_POST['username'];
 		
-		if (count($data) === 7) {
-			array_shift($data);
-		}
-		
-		array_push($data, array(
-			'timestamp' => time(),
-			'data' => json_decode($_POST['settings'])
-		));
-		file_put_contents('./data/'.$userID, serialize($data));
-		header('HTTP/1.1 200 OK');
-	}
-	else {
-		$data = array(
-			array(
+		if (file_exists('./data/'.$username)) {
+			$data = unserialize(file_get_contents('./data/'.$username));
+			
+			if (count($data) === 7) {
+				array_shift($data);
+			}
+			
+			array_push($data, array(
 				'timestamp' => time(),
 				'data' => json_decode($_POST['settings'])
-			)
-		);
-		
-		file_put_contents('./data/'.$userID, serialize($data));
-		header('HTTP/1.1 200 OK');
+			));
+			file_put_contents('./data/'.$username, serialize($data));
+			header('HTTP/1.1 200 OK');
+		}
+		else {
+			$data = array(
+				array(
+					'timestamp' => time(),
+					'data' => json_decode($_POST['settings'])
+				)
+			);
+			
+			file_put_contents('./data/'.$username, serialize($data));
+			header('HTTP/1.1 200 OK');
+		}
+	}
+	else {
+		header('HTTP/1.1 400 Bad Request');
+		exit(0);
 	}
 }
 else {
-	header('HTTP/1.1 400 Bad Request');
+	header('HTTP/1.0 401 Unauthorized');
 	exit(0);
 }

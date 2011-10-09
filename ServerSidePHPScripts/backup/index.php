@@ -2,11 +2,46 @@
 require_once('./include/errorHandler.inc.php');
 require_once('./include/login.inc.php');
 
-if (isset($_GET['username']) && isset($_GET['password'])) {
-	checkLogin($_GET['username'], $_GET['password']);
+if (isset($_REQUEST['username']) && isset($_REQUEST['password'])) {
+	checkLogin($_REQUEST['username'], $_REQUEST['password']);
 	
-	if (isset($_GET['action'])) {
-		if (($_GET['action'] === 'getList')) {
+	if (isset($_REQUEST['action'])) {
+		if ($_POST['action'] === 'saveData') {
+			if (isset($_POST['settings'])) {
+				$username = $_POST['username'];
+				
+				if (file_exists('./data/'.$username)) {
+					$data = unserialize(file_get_contents('./data/'.$username));
+					
+					if (count($data) === 7) {
+						array_shift($data);
+					}
+					
+					array_push($data, array(
+						'timestamp' => time(),
+						'data' => json_decode($_POST['settings'])
+					));
+					file_put_contents('./data/'.$username, serialize($data));
+					header('HTTP/1.1 200 OK');
+				}
+				else {
+					$data = array(
+						array(
+							'timestamp' => time(),
+							'data' => json_decode($_POST['settings'])
+						)
+					);
+					
+					file_put_contents('./data/'.$username, serialize($data));
+					header('HTTP/1.1 200 OK');
+				}
+			}
+			else {
+				header('HTTP/1.1 400 Bad Request');
+				exit(0);
+			}
+		}
+		else if ($_GET['action'] === 'getList') {
 			if (file_exists('./data/'.$_GET['username'])) {
 				$data = unserialize(file_get_contents('./data/'.$_GET['username']));
 				

@@ -79,6 +79,28 @@ if (isset($_REQUEST['username']) && isset($_REQUEST['password'])) {
 				exit(0);
 			}
 		}
+		else if (($_POST['action'] === 'deleteData') && isset($_POST['index'])) {
+			if (file_exists('./data/'.$_POST['username'])) {
+				$data = unserialize(file_get_contents('./data/'.$_POST['username']));
+				
+				if (isset($data[intval($_POST['index'])])) {
+					unset($data[intval($_POST['index'])]);
+					$data = array_filter($data);
+					
+					file_put_contents('./data/'.$_POST['username'], serialize($data));
+					header('HTTP/1.1 200 OK');
+				}
+				else {
+					header('HTTP/1.1 404 Not Found');
+					exit(0);
+				}
+			}
+			else {
+				header('HTTP/1.1 404 Not Found');
+				exit(0);
+			}
+		}
+		
 		else {
 			header('HTTP/1.1 400 Bad Request');
 			exit(0);

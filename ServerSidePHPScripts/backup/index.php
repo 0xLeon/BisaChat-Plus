@@ -37,81 +37,71 @@ if (isset($_REQUEST['username']) && isset($_REQUEST['password'])) {
 				}
 			}
 			else {
-				header('HTTP/1.1 400 Bad Request');
-				exit(0);
+				throw new AjaxException('no settings given', E_NOTICE, 400, 'Bad Request');
 			}
 		}
 		else if ($_GET['action'] === 'getList') {
 			if (file_exists('./data/'.$_GET['username'])) {
 				$data = unserialize(file_get_contents('./data/'.$_GET['username']));
-				
-				header('Content-Type: text/xml');
-				echo '<?xml version="1.0" encoding="UTF-8" ?>'."\n";
-				echo '<settings>'."\n";
-				foreach ($data as $key => $entry) {
-					echo "\t".'<entry>'."\n";
-					echo "\t\t".'<index>'.(string)$key.'</index>'."\n";
-					echo "\t\t".'<timestamp>'.$entry['timestamp'].'</timestamp>'."\n";
-					echo "\t".'</entry>'."\n";
-				}
-				echo '</settings>';
 			}
 			else {
-				header('HTTP/1.1 404 Not Found');
-				exit(0);
+				$data = array();
 			}
+			
+			header('Content-Type: text/xml');
+			echo '<?xml version="1.0" encoding="UTF-8" ?>'."\n";
+			echo '<settings>'."\n";
+			foreach ($data as $key => $entry) {
+				echo "\t".'<entry>'."\n";
+				echo "\t\t".'<index>'.(string)$key.'</index>'."\n";
+				echo "\t\t".'<timestamp>'.$entry['timestamp'].'</timestamp>'."\n";
+				echo "\t".'</entry>'."\n";
+			}
+			echo '</settings>';
 		}
 		else if (($_GET['action'] === 'getData') && isset($_GET['index'])) {
 			if (file_exists('./data/'.$_GET['username'])) {
 				$data = unserialize(file_get_contents('./data/'.$_GET['username']));
-				
-				if (isset($data[intval($_GET['index'])])) {
-					header('Content-Type: application/json');
-					echo json_encode($data[intval($_GET['index'])]['data']);
-				}
-				else {
-					header('HTTP/1.1 404 Not Found');
-					exit(0);
-				}
 			}
 			else {
-				header('HTTP/1.1 404 Not Found');
-				exit(0);
+				$data = array();
+			}
+			
+			if (isset($data[intval($_GET['index'])])) {
+				header('Content-Type: application/json');
+				echo json_encode($data[intval($_GET['index'])]['data']);
+			}
+			else {
+				throw new AjaxException('index \''.intval($_GET['index']).'\' doesn\'t exist', E_NOTICE, 404, 'Not Found');
 			}
 		}
 		else if (($_POST['action'] === 'deleteData') && isset($_POST['index'])) {
 			if (file_exists('./data/'.$_POST['username'])) {
 				$data = unserialize(file_get_contents('./data/'.$_POST['username']));
-				
-				if (isset($data[intval($_POST['index'])])) {
-					unset($data[intval($_POST['index'])]);
-					$data = array_filter($data);
-					
-					file_put_contents('./data/'.$_POST['username'], serialize($data));
-					header('HTTP/1.1 200 OK');
-				}
-				else {
-					header('HTTP/1.1 404 Not Found');
-					exit(0);
-				}
 			}
 			else {
-				header('HTTP/1.1 404 Not Found');
-				exit(0);
+				$data = array();
+			}
+			
+			if (isset($data[intval($_POST['index'])])) {
+				unset($data[intval($_POST['index'])]);
+				$data = array_filter($data);
+				
+				file_put_contents('./data/'.$_POST['username'], serialize($data));
+				header('HTTP/1.1 200 OK');
+			}
+			else {
+				throw new AjaxException('index \''.intval($_GET['index']).'\' doesn\'t exist', E_NOTICE, 404, 'Not Found');
 			}
 		}
-		
 		else {
-			header('HTTP/1.1 400 Bad Request');
-			exit(0);
+			throw new AjaxException('Can\'t execute action\''.$_REQUEST['action'].'\'', E_ERROR, 400, 'Bad Request');
 		}
 	}
 	else {
-		header('HTTP/1.1 400 Bad Request');
-		exit(0);
+		throw new AjaxException('no axtion given', E_ERROR, 400, 'Bad Request');
 	}
 }
 else {
-	header('HTTP/1.0 401 Unauthorized');
-	exit(0);
+	throw new AjaxException('no login data given', E_ERROR, 401, 'Unauthorized');
 }

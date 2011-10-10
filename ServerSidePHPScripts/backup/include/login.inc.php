@@ -9,12 +9,10 @@ function checkLogin($username, $password) {
 			return true;
 		}
 		else {
-			header('HTTP/1.0 401 Unauthorized');
-			exit(0);
+			throw new AjaxException('wrong password', E_NOTICE, 401, 'Unauthorized');
 		}
 	}
 	else {
-		header('HTTP/1.0 401 Unauthorized');
-		exit(0);
+		throw new AjaxException('user '.$username.' doen\'t exist', E_NOTICE, 401, 'Unauthorized');
 	}
 }

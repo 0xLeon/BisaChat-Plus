@@ -22,17 +22,15 @@ if (isset($_REQUEST['action'])) {
 					exit(0);
 				}
 				else {
-					header('HTTP/1.1 400 Bad Request');
-					exit(0);
+					throw new AjaxException('user \''.$username.'\' already exists', E_ERROR, 400, 'Bad Request');
 				}
 			}
 			else {
-				trigger_error('Invalid username', E_USER_ERROR);
+				throw new AjaxException('invalid username \''.$username.'\'', E_ERROR, 401, 'Unauthorized');
 			}
 		}
 		else {
-			header('HTTP/1.1 400 Bad Request');
-			exit(0);
+			throw new AjaxException('missing user data', E_ERROR, 400, 'Bad Request');
 		}
 	}
 	else if ($_POST['action'] === 'alterPassword') {
@@ -42,26 +40,19 @@ if (isset($_REQUEST['action'])) {
 			$username = preg_replace('[^A-Za-z0-9_\-\.]', '', $_POST['username']);
 			$newPassword = $_POST['newPassword'];
 			
-			if (file_exists('./login/'.$username)) {
-				$salt = sha1(microtime().uniqid(mt_rand(), true));
-				$data = array(
-					'passwordHash' => sha1(sha1($username.$salt).sha1($newPassword.$salt)),
-					'salt' => $salt
-				);
-				file_put_contents('./login/'.$username, serialize($data));
-				@chmod('./login/'.$username, 0777);
-				
-				header('HTTP/1.1 200 OK');
-				exit(0);
-			}
-			else {
-				header('HTTP/1.1 400 Bad Request');
-				exit(0);
-			}
+			$salt = sha1(microtime().uniqid(mt_rand(), true));
+			$data = array(
+				'passwordHash' => sha1(sha1($username.$salt).sha1($newPassword.$salt)),
+				'salt' => $salt
+			);
+			file_put_contents('./login/'.$username, serialize($data));
+			@chmod('./login/'.$username, 0777);
+			
+			header('HTTP/1.1 200 OK');
+			exit(0);
 		}
 		else {
-			header('HTTP/1.1 400 Bad Request');
-			exit(0);
+			throw new AjaxException('missing user data', E_ERROR, 400, 'Bad Request');
 		}
 	}
 	else if ($_POST['action'] === 'deleteUser') {
@@ -70,28 +61,19 @@ if (isset($_REQUEST['action'])) {
 			
 			$username = preg_replace('[^A-Za-z0-9_\-\.]', '', $_POST['username']);
 			
-			if (file_exists('./login/'.$username)) {
-				@unlink('./login/'.$username);
-			}
-			else {
-				header('HTTP/1.1 400 Bad Request');
-				exit(0);
-			}
+			@unlink('./login/'.$username);
 		}
 		else {
-			header('HTTP/1.1 400 Bad Request');
-			exit(0);
+			throw new AjaxException('missing user data', E_ERROR, 400, 'Bad Request');
 		}
 	}
 	else if ($_GET['action'] === 'checkUser') {
 		
 	}
 	else {
-		header('HTTP/1.1 400 Bad Request');
-		exit(0);
+		throw new AjaxException('Can\'t execute action\''.$_REQUEST['action'].'\'', E_ERROR, 400, 'Bad Request');
 	}
 }
 else {
-	header('HTTP/1.1 400 Bad Request');
-	exit(0);
+	throw new AjaxException('no axtion given', E_ERROR, 400, 'Bad Request');
 }

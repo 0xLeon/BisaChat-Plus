@@ -4,12 +4,11 @@ require_once('./include/login.inc.php');
 
 if (isset($_REQUEST['username']) && isset($_REQUEST['password'])) {
 	checkLogin($_REQUEST['username'], $_REQUEST['password']);
+	$username = preg_replace('[^A-Za-z0-9_\-\.]', '', $_REQUEST['username']);
 	
 	if (isset($_REQUEST['action'])) {
 		if ($_POST['action'] === 'saveData') {
 			if (isset($_POST['settings'])) {
-				$username = $_POST['username'];
-				
 				if (file_exists('./data/'.$username)) {
 					$data = unserialize(file_get_contents('./data/'.$username));
 					
@@ -22,6 +21,7 @@ if (isset($_REQUEST['username']) && isset($_REQUEST['password'])) {
 						'data' => json_decode($_POST['settings'])
 					));
 					file_put_contents('./data/'.$username, serialize($data));
+					@chmod('./data/'.$username, 0777);
 					header('HTTP/1.1 200 OK');
 				}
 				else {
@@ -33,6 +33,7 @@ if (isset($_REQUEST['username']) && isset($_REQUEST['password'])) {
 					);
 					
 					file_put_contents('./data/'.$username, serialize($data));
+					@chmod('./data/'.$username, 0777);
 					header('HTTP/1.1 200 OK');
 				}
 			}
@@ -41,8 +42,8 @@ if (isset($_REQUEST['username']) && isset($_REQUEST['password'])) {
 			}
 		}
 		else if ($_GET['action'] === 'getList') {
-			if (file_exists('./data/'.$_GET['username'])) {
-				$data = unserialize(file_get_contents('./data/'.$_GET['username']));
+			if (file_exists('./data/'.$username)) {
+				$data = unserialize(file_get_contents('./data/'.$username));
 			}
 			else {
 				$data = array();
@@ -60,8 +61,8 @@ if (isset($_REQUEST['username']) && isset($_REQUEST['password'])) {
 			echo '</settings>';
 		}
 		else if (($_GET['action'] === 'getData') && isset($_GET['index'])) {
-			if (file_exists('./data/'.$_GET['username'])) {
-				$data = unserialize(file_get_contents('./data/'.$_GET['username']));
+			if (file_exists('./data/'.$username)) {
+				$data = unserialize(file_get_contents('./data/'.$username));
 			}
 			else {
 				$data = array();
@@ -76,8 +77,8 @@ if (isset($_REQUEST['username']) && isset($_REQUEST['password'])) {
 			}
 		}
 		else if (($_POST['action'] === 'deleteData') && isset($_POST['index'])) {
-			if (file_exists('./data/'.$_POST['username'])) {
-				$data = unserialize(file_get_contents('./data/'.$_POST['username']));
+			if (file_exists('./data/'.$username)) {
+				$data = unserialize(file_get_contents('./data/'.$username));
 			}
 			else {
 				$data = array();
@@ -87,7 +88,8 @@ if (isset($_REQUEST['username']) && isset($_REQUEST['password'])) {
 				unset($data[intval($_POST['index'])]);
 				$data = array_filter($data);
 				
-				file_put_contents('./data/'.$_POST['username'], serialize($data));
+				file_put_contents('./data/'.$username, serialize($data));
+				@chmod('./data/'.$username, 0777);
 				header('HTTP/1.1 200 OK');
 			}
 			else {

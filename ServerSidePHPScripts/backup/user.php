@@ -62,6 +62,7 @@ if (isset($_REQUEST['action'])) {
 			$username = preg_replace('[^A-Za-z0-9_\-\.]', '', $_POST['username']);
 			
 			@unlink('./login/'.$username);
+			@unlink('./data/'.$username);
 		}
 		else {
 			throw new AjaxException('missing user data', E_ERROR, 400);

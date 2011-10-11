@@ -2,11 +2,23 @@
 class AjaxException extends Exception {
 	protected $httpStatusCode;
 	protected $httpStatusMessage;
+	protected $httpStatusMessages = array(
+		400 => 'Bad Request',
+		401 => 'Unauthorized',
+		403 => 'Forbidden',
+		404 => 'Not Found',
+		405 => 'Method Not Allowed',
+		406 => 'Not Acceptable',
+		418 => 'I\'m a Teapot',
+		
+		500 => 'Internal Server Error',
+		501 => 'Not Implemented',
+		503 => 'Service Unavailable'
+	);
 	
-	public function __construct($message = '', $code = 0, $httpStatusCode = 0, $httpStatusMessage = '') {
+	public function __construct($message = '', $code = 0, $httpStatusCode = 503) {
 		parent::__construct($message, $code);
 		$this->httpStatusCode = $httpStatusCode;
-		$this->httpStatusMessage = $httpStatusMessage;
 	}
 	
 	public function getHttpStatusCode() {
@@ -14,17 +26,11 @@ class AjaxException extends Exception {
 	}
 	
 	public function getHttpStatusMessage() {
-		return $this->httpStatusMessage;
+		return $this->httpStatusMessages[$this->getHttpStatusCode()];
 	}
 	
 	public function show() {
-		if (($this->getHttpStatusCode() > 0) && ($this->getHttpStatusMessage() !== '')) {
-			@header('HTTP/1.1 '.$this->getHttpStatusCode().' '.$this->getHttpStatusMessage());
-		}
-		else {
-			@header('HTTP/1.1 503 Service Unavailable');
-		}
-		
+		@header('HTTP/1.1 '.$this->getHttpStatusCode().' '.$this->getHttpStatusMessage());
 		@header('Content-Type: text/xml');
 		echo '<?xml version="1.0" encoding="UTF-8"?>'."\n";
 		echo '<error type="'.intval($this->getCode()).'" line="'.intval($this->getLine()).'">'."\n";

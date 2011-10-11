@@ -22,15 +22,15 @@ if (isset($_REQUEST['action'])) {
 					exit(0);
 				}
 				else {
-					throw new AjaxException('user \''.$username.'\' already exists', E_ERROR, 400, 'Bad Request');
+					throw new AjaxException('user \''.$username.'\' already exists', E_ERROR, 400);
 				}
 			}
 			else {
-				throw new AjaxException('invalid username \''.$username.'\'', E_ERROR, 401, 'Unauthorized');
+				throw new AjaxException('invalid username \''.$username.'\'', E_ERROR, 401);
 			}
 		}
 		else {
-			throw new AjaxException('missing user data', E_ERROR, 400, 'Bad Request');
+			throw new AjaxException('missing user data', E_ERROR, 400);
 		}
 	}
 	else if ($_POST['action'] === 'alterPassword') {
@@ -52,7 +52,7 @@ if (isset($_REQUEST['action'])) {
 			exit(0);
 		}
 		else {
-			throw new AjaxException('missing user data', E_ERROR, 400, 'Bad Request');
+			throw new AjaxException('missing user data', E_ERROR, 400);
 		}
 	}
 	else if ($_POST['action'] === 'deleteUser') {
@@ -64,16 +64,16 @@ if (isset($_REQUEST['action'])) {
 			@unlink('./login/'.$username);
 		}
 		else {
-			throw new AjaxException('missing user data', E_ERROR, 400, 'Bad Request');
+			throw new AjaxException('missing user data', E_ERROR, 400);
 		}
 	}
 	else if ($_GET['action'] === 'checkUser') {
 		
 	}
 	else {
-		throw new AjaxException('Can\'t execute action\''.$_REQUEST['action'].'\'', E_ERROR, 400, 'Bad Request');
+		throw new AjaxException('Can\'t execute action\''.$_REQUEST['action'].'\'', E_ERROR, 400);
 	}
 }
 else {
-	throw new AjaxException('no axtion given', E_ERROR, 400, 'Bad Request');
+	throw new AjaxException('no axtion given', E_ERROR, 400);
 }

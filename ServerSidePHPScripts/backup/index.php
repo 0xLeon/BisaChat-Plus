@@ -37,7 +37,7 @@ if (isset($_REQUEST['username']) && isset($_REQUEST['password'])) {
 				}
 			}
 			else {
-				throw new AjaxException('no settings given', E_NOTICE, 400, 'Bad Request');
+				throw new AjaxException('no settings given', E_NOTICE, 400);
 			}
 		}
 		else if ($_GET['action'] === 'getList') {
@@ -72,7 +72,7 @@ if (isset($_REQUEST['username']) && isset($_REQUEST['password'])) {
 				echo json_encode($data[intval($_GET['index'])]['data']);
 			}
 			else {
-				throw new AjaxException('index \''.intval($_GET['index']).'\' doesn\'t exist', E_NOTICE, 404, 'Not Found');
+				throw new AjaxException('index \''.intval($_GET['index']).'\' doesn\'t exist', E_NOTICE, 404);
 			}
 		}
 		else if (($_POST['action'] === 'deleteData') && isset($_POST['index'])) {
@@ -91,15 +91,15 @@ if (isset($_REQUEST['username']) && isset($_REQUEST['password'])) {
 				header('HTTP/1.1 200 OK');
 			}
 			else {
-				throw new AjaxException('index \''.intval($_GET['index']).'\' doesn\'t exist', E_NOTICE, 404, 'Not Found');
+				throw new AjaxException('index \''.intval($_GET['index']).'\' doesn\'t exist', E_NOTICE, 404);
 			}
 		}
 		else {
-			throw new AjaxException('Can\'t execute action\''.$_REQUEST['action'].'\'', E_ERROR, 400, 'Bad Request');
+			throw new AjaxException('Can\'t execute action\''.$_REQUEST['action'].'\'', E_ERROR, 400);
 		}
 	}
 	else {
-		throw new AjaxException('no axtion given', E_ERROR, 400, 'Bad Request');
+		throw new AjaxException('no axtion given', E_ERROR, 400);
 	}
 }
 else {

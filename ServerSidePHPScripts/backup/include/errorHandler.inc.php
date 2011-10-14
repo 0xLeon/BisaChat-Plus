@@ -53,7 +53,7 @@ set_error_handler(function($errorNo, $message, $filename, $lineNo) {
 }, E_ALL);
 
 set_exception_handler(function(Exception $e) {
-	if ($e instanceof AjaxException) [
+	if ($e instanceof AjaxException) {
 		$e->show();
 		exit;
 	}

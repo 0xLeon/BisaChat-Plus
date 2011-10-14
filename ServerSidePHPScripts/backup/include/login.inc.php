@@ -1,6 +1,6 @@
 <?php
 function checkLogin($username, $password) {
-	$username = preg_replace('[^A-Za-z0-9_\-\.]', '', $usernamme);
+	$username = preg_replace('[^A-Za-z0-9_\-\.]', '', $username);
 	
 	if (file_exists('./login/'.$username)) {
 		$data = unserialize(file_get_contents('./login/'.$username));

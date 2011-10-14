@@ -6,7 +6,7 @@ if (isset($_REQUEST['username']) && isset($_REQUEST['password'])) {
 	checkLogin($_REQUEST['username'], $_REQUEST['password']);
 	$username = preg_replace('[^A-Za-z0-9_\-\.]', '', $_REQUEST['username']);
 	
-	if (isset($_REQUEST['action'])) {
+	if (isset($_POST['action'])) {
 		if ($_POST['action'] === 'saveData') {
 			if (isset($_POST['settings'])) {
 				if (file_exists('./data/'.$username)) {
@@ -41,7 +41,32 @@ if (isset($_REQUEST['username']) && isset($_REQUEST['password'])) {
 				throw new AjaxException('no settings given', E_NOTICE, 400);
 			}
 		}
-		else if ($_GET['action'] === 'getList') {
+		else if (($_POST['action'] === 'deleteData') && isset($_POST['index'])) {
+			if (file_exists('./data/'.$username)) {
+				$data = unserialize(file_get_contents('./data/'.$username));
+			}
+			else {
+				$data = array();
+			}
+			
+			if (isset($data[intval($_POST['index'])])) {
+				unset($data[intval($_POST['index'])]);
+				$data = array_filter($data);
+				
+				file_put_contents('./data/'.$username, serialize($data));
+				@chmod('./data/'.$username, 0777);
+				header('HTTP/1.1 200 OK');
+			}
+			else {
+				throw new AjaxException('index \''.intval($_GET['index']).'\' doesn\'t exist', E_NOTICE, 404);
+			}
+		}
+		else {
+			throw new AjaxException('Can\'t execute action \''.$_POST['action'].'\'', E_ERROR, 400);
+		}
+	}
+	else if (isset($_GET['action'])) {
+		if ($_GET['action'] === 'getList') {
 			if (file_exists('./data/'.$username)) {
 				$data = unserialize(file_get_contents('./data/'.$username));
 			}
@@ -76,32 +101,12 @@ if (isset($_REQUEST['username']) && isset($_REQUEST['password'])) {
 				throw new AjaxException('index \''.intval($_GET['index']).'\' doesn\'t exist', E_NOTICE, 404);
 			}
 		}
-		else if (($_POST['action'] === 'deleteData') && isset($_POST['index'])) {
-			if (file_exists('./data/'.$username)) {
-				$data = unserialize(file_get_contents('./data/'.$username));
-			}
-			else {
-				$data = array();
-			}
-			
-			if (isset($data[intval($_POST['index'])])) {
-				unset($data[intval($_POST['index'])]);
-				$data = array_filter($data);
-				
-				file_put_contents('./data/'.$username, serialize($data));
-				@chmod('./data/'.$username, 0777);
-				header('HTTP/1.1 200 OK');
-			}
-			else {
-				throw new AjaxException('index \''.intval($_GET['index']).'\' doesn\'t exist', E_NOTICE, 404);
-			}
-		}
 		else {
-			throw new AjaxException('Can\'t execute action\''.$_REQUEST['action'].'\'', E_ERROR, 400);
+			throw new AjaxException('Can\'t execute action \''.$_GET['action'].'\'', E_ERROR, 400);
 		}
 	}
 	else {
-		throw new AjaxException('no axtion given', E_ERROR, 400);
+		throw new AjaxException('no action given', E_ERROR, 400);
 	}
 }
 else {

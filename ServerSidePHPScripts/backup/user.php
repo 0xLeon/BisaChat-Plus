@@ -2,7 +2,7 @@
 require_once('./include/errorHandler.inc.php');
 require_once('./include/login.inc.php');
 
-if (isset($_REQUEST['action'])) {
+if (isset($_POST['action'])) {
 	if ($_POST['action'] === 'createUser') {
 		if (isset($_POST['username']) && isset($_POST['password'])) {
 			$username = $_POST['username'];
@@ -68,13 +68,18 @@ if (isset($_REQUEST['action'])) {
 			throw new AjaxException('missing user data', E_ERROR, 400);
 		}
 	}
-	else if ($_GET['action'] === 'checkUser') {
+	else {
+		throw new AjaxException('Can\'t execute action \''.$_POST['action'].'\'', E_ERROR, 400);
+	}
+}
+else if (isset($_GET['action'])) {
+	if ($_GET['action'] === 'checkUser') {
 		
 	}
 	else {
-		throw new AjaxException('Can\'t execute action\''.$_REQUEST['action'].'\'', E_ERROR, 400);
+		throw new AjaxException('Can\'t execute action \''.$_GET['action'].'\'', E_ERROR, 400);
 	}
 }
 else {
-	throw new AjaxException('no axtion given', E_ERROR, 400);
+	throw new AjaxException('no action given', E_ERROR, 400);
 }

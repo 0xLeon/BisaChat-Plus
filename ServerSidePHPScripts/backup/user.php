@@ -73,8 +73,29 @@ if (isset($_POST['action'])) {
 	}
 }
 else if (isset($_GET['action'])) {
-	if ($_GET['action'] === 'checkUser') {
-		
+	if ($_GET['action'] === 'checkUserExists') {
+		if (isset($_GET['username'])) {
+			$username = preg_replace('[^A-Za-z0-9_\-\.]', '', $_GET['username']);
+			
+			if (file_exists('./login/'.$username)) {
+				header('HTTP/1.1 200 OK');
+				exit(0);
+			}
+			else {
+				throw new AjaxException('user '.$username.' doen\'t exist', E_NOTICE, 400);
+			}
+		}
+		else {
+			throw new AjaxException('missing user data', E_ERROR, 400);
+		}
+	}
+	else if ($_GET['action'] === 'checkLoginData') {
+		if (isset($_GET['username']) && isset($_GET['password'])) {
+			checkLogin($_GET['username'], $_GET['password']);
+		}
+		else {
+			throw new AjaxException('missing user data', E_ERROR, 400);
+		}
 	}
 	else {
 		throw new AjaxException('Can\'t execute action \''.$_GET['action'].'\'', E_ERROR, 400);

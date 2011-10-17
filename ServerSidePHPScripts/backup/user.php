@@ -22,15 +22,15 @@ if (isset($_POST['action'])) {
 					exit(0);
 				}
 				else {
-					throw new AjaxException('user \''.$username.'\' already exists', E_ERROR, 400);
+					throw new AjaxException('User \''.$username.'\' already exists', E_ERROR, 400);
 				}
 			}
 			else {
-				throw new AjaxException('invalid username \''.$username.'\'', E_ERROR, 401);
+				throw new AjaxException('Invalid username \''.$username.'\'', E_ERROR, 401);
 			}
 		}
 		else {
-			throw new AjaxException('missing user data', E_ERROR, 400);
+			throw new AjaxException('Missing user data', E_ERROR, 400);
 		}
 	}
 	else if ($_POST['action'] === 'alterPassword') {
@@ -52,7 +52,7 @@ if (isset($_POST['action'])) {
 			exit(0);
 		}
 		else {
-			throw new AjaxException('missing user data', E_ERROR, 400);
+			throw new AjaxException('Missing user data', E_ERROR, 400);
 		}
 	}
 	else if ($_POST['action'] === 'deleteUser') {
@@ -65,7 +65,7 @@ if (isset($_POST['action'])) {
 			@unlink('./data/'.$username);
 		}
 		else {
-			throw new AjaxException('missing user data', E_ERROR, 400);
+			throw new AjaxException('Missing user data', E_ERROR, 400);
 		}
 	}
 	else {
@@ -82,11 +82,11 @@ else if (isset($_GET['action'])) {
 				exit(0);
 			}
 			else {
-				throw new AjaxException('user '.$username.' doen\'t exist', E_NOTICE, 400);
+				throw new AjaxException('User '.$username.' doesn\'t exist', E_NOTICE, 404);
 			}
 		}
 		else {
-			throw new AjaxException('missing user data', E_ERROR, 400);
+			throw new AjaxException('Missing user data', E_ERROR, 400);
 		}
 	}
 	else if ($_GET['action'] === 'checkLoginData') {
@@ -94,7 +94,7 @@ else if (isset($_GET['action'])) {
 			checkLogin($_GET['username'], $_GET['password']);
 		}
 		else {
-			throw new AjaxException('missing user data', E_ERROR, 400);
+			throw new AjaxException('Missing user data', E_ERROR, 400);
 		}
 	}
 	else {
@@ -102,5 +102,5 @@ else if (isset($_GET['action'])) {
 	}
 }
 else {
-	throw new AjaxException('no action given', E_ERROR, 400);
+	throw new AjaxException('No action given', E_ERROR, 400);
 }

@@ -9,10 +9,10 @@ function checkLogin($username, $password) {
 			return true;
 		}
 		else {
-			throw new AjaxException('wrong password', E_NOTICE, 401);
+			throw new AjaxException('Wrong password', E_NOTICE, 401);
 		}
 	}
 	else {
-		throw new AjaxException('user '.$username.' doen\'t exist', E_NOTICE, 401);
+		throw new AjaxException('User '.$username.' doesn\'t exist', E_NOTICE, 401);
 	}
 }

@@ -4,7 +4,7 @@ require_once('./include/login.inc.php');
 
 if (isset($_POST['action'])) {
 	if ($_POST['action'] === 'createUser') {
-		if (isset($_POST['username']) && isset($_POST['password'])) {
+		if (isset($_POST['username']) && isset($_POST['password']) && !empty($_POST['username']) && !empty($_POST['password'])) {
 			$username = $_POST['username'];
 			$password = $_POST['password'];
 			
@@ -34,7 +34,7 @@ if (isset($_POST['action'])) {
 		}
 	}
 	else if ($_POST['action'] === 'alterPassword') {
-		if (isset($_POST['username']) && isset($_POST['oldPassword']) && isset($_POST['newPassword'])) {
+		if (isset($_POST['username']) && isset($_POST['oldPassword']) && isset($_POST['newPassword']) && !empty($_POST['newPassword'])) {
 			checkLogin($_POST['username'], $_POST['oldPassword']);
 			
 			$username = preg_replace('[^A-Za-z0-9_\-\.]', '', $_POST['username']);

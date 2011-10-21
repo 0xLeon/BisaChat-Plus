@@ -9,7 +9,7 @@ Modules.ScriptingEngine = {
 	init: function(callerObj) {
 		this.callerObj = callerObj;
 		
-		API.addStyle('#scriptingEngine dl dt { clear: both; }');
+		API.addStyle('#scriptingEngine dl dt { clear: both; margin: 3px; }');
 		API.addStyle('#scriptingEngine dl dt span { font-weight: bold; }');
 		API.addStyle('#scriptingEngine dl hr { display: block; width: 80%; float: left; }');
 		API.addStyle('#scriptingEngine dl dt input { width: 8% }');

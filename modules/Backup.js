@@ -106,22 +106,24 @@ Modules.Backup = {
 				},
 				data: 'action=saveData&username='+encodeURIComponent(API.Storage.getValue('backupUsername'))+'&password='+encodeURIComponent(API.Storage.getValue('backupPassword'))+'&settings='+encodeURIComponent(JSON.stringify(settings)),
 				onload: function(transport) {
-					if ((transport.status >= 200) && (transport.status < 300)) {
-						API.Storage.setValue('lastBackup', (new Date()).getTime());
-						this.callerObj.pushInfo('Deine Einstellungen wurden erfolgreich gesichert.');
-					}
-					else {
-						this.callerObj.pushInfo('Fehler beim Sichern der Einstellungen.');
-						this.callerObj.pushInfo(transport.status+' - '+transport.statusText);
-						
-						try {
-							var xml = (new DOMParser()).parseFromString(transport.responseText, 'text/xml');
-							
-							if (!!xml.querySelector('error')) {
-								this.callerObj.pushInfo(xml.querySelector('error > message').firstChild.nodeValue);
-							}
+					if (transport.readyState === 4) {
+						if ((transport.status >= 200) && (transport.status < 300)) {
+							API.Storage.setValue('lastBackup', (new Date()).getTime());
+							this.callerObj.pushInfo('Deine Einstellungen wurden erfolgreich gesichert.');
 						}
-						catch (e) { }
+						else {
+							this.callerObj.pushInfo('Fehler beim Sichern der Einstellungen.');
+							this.callerObj.pushInfo(transport.status+' - '+transport.statusText);
+							
+							try {
+								var xml = (new DOMParser()).parseFromString(transport.responseText, 'text/xml');
+								
+								if (!!xml.querySelector('error')) {
+									this.callerObj.pushInfo(xml.querySelector('error > message').firstChild.nodeValue);
+								}
+							}
+							catch (e) { }
+						}
 					}
 				}.bind(this)
 			});
@@ -172,164 +174,170 @@ Modules.Backup = {
 			method: 'GET',
 			url: 'http://projects.swallow-all-lies.com/greasemonkey/files/bisachatPlus/backup/?action=getList&username='+API.Storage.getValue('backupUsername')+'&password='+API.Storage.getValue('backupPassword'),
 			onload: function(transport) {
-				var node = new API.w.Element('div', { style: 'display: '+((doAppear) ? 'none' : 'block')+';' });
-				var userP = new API.w.Element('p');
-				var panelLink = new API.w.Element('a', { href: 'javascript:;' });
-				var logoutLink = new API.w.Element('a', { href: 'javascript:;' });
-				
-				panelLink.addEventListener('click', function(event) {
-					new API.w.Effect.Fade($$('#backup .overlayContent')[0].firstChild, {
-						afterFinish: function(effect) {
-							this.displayUserPanel($$('#backup .overlayContent')[0], true);
-						}.bind(this)
-					});
-				}.bindAsEventListener(this), true);
-				
-				logoutLink.addEventListener('click', function(event) {
-					API.Storage.unsetValue('backupUsername');
-					API.Storage.unsetValue('backupPassword');
-					this.stopTimer();
-					new API.w.Effect.Fade($$('#backup .overlayContent')[0].firstChild, {
-						afterFinish: function(effect) {
-							this.displayLoginForm($$('#backup .overlayContent')[0], true);
-						}.bind(this)
-					});
-				}.bindAsEventListener(this), true);
-				
-				userP.appendChild(document.createTextNode('Angemeldet als '+API.Storage.getValue('backupUsername')));
-				userP.appendChild(new API.w.Element('br'));
-				panelLink.appendChild(document.createTextNode('Benutzereinstellungen öffnen'));
-				logoutLink.appendChild(document.createTextNode('Ausloggen'));
-				userP.appendChild(panelLink);
-				userP.appendChild(document.createTextNode(' | '));
-				userP.appendChild(logoutLink);
-				
-				node.appendChild(userP);
-				node.appendChild(new API.w.Element('hr', { style: 'display: block;' }));
-				
-				if ((transport.status >= 200) && (transport.status < 300)) {
-					var xml = ((!transport.responseXML) ? (new DOMParser()).parseFromString(transport.responseText, 'text/xml') : transport.responseXML);
+				if (transport.readyState === 4) {
+					var node = new API.w.Element('div', { style: 'display: '+((doAppear) ? 'none' : 'block')+';' });
+					var userP = new API.w.Element('p');
+					var panelLink = new API.w.Element('a', { href: 'javascript:;' });
+					var logoutLink = new API.w.Element('a', { href: 'javascript:;' });
 					
-					if (xml.querySelectorAll('entry').length > 0) {
-						var buttonsList = new API.w.Element('ul', { id: 'backupDataList', 'class': 'memberList' });
-						
-						API.w.$A(xml.querySelectorAll('entry')).each(function(item) {
-							var button = new API.w.Element('li', { 'class': 'deletable' });
-							var textLink = new API.w.Element('a', { 'class': 'memberName', href: 'javascript:;', title: 'Klicken zum Einspielen der Datensicherung' });
-							var textSpan = new API.w.Element('span');
-							var deleteLink = new API.w.Element('a', { 'class': 'memberRemove deleteButton', href: 'javascript:;', title: 'Klicken zum Löschen der Datensicherung' });
-							var deleteImage = new API.w.Element('img', { src: './wcf/icon/deleteS.png', alt: '' });
-							var input = new API.w.Element('input', { 'type': 'hidden', value: String(item.querySelector('index').firstChild.nodeValue) });
-							
-							var backupTimeObj = new Date(Math.floor(Number(item.querySelector('timestamp').firstChild.nodeValue) * 1000));
-							var backupTimeString = '';
-							
-							backupTimeString += backupTimeObj.getDate()+'. '+(['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'][backupTimeObj.getMonth()])+' '+backupTimeObj.getFullYear()+', ';
-							backupTimeString += ((backupTimeObj.getHours() < 10) ? '0' : '')+backupTimeObj.getHours()+':'+((backupTimeObj.getMinutes() < 10) ? '0' : '')+backupTimeObj.getMinutes()+' Uhr';
-							
-							textLink.addEventListener('click', function(event) {
-								var li = ((event.target.nodeName.toLowerCase() === 'a') ? event.target.parentNode : event.target.parentNode.parentNode);
-								
-								GM_xmlhttpRequest({
-									method: 'GET',
-									url: 'http://projects.swallow-all-lies.com/greasemonkey/files/bisachatPlus/backup/getBackup.php?action=getData&userID='+API.w.settings.userID+'&index='+li.querySelector('input').getAttribute('value'),
-									headers: {
-										'Accept': 'application/json'
-									},
-									onload: function(response) {
-										if (response.status === 200) {
-											var data = response.responseJSON;
-											
-											data.backupUsername = API.Storage.getValue('backupUsername');
-											data.backupPassword = API.Storage.getValue('backupPassword');
-											API.Storage.importSettings(data);
-											API.w.location.reload();
-										}
-									}
-								});
-							}, true);
-							
-							deleteLink.addEventListener('click', function(event) {
-								var li = ((event.target.nodeName.toLowerCase() === 'a') ? event.target.parentNode : event.target.parentNode.parentNode);
-								
-								GM_xmlhttpRequest({
-									method: 'POST',
-									url: 'http://projects.swallow-all-lies.com/greasemonkey/files/bisachatPlus/backup/',
-									headers: {
-										'Content-Type': 'application/x-www-form-urlencoded'
-									},
-									data: 'action=deleteData&username='+encodeURIComponent(API.Storage.getValue('backupUsername'))+'&password='+encodeURIComponent(API.Storage.getValue('backupPassword'))+'&index='+li.querySelector('input').getAttribute('value'),
-									onload: function(response) {
-										if (response.status === 200) {
-											new API.w.Effect.Morph(li, {
-												style: {
-													width: '0px'
-												},
-												afterFinish: function(effect) {
-													if ($$('#backupDataList li').length === 1) {
-														var info = new API.w.Element('p', { style: 'display: none;' });
-														
-														info.appendChild(document.createTextNode('Keine Datensicherungen auf dem Server vorhanden.'));
-														effect.element.parentNode.parentNode.replaceChild(info, effect.element.parentNode);
-														new API.w.Effect.Appear(info);
-													}
-													else {
-														effect.element.parentNode.removeChild(effect.element);
-													}
-												}
-											});
-										}
-									}
-								});
-							}, true);
-							
-							textSpan.appendChild(document.createTextNode('Datensicherung vom '+backupTimeString));
-							textLink.appendChild(textSpan);
-							deleteLink.appendChild(deleteImage);
-							button.appendChild(input);
-							button.appendChild(textLink);
-							button.appendChild(deleteLink);
-							buttonsList.appendChild(button);
+					panelLink.addEventListener('click', function(event) {
+						new API.w.Effect.Fade($$('#backup .overlayContent')[0].firstChild, {
+							afterFinish: function(effect) {
+								this.displayUserPanel($$('#backup .overlayContent')[0], true);
+							}.bind(this)
 						});
+					}.bindAsEventListener(this), true);
+					
+					logoutLink.addEventListener('click', function(event) {
+						API.Storage.unsetValue('backupUsername');
+						API.Storage.unsetValue('backupPassword');
+						this.stopTimer();
+						new API.w.Effect.Fade($$('#backup .overlayContent')[0].firstChild, {
+							afterFinish: function(effect) {
+								this.displayLoginForm($$('#backup .overlayContent')[0], true);
+							}.bind(this)
+						});
+					}.bindAsEventListener(this), true);
+					
+					userP.appendChild(document.createTextNode('Angemeldet als '+API.Storage.getValue('backupUsername')));
+					userP.appendChild(new API.w.Element('br'));
+					panelLink.appendChild(document.createTextNode('Benutzereinstellungen öffnen'));
+					logoutLink.appendChild(document.createTextNode('Ausloggen'));
+					userP.appendChild(panelLink);
+					userP.appendChild(document.createTextNode(' | '));
+					userP.appendChild(logoutLink);
+					
+					node.appendChild(userP);
+					node.appendChild(new API.w.Element('hr', { style: 'display: block;' }));
+					
+					if ((transport.status >= 200) && (transport.status < 300)) {
+						var xml = ((!transport.responseXML) ? (new DOMParser()).parseFromString(transport.responseText, 'text/xml') : transport.responseXML);
 						
-						node.appendChild(buttonsList);
+						if (xml.querySelectorAll('entry').length > 0) {
+							var buttonsList = new API.w.Element('ul', { id: 'backupDataList', 'class': 'memberList' });
+							
+							API.w.$A(xml.querySelectorAll('entry')).each(function(item) {
+								var button = new API.w.Element('li', { 'class': 'deletable' });
+								var textLink = new API.w.Element('a', { 'class': 'memberName', href: 'javascript:;', title: 'Klicken zum Einspielen der Datensicherung' });
+								var textSpan = new API.w.Element('span');
+								var deleteLink = new API.w.Element('a', { 'class': 'memberRemove deleteButton', href: 'javascript:;', title: 'Klicken zum Löschen der Datensicherung' });
+								var deleteImage = new API.w.Element('img', { src: './wcf/icon/deleteS.png', alt: '' });
+								var input = new API.w.Element('input', { 'type': 'hidden', value: String(item.querySelector('index').firstChild.nodeValue) });
+								
+								var backupTimeObj = new Date(Math.floor(Number(item.querySelector('timestamp').firstChild.nodeValue) * 1000));
+								var backupTimeString = '';
+								
+								backupTimeString += backupTimeObj.getDate()+'. '+(['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'][backupTimeObj.getMonth()])+' '+backupTimeObj.getFullYear()+', ';
+								backupTimeString += ((backupTimeObj.getHours() < 10) ? '0' : '')+backupTimeObj.getHours()+':'+((backupTimeObj.getMinutes() < 10) ? '0' : '')+backupTimeObj.getMinutes()+' Uhr';
+								
+								textLink.addEventListener('click', function(event) {
+									var li = ((event.target.nodeName.toLowerCase() === 'a') ? event.target.parentNode : event.target.parentNode.parentNode);
+									
+									GM_xmlhttpRequest({
+										method: 'GET',
+										url: 'http://projects.swallow-all-lies.com/greasemonkey/files/bisachatPlus/backup/getBackup.php?action=getData&userID='+API.w.settings.userID+'&index='+li.querySelector('input').getAttribute('value'),
+										headers: {
+											'Accept': 'application/json'
+										},
+										onload: function(response) {
+											if (response.readyState === 4) {
+												if (response.status === 200) {
+													var data = response.responseJSON;
+													
+													data.backupUsername = API.Storage.getValue('backupUsername');
+													data.backupPassword = API.Storage.getValue('backupPassword');
+													API.Storage.importSettings(data);
+													API.w.location.reload();
+												}
+											}
+										}
+									});
+								}, true);
+								
+								deleteLink.addEventListener('click', function(event) {
+									var li = ((event.target.nodeName.toLowerCase() === 'a') ? event.target.parentNode : event.target.parentNode.parentNode);
+									
+									GM_xmlhttpRequest({
+										method: 'POST',
+										url: 'http://projects.swallow-all-lies.com/greasemonkey/files/bisachatPlus/backup/',
+										headers: {
+											'Content-Type': 'application/x-www-form-urlencoded'
+										},
+										data: 'action=deleteData&username='+encodeURIComponent(API.Storage.getValue('backupUsername'))+'&password='+encodeURIComponent(API.Storage.getValue('backupPassword'))+'&index='+li.querySelector('input').getAttribute('value'),
+										onload: function(response) {
+											if (response.readyState === 4) {
+												if (response.status === 200) {
+													new API.w.Effect.Morph(li, {
+														style: {
+															width: '0px'
+														},
+														afterFinish: function(effect) {
+															if ($$('#backupDataList li').length === 1) {
+																var info = new API.w.Element('p', { style: 'display: none;' });
+																
+																info.appendChild(document.createTextNode('Keine Datensicherungen auf dem Server vorhanden.'));
+																effect.element.parentNode.parentNode.replaceChild(info, effect.element.parentNode);
+																new API.w.Effect.Appear(info);
+															}
+															else {
+																effect.element.parentNode.removeChild(effect.element);
+															}
+														}
+													});
+												}
+											}
+										}
+									});
+								}, true);
+								
+								textSpan.appendChild(document.createTextNode('Datensicherung vom '+backupTimeString));
+								textLink.appendChild(textSpan);
+								deleteLink.appendChild(deleteImage);
+								button.appendChild(input);
+								button.appendChild(textLink);
+								button.appendChild(deleteLink);
+								buttonsList.appendChild(button);
+							});
+							
+							node.appendChild(buttonsList);
+						}
+						else {
+							var info = new API.w.Element('p', { style: 'display: '+((doAppear) ? 'none' : 'block')+';' });
+							
+							info.appendChild(document.createTextNode('Keine Datensicherungen auf dem Server vorhanden.'));
+							node.appendChild(info);
+						}
 					}
 					else {
 						var info = new API.w.Element('p', { style: 'display: '+((doAppear) ? 'none' : 'block')+';' });
 						
-						info.appendChild(document.createTextNode('Keine Datensicherungen auf dem Server vorhanden.'));
+						info.appendChild(document.createTextNode('Fehler beim Abfragen der gespeicherten Datensicherungen.'));
+						info.appendChild(new API.w.Element('br'));
+						info.appendChild(document.createTextNode(transport.status+' - '+transport.statusText));
+							
+						try {
+							var xml = (new DOMParser()).parseFromString(transport.responseText, 'text/xml');
+							
+							if (!!xml.querySelector('error')) {
+								info.appendChild(new API.w.Element('br'));
+								info.appendChild(document.createTextNode(xml.querySelector('error > message').firstChild.nodeValue));
+							}
+						}
+						catch (e) { }
+						
 						node.appendChild(info);
 					}
-				}
-				else {
-					var info = new API.w.Element('p', { style: 'display: '+((doAppear) ? 'none' : 'block')+';' });
 					
-					info.appendChild(document.createTextNode('Fehler beim Abfragen der gespeicherten Datensicherungen.'));
-					info.appendChild(new API.w.Element('br'));
-					info.appendChild(document.createTextNode(transport.status+' - '+transport.statusText));
-						
-					try {
-						var xml = (new DOMParser()).parseFromString(transport.responseText, 'text/xml');
-						
-						if (!!xml.querySelector('error')) {
-							info.appendChild(new API.w.Element('br'));
-							info.appendChild(document.createTextNode(xml.querySelector('error > message').firstChild.nodeValue));
-						}
+					if (!!overlayContentNode.firstChild) {
+						overlayContentNode.replaceChild(node, overlayContentNode.firstChild);
 					}
-					catch (e) { }
+					else {
+						overlayContentNode.appendChild(node);
+					}
 					
-					node.appendChild(info);
-				}
-				
-				if (!!overlayContentNode.firstChild) {
-					overlayContentNode.replaceChild(node, overlayContentNode.firstChild);
-				}
-				else {
-					overlayContentNode.appendChild(node);
-				}
-				
-				if (doAppear) {
-					new API.w.Effect.Appear(node);
+					if (doAppear) {
+						new API.w.Effect.Appear(node);
+					}
 				}
 			}.bind(this)
 		});
@@ -346,56 +354,58 @@ Modules.Backup = {
 		var info = new API.w.Element('p', { id: 'backupUserFormInfo', style: 'display: none;' });
 		
 		var buttonLoadFunction = function(response, infoText, errorText) {
-			if (response.status === 200) {
-				API.Storage.setValue('backupUsername', $('inputUsername').value);
-				API.Storage.setValue('backupPassword', $('inputPassword').value);
-				$('backupUserFormInfo').innerHTML = infoText;
-				this.startTimer();
-				
-				if ($('backupUserFormInfo').style.display !== 'none') {
-					new API.w.Effect.Highlight($('backupUserFormInfo'), {
-						afterFinish: function() {
-							$$('#backup .overlayContent')[0].firstChild.addEventListener('transitionend', function(event) {
-								this.displayBackupData($$('#backup .overlayContent')[0], true);
-							}.bindAsEventListener(this), true);
-							$$('#backup .overlayContent')[0].firstChild.className = ($$('#backup .overlayContent')[0].firstChild.className + 'transitionFade').trim();
-						}.bind(this)
-					});
-				}
-				else {
-					new API.w.Effect.Appear($('backupUserFormInfo'), {
-						afterFinish: function(effect) {
-							effect.element.style.display = 'inline-block';
-							$$('#backup .overlayContent')[0].firstChild.addEventListener('transitionend', function(event) {
-								this.displayBackupData($$('#backup .overlayContent')[0], true);
-							}.bindAsEventListener(this), true);
-							$$('#backup .overlayContent')[0].firstChild.className = ($$('#backup .overlayContent')[0].firstChild.className + 'transitionFade').trim();
-						}.bind(this)
-					});
-				}
-			}
-			else {
-				try {
-					var xml = (new DOMParser()).parseFromString(response.responseText, 'text/xml');
+			if (response.readyState === 4) {
+				if (response.status === 200) {
+					API.Storage.setValue('backupUsername', $('inputUsername').value);
+					API.Storage.setValue('backupPassword', $('inputPassword').value);
+					$('backupUserFormInfo').innerHTML = infoText;
+					this.startTimer();
 					
-					$('backupUserFormInfo').innerHTML = xml.querySelector('message').firstChild.nodeValue;
-				}
-				catch (e) {
-					$('backupUserFormInfo').innerHTML = errorText;
-				}
-				
-				if ($('backupUserFormInfo').style.display !== 'none') {
-					new API.w.Effect.Highlight($('backupUserFormInfo'));
+					if ($('backupUserFormInfo').style.display !== 'none') {
+						new API.w.Effect.Highlight($('backupUserFormInfo'), {
+							afterFinish: function() {
+								$$('#backup .overlayContent')[0].firstChild.addEventListener('transitionend', function(event) {
+									this.displayBackupData($$('#backup .overlayContent')[0], true);
+								}.bindAsEventListener(this), true);
+								$$('#backup .overlayContent')[0].firstChild.className = ($$('#backup .overlayContent')[0].firstChild.className + 'transitionFade').trim();
+							}.bind(this)
+						});
+					}
+					else {
+						new API.w.Effect.Appear($('backupUserFormInfo'), {
+							afterFinish: function(effect) {
+								effect.element.style.display = 'inline-block';
+								$$('#backup .overlayContent')[0].firstChild.addEventListener('transitionend', function(event) {
+									this.displayBackupData($$('#backup .overlayContent')[0], true);
+								}.bindAsEventListener(this), true);
+								$$('#backup .overlayContent')[0].firstChild.className = ($$('#backup .overlayContent')[0].firstChild.className + 'transitionFade').trim();
+							}.bind(this)
+						});
+					}
 				}
 				else {
-					new API.w.Effect.Appear($('backupUserFormInfo'), {
-						afterFinish: function(effect) {
-							effect.element.style.display = 'inline-block';
-						}
-					});
+					try {
+						var xml = (new DOMParser()).parseFromString(response.responseText, 'text/xml');
+						
+						$('backupUserFormInfo').innerHTML = xml.querySelector('message').firstChild.nodeValue;
+					}
+					catch (e) {
+						$('backupUserFormInfo').innerHTML = errorText;
+					}
+					
+					if ($('backupUserFormInfo').style.display !== 'none') {
+						new API.w.Effect.Highlight($('backupUserFormInfo'));
+					}
+					else {
+						new API.w.Effect.Appear($('backupUserFormInfo'), {
+							afterFinish: function(effect) {
+								effect.element.style.display = 'inline-block';
+							}
+						});
+					}
+					
+					$('inputUsername').focus();
 				}
-				
-				$('inputUsername').focus();
 			}
 		}.bind(this);
 		
@@ -494,36 +504,38 @@ Modules.Backup = {
 				},
 				data: 'action=deleteUser&username='+encodeURIComponent(API.Storage.getValue('backupUsername'))+'&password='+encodeURIComponent(API.Storage.getValue('backupPassword')),
 				onload: function(response) {
-					if (response.status === 200) {
-						API.Storage.unsetValue('backupUsername');
-						API.Storage.unsetValue('backupPassword');
-						API.Storage.unsetValue('lastBackup');
-						this.stopTimer();
-						new API.w.Effect.Fade($$('#backup .overlayContent')[0].firstChild, {
-							afterFinish: function(effect) {
-								this.displayLoginForm($$('#backup .overlayContent')[0], true);
-							}.bind(this)
-						});
-					}
-					else {
-						try {
-							var xml = (new DOMParser()).parseFromString(response.responseText, 'text/xml');
-							
-							$('backupUserFormInfo').innerHTML = xml.querySelector('message').firstChild.nodeValue;
-						}
-						catch (e) {
-							$('backupUserFormInfo').innerHTML = 'Benutzer konnte nicht gelöscht werden';
-						}
-						
-						if ($('backupUserFormInfo').style.display !== 'none') {
-							new API.w.Effect.Highlight($('backupUserFormInfo'));
+					if (response.readyState === 4) {
+						if (response.status === 200) {
+							API.Storage.unsetValue('backupUsername');
+							API.Storage.unsetValue('backupPassword');
+							API.Storage.unsetValue('lastBackup');
+							this.stopTimer();
+							new API.w.Effect.Fade($$('#backup .overlayContent')[0].firstChild, {
+								afterFinish: function(effect) {
+									this.displayLoginForm($$('#backup .overlayContent')[0], true);
+								}.bind(this)
+							});
 						}
 						else {
-							new API.w.Effect.Appear($('backupUserFormInfo'), {
-								afterFinish: function(effect) {
-									effect.element.style.display = 'inline-block';
-								}
-							});
+							try {
+								var xml = (new DOMParser()).parseFromString(response.responseText, 'text/xml');
+								
+								$('backupUserFormInfo').innerHTML = xml.querySelector('message').firstChild.nodeValue;
+							}
+							catch (e) {
+								$('backupUserFormInfo').innerHTML = 'Benutzer konnte nicht gelöscht werden';
+							}
+							
+							if ($('backupUserFormInfo').style.display !== 'none') {
+								new API.w.Effect.Highlight($('backupUserFormInfo'));
+							}
+							else {
+								new API.w.Effect.Appear($('backupUserFormInfo'), {
+									afterFinish: function(effect) {
+										effect.element.style.display = 'inline-block';
+									}
+								});
+							}
 						}
 					}
 				}.bind(this)
@@ -540,51 +552,53 @@ Modules.Backup = {
 					},
 					data: 'action=alterPassword&username='+encodeURIComponent(API.Storage.getValue('backupUsername'))+'&oldPassword='+encodeURIComponent(API.Storage.getValue('backupPassword'))+'&newPassword='+encodeURIComponent($('inputAlterPasswordNew').value),
 					onload: function(response) {
-						if (response.status === 200) {
-							API.Storage.setValue('backupPassword', $('inputAlterPasswordNew').value);
-							$('backupUserFormInfo').innerHTML = 'Passwort geändert';
-							
-							if ($('backupUserFormInfo').style.display !== 'none') {
-								new API.w.Effect.Highlight($('backupUserFormInfo'), {
-									afterFinish: function() {
-										$$('#backup .overlayContent')[0].firstChild.addEventListener('transitionend', function(event) {
-											this.displayBackupData($$('#backup .overlayContent')[0], true);
-										}.bindAsEventListener(this), true);
-										$$('#backup .overlayContent')[0].firstChild.className = ($$('#backup .overlayContent')[0].firstChild.className + 'transitionFade').trim();
-									}.bind(this)
-								});
-							}
-							else {
-								new API.w.Effect.Appear($('backupUserFormInfo'), {
-									afterFinish: function(effect) {
-										effect.element.style.display = 'inline-block';
-										$$('#backup .overlayContent')[0].firstChild.addEventListener('transitionend', function(event) {
-											this.displayBackupData($$('#backup .overlayContent')[0], true);
-										}.bindAsEventListener(this), true);
-										$$('#backup .overlayContent')[0].firstChild.className = ($$('#backup .overlayContent')[0].firstChild.className + 'transitionFade').trim();
-									}.bind(this)
-								});
-							}
-						}
-						else {
-							try {
-								var xml = (new DOMParser()).parseFromString(response.responseText, 'text/xml');
+						if (response.readyState === 4) {
+							if (response.status === 200) {
+								API.Storage.setValue('backupPassword', $('inputAlterPasswordNew').value);
+								$('backupUserFormInfo').innerHTML = 'Passwort geändert';
 								
-								$('backupUserFormInfo').innerHTML = xml.querySelector('message').firstChild.nodeValue;
-							}
-							catch (e) {
-								$('backupUserFormInfo').innerHTML = 'Passwort konnte nicht geändert werden';
-							}
-							
-							if ($('backupUserFormInfo').style.display !== 'none') {
-								new API.w.Effect.Highlight($('backupUserFormInfo'));
+								if ($('backupUserFormInfo').style.display !== 'none') {
+									new API.w.Effect.Highlight($('backupUserFormInfo'), {
+										afterFinish: function() {
+											$$('#backup .overlayContent')[0].firstChild.addEventListener('transitionend', function(event) {
+												this.displayBackupData($$('#backup .overlayContent')[0], true);
+											}.bindAsEventListener(this), true);
+											$$('#backup .overlayContent')[0].firstChild.className = ($$('#backup .overlayContent')[0].firstChild.className + 'transitionFade').trim();
+										}.bind(this)
+									});
+								}
+								else {
+									new API.w.Effect.Appear($('backupUserFormInfo'), {
+										afterFinish: function(effect) {
+											effect.element.style.display = 'inline-block';
+											$$('#backup .overlayContent')[0].firstChild.addEventListener('transitionend', function(event) {
+												this.displayBackupData($$('#backup .overlayContent')[0], true);
+											}.bindAsEventListener(this), true);
+											$$('#backup .overlayContent')[0].firstChild.className = ($$('#backup .overlayContent')[0].firstChild.className + 'transitionFade').trim();
+										}.bind(this)
+									});
+								}
 							}
 							else {
-								new API.w.Effect.Appear($('backupUserFormInfo'), {
-									afterFinish: function(effect) {
-										effect.element.style.display = 'inline-block';
-									}
-								});
+								try {
+									var xml = (new DOMParser()).parseFromString(response.responseText, 'text/xml');
+									
+									$('backupUserFormInfo').innerHTML = xml.querySelector('message').firstChild.nodeValue;
+								}
+								catch (e) {
+									$('backupUserFormInfo').innerHTML = 'Passwort konnte nicht geändert werden';
+								}
+								
+								if ($('backupUserFormInfo').style.display !== 'none') {
+									new API.w.Effect.Highlight($('backupUserFormInfo'));
+								}
+								else {
+									new API.w.Effect.Appear($('backupUserFormInfo'), {
+										afterFinish: function(effect) {
+											effect.element.style.display = 'inline-block';
+										}
+									});
+								}
 							}
 						}
 					}

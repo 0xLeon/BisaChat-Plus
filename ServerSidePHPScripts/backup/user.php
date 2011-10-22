@@ -16,7 +16,9 @@ if (isset($_POST['action'])) {
 						'salt' => $salt
 					);
 					file_put_contents('./login/'.$username, serialize($data));
+					file_put_contents('./data/'.$username, serialize(array()));
 					@chmod('./login/'.$username, 0777);
+					@chmod('./data/'.$username, 0777);
 					
 					header('HTTP/1.1 200 OK');
 					exit(0);

@@ -269,7 +269,7 @@ Modules.Backup = {
 													if ($$('#backupDataList li').length === 1) {
 														var info = new API.w.Element('p', { style: 'display: none;' });
 														
-														info.appendChild(document.createTextNode('Keine Datensicherungsen auf dem Server vorhanden.'));
+														info.appendChild(document.createTextNode('Keine Datensicherungen auf dem Server vorhanden.'));
 														effect.element.parentNode.parentNode.replaceChild(info, effect.element.parentNode);
 														new API.w.Effect.Appear(info);
 													}
@@ -297,7 +297,7 @@ Modules.Backup = {
 					else {
 						var info = new API.w.Element('p', { style: 'display: '+((doAppear) ? 'none' : 'block')+';' });
 						
-						info.appendChild(document.createTextNode('Keine Datensicherungsen auf dem Server vorhanden.'));
+						info.appendChild(document.createTextNode('Keine Datensicherungen auf dem Server vorhanden.'));
 						node.appendChild(info);
 					}
 				}

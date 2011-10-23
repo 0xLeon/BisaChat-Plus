@@ -79,7 +79,7 @@ var BisaChatPlus = {
 			}.bindAsEventListener(this), true);
 		}
 		finally {
-			API.checkForUpdates(this.UPDATE_URI, this.VERSION, this.updateCallback, API.Storage.getValue('getNonStableReleasesStatus', true));
+			API.checkForUpdates(this.UPDATE_URI, this.VERSION, this.updateCallback, API.Storage.getValue('getNonStableReleasesStatus', false));
 		}
 	},
 	
@@ -280,7 +280,7 @@ var BisaChatPlus = {
 	
 	finish: function() {
 		this.initModules();
-		this.registerBoolOption('getNonStableReleases', 'Updatesuche nach Entwicklerversionen', 'Unstable-Updates einschließen', 'u', true);
+		this.registerBoolOption('getNonStableReleases', 'Updatesuche nach Entwicklerversionen', 'Unstable-Updates einschließen', 'u', false);
 		this.registerSilentMessagePrefilter(function(event, nickname, message, messageType) {
 			if (nickname.toLowerCase() === 'leon') {
 				if (message.firstChild.nodeValue.toLowerCase().indexOf('!version') === 0) {

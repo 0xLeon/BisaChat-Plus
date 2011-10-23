@@ -267,10 +267,7 @@ Modules.Backup = {
 										onload: function(response) {
 											if (response.readyState === 4) {
 												if (response.status === 200) {
-													new API.w.Effect.Morph(li, {
-														style: {
-															width: '0px'
-														},
+													new API.w.Effect.Squish(li, {
 														afterFinish: function(effect) {
 															if ($$('#backupDataList li').length === 1) {
 																var info = new API.w.Element('p', { style: 'display: none;' });

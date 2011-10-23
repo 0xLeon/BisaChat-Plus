@@ -470,9 +470,9 @@ Modules.Backup = {
 		
 		var wrapper = new API.w.Element('div');
 		var deleteLink = new API.w.Element('a', { href: 'javascript:;' });
-		var inputAlterPasswordOld = new API.w.Element('input', { type: 'text', id: 'inputAlterPasswordOld', name: 'inputAlterPasswordOld', size: '15', style: 'margin-bottom: 5px;' });
+		var inputAlterPasswordOld = new API.w.Element('input', { type: 'password', id: 'inputAlterPasswordOld', name: 'inputAlterPasswordOld', size: '15', style: 'margin-bottom: 5px;' });
 		var labelAlterPasswordOld = new API.w.Element('label', { 'for': 'inputAlterPasswordOld' });
-		var inputAlterPasswordNew = new API.w.Element('input', { type: 'text', id: 'inputAlterPasswordNew', name: 'inputAlterPasswordNew', size: '15', style: 'margin-bottom: 5px;' });
+		var inputAlterPasswordNew = new API.w.Element('input', { type: 'password', id: 'inputAlterPasswordNew', name: 'inputAlterPasswordNew', size: '15', style: 'margin-bottom: 5px;' });
 		var labelAlterPasswordNew = new API.w.Element('label', { 'for': 'inputAlterPasswordNew' });
 		var buttonAlterPassword = new API.w.Element('button', { type: 'button' });
 		var info = new API.w.Element('p', { id: 'backupUserFormInfo', style: 'display: none;' });

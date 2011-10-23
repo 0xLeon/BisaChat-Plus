@@ -31,7 +31,7 @@ Modules.LastfmConnector = {
 	},
 	
 	getTrackString: function(artist, title, trackURI, username) {
-		return API.Storage.getValue('formatString', 'np: $artist – $title').replace(/\$artist/gi, artist).replace(/\$title/gi, title).replace(/\$url/gi, trackURI).replace(/\$profil/gi, 'http://www.last.fm/user/'+encodeURIComponent(username));
+		return API.Storage.getValue('formatString', 'np: $artist – $title').replace('$artist', artist).replace('$title', title).replace('$url', trackURI).replace('$profil', 'http://www.last.fm/user/'+encodeURIComponent(username));
 	},
 	
 	getTrack: function() {

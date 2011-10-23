@@ -595,7 +595,7 @@ var BisaChatPlus = {
 			var optionInput = event.target.nextSibling;
 			
 			optionSpan.className = (optionSpan.className + ' hidden').trim();
-			optionInput.className = optionInput.className.replace(/hidden/ig, '').trim();
+			optionInput.className = optionInput.className.replace('hidden', '').trim();
 			optionInput.focus();
 		}, true);
 		
@@ -611,7 +611,7 @@ var BisaChatPlus = {
 				API.Storage.setValue(optionSpan.getAttribute('id')+'Value', optionInput.value);
 				optionSpan.firstChild.replaceData(0, optionSpan.firstChild.nodeValue.length, API.Storage.getValue(optionSpan.getAttribute('id')+'Value', defaultValue));
 				optionInput.className = (optionInput.className + ' hidden').trim();
-				optionSpan.className = optionSpan.className.replace(/hidden/ig, '').trim();
+				optionSpan.className = optionSpan.className.replace('hidden', '').trim();
 				if (typeof onChange === 'function') onChange.call(this, optionInput.value);
 				$('chatInput').focus();
 				event.preventDefault();

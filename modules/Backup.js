@@ -302,14 +302,14 @@ Modules.Backup = {
 							node.appendChild(buttonsList);
 						}
 						else {
-							var info = new API.w.Element('p', { style: 'display: '+((doAppear) ? 'none' : 'block')+';' });
+							var info = new API.w.Element('p');
 							
 							info.appendChild(document.createTextNode('Keine Datensicherungen auf dem Server vorhanden.'));
 							node.appendChild(info);
 						}
 					}
 					else {
-						var info = new API.w.Element('p', { style: 'display: '+((doAppear) ? 'none' : 'block')+';' });
+						var info = new API.w.Element('p');
 						
 						info.appendChild(document.createTextNode('Fehler beim Abfragen der gespeicherten Datensicherungen.'));
 						info.appendChild(new API.w.Element('br'));

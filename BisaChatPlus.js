@@ -178,6 +178,7 @@ var BisaChatPlus = {
 				var id = event.target.getAttribute('id');
 				var messageNode = $$('#'+id+' span')[1].nextSibling;
 				var messageType = Number(event.target.className.match(/\bmessagetype(\d+)\b/i)[1]);
+				var ownMessage = (event.target.className.toLowerCase().indexOf('ownmessage') > -1);
 				var message = new API.w.Element('span', { 'class': 'chatMessageText' });
 				
 				var nicknameNode = event.target.getElementsByTagName('span')[1].getElementsByTagName('span');
@@ -224,7 +225,7 @@ var BisaChatPlus = {
 						event.target.appendChild(awaySpan);
 						
 						// switch away status
-						if (nickname === API.w.settings.username) {
+						if (ownMessage) {
 							if (messageType === 3) {
 								this.awayMessage = (message === null) ? '' : message.firstChild.nodeValue;
 								this.isAway = true;
@@ -251,7 +252,7 @@ var BisaChatPlus = {
 					event.target.appendChild(message);
 					
 					for (var i = 0; i < this.messagePrefilters.length; i++) {
-						this.messagePrefilters[i](event, nickname, message, messageType);
+						this.messagePrefilters[i](event, nickname, message, messageType, ownMessage);
 					}
 				}
 			}
@@ -682,21 +683,21 @@ var BisaChatPlus = {
 	 * @param	{String}	optionText					Short description which is displayed in front of actual value
 	 * @param	{String}	[accessKey]					One letter which indicates the acess key
 	 * @param	{Boolean}	defaultValue				Option status when there is nothing in storage
-	 * @param	{Function}	prefilterFunction			Called when new messages get appened to chat stream but only, if they contain actual user generated content (not on enter messages etc.); has to accept five parameters: event{Object}: event object of inserted message, checked{Boolean}: indicates if the corresponding checkbox is checked, nickname{String}: plain nickname, message{Object}: reference to actual message node, messageType{Number}: indicates type of message
+	 * @param	{Function}	prefilterFunction			Called when new messages get appened to chat stream but only, if they contain actual user generated content (not on enter messages etc.); has to accept six parameters: event{Object}: event object of inserted message, checked{Boolean}: indicates if the corresponding checkbox is checked, nickname{String}: plain nickname, message{Object}: reference to actual message node, messageType{Number}: indicates type of message, ownMessage{Boolean}: indicates whether or not the message is written by the user himself
 	 * @param	{Function}	[checkboxSwitchCallback]	Called when option is about to be switched, option is only switched if switchCallback returns boolean true, two arguments passed: event{Object}: checkbox change event object, checked{Boolean}: wether or not the box is checked
 	 * @param	{Object}	[context]					Indicates where 'this' points within prefilterFunction and switchCallback
 	 */
 	registerMessagePrefilter: function(optionID, optionTitle, optionText, accessKey, defaultValue, prefilterFunction, checkboxSwitchCallback, context) {
 		this.registerBoolOption(optionID, optionTitle, optionText, accessKey, defaultValue, checkboxSwitchCallback, context);
-		return (this.messagePrefilters.push(function(event, nickname, message, messageType) {
-			prefilterFunction.call(this, event, $(optionID).checked, nickname, message, messageType);
+		return (this.messagePrefilters.push(function(event, nickname, message, messageType, ownMessage) {
+			prefilterFunction.call(this, event, $(optionID).checked, nickname, message, messageType, ownMessage);
 		}.bind(context))-1);
 	},
 	
 	/**
 	 * Apply prefilter without generating a GUI element
 	 * 
-	 * @param	{Function}	prefilterFunction	Called when new messages get appened to chat stream but only, if they contain actual user generated content (not on enter messages etc.); has to accept four parameters: event{Object}: event object of inserted message, nickname{String}: plain nickname, message{Object}: reference to actual message node, messageType{Number}: indicates type of message
+	 * @param	{Function}	prefilterFunction	Called when new messages get appened to chat stream but only, if they contain actual user generated content (not on enter messages etc.); has to accept five parameters: event{Object}: event object of inserted message, nickname{String}: plain nickname, message{Object}: reference to actual message node, messageType{Number}: indicates type of message, ownMessage{Boolean}: indicates whether or not the message is written by the user himself
 	 * @param	{Object}	[context]			Indicates where 'this' points within prefilterFunction
 	 */
 	registerSilentMessagePrefilter: function(prefilterFunction, context) {

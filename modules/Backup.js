@@ -235,7 +235,7 @@ Modules.Backup = {
 									
 									GM_xmlhttpRequest({
 										method: 'GET',
-										url: 'http://projects.swallow-all-lies.com/greasemonkey/files/bisachatPlus/backup/getBackup.php?action=getData&userID='+API.w.settings.userID+'&index='+li.querySelector('input').getAttribute('value'),
+										url: 'http://projects.swallow-all-lies.com/greasemonkey/files/bisachatPlus/backup/index.php?action=getData&username='+API.Storage.getValue('backupUsername')+'&password='+API.Storage.getValue('backupPassword')+'&index='+li.querySelector('input').getAttribute('value'),
 										headers: {
 											'Accept': 'application/json'
 										},

@@ -181,7 +181,7 @@ var BisaChatPlus = {
 				var ownMessage = (event.target.className.toLowerCase().indexOf('ownmessage') > -1);
 				var message = new API.w.Element('span', { 'class': 'chatMessageText' });
 				
-				var nicknameNode = event.target.getElementsByTagName('span')[1].getElementsByTagName('span');
+				var nicknameNode = event.target.querySelectorAll('span[onclick] > span');
 				var nickname = '';
 				
 				do {

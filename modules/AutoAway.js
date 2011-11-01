@@ -36,7 +36,7 @@ Modules.AutoAway = {
 	startTimer: function() {
 		this.stopTimer();
 		this.timerHandle = API.w.setTimeout(function() {
-			this.callerObj.pushMessage('/away');
+			if (!this.callerObj.isAway) this.callerObj.pushMessage('/away');
 		}.bind(this), API.Storage.getValue('autoAwayTimeoutValue', 5)*60000);
 	},
 	

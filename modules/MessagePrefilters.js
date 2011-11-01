@@ -27,9 +27,7 @@ Modules.MessagePrefilters = {
 		
 		callerObj.registerSilentMessagePrefilter(function(event, nickname, message, messageType) {
 			if (messageType === 10) {
-				var span = event.target.querySelector('span[onclick]');
-				
-				span.setAttribute('onclick', 'chat.insert(\'/team \', false)');
+				event.target.querySelector('span[onclick]').setAttribute('onclick', 'chat.insert(\'/team \', false)');
 			}
 		});
 	}

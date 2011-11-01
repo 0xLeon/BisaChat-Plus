@@ -15,7 +15,7 @@ Modules.MessageBox = {
 		this.registerPrefilter();
 		this.buildOverlay();
 		Event.register('awayStatusChange', function(event) {
-			if (event.isAway === true) {
+			if (event.isAway) {
 				this.appendHr();
 			}
 		}, this);

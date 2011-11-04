@@ -15,7 +15,7 @@ Modules.AutoAway = {
 	
 	registerOptions: function() {
 		this.callerObj.registerTextOption('autoAwayTimeout', 'Zeit bis zum Away-Status in Minuten', 5, function(newValue) {
-			this.startTimer();
+			if (API.Storage.getValue('autoAwayStatus', true)) this.startTimer();
 		}, this);
 		this.callerObj.registerMessagePrefilter('autoAway', 'Auto Away', 'Auto Away aktivieren', 'a', true, function(event, checked, nickname, message, messageType, ownMessage) {
 			if (checked && ownMessage) {

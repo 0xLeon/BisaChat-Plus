@@ -9,7 +9,7 @@ Modules.AutoAway = {
 	init: function(callerObj) {
 		this.callerObj = callerObj;
 		
-		if (API.Storage.getValue('autoAwayTimeoutStatus', true)) this.startTimer();
+		if (API.Storage.getValue('autoAwayStatus', true)) this.startTimer();
 		this.registerOptions();
 	},
 	

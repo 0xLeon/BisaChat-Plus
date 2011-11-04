@@ -26,59 +26,139 @@
  * with this program; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
- 
+
 /*
- * bind and bindAsEventListener taken from Prototype
+ * Taken from Prototype
  * Copyright (c) 2005-2010 Sam Stephenson
  */
-if (typeof Function.prototype.bind === 'undefined') {
-	Function.prototype.bind = function(context) {
-		if (arguments.length < 2 && typeof arguments[0] === 'undefined') return this;
-		var __method = this, args = Array.prototype.slice.call(arguments, 1);
-		
-		return function() {
-			args = Array.prototype.slice.call(args, 0);
-			var argsLength = args.length, argumentsLength = arguments.length;
-			while (argumentsLength--)  args[argsLength + argumentsLength] = arguments[argumentsLength];
-			return __method.apply(context, args);
-		};
-	};
+Object.extend = function(destination, source) {
+	for (var property in source) {
+		destination[property] = source[property];
+	}
+	
+	return destination;
 }
 
-Function.prototype.bindAsEventListener = function(context) {
-	var __method = this, args = Array.prototype.slice.call(arguments, 1);
-	
-	return function(event) {
-		var array = [event || window.event];
-		var arrayLength = array.length, length = args.length;
-		while (length--) array[arrayLength + length] = args[length];
-		return __method.apply(context, array);
-	};
-};
 
-String.prototype.parseAsColor = function() {
-	var hexColor = '#';
+/*
+ * Taken from Prototype
+ * Copyright (c) 2005-2010 Sam Stephenson
+ */
+Object.extend(Function.prototype, (function() {
+	var slice = Array.prototype.slice;
 	
-	if (this.trim().indexOf('rgb') === 0) {
-		this.match(/(\d){1,3}/g).forEach(function(number, index) {
-			if (index > 2) return null;
-			
-			hexColor += ((parseInt(number, 10) < 16) ? '0' : '') + parseInt(number, 10).toString(16);
-		});
+	function update(array, args) {
+		var arrayLength = array.length;
+		var length = args.length;
 		
-		return hexColor;
-	}
-	else {
-		var basic = this.toLowerCase().replace(/[^0-9a-f]/g, '');
-		
-		if (basic.length === 6) {
-			return hexColor+basic;
+		while (length--) {
+			array[arrayLength + length] = args[length];
 		}
-		else if (basic.length === 3) {
-			return hexColor+basic[0]+basic[0]+basic[1]+basic[1]+basic[2]+basic[2];
+		
+		return array;
+	}
+	
+	function merge(array, args) {
+		array = slice.call(array, 0);
+		
+		return update(array, args);
+	}
+	
+	// --- exported functions ---
+	function argumentNames() {
+		var names = this.toString().match(/^[\s\(]*function[^(]*\(([^)]*)\)/)[1].replace(/\/\/.*?[\r\n]|\/\*(?:.|[\r\n])*?\*\//g, '').replace(/\s+/g, '').split(',');
+		
+		return (((names.length == 1) && !names[0]) ? [] : names);
+	}
+	
+	function bind(context) {
+		if (arguments.length < 2 && (typeof arguments[0] === 'undefined')) return this;
+		
+		var __method = this;
+		var args = slice.call(arguments, 1);
+		
+		return function() {
+		  var a = merge(args, arguments);
+		  
+		  return __method.apply(context, a);
+		}
+	}
+	
+	function bindAsEventListener(context) {
+		var __method = this;
+		var args = slice.call(arguments, 1);
+		
+		return function(event) {
+			var a = update([event || window.event], args);
+			
+			return __method.apply(context, a);
+		}
+	}
+	
+	function wrap(wrapper) {
+		var __method = this;
+		
+		return function() {
+			var a = update([__method.bind(this)], arguments);
+			
+			return wrapper.apply(this, a);
+		}
+	}
+	
+	function methodize() {
+		if (this._methodized) return this._methodized;
+		
+		var __method = this;
+		
+		return this._methodized = function() {
+			var a = update([this], arguments);
+			
+			return __method.apply(null, a);
+		};
+	}
+	
+	
+	var returnObj = {
+		argumentNames:       argumentNames,
+		bindAsEventListener: bindAsEventListener,
+		wrap:                wrap,
+		methodize:           methodize
+	};
+	
+	if (typeof Function.prototype.bind === 'undefined') returnObj.bind = bind;
+	
+	return returnObj;
+})());
+
+Object.extend(String.prototype, (function() {
+	function parseAsColor() {
+		var hexColor = '#';
+		
+		if (this.trim().indexOf('rgb') === 0) {
+			this.match(/(\d){1,3}/g).forEach(function(number, index) {
+				if (index > 2) return null;
+				
+				hexColor += ((parseInt(number, 10) < 16) ? '0' : '') + parseInt(number, 10).toString(16);
+			});
+			
+			return hexColor;
 		}
 		else {
-			return '';
+			var basic = this.toLowerCase().replace(/[^0-9a-f]/g, '');
+			
+			if (basic.length === 6) {
+				return hexColor+basic;
+			}
+			else if (basic.length === 3) {
+				return hexColor+basic[0]+basic[0]+basic[1]+basic[1]+basic[2]+basic[2];
+			}
+			else {
+				return '';
+			}
 		}
 	}
-};
+	
+	return {
+		parseAsColor: parseAsColor
+	}
+})());

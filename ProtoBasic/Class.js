@@ -1,7 +1,7 @@
 var Class = function() {
-	var parent = null, properties = API.w.$A(arguments);
+	var parent = null, properties = $A(arguments);
 	
-	if (typeof properties[0] === 'function') parent = properties.shift();
+	if (Object.isFunction(properties[0])) parent = properties.shift();
 	
 	function klass() {
 		this.initialize.apply(this, arguments);
@@ -16,7 +16,7 @@ var Class = function() {
 				var property = properties[i];
 				var value = source[property];
 				
-				if (ancestor && (typeof value === 'function') && (value.argumentNames()[0] === '$super')) {
+				if (ancestor && Object.isFunction(value) && (value.argumentNames()[0] === '$super')) {
 					var method = value;
 					
 					value = (function(m) {
@@ -51,7 +51,7 @@ var Class = function() {
 	}
 	
 	if (!klass.prototype.initialize) {
-		klass.prototype.initialize = function() {};
+		klass.prototype.initialize = Function.empty;
 	}
 	
 	klass.prototype.constructor = klass;

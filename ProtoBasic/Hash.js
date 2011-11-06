@@ -82,4 +82,20 @@ var Hash = new Class(Enumerable, (function() {
 			return pair.map(Object.inspect).join(': ');
 		}).join(', ') + '}>';
 	}
+	
+	return {
+		initialize: initialize,
+		_each:      _each,
+		set:        set,
+		get:        get,
+		unset:      unset,
+		index:      index,
+		keys:       keys,
+		values:     values,
+		merge:      merge,
+		update:     update,
+		toObject:   toObject,
+		clone:      clone,
+		inspect:    inspect
+	};
 })());

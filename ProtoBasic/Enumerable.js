@@ -83,7 +83,7 @@ var Enumerable = (function() {
 	
 	function include(object) {
 		if (Object.isFunction(this.indexOf)) {
-			return (this.indexOf(object) !== -1));
+			return (this.indexOf(object) !== -1);
 		}
 		
 		var found = false;

@@ -23,7 +23,7 @@ Object.extend(Array, {
 
 Object.extend(Array.prototype, Enumerable);
 Object.extend(Array.prototype, (function() {
-	var arrayProto = array.prototype;
+	var arrayProto = Array.prototype;
 	var slice = arrayProto.slice;
 	
 	function clear() {

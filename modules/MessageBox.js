@@ -25,7 +25,7 @@ Modules.MessageBox = {
 	},
 	
 	getData: function() {
-		this.inbox = API.w.$A(JSON.parse(API.Storage.getValue('messageBoxData', '[]'))).clone();
+		this.inbox = API.w.$A(API.Storage.getValue('messageBoxData', []));
 	},
 	
 	registerPrefilter: function() {

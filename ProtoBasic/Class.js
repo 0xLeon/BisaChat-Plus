@@ -1,3 +1,9 @@
+/* 
+ * Basic Class implementation
+ * 
+ * Taken from Prototype
+ * Copyright (c) 2005-2010 Sam Stephenson
+ */
 var Class = function() {
 	var parent = null, properties = $A(arguments);
 	

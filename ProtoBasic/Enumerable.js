@@ -1,5 +1,5 @@
 /* 
- * Enumerable interface
+ * Abstract Enumerable class
  * 
  * Taken from Prototype
  * Copyright (c) 2005-2010 Sam Stephenson

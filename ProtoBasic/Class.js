@@ -9,7 +9,7 @@ var Class = function() {
 	
 	if (Object.isFunction(properties[0])) parent = properties.shift();
 	
-	if ((typeof properties.last() === 'boolean') && properties.last()) {
+	if ((typeof properties[properties.length - 1] === 'boolean') && properties[properties.length - 1]) {
 		klass = function() {
 			throw new Error('Trying to create instance of an abstract class');
 			this.initialize.apply(this, arguments);

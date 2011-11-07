@@ -4,13 +4,13 @@
  *
  * Copyright (C) 2011 Stefan Hahn
  */
-var API = {
+var API = (function() {
 	/**
 	 * Storage engine for persistent value storage
 	 * 
 	 * @type	{Object}
 	 */
-	Storage: {
+	var Storage = (function() {
 		/**
 		 * Gets saved value from persistent storage
 		 * 
@@ -18,11 +18,11 @@ var API = {
 		 * @param	{mixed}		[defaultValue]
 		 * @returns	{mixed}
 		 */
-		getValue: function(key, defaultValue) {
+		function getValue(key, defaultValue) {
 			var type, value;
 			
 			if (localStorage.getItem(key) === null) {
-				if (defaultValue !== undefined) this.setValue(key, defaultValue);
+				if (!Object.isUndefined(defaultValue)) this.setValue(key, defaultValue);
 				return defaultValue;
 			}
 			
@@ -39,7 +39,7 @@ var API = {
 				default:
 					return value;
 			}
-		},
+		}
 		
 		/**
 		 * Saves value persistent
@@ -48,10 +48,10 @@ var API = {
 		 * @param	{mixed}		value
 		 * @returns	{undefined}
 		 */
-		setValue: function(key, value) {
+		function setValue(key, value) {
 			value = (typeof value)[0] + ((typeof value === 'object') ? JSON.stringify(value) : value);
 			return localStorage.setItem(key, value);
-		},
+		}
 		
 		/**
 		 * Deletes value from persistent storage
@@ -59,27 +59,18 @@ var API = {
 		 * @param	{String}	key
 		 * @returns	{undefined}
 		 */
-		unsetValue: function(key) {
+		function unsetValue(key) {
 			localStorage.removeItem(key);
-		},
+		}
 		
 		/**
 		 * Deletes all data from persistent storage
 		 * 
 		 * @returns	{undefined}
 		 */
-		clear: function() {
+		function clear() {
 			localStorage.clear();
-		},
-		
-		/**
-		 * Amount of saved key value pairs
-		 * 
-		 * @type	{Number}
-		 */
-		get length() {
-			return localStorage.length;
-		},
+		}
 		
 		/**
 		 * Returns n-th key
@@ -87,9 +78,9 @@ var API = {
 		 * @param	{Number}	n
 		 * @returns	{String}
 		 */
-		key: function(n) {
+		function key(n) {
 			return localStorage.key(n);
-		},
+		}
 		
 		/**
 		 * Replace all data in persistent storage with properties of passed object
@@ -97,32 +88,51 @@ var API = {
 		 * @param	{Object}	Object	Hash-like object
 		 * @returns	{undefined}			Returns nothing
 		 */
-		importSettings: function(obj) {
+		function importSettings(obj) {
 			if (typeof obj !== 'object') throw new TypeError('obj has to be an object type');
 			
 			var keys = Object.keys(obj);
 			
 			this.clear();
-			keys.forEach(function(key) {
+			keys.each(function(key) {
 				this.setValue(key, obj[key]);
 			}, this);
-		},
+		}
 		
 		/**
 		 * Returns all key value pairs from persistent storage
 		 * 
 		 * @returns	{Object}	Hash-like object with every key as property
 		 */
-		exportSettings: function() {
-			var obj = { };
+		function exportSettings() {
+			var obj = {};
 			
-			for (var i = 0; i < this.length; i++) {
+			for (var i = 0, length = this.length; i < length; i++) {
 				obj[this.key(i)] = this.getValue(this.key(i));
 			}
 			
 			return obj;
 		}
-	},
+		
+		return {
+			getValue:       getValue,
+			setValue:       setValue,
+			unsetValue:     unsetValue,
+			clear:          clear,
+			key:            key,
+			importSettings: importSettings,
+			exportSettings: exportSettings,
+			
+			/**
+			 * Amount of saved key value pairs
+			 * 
+			 * @type	{Number}
+			 */
+			get length() {
+				return localStorage.length;
+			}
+		};
+	})();
 	
 	/**
 	 * Selector Engine
@@ -130,7 +140,7 @@ var API = {
 	 * 
 	 * @type	{Object}
 	 */
-	Selector: {
+	var Selector = (function() {
 		/**
 		 * Gets element nodes via ID
 		 * Accepts as many parameters as you want
@@ -142,13 +152,13 @@ var API = {
 		 * @param	{Object|String}		element		Node or ID string
 		 * @returns	{Object|Array}					Single element node or array of nodes
 		 */
-		$: function(element) {
+		function getElementsByIDs(element) {
 			if (arguments.length > 1) {
 				for (var i = 0, elements = [], length = arguments.length; i < length; i++) {
-					elements.push(this.$(arguments[i]));
+					elements.push(getElementsByIDs(arguments[i]));
 				}
 				
-				return API.w.$A(elements);
+				return $A(elements);
 			}
 
 			if (typeof element === 'string') {
@@ -156,7 +166,7 @@ var API = {
 			}
 			
 			return element;
-		},
+		}
 		
 		/**
 		 * Gets element nodes via CSS expression
@@ -169,12 +179,17 @@ var API = {
 		 * @param	{String}	cssExpression		CSS expression
 		 * @returns	{Array}							Array of nodes
 		 */
-		$$: function() {
-			var expression = API.w.$A(arguments).join(', ');
+		function getElementsByCSSExpression() {
+			var expression = $A(arguments).join(', ');
 			
-			return API.w.$A(document.documentElement.querySelectorAll(expression));
+			return $A(document.documentElement.querySelectorAll(expression));
 		}
-	},
+		
+		return {
+			getElementsByIDs:           getElementsByIDs,
+			getElementsByCSSExpression: getElementsByCSSExpression
+		};
+	})();
 	
 	/**
 	 * Add style rules to document
@@ -182,12 +197,12 @@ var API = {
 	 * @param	{String}	CSSString	Valid CSS style rules
 	 * @returns	{undefined}				Returns nothing
 	 */
-	addStyle: function(CSSString) {
+	function addStyle(CSSString) {
 		var styleNode = new this.w.Element('style', { 'type': 'text/css' });
 		
 		styleNode.appendChild(document.createTextNode(CSSString));
-		this.Selector.$$('head')[0].appendChild(styleNode);
-	},
+		this.Selector.getElementsByCSSExpression('head')[0].appendChild(styleNode);
+	}
 	
 	/**
 	 * Checks for latest version of userscript
@@ -198,7 +213,7 @@ var API = {
 	 * @param	{Boolean}	[getNonStableReleases]	Indicates wether or not to include developer versions in update checking
 	 * @returns {undefined}							Returns nothing
 	 */
-	checkForUpdates: function(updateServer, version, callback, getNonStableReleases) {
+	function checkForUpdates(updateServer, version, callback, getNonStableReleases) {
 		GM_xmlhttpRequest({
 			method: 'GET',
 			url: updateServer+'?version='+encodeURIComponent(version)+'&getNonStableReleases='+((getNonStableReleases) ? '1' : '0'),
@@ -213,36 +228,43 @@ var API = {
 				}
 			}
 		});
-	},
-	
-	/**
-	 * Unrestricted window object
-	 * 
-	 * @type	{Object}
-	 */
-	get w() {
-		return (unsafeWindow || window);
-	},
-	
-	/**
-	 * Width available inside browser content
-	 * 
-	 * @type	{Number}
-	 */
-	get inWidth() {
-		return parseInt(window.innerWidth);
-	},
-	
-	/**
-	 * Height available inside browser content
-	 * 
-	 * @type	{Number}
-	 */
-	get inHeight() {
-		return parseInt(window.innerHeight);
 	}
-};
+	
+	return {
+		Storage:         Storage,
+		Selector:        Selector,
+		addStyle:        addStyle,
+		checkForUpdates: checkForUpdates,
+		
+		/**
+		 * Unrestricted window object
+		 * 
+		 * @type	{Object}
+		 */
+		get w() {
+			return (unsafeWindow || window);
+		},
+		
+		/**
+		 * Width available inside browser content
+		 * 
+		 * @type	{Number}
+		 */
+		get inWidth() {
+			return parseInt(this.w.innerWidth);
+		},
+		
+		/**
+		 * Height available inside browser content
+		 * 
+		 * @type	{Number}
+		 */
+		get inHeight() {
+			return parseInt(this.w.innerHeight);
+		}
+	};
+})();
 
 // wrappers for selector functions
-window.$ = API.Selector.$;
-window.$$ = API.Selector.$$;
+window.$ = API.Selector.getElementsByIDs;
+window.$$ = API.Selector.getElementsByCSSExpression;

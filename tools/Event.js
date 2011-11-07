@@ -4,14 +4,14 @@
  *
  * Copyright (C) 2011 Stefan Hahn
  */
-var Event = {
+var Event = (function() {
 	/**
 	 * Saves event handlers
 	 * 
 	 * @private
 	 * @type	{Hash}
 	 */
-	events: API.w.$H({}),
+	var events = $H({});
 	
 	/**
 	 * Register an event handler for an event
@@ -21,13 +21,13 @@ var Event = {
 	 * @param	{Object}	[context]	optional object which this will reference to within handler function
 	 * @returns	{Number}				index of event handler, necessary when you want to unregister the listener
 	 */
-	register: function(name, handler, context) {
-		if (typeof this.events.get(name) === 'undefined') {
-			this.events.set(name, []);
+	function register(name, handler, context) {
+		if (Object.isUndefined(events.get(name))) {
+			events.set(name, []);
 		}
 		
-		return (this.events.get(name).push(handler.bind(context))-1);
-	},
+		return (events.get(name).push(handler.bind(context))-1);
+	}
 	
 	/**
 	 * Remove an event listener
@@ -36,9 +36,9 @@ var Event = {
 	 * @param	{Number}	index	index retuern by Event.register
 	 * @returns	{undefined}			Returns nothing
 	 */
-	unregister: function(name, index) {
-		delete this.events.get(name)[index];
-	},
+	function unregister(name, index) {
+		delete events.get(name)[index];
+	}
 	
 	/**
 	 * Executes all listeners registered to the named event
@@ -47,11 +47,17 @@ var Event = {
 	 * @param	{Object}	eventObj	object passed to event handlers
 	 * @returns	{undefined}				Returns nothing
 	 */
-	fire: function(name, eventObj) {
-		if (!!this.events.get(name)) {
-			this.events.get(name).forEach(function(item) {
+	function fire(name, eventObj) {
+		if (Object.isArray(events.get(name))) {
+			events.get(name).each(function(item) {
 				item(eventObj);
 			});
 		}
 	}
-};
+	
+	return {
+		register:   register,
+		unregister: unregister,
+		fire:       fire
+	};
+})();

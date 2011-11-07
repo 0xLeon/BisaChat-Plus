@@ -4,14 +4,14 @@
  * 
  * Copyright (C) 2011 Stefan Hahn
  */
-var Registry = {
+var Registry = (function() {
 	/**
 	 * Actual storage object
 	 * 
 	 * @private
 	 * @type	{Object}
 	 */
-	data: { },
+	var data = {};
 	
 	/**
 	 * Gets saved value from temp storage
@@ -20,15 +20,15 @@ var Registry = {
 	 * @param	{mixed}		[defaultValue]
 	 * @returns	{mixed}
 	 */
-	getValue: function(key, defaultValue) {
-		if (typeof this.data[key] === 'undefined') {
+	function getValue(key, defaultValue) {
+		if (Object.isUndefined(data[key])) {
 			var value = defaultValue;
 			
 			this.setValue(key, value);
 		}
 		
-		return this.data[key];
-	},
+		return data[key];
+	}
 	
 	/**
 	 * Saves value temp
@@ -37,9 +37,9 @@ var Registry = {
 	 * @param	{mixed}		value
 	 * @returns	{undefined}
 	 */
-	setValue: function(key, value) {
-		return this.data[key] = value;
-	},
+	function setValue(key, value) {
+		return data[key] = value;
+	}
 	
 	/**
 	 * Deletes value from temp storage
@@ -47,18 +47,18 @@ var Registry = {
 	 * @param	{String}	key
 	 * @returns	{undefined}
 	 */
-	unsetValue: function(key) {
-		delete this.data[key];
-	},
+	function unsetValue(key) {
+		delete data[key];
+	}
 	
 	/**
 	 * Deletes all data from temp storage
 	 * 
 	 * @returns	{undefined}
 	 */
-	clear: function() {
-		this.data = { };
-	},
+	function clear() {
+		this.data = {};
+	}
 	
 	/**
 	 * Returns n-th key
@@ -66,16 +66,24 @@ var Registry = {
 	 * @param	{Number}	n
 	 * @returns	{String}
 	 */
-	key: function(n) {
+	function key(n) {
 		return Object.keys(this.data)[n];
-	},
-	
-	/**
-	 * Amount of saved key value pairs
-	 * 
-	 * @type	{Number}
-	 */
-	get length() {
-		return Object.keys(this.data).length;
 	}
-};
+	
+	return {
+		getValue:   getValue,
+		setValue:   setValue,
+		unsetValue: unsetValue,
+		clear:      clear,
+		key:        key,
+		
+		/**
+		 * Amount of saved key value pairs
+		 * 
+		 * @type	{Number}
+		 */
+		get length() {
+			return Object.keys(this.data)[n];
+		}
+	};
+})();

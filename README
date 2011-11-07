@@ -18,6 +18,7 @@ Chrome) will be supportet by BisChat Plus 2.0, which is about to be released at 
 known issues:
  - smiliesbox height shouldn't be fixed (low)
  - BBCode Parser: Problem when large amount of messages need to be parsed within a small time (mid)
+ - error displayed on startup because BC+ tries to init AbstractModule (high)
 ------------
 desired features:
  - BBCode Parser: img-tag (low)

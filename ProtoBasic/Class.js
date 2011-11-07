@@ -5,12 +5,20 @@
  * Copyright (c) 2005-2010 Sam Stephenson
  */
 var Class = function() {
-	var parent = null, properties = $A(arguments);
+	var parent = null, properties = $A(arguments), klass = null;
 	
 	if (Object.isFunction(properties[0])) parent = properties.shift();
 	
-	function klass() {
-		this.initialize.apply(this, arguments);
+	if ((typeof properties.last() === 'boolean') && properties.last()) {
+		klass = function() {
+			throw new Error('Trying to create instance of an abstract class');
+			this.initialize.apply(this, arguments);
+		}
+	}
+	else {
+		klass = function() {
+			this.initialize.apply(this, arguments);
+		}
 	}
 	
 	Object.extend(klass, {
@@ -52,11 +60,13 @@ var Class = function() {
 		parent.subclasses.push(klass);
 	}
 	
-	for (var i = 0; i < properties.length; i++) {
-		klass.addMethods(properties[i]);
+	for (var i = 0, length = properties.length; i < length; i++) {
+		if (typeof properties[i] === 'object' ) {
+			klass.addMethods(properties[i]);
+		}
 	}
 	
-	if (!klass.prototype.initialize) {
+	if (!Object.isFunction(klass.prototype.initialize)) {
 		klass.prototype.initialize = Function.empty;
 	}
 	

@@ -2,24 +2,21 @@
  * Scripting Engine Module
  * Copyright (C) 2011 Stefan Hahn
  */
-Modules.ScriptingEngine = {
-	callerObj: null,
-	commands: API.w.$H(API.Storage.getValue('scriptingEngineCommands', {})),
+Modules.ScriptingEngine = new Class(Modules.AbstractModule, {
+	initializeVariables: function() {
+		this.commands = $H(API.Storage.getValue('scriptingEngineCommands', {}));
+	},
 	
-	init: function(callerObj) {
-		this.callerObj = callerObj;
-		
+	addStyleRules: function() {
 		API.addStyle('#scriptingEngine dl dt { clear: both; margin: 3px; }');
 		API.addStyle('#scriptingEngine dl dt span { font-weight: bold; }');
 		API.addStyle('#scriptingEngine dl hr { display: block; width: 80%; float: left; }');
 		API.addStyle('#scriptingEngine dl dt input { width: 8% }');
 		API.addStyle('#scriptingEngine dl dd input { width: 11% }');
 		API.addStyle('#scriptingEngine dl dd:last-child hr { display: none; }');
-		this.registerPrefilter();
-		this.buildOverlay();
 	},
 	
-	registerPrefilter: function() {
+	registerOptions: function() {
 		API.w.Ajax.Responders.register({
 			onCreate: function(request, response) {
 				if ((request.url.indexOf('form=Chat') > -1) && (request.parameters.text.trim().indexOf('/') === 0)) {
@@ -27,14 +24,14 @@ Modules.ScriptingEngine = {
 					var parameter = ((request.parameters.text.trim().indexOf(' ') === -1) ? '' : request.parameters.text.trim().slice(request.parameters.text.trim().indexOf(' ')+1));
 					
 					if (!!this.commands.get(command)) {
-						request.options.postBody = 'text='+encodeURIComponent(this.parse(command, parameter))+((!!Modules.SmiliesPlus) ? ((!!$('enablesmilies')) ? '&enablesmilies=on' : '') : (($('enablesmilies').checked) ? '&enablesmilies=on' : ''))+'&ajax=1'
+						request.options.postBody = 'text='+encodeURIComponent(this.parse(command, parameter))+((!!this.callerObj.moduleInstances.get('SmiliesPlus')) ? ((!!$('enablesmilies')) ? '&enablesmilies=on' : '') : (($('enablesmilies').checked) ? '&enablesmilies=on' : ''))+'&ajax=1'
 					}
 				}
 			}.bind(this)
 		});
 	},
 	
-	buildOverlay: function() {
+	buildUI: function() {
 		this.callerObj.buildOverlay('scriptingEngine', './wcf/icon/codeS.png', 'Scripting Engine', function() {
 			return this.overlayContentBuilder();
 		}.bind(this));
@@ -243,4 +240,4 @@ Modules.ScriptingEngine = {
 			new API.w.Effect.Appear($$('#scriptingEngine p')[0]);
 		}
 	}
-};
+});

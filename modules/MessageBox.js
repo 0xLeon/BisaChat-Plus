@@ -2,18 +2,22 @@
  * Message Box Module
  * Copyright (C) 2011 Stefan Hahn
  */
-Modules.MessageBox = {
-	callerObj: null,
-	prefilterHandle: null,
-	inbox: null,
-	unread: 0,
+Modules.MessageBox = new Class(Modules.AbstractModule, {
+	initializeVariables: function() {
+		this.inbox = $A(API.Storage.getValue('messageBoxData', []));
+		this.prefilterHandle = null;
+		this.unread = 0;
+	},
 	
-	init: function(callerObj) {
-		this.callerObj = callerObj;
-		
-		this.getData();
-		this.registerPrefilter();
-		this.buildOverlay();
+	registerOptions: function() {
+		this.callerObj.registerSilentMessagePrefilter(function(event, nickname, message, messageType) {
+			if ((this.callerObj.isAway || !document.hasFocus()) && (messageType === 7)) {
+				this.pushMessage(event, message);
+			}
+		}, this);
+	},
+	
+	addListeners: function() {
 		Event.register('awayStatusChange', function(event) {
 			if (event.isAway) {
 				this.appendHr();
@@ -24,19 +28,7 @@ Modules.MessageBox = {
 		}.bindAsEventListener(this), false);
 	},
 	
-	getData: function() {
-		this.inbox = API.w.$A(API.Storage.getValue('messageBoxData', []));
-	},
-	
-	registerPrefilter: function() {
-		this.callerObj.registerSilentMessagePrefilter(function(event, nickname, message, messageType) {
-			if ((this.callerObj.isAway || !document.hasFocus()) && (messageType === 7)) {
-				this.pushMessage(event, message);
-			}
-		}, this);
-	},
-	
-	buildOverlay: function() {
+	buildUI: function() {
 		this.callerObj.buildOverlay('messageBox', './wcf/icon/pmFullS.png', 'Message Box', function() {
 			return this.overlayContentBuilder();
 		}.bind(this),
@@ -134,7 +126,7 @@ Modules.MessageBox = {
 	 * @returns	{undefined}
 	 */
 	pushMessage: function(event, message) {
-		if (!!Modules.SmiliesPlus && !!Modules.SmiliesPlus.replaceImageSmilies && !API.Storage.getValue('smiliesActive')) Modules.SmiliesPlus.replaceImageSmilies(message);
+		if (!!this.callerObj.moduleInstances.get('SmiliesPlus') && !!this.callerObj.moduleInstances.get('SmiliesPlus').replaceImageSmilies && !API.Storage.getValue('smiliesActive')) this.callerObj.moduleInstances.get('SmiliesPlus').replaceImageSmilies(message);
 		
 		var name = event.target.querySelector('span[onclick]').innerHTML.trim();
 		var length = this.inbox.push({
@@ -165,4 +157,9 @@ Modules.MessageBox = {
 			$$('#messageBox .overlayContent ul')[1].appendChild(li);
 		}
 	}
-};
+});
+
+
+// because of modules are classes now:
+// BC+ should have instance getting so you can
+// access the actual module instances

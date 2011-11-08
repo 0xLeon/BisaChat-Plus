@@ -2,18 +2,9 @@
  * Backup Module
  * Copyright (C) 2011 Stefan Hahn
  */
-Modules.Backup = {
-	callerObj: null,
-	intervalHandle: null,
-	buttonWidth: '',
-	
-	init: function(callerObj) {
-		this.callerObj = callerObj;
-		
-		API.addStyle('#backupSmallButton, #backupDataList li { overflow: hidden !important; }');
-		API.addStyle('.transitionFade { -moz-transition: opacity 1s ease-in-out; opacity: 0; }');
-		this.registerOptions();
-		this.buildOverlay();
+Modules.Backup = new Class(Modules.AbstractModule, {
+	initialize: function($super, callerObj) {
+		$super(callerObj);
 		
 		try {
 			this.startTimer();
@@ -36,6 +27,16 @@ Modules.Backup = {
 				this.callerObj.pushInfo('Couldn\'t start backup timer. '+e.message);
 			}
 		}
+	},
+	
+	initializeVariables: function() {
+		this.intervalHandle = null;
+		this.buttonWidth = '';
+	},
+	
+	addStyleRules: function() {
+		API.addStyle('#backupSmallButton, #backupDataList li { overflow: hidden !important; }');
+		API.addStyle('.transitionFade { -moz-transition: opacity 1s ease-in-out; opacity: 0; }');
 	},
 	
 	registerOptions: function() {
@@ -82,7 +83,7 @@ Modules.Backup = {
 		}, this);
 	},
 	
-	buildOverlay: function() {
+	buildUI: function() {
 		this.callerObj.buildOverlay('backup', './wcf/icon/dbImportL.png', 'Backup', function(overlayContentNode) {
 			this.overlayContentBuilder(overlayContentNode);
 		}.bind(this),
@@ -658,4 +659,4 @@ Modules.Backup = {
 			new API.w.Effect.Appear(node);
 		}
 	}
-};
+});

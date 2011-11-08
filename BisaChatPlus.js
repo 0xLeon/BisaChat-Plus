@@ -51,6 +51,13 @@ var BisaChatPlus = {
 	 */
 	keydownListeners: { },
 	
+	/**
+	 * Hash of all active module instances
+	 * 
+	 * @type	{Hash}
+	 */
+	moduleInstances: $H({}),
+	
 	init: function() {
 		try {
 			this.addStyleRules();
@@ -316,14 +323,14 @@ var BisaChatPlus = {
 	},
 	
 	initModules: function() {
-		var keys = Object.keys(Modules);
-		
-		keys.forEach(function(key) {
+		$H(Modules).each(function(pair) {
 			try {
-				Modules[key].init(this);
+				if (pair.key !== 'AbstractModule') {
+					this.moduleInstances.set(pair.key, new pair.value(this));
+				}
 			}
 			catch (e) {
-				this.pushInfo('Modul »'+key+'« konnte nicht initialisiert werden.');
+				this.pushInfo('Modul »'+pair.key+'« konnte nicht initialisiert werden.');
 				this.pushInfo(e.name+' - '+e.message);
 			}
 		}, this);

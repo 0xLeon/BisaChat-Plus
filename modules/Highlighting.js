@@ -2,21 +2,10 @@
  * Highlighting Module
  * Copyright (C) 2011 Stefan Hahn
  */
-Modules.Highlighting = {
-	callerObj: null,
-	docTitle: '',
-	regExp: null,
-	messageIDs: API.w.$A([]),
-	title: '',
-	periodicalExecuter: null,
-	listenerFunction: null,
-	
-	init: function(callerObj) {
-		this.callerObj = callerObj;
-		
+Modules.Highlighting = new Class(Modules.AbstractModule, {
+	initialize: function($super, callerObj) {
 		this.removeBasicHighlighting();
-		this.registerOption();
-		this.addListener();
+		$super(callerObj);
 	},
 	
 	removeBasicHighlighting: function() {
@@ -34,7 +23,16 @@ Modules.Highlighting = {
 		});
 	},
 	
-	registerOption: function() {
+	initializeVariables: function() {
+		this.docTitle = '';
+		this.regExp = null;
+		this.messageIDs = $A([]);
+		this.title = '';
+		this.periodicalExecuter = null;
+		this.listenerFunction = null;
+	},
+	
+	registerOptions: function() {
 		this.callerObj.registerBoolOption('blurHR', 'Horizontale Linie beim verlassen des Tabs', 'Horizontale Linie', 'r', false);
 		this.callerObj.registerTextOption('highlightingText', 'Highlighten bei', API.w.settings.username, function(optionValue) {
 			this.buildRegExp(optionValue);
@@ -45,14 +43,14 @@ Modules.Highlighting = {
 					this.buildRegExp(API.Storage.getValue('highlightingTextValue', API.w.settings.username));
 				}
 				
-				var text = ((!!Modules.BBCodeParser && !!Modules.BBCodeParser.stripTags) ? Modules.BBCodeParser.stripTags(message.textContent) : message.textContent);
+				var text = ((!!this.callerObj.moduleInstances.get('BBCodeParser') && !!this.callerObj.moduleInstances.get('BBCodeParser').stripTags) ? this.callerObj.moduleInstances.get('BBCodeParser').stripTags(message.textContent) : message.textContent);
 				
 				if (this.regExp.test(text)) {
 					this.title = 'Neue Nachricht enthält: '+this.regExp.exec(text)[1];
 					this.highlight(event.target.getAttribute('id'));
 					
-					if (!!Modules.MessageBox && !!Modules.MessageBox.pushMessage && (messageType !== 7)) {
-						Modules.MessageBox.pushMessage(event, message);
+					if (!!this.callerObj.moduleInstances.get('MessageBox') && !!this.callerObj.moduleInstances.get('MessageBox').pushMessage && (messageType !== 7)) {
+						this.callerObj.moduleInstances.get('MessageBox').pushMessage(event, message);
 					}
 				}
 				else if (messageType === 7) {
@@ -63,7 +61,7 @@ Modules.Highlighting = {
 		}, null, this);
 	},
 	
-	addListener: function() {
+	addListeners: function() {
 		document.addEventListener('blur', function(event) {
 			if (API.Storage.getValue('blurHRStatus', false)) {
 				$$('#chatMessage'+API.w.chat.activeUserID+' ul .blurHr').each(function(item) {
@@ -143,4 +141,4 @@ Modules.Highlighting = {
 			}
 		}
 	}
-};
+});

@@ -2,53 +2,32 @@
  * Statistics Module
  * Copyright (C) 2011 Stefan Hahn
  */
-Modules.Statistics = {
-	callerObj: null,
-	onlineTimeLengthCounterHandle: null,
-	
-	get onlineTimeStart() {
-		return API.Storage.getValue('statisticsOnlineTimeStart', (new Date()).getTime());
-	},
-	set onlineTimeStart(value) {
-		API.Storage.setValue('statisticsOnlineTimeStart', value);
-	},
-	
-	get onlineTimeLength() {
-		return API.Storage.getValue('statisticsOnlineTimeLength', 0);
-	},
-	set onlineTimeLength(value) {
-		API.Storage.setValue('statisticsOnlineTimeLength', value);
-	},
-	
-	get messageCount() {
-		return API.Storage.getValue('statisticsMessageCount', 0);
-	},
-	set messageCount(value) {
-		API.Storage.setValue('statisticsMessageCount', value);
-	},
-	
-	init: function(callerObj) {
-		this.callerObj = callerObj;
+Modules.Statistics = new Class(Modules.AbstractModule, {
+	initialize: function($super, callerObj) {
+		$super(callerObj);
 		
 		if (API.Storage.getValue('statisticsStatus', true)) {
 			this.startOnlineTimeLengthCounter();
 		}
-		
-		this.addEventListeners();
 	},
 	
-	addEventListeners: function() {
+	initializeVariables: function() {
+		this.onlineTimeLengthCounterHandle = null;
+	},
+	
+	registerOptions: function() {
 		this.callerObj.registerMessagePrefilter('statistics', 'Statistiken', 'Statistiken aktivieren', 's', true, function(event, checked, nickname, message, messageType, ownMessage) {
 			if (checked && ownMessage) {
 				if ([0,6,7,10].indexOf(messageType) > -1) {
-					this.messageCount++;
+					this.setMessageCount(this.getMessageCount()+1);
 				}
 				
 				if (message.firstChild.nodeValue.toLowerCase().indexOf('!mystats') === 0) {
-					var dateOnlineTimeStart = new Date(this.onlineTimeStart);
-					var onlineTimeLengthDays = Math.floor(this.onlineTimeLength / 86400);
-					var onlineTimeLengthHours = Math.floor((this.onlineTimeLength % 86400) / 3600);
-					var onlineTimeLengthMinutes = Math.floor((this.onlineTimeLength % 3600) / 60);
+					var dateOnlineTimeStart = new Date(this.getOnlineTimeStart());
+					var onlineTimeLength = this.getOnlineTimeLength();
+					var onlineTimeLengthDays = Math.floor(onlineTimeLength / 86400);
+					var onlineTimeLengthHours = Math.floor((onlineTimeLength % 86400) / 3600);
+					var onlineTimeLengthMinutes = Math.floor((onlineTimeLength % 3600) / 60);
 					var onlineTimeString = '';
 					var messageCountString = '';
 					
@@ -58,7 +37,7 @@ Modules.Statistics = {
 					onlineTimeString += ' anwesend seit dem '+dateOnlineTimeStart.getDate()+'. '+(['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'][dateOnlineTimeStart.getMonth()])+' '+dateOnlineTimeStart.getFullYear()+', ';
 					onlineTimeString += ((dateOnlineTimeStart.getHours() < 10) ? '0' : '')+dateOnlineTimeStart.getHours()+':'+((dateOnlineTimeStart.getMinutes() < 10) ? '0' : '')+dateOnlineTimeStart.getMinutes()+' Uhr.';
 					
-					messageCountString += 'In dieser Zeit hat '+API.w.settings.username+' '+this.messageCount+' Nachricht'+((this.messageCount === 1) ? '' : 'en')+' geschrieben.';
+					messageCountString += 'In dieser Zeit hat '+API.w.settings.username+' '+this.getMessageCount()+' Nachricht'+((this.getMessageCount() === 1) ? '' : 'en')+' geschrieben.';
 					
 					if (message.firstChild.nodeValue.toLowerCase().indexOf('public') > -1) {
 						this.callerObj.pushMessage(onlineTimeString+' '+messageCountString);
@@ -80,7 +59,7 @@ Modules.Statistics = {
 				}
 			}
 			else {
-				this.onlineTimeStart = (new Date()).getTime();
+				this.setOnlineTimeStart((new Date()).getTime());
 				this.startOnlineTimeLengthCounter();
 				return true;
 			}
@@ -96,9 +75,9 @@ Modules.Statistics = {
 	},
 	
 	resetConfig: function() {
-		this.onlineTimeStart = (new Date()).getTime();
-		this.onlineTimeLength = 0;
-		this.messageCount = 0;
+		this.setOnlineTimeStart((new Date()).getTime());
+		this.setOnlineTimeLength(0);
+		this.setMessageCount(0);
 		
 		this.callerObj.pushInfo('Statistiken zurückgesetzt.');
 	},
@@ -106,7 +85,7 @@ Modules.Statistics = {
 	startOnlineTimeLengthCounter: function() {
 		this.stopOnlineTimeLengthCounter();
 		this.onlineTimeLengthCounterHandle = API.w.setInterval(function() {
-			this.onlineTimeLength++;
+			this.setOnlineTimeLength(this.getOnlineTimeLength()+1);
 		}.bind(this), 1000);
 	},
 	
@@ -115,5 +94,26 @@ Modules.Statistics = {
 			API.w.clearInterval(this.onlineTimeLengthCounterHandle);
 			this.onlineTimeLengthCounterHandle = null;
 		}
-	}
-};
+	},
+	
+	getOnlineTimeStart: function() {
+		return API.Storage.getValue('statisticsOnlineTimeStart', (new Date()).getTime());
+	},
+	setOnlineTimeStart: function(value) {
+		API.Storage.setValue('statisticsOnlineTimeStart', value);
+	},
+	
+	getOnlineTimeLength: function() {
+		return API.Storage.getValue('statisticsOnlineTimeLength', 0);
+	},
+	setOnlineTimeLength: function(value) {
+		API.Storage.setValue('statisticsOnlineTimeLength', value);
+	},
+	
+	getMessageCount: function() {
+		return API.Storage.getValue('statisticsMessageCount', 0);
+	},
+	setMessageCount: function(value) {
+		API.Storage.setValue('statisticsMessageCount', value);
+	},
+});

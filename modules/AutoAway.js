@@ -2,15 +2,14 @@
  * Auto Away Module
  * Copyright (C) 2011 Stefan Hahn
  */
-Modules.AutoAway = {
-	callerObj: null,
-	timerHandle: null,
-	
-	init: function(callerObj) {
-		this.callerObj = callerObj;
-		
+Modules.AutoAway = new Class(Modules.AbstractModule, {
+	initialize: function($super, callerObj) {
+		$super(callerObj);
 		if (API.Storage.getValue('autoAwayStatus', true)) this.startTimer();
-		this.registerOptions();
+	},
+	
+	initializeVariables: function() {
+		this.timerHandle = null;
 	},
 	
 	registerOptions: function() {
@@ -46,4 +45,4 @@ Modules.AutoAway = {
 			this.timerHandle = null;
 		}
 	}
-};
+});

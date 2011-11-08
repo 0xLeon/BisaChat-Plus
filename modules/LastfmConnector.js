@@ -4,14 +4,10 @@
  * 
  * Based on BisaChat Last.fm Connect
  */
-Modules.LastfmConnector = {
-	loadingTrack: false,
-	callerObj: null,
-	
-	init: function(callerObj) {
-		this.callerObj = callerObj;
+Modules.LastfmConnector = new Class(Modules.AbstractModule, {
+	initialize: function($super, callerObj) {
 		this.showNowPlayingButton();
-		this.registerOption();
+		$super(callerObj);
 	},
 	
 	showNowPlayingButton: function() {
@@ -26,7 +22,11 @@ Modules.LastfmConnector = {
 		$$('#chatForm p')[0].insertBefore(input, $('chatLoading'));
 	},
 	
-	registerOption: function() {
+	initializeVariables: function() {
+		this.loadingTrack = false;
+	},
+	
+	registerOptions: function() {
 		this.callerObj.registerTextOption('lastfmUsername', 'last.fm Username', 'Not set yet');
 	},
 	
@@ -95,4 +95,4 @@ Modules.LastfmConnector = {
 			}.bind(this)
 		});
 	}
-};
+});

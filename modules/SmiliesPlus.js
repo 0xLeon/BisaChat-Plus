@@ -2,14 +2,29 @@
  * Smilies Plus Module
  * Copyright (C) 2011 Stefan Hahn
  */
-Modules.SmiliesPlus = {
-	callerObj: null,
-	
-	init: function(callerObj) {
-		this.callerObj = callerObj;
-		
-		API.addStyle('#smiliesList li { border: none !important; margin-left: 3px; margin-right: 3px; height: 30px; float: left; }');
+Modules.SmiliesPlus = new Class(Modules.AbstractModule, {
+	initialize: function($super, callerObj) {
 		this.setStatus(API.Storage.getValue('smiliesActiveStatus', false));
+		$super(callerObj);
+	},
+	
+	addStyleRules: function() {
+		API.addStyle('#smiliesList li { border: none !important; margin-left: 3px; margin-right: 3px; height: 30px; float: left; }');
+	},
+	
+	registerOptions: function() {
+		this.callerObj.registerMessagePrefilter('smiliesActive', 'Smileys', 'Darstellung von Smileys aktivieren', 'p', false, function(event, checked, nickname, message) {
+			if (!checked) {
+				this.replaceImageSmilies(message);
+			}
+		}, function(event, checked) {
+			this.setStatus(checked);
+			
+			return true;
+		}, this);
+	},
+	
+	buildUI: function() {
 		this.callerObj.buildBox('smilies', './wcf/images/smilies/smile.png', 'Smileys', function() {
 			var smiliesListDiv = new API.w.Element('div', { id: 'smiliesList' });
 			var smiliesUl = new API.w.Element('ul', { 'class': 'smileys' });
@@ -22,19 +37,6 @@ Modules.SmiliesPlus = {
 			
 			return smiliesListDiv;
 		});
-		this.addListener();
-	},
-	
-	addListener: function() {
-		this.callerObj.registerMessagePrefilter('smiliesActive', 'Smileys', 'Darstellung von Smileys aktivieren', 'p', false, function(event, checked, nickname, message) {
-			if (!checked) {
-				this.replaceImageSmilies(message);
-			}
-		}, function(event, checked) {
-			this.setStatus(checked);
-			
-			return true;
-		}, this);
 	},
 	
 	replaceImageSmilies: function(node) {
@@ -56,4 +58,4 @@ Modules.SmiliesPlus = {
 			if (!!$('enablesmilies')) $('enablesmilies').parentNode.removeChild($('enablesmilies'));
 		}
 	}
-};
+});

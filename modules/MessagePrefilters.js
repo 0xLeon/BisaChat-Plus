@@ -2,11 +2,11 @@
  * Message Prefilter Module
  * Copyright (C) 2011 Stefan Hahn
  */
-Modules.MessagePrefilters = {
-	init: function(callerObj) {
+Modules.MessagePrefilters = new Class(Modules.AbstractModule, {
+	initialize: function(callerObj) {
 		callerObj.registerMessagePrefilter('colorlessNicknames', 'Farblose Nicknamen', 'Nicknamen farblos anzeigen', 'n', false, function(event, checked, nickname, message) {
 			if (checked) {
-				API.w.$A(event.target.querySelectorAll('span[onclick] > span')).each(function(item) {
+				$A(event.target.querySelectorAll('span[onclick] > span')).each(function(item) {
 					item.style.color = '';
 				});
 			}
@@ -31,4 +31,4 @@ Modules.MessagePrefilters = {
 			}
 		});
 	}
-};
+});

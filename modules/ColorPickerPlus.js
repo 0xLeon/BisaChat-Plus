@@ -2,16 +2,14 @@
  * Color Picker Plus Module
  * Copyright (C) 2011 Stefan Hahn
  */
-Modules.ColorPickerPlus = {
-	callerObj: null,
-	colorCache: '',
-	
-	init: function(callerObj) {
-		this.callerObj = callerObj;
-		
+Modules.ColorPickerPlus = new Class(Modules.AbstractModule, {
+	initialize: function($super, callerObj) {
 		this.replaceBasicColorPicker();
-		this.addEventListeners();
-		this.finish();
+		$super(callerObj);
+	},
+	
+	initialzeVariables: function() {
+		this.colorCache = '';
 	},
 	
 	replaceBasicColorPicker: function() {
@@ -19,7 +17,7 @@ Modules.ColorPickerPlus = {
 		
 		$$('#chatColorPicker a').each(function(item) {
 			item.setAttribute('href', 'javascript:;');
-		}, this);
+		});
 		
 		$$('#chatColorPicker li').each(function(item) {
 			item.addEventListener('click', function(event) {
@@ -28,7 +26,7 @@ Modules.ColorPickerPlus = {
 		}, this);
 	},
 	
-	addEventListeners: function() {
+	addListeners: function() {
 		$$('#chatColorPickerContainer > a')[0].addEventListener('click', function(event) {
 			if ($('chatColorPicker').style.display === 'none') {
 				new API.w.Effect.Appear('chatColorPicker');
@@ -67,4 +65,4 @@ Modules.ColorPickerPlus = {
 			this.colorCache = '';
 		}
 	}
-};
+});

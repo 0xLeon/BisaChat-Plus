@@ -12,7 +12,6 @@ var Class = function() {
 	if ((typeof properties[properties.length - 1] === 'boolean') && properties[properties.length - 1]) {
 		klass = function() {
 			throw new Error('Trying to create instance of an abstract class');
-			this.initialize.apply(this, arguments);
 		}
 	}
 	else {

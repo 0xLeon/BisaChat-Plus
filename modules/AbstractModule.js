@@ -8,13 +8,17 @@ Modules.AbstractModule = new Class({
 	initialize: function(callerObj) {
 		this.callerObj = callerObj;
 		
+		this.initializeVariables();
 		this.addStyleRules();
 		this.registerOptions();
 		this.addListeners();
+		this.buildUI();
 		this.finish();
 	},
+	initializeVariables: function() {},
 	addStyleRules: function() {},
 	registerOptions: function() {},
 	addListeners: function() {},
+	buildUI: function() {},
 	finish: function() {},
 }, true);

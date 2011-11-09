@@ -61,7 +61,7 @@ Modules.ScriptingEngine = new Class(Modules.AbstractModule, {
 				commandAddDeleteButtonLink.addEventListener('click', function(event) {
 					var dt = ((event.target.nodeName.toLowerCase() === 'img') ? event.target.parentNode.parentNode : event.target.parentNode);
 					
-					new API.w.Effect.Parallel(API.w.$A([
+					new API.w.Effect.Parallel($A([
 						new API.w.Effect.Fade(dt, { sync: true, afterFinish: function(effect) { effect.element.parentNode.removeChild(effect.element); } }),
 						new API.w.Effect.Fade(dt.nextSibling, { sync: true, afterFinish: function(effect) { effect.element.parentNode.removeChild(effect.element); } })
 					]), {
@@ -71,7 +71,7 @@ Modules.ScriptingEngine = new Class(Modules.AbstractModule, {
 					});
 				}.bindAsEventListener(this), true);
 				
-				[commandAddInput, commandAddTextInput].forEach(function(input) {
+				[commandAddInput, commandAddTextInput].each(function(input) {
 					input.addEventListener('focus', function(event) {
 						if ((event.target.value === 'Befehlsname') || (event.target.value === 'Befehlstext')) {
 							event.target.value = '';
@@ -99,12 +99,12 @@ Modules.ScriptingEngine = new Class(Modules.AbstractModule, {
 									
 									this.buildCommandListElements(inputs[0].value.trim(), inputs[1].value.trim(), false, $$('#scriptingEngine dl')[0]);
 									
-									new API.w.Effect.Parallel(API.w.$A([
+									new API.w.Effect.Parallel($A([
 										new API.w.Effect.Fade(inputs[0].parentNode, { sync: true, afterFinish: function(effect) { effect.element.parentNode.removeChild(effect.element); } }),
 										new API.w.Effect.Fade(inputs[1].parentNode, { sync: true, afterFinish: function(effect) { effect.element.parentNode.removeChild(effect.element); } })
 									]), {
 										afterFinish: function() {
-											new API.w.Effect.Parallel(API.w.$A([
+											new API.w.Effect.Parallel($A([
 												new API.w.Effect.Appear($$('#scriptingEngine dl dt').last(), { sync: true }),
 												new API.w.Effect.Appear($$('#scriptingEngine dl dd').last().previousSibling, { sync: true })
 											]));
@@ -135,7 +135,7 @@ Modules.ScriptingEngine = new Class(Modules.AbstractModule, {
 					$$('#scriptingEngine p')[0].parentNode.replaceChild(commandDl, $$('#scriptingEngine p')[0]);
 				}
 				
-				new API.w.Effect.Parallel(API.w.$A([
+				new API.w.Effect.Parallel($A([
 					new API.w.Effect.Appear($$('#scriptingEngine dl dt').last(), { sync: true }),
 					new API.w.Effect.Appear($$('#scriptingEngine dl dd').last(), { sync: true })
 				]), {
@@ -205,7 +205,7 @@ Modules.ScriptingEngine = new Class(Modules.AbstractModule, {
 			var ddHr = dd.nextSibling;
 			var commandName = dt.querySelector('span').firstChild.nodeValue;
 			
-			new API.w.Effect.Parallel(API.w.$A([
+			new API.w.Effect.Parallel($A([
 				new API.w.Effect.Fade(dt, { sync: true, afterFinish: function(effect) { effect.element.parentNode.removeChild(effect.element); } }),
 				new API.w.Effect.Fade(dd, { sync: true, afterFinish: function(effect) { effect.element.parentNode.removeChild(effect.element); } }),
 				new API.w.Effect.Fade(ddHr, { sync: true, afterFinish: function(effect) { effect.element.parentNode.removeChild(effect.element); } })

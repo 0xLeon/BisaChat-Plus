@@ -40,13 +40,9 @@ Modules.SmiliesPlus = new Class(Modules.AbstractModule, {
 	},
 	
 	replaceImageSmilies: function(node) {
-		var smilies = API.w.$A(node.querySelectorAll('img'));
-		
-		if (smilies.length > 0) {
-			smilies.each(function(item) {
-				node.replaceChild(document.createTextNode(item.getAttribute('alt')), item);
-			});
-		}
+		$A(node.querySelectorAll('img')).each(function(item) {
+			node.replaceChild(document.createTextNode(item.getAttribute('alt')), item);
+		});
 	},
 	
 	setStatus: function(state) {

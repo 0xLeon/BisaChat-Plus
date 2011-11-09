@@ -161,7 +161,7 @@ var API = (function() {
 				return $A(elements);
 			}
 
-			if (typeof element === 'string') {
+			if (Object.isString('string')) {
 				element = document.getElementById(element);
 			}
 			

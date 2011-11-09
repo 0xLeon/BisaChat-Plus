@@ -76,8 +76,8 @@ Modules.Highlighting = new Class(Modules.AbstractModule, {
 	},
 	
 	buildRegExp: function(basicString) {
-		var regExpString = API.w.$A(basicString.split(',')).map(function(item) {
-			return API.w.RegExp.escape(item.trim());
+		var regExpString = $A(basicString.split(',')).map(function(item) {
+			return RegExp.escape(item.trim());
 		}).join('|');
 		this.regExp = null;
 		this.regExp = new RegExp('\\b('+regExpString+')\\b', 'i');

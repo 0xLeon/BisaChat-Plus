@@ -158,8 +158,3 @@ Modules.MessageBox = new Class(Modules.AbstractModule, {
 		}
 	}
 });
-
-
-// because of modules are classes now:
-// BC+ should have instance getting so you can
-// access the actual module instances

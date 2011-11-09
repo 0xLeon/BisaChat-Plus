@@ -14,7 +14,7 @@ Modules.BBCodeParser = new Class(Modules.AbstractModule, (function() {
 				textOpen: '*',
 				textClose: '*',
 				getParsedTag: null,
-				attributes: API.w.$A([])
+				attributes: $A([])
 			},
 			'i': {
 				htmlOpen: 'em',
@@ -22,7 +22,7 @@ Modules.BBCodeParser = new Class(Modules.AbstractModule, (function() {
 				textOpen: '_',
 				textClose: '_',
 				getParsedTag: null,
-				attributes: API.w.$A([])
+				attributes: $A([])
 			},
 			'u': {
 				htmlOpen: 'span style="text-decoration: underline;"',
@@ -30,7 +30,7 @@ Modules.BBCodeParser = new Class(Modules.AbstractModule, (function() {
 				textOpen: '',
 				textClose: '',
 				getParsedTag: null,
-				attributes: API.w.$A([])
+				attributes: $A([])
 			},
 			's': {
 				htmlOpen: 'span style="text-decoration: line-through;"',
@@ -38,7 +38,7 @@ Modules.BBCodeParser = new Class(Modules.AbstractModule, (function() {
 				textOpen: '-',
 				textClose: '-',
 				getParsedTag: null,
-				attributes: API.w.$A([])
+				attributes: $A([])
 			},
 			'sub': {
 				htmlOpen: 'sub',
@@ -46,7 +46,7 @@ Modules.BBCodeParser = new Class(Modules.AbstractModule, (function() {
 				textOpen: '~',
 				textClose: '~',
 				getParsedTag: null,
-				attributes: API.w.$A([])
+				attributes: $A([])
 			},
 			'sup': {
 				htmlOpen: 'sup',
@@ -54,7 +54,7 @@ Modules.BBCodeParser = new Class(Modules.AbstractModule, (function() {
 				textOpen: '^',
 				textClose: '^',
 				getParsedTag: null,
-				attributes: API.w.$A([])
+				attributes: $A([])
 			},
 			'color': {
 				htmlOpen: 'span',
@@ -62,7 +62,7 @@ Modules.BBCodeParser = new Class(Modules.AbstractModule, (function() {
 				textOpen: '',
 				textClose: '',
 				getParsedTag: null,
-				attributes: API.w.$A([{
+				attributes: $A([{
 					attributeNo: 0,
 					attributeHtml: 'style="color: %s;"',
 					attributeText: '',
@@ -77,7 +77,7 @@ Modules.BBCodeParser = new Class(Modules.AbstractModule, (function() {
 				textOpen: '',
 				textClose: '',
 				getParsedTag: null,
-				attributes: API.w.$A([{
+				attributes: $A([{
 					attributeNo: 0,
 					attributeHtml: 'style="font-size: %spt;"',
 					attributeText: '',
@@ -91,7 +91,7 @@ Modules.BBCodeParser = new Class(Modules.AbstractModule, (function() {
 				htmlClose: '',
 				textOpen: '',
 				textClose: '',
-				attributes: API.w.$A([]),
+				attributes: $A([]),
 				getParsedTag: function(openingTag, content, closingTag, parser) {
 					var returnValue = '';
 					
@@ -105,7 +105,7 @@ Modules.BBCodeParser = new Class(Modules.AbstractModule, (function() {
 							new API.w.Ajax.Request('index.php?page=ChatMessage&id='+API.w.chat.id+API.w.SID_ARG_2ND, {
 								method: 'get',
 								onSuccess: function(response) {
-									var messages = API.w.$A(response.responseJSON.messages);
+									var messages = $A(response.responseJSON.messages);
 									var infoKey = 0;
 									
 									messages.each(function(item, key) {
@@ -119,7 +119,7 @@ Modules.BBCodeParser = new Class(Modules.AbstractModule, (function() {
 											}
 											else {
 												returnValue += '<strong><a href="./index.php?page=User&username='+encodeURIComponent(content.trim())+'" target="_blank">';
-												API.w.$A(div.querySelectorAll('ul li:first-child span')).each(function(span) {
+												$A(div.querySelectorAll('ul li:first-child span')).each(function(span) {
 													returnValue += '<span style="color: '+span.style.color.parseAsColor()+';">'+span.firstChild.nodeValue+'</span>';
 												});
 												returnValue += '</a></strong>';
@@ -128,7 +128,7 @@ Modules.BBCodeParser = new Class(Modules.AbstractModule, (function() {
 											infoKey = key;
 											API.w.chat.id = item.id;
 											delete div;
-											throw API.w.$break;
+											throw $break;
 										}
 									});
 									response.responseJSON.messages = messages.without(messages[infoKey]);
@@ -174,8 +174,8 @@ Modules.BBCodeParser = new Class(Modules.AbstractModule, (function() {
 		buildTagArray: function() {
 			var pattern = this.getTagPattern();
 			
-			this.tagArray = API.w.$A(this.text.match(pattern));
-			this.textArray = API.w.$A(this.text.split(pattern));
+			this.tagArray = $A(this.text.match(pattern));
+			this.textArray = $A(this.text.split(pattern));
 			
 			this.tagArray = this.tagArray.map(function(tag) {
 				return this.buildTag(tag);
@@ -187,7 +187,7 @@ Modules.BBCodeParser = new Class(Modules.AbstractModule, (function() {
 				name: '',
 				closing: false,
 				source: string,
-				attributes: API.w.$A([])
+				attributes: $A([])
 			};
 			
 			if (string.substr(1, 1) === '/') {
@@ -209,7 +209,7 @@ Modules.BBCodeParser = new Class(Modules.AbstractModule, (function() {
 		
 		buildTagAttributes: function(string) {
 			// todo: find error with ' in attributes
-			var matches = API.w.$A(string.match(/(?:^|,)('[^'\\]*(?:\.[^'\\]*)*'|[^,]*)/g));
+			var matches = $A(string.match(/(?:^|,)('[^'\\]*(?:\.[^'\\]*)*'|[^,]*)/g));
 			
 			matches = matches.map(function(match) {
 				if ((match.substr(0, 1) === '\'') && (matches.substr(-1) === '\'')) {
@@ -226,17 +226,17 @@ Modules.BBCodeParser = new Class(Modules.AbstractModule, (function() {
 		},
 		
 		buildXMLStructure: function() {
-			var openTagStack = API.w.$A([]);
-			var openTagDataStack = API.w.$A([]);
-			var newTagArray = API.w.$A([]);
-			var newTextArray = API.w.$A([]);
+			var openTagStack = $A([]);
+			var openTagDataStack = $A([]);
+			var newTagArray = $A([]);
+			var newTextArray = $A([]);
 			var nextIndex = 0;
 			var lastIndex = 0;
 			
 			this.tagArray.each(function(tag, i) {
 				if (tag.closing) {
 					if (openTagStack.indexOf(tag.name) > -1) {
-						var tmpOpenTags = API.w.$A([]);
+						var tmpOpenTags = $A([]);
 						var previousTag = '';
 						var tmpTag = '';
 						
@@ -316,7 +316,7 @@ Modules.BBCodeParser = new Class(Modules.AbstractModule, (function() {
 			}
 			
 			return this.definedTags.get(tag.name).attributes.all(function(attribute) {
-				if (!this.isValidTagAttribute(((!!tag.attributes) ? tag.attributes : API.w.$A([])), attribute)) {
+				if (!this.isValidTagAttribute(((!!tag.attributes) ? tag.attributes : $A([])), attribute)) {
 					return false;
 				}
 				
@@ -342,7 +342,7 @@ Modules.BBCodeParser = new Class(Modules.AbstractModule, (function() {
 			this.parsedText.text = '';
 			
 			var buffer = this.parsedText;
-			var bufferedTagStack = API.w.$A([]);
+			var bufferedTagStack = $A([]);
 			var hideBuffer = false;
 			
 			this.tagArray.each(function(tag, i) {
@@ -364,7 +364,7 @@ Modules.BBCodeParser = new Class(Modules.AbstractModule, (function() {
 						
 						var parsedTag = '';
 						if (this.isValidTag(openingTag)) {
-							if (typeof this.definedTags.get(tag.name).getParsedTag === 'function') {
+							if (Object.isFunction(this.definedTags.get(tag.name).getParsedTag)) {
 								parsedTag = this.definedTags.get(tag.name).getParsedTag(openingTag, buffer.text, tag, this);
 							}
 							else {
@@ -456,7 +456,7 @@ Modules.BBCodeParser = new Class(Modules.AbstractModule, (function() {
 		},
 		
 		needBuffering: function(tag) {
-			if (typeof this.definedTags.get(tag.name).getParsedTag === 'function') {
+			if (Object.isFunction(this.definedTags.get(tag.name).getParsedTag)) {
 				return true;
 			}
 			

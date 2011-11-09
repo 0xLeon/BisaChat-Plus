@@ -152,7 +152,7 @@ var BisaChatPlus = {
 			$$('#chatError div')[0].appendChild((new API.w.Element('br')));
 			$$('#chatError div')[0].appendChild(resetLink);
 			$('chatError').style.display = '';
-			API.w.onunload = API.w.Prototype.emptyFunction;
+			API.w.onunload = Function.empty;
 			API.w.Ajax.Responders.register({
 				onCreate: function(ajax, response) {
 					ajax.transport = null;
@@ -278,7 +278,7 @@ var BisaChatPlus = {
 			else if ((event.keyCode > 64) && (event.keyCode < 91) && event.altKey && !event.shiftKey && !event.ctrlKey && !event.metaKey) {
 				var key = String.fromCharCode(event.which).toLowerCase();
 				
-				if (typeof this.keydownListeners[key] === 'string') {
+				if (Object.isString(this.keydownListeners[key])) {
 					$(this.keydownListeners[key]).click();
 					event.preventDefault();
 				}
@@ -384,7 +384,7 @@ var BisaChatPlus = {
 			},
 			onSuccess: function(transport) {
 				API.w.chat.getMessages();
-				if (typeof onFinish === 'function') onFinish.call(this, transport);
+				if (Object.isFunction(onFinish)) onFinish.call(this, transport);
 			}.bind(context),
 			onFailure: function(transport) {
 				this.pushInfo('Nachricht »'+messageText+'« konnte nicht gesendet werden!');
@@ -430,7 +430,7 @@ var BisaChatPlus = {
 	 */
 	buildBox: function(boxID, icon, title, contentBuilder) {
 		if (!!$(boxID)) throw new Error('boxID \''+boxID+'\' already used');
-		if (typeof contentBuilder !== 'function') throw new Error('contentBuilder has to be a function');
+		if (!Object.isFunction(contentBuilder)) throw new Error('contentBuilder has to be a function');
 		
 		var boxSmallButton = new API.w.Element('li', { id: boxID+'SmallButton', 'class': 'boxSmallButton', style: 'display:none;' });
 		var boxSmallButtonLink = new API.w.Element('a', { href: 'javascript:;' });
@@ -528,7 +528,7 @@ var BisaChatPlus = {
 	 */
 	buildOverlay: function(overlayID, icon, title, contentBuilder, beforeShow) {
 		if (!!$(overlayID)) throw new Error('overlayID \''+overlayID+'\' already used');
-		if (typeof contentBuilder !== 'function') throw new TypeError('contentBuilder has to be a function');
+		if (!Object.isFunction(contentBuilder)) throw new TypeError('contentBuilder has to be a function');
 		
 		var overlaySmallButton = new API.w.Element('li', { id: overlayID+'SmallButton', 'class': 'overlaySmallButton', style: 'display:none;' });
 		var overlaySmallButtonLink = new API.w.Element('a', { href: 'javascript:;' });
@@ -546,7 +546,7 @@ var BisaChatPlus = {
 		var caption = new API.w.Element('h3', { 'class': 'subHeadline' });
 		
 		overlaySmallButtonLink.addEventListener('click', function(event) {
-			if (typeof beforeShow === 'function') beforeShow.call();
+			if (Object.isFunction('function')) beforeShow.call();
 			new API.w.Effect.Appear(overlayID);
 		}, true);
 		
@@ -620,7 +620,7 @@ var BisaChatPlus = {
 				optionSpan.firstChild.replaceData(0, optionSpan.firstChild.nodeValue.length, API.Storage.getValue(optionSpan.getAttribute('id')+'Value', defaultValue));
 				optionInput.className = (optionInput.className + ' hidden').trim();
 				optionSpan.className = optionSpan.className.replace('hidden', '').trim();
-				if (typeof onChange === 'function') onChange.call(this, optionInput.value);
+				if (Object.isFunction(onChange)) onChange.call(this, optionInput.value);
 				$('chatInput').focus();
 				event.preventDefault();
 			}
@@ -647,7 +647,7 @@ var BisaChatPlus = {
 	 */
 	registerBoolOption: function(optionID, optionTitle, optionText, accessKey, defaultValue, switchCallback, context) {
 		if (!!$(optionID)) throw new Error('optionID \''+optionID+'\' already used');
-		if ((!!accessKey) && (typeof this.keydownListeners[accessKey.toLowerCase()] === 'string')) throw new Error('AccessKey \''+accessKey.toLowerCase()+'\' already used');
+		if ((!!accessKey) && Object.isString(this.keydownListeners[accessKey.toLowerCase()])) throw new Error('AccessKey \''+accessKey.toLowerCase()+'\' already used');
 		
 		var p = new API.w.Element('p');
 		var label = new API.w.Element('label', { 'for': optionID });
@@ -659,7 +659,7 @@ var BisaChatPlus = {
 		}, false);
 		
 		checkbox.addEventListener('change', function(event) {
-			if (((typeof switchCallback === 'function') && switchCallback.call(context, event, event.target.checked)) || (typeof switchCallback !== 'function')) {
+			if ((Object.isFunction(switchCallback) && switchCallback.call(context, event, event.target.checked)) || !Object.isFunction(switchCallback)) {
 				this.pushInfo(optionTitle+' '+((event.target.checked) ? 'aktiviert' : 'deaktiviert'));
 			}
 			else {

@@ -217,7 +217,7 @@ Modules.Backup = new Class(Modules.AbstractModule, {
 						if (xml.querySelectorAll('entry').length > 0) {
 							var buttonsList = new API.w.Element('ul', { id: 'backupDataList', 'class': 'memberList' });
 							
-							API.w.$A(xml.querySelectorAll('entry')).each(function(item) {
+							$A(xml.querySelectorAll('entry')).each(function(item) {
 								var button = new API.w.Element('li', { 'class': 'deletable' });
 								var textLink = new API.w.Element('a', { 'class': 'memberName', href: 'javascript:;', title: 'Klicken zum Einspielen der Datensicherung' });
 								var textSpan = new API.w.Element('span');

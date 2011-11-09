@@ -7,6 +7,18 @@
 var $break = {};
 
 var Enumerable = (function() {
+	function internalArrayCasting(iterable) {
+		if (!iterable) return [];
+		if ('toArray' in Object(iterable)) return iterable.toArray();
+		
+		var length = iterable.length || 0
+		var results = new Array(length);
+		
+		while (length--) results[length] = iterable[length];
+		
+		return results;
+	}
+	
 	function each(iterator, context) {
 		var index = 0;
 		
@@ -99,6 +111,14 @@ var Enumerable = (function() {
 		return found;
 	}
 	
+	function invoke(method) {
+		var args = internalArrayCasting(arguments).slice(1);
+		
+		return this.collect(function(value) {
+			return value[method].apply(value, args);
+		});
+	}
+	
 	function pluck(property) {
 		var results = [];
 		
@@ -135,6 +155,7 @@ var Enumerable = (function() {
 		select:  findAll,
 		filter:  findAll,
 		include: include,
+		invoke:  invoke,
 		member:  include,
 		pluck:   pluck,
 		toArray: toArray,

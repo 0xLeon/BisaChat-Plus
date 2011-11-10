@@ -79,7 +79,8 @@ var BisaChatPlus = {
 				
 				return optionsContentDiv;
 			});
-			this.addEventListeners();
+			this.setupEvents();
+			this.addListeners();
 			
 			API.w.addEventListener('load', function(event) {
 				this.finish();
@@ -168,18 +169,24 @@ var BisaChatPlus = {
 		}
 	},
 	
-	addEventListeners: function() {
-		// window resize listener
-		API.w.addEventListener('resize', function() {
-			$('chatBox').style.height = API.inHeight+'px';
-			$$('#chatBox .columnContainer')[0].style.width = API.inWidth+'px';
-			var boxesHeight = (API.inHeight-(parseInt($$('#chatBox .subTabMenu')[0].offsetHeight)))+'px';
-			($$('#chatBox > .border, #chatBox > .border > .layout-2, .columnContainer > .column > .columnInner, .columnContainer > .second > .columnInner > div:first-child, #chatMembers')).each(function(item) {
-				item.setAttribute('style', 'height: '+boxesHeight+' !important; border: none !important;');
-			});
-		}, false);
+	setupEvents: function() {
+		API.w.Ajax.Responders.register({
+			onCreate: function(request, response) {
+				if (request.url.include('form=Chat')) {
+					Event.fire('messageSent', request);
+				}
+			},
+			onComplete: function(request, response, json) {
+				if (request.url.include('page=ChatMessage')) {
+					Event.fire('messagesReceived',  request);
+				}
+			}
+		});
 		
-		// message prefilter/away status listener
+		API.w.addEventListener('resize', function(event) {
+			Event.fire('windowResize', event);
+		}, true);
+		
 		$('chatMessage').addEventListener('DOMNodeInserted', function(event) {
 			if (event.target.nodeName.toLowerCase() === 'li') {
 				var id = event.target.getAttribute('id');
@@ -261,12 +268,50 @@ var BisaChatPlus = {
 					for (var i = 0; i < this.messagePrefilters.length; i++) {
 						this.messagePrefilters[i](event, nickname, message, messageType, ownMessage);
 					}
+					
+					Object.extend(event, {
+						nickname:    nickname,
+						message:     message,
+						messageType: messageType, 
+						ownMessage:  ownMessage
+					});
+					
+					Event.fire('userMessageInserted', event);
 				}
 			}
 		}.bindAsEventListener(this), true);
 		
-		// option checkboxes access key/overlay close listener
-		document.addEventListener('keydown', function(event) {
+		API.w.document.addEventListener('keydown', function(event) {
+			Event.fire('keydown', event);
+		}, true);
+		
+		API.w.document.addEventListener('blur', function(event) {
+			Event.fire('tabBlur', event);
+		}, false);
+	},
+	
+	addListeners: function() {
+		Event.register('windowResize', function(event) {
+			$('chatBox').style.height = API.w.innerHeight+'px';
+			$$('#chatBox .columnContainer')[0].style.width = API.w.innerWidth+'px';
+			var boxesHeight = (API.w.innerHeight-(parseInt($$('#chatBox .subTabMenu')[0].offsetHeight)))+'px';
+			$$('#chatBox > .border, #chatBox > .border > .layout-2, .columnContainer > .column > .columnInner, .columnContainer > .second > .columnInner > div:first-child, #chatMembers').each(function(item) {
+				item.setAttribute('style', 'height: '+boxesHeight+' !important; border: none !important;');
+			});
+		});
+		
+		Event.register('keydown', function(event) {
+			if ((event.keyCode > 64) && (event.keyCode < 91) && event.altKey && !event.shiftKey && !event.ctrlKey && !event.metaKey) {
+				var key = String.fromCharCode(event.which).toLowerCase();
+				
+				if (Object.isString(this.keydownListeners[key])) {
+					$(this.keydownListeners[key]).click();
+					event.preventDefault();
+				}
+			}
+		}, this);
+		
+		Event.register('keydown', function(event) {
 			if (event.keyCode === 27) {
 				$$('.overlay').each(function(overlay) {
 					if (overlay.style.display !== 'none') {
@@ -275,15 +320,7 @@ var BisaChatPlus = {
 					}
 				});
 			}
-			else if ((event.keyCode > 64) && (event.keyCode < 91) && event.altKey && !event.shiftKey && !event.ctrlKey && !event.metaKey) {
-				var key = String.fromCharCode(event.which).toLowerCase();
-				
-				if (Object.isString(this.keydownListeners[key])) {
-					$(this.keydownListeners[key]).click();
-					event.preventDefault();
-				}
-			}
-		}.bindAsEventListener(this), true);
+		});
 	},
 	
 	finish: function() {

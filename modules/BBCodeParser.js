@@ -106,10 +106,10 @@ Modules.BBCodeParser = new ClassSystem.Class(Modules.AbstractModule, (function()
 								method: 'get',
 								onSuccess: function(response) {
 									var messages = $A(response.responseJSON.messages);
-									var infoKey = 0;
+									var infoKey = -1;
 									
 									messages.each(function(item, key) {
-										if ((Number(item.type) === 8) && (Number(item.privateID) === API.w.settings.userID)) {
+										if ((infoKey === -1) && (Number(item.type) === 8) && (Number(item.privateID) === API.w.settings.userID)) {
 											var div = new API.w.Element('div');
 											
 											div.innerHTML = item.text;
@@ -128,9 +128,9 @@ Modules.BBCodeParser = new ClassSystem.Class(Modules.AbstractModule, (function()
 											infoKey = key;
 											API.w.chat.id = item.id;
 											delete div;
-											throw $break;
 										}
 									});
+									
 									response.responseJSON.messages = messages.without(messages[infoKey]);
 									API.w.chat.loading = false;
 									if (!!response.responseJSON.messages.length) {
@@ -358,7 +358,7 @@ Modules.BBCodeParser = new ClassSystem.Class(Modules.AbstractModule, (function()
 							if (attribute.useText && !openingTag.attributes[attribute.attributeNo]) {
 								openingTag.attributes[attribute.attributeNo] = buffer.text;
 								hideBuffer = true;
-								throw API.w.$break;
+								throw $break;
 							}
 						});
 						

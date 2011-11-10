@@ -17,8 +17,18 @@ Object.extend(String, {
 });
 
 Object.extend(String.prototype, (function() {
-	function include(pattern) {
+	function includes(pattern) {
 		return this.indexOf(pattern) > -1;
+	}
+	
+	function startsWith(pattern) {
+		return (this.lastIndexOf(pattern, 0) === 0);
+	}
+	
+	function endsWith(pattern) {
+		var d = this.length - pattern.length;
+		
+		return ((d >= 0) && (this.indexOf(pattern, d) === d));
 	}
 	
 	function trim() {
@@ -75,7 +85,9 @@ Object.extend(String.prototype, (function() {
 	}
 	
 	return {
-		include:      include,
+		includes:     includes,
+		startsWith:   startsWith,
+		endsWith:     endsWith,
 		trim:         String.prototype.trim || trim,
 		strip:        String.prototype.trim || trim,
 		trimLeft:     String.prototype.trimLeft || trimLeft,

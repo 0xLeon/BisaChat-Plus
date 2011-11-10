@@ -54,10 +54,10 @@ else {
 }
 
 // build
-// find ProtoBasic files
-$protoBasicFiles = array('Object', 'Function', 'Class', 'Enumerable', 'Array', 'Hash', 'String', 'RegExp');
 // find namespaces
 $namespaces = glob('namespaces/*');
+// find ProtoBasic files
+$protoBasicFiles = array('Object', 'Function', 'Class', 'Enumerable', 'Array', 'Hash', 'String', 'RegExp');
 // find tools
 $tools = glob('tools/*');
 // find media resources
@@ -71,16 +71,16 @@ $finfo = new finfo(FILEINFO_MIME_TYPE);
 // read in header
 $result = file_get_contents('header.js')."\n";
 
-// add ProtoBasic files
-foreach ($protoBasicFiles as $protoBasicFile) {
-	echo "Adding ProtoBasic file: ProtoBasic/".$protoBasicFile.".js\n";
-	$result .= file_get_contents('ProtoBasic/'.$protoBasicFile.'.js')."\n";
-}
-
 // add namespaces
 foreach ($namespaces as $namespace) {
 	echo "Adding namespace: ".$namespace."\n";
 	$result .= file_get_contents($namespace)."\n";
+}
+
+// add ProtoBasic files
+foreach ($protoBasicFiles as $protoBasicFile) {
+	echo "Adding ProtoBasic file: ProtoBasic/".$protoBasicFile.".js\n";
+	$result .= file_get_contents('ProtoBasic/'.$protoBasicFile.'.js')."\n";
 }
 
 // add tools

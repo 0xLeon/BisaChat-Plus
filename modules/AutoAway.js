@@ -3,11 +3,6 @@
  * Copyright (C) 2011 Stefan Hahn
  */
 Modules.AutoAway = new ClassSystem.Class(Modules.AbstractModule, {
-	initialize: function($super, callerObj) {
-		$super(callerObj);
-		if (API.Storage.getValue('autoAwayStatus', true)) this.startTimer();
-	},
-	
 	initializeVariables: function() {
 		this.timerHandle = null;
 	},
@@ -30,6 +25,12 @@ Modules.AutoAway = new ClassSystem.Class(Modules.AbstractModule, {
 			
 			return true;
 		}, this);
+	},
+	
+	finish: function() {
+		if (API.Storage.getValue('autoAwayStatus', true)) {
+			this.startTimer();
+		}
 	},
 	
 	startTimer: function() {

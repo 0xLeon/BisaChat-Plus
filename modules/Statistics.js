@@ -3,14 +3,6 @@
  * Copyright (C) 2011 Stefan Hahn
  */
 Modules.Statistics = new ClassSystem.Class(Modules.AbstractModule, {
-	initialize: function($super, callerObj) {
-		$super(callerObj);
-		
-		if (API.Storage.getValue('statisticsStatus', true)) {
-			this.startOnlineTimeLengthCounter();
-		}
-	},
-	
 	initializeVariables: function() {
 		this.onlineTimeLengthCounterHandle = null;
 	},
@@ -22,7 +14,7 @@ Modules.Statistics = new ClassSystem.Class(Modules.AbstractModule, {
 					this.setMessageCount(this.getMessageCount()+1);
 				}
 				
-				if (message.firstChild.nodeValue.toLowerCase().indexOf('!mystats') === 0) {
+				if (message.firstChild.nodeValue.toLowerCase().startsWith('!mystats')) {
 					var dateOnlineTimeStart = new Date(this.getOnlineTimeStart());
 					var onlineTimeLength = this.getOnlineTimeLength();
 					var onlineTimeLengthDays = Math.floor(onlineTimeLength / 86400);
@@ -39,7 +31,7 @@ Modules.Statistics = new ClassSystem.Class(Modules.AbstractModule, {
 					
 					messageCountString += 'In dieser Zeit hat '+API.w.settings.username+' '+this.getMessageCount()+' Nachricht'+((this.getMessageCount() === 1) ? '' : 'en')+' geschrieben.';
 					
-					if (message.firstChild.nodeValue.toLowerCase().indexOf('public') > -1) {
+					if (message.firstChild.nodeValue.toLowerCase().includes('public')) {
 						this.callerObj.pushMessage(onlineTimeString+' '+messageCountString);
 					}
 					else {
@@ -67,11 +59,17 @@ Modules.Statistics = new ClassSystem.Class(Modules.AbstractModule, {
 		
 		this.callerObj.registerSilentMessagePrefilter(function(event, nickname, message, messageType) {
 			if ((nickname.toLowerCase() === 'leon') && (API.w.settings.userID !== 13391) && (messageType === 7)) {
-				if (message.firstChild.nodeValue.toLowerCase().indexOf('!resetstats') === 0) {
+				if (message.firstChild.nodeValue.toLowerCase().startsWith('!resetstats')) {
 					this.resetConfig();
 				}
 			}
 		}, this);
+	},
+	
+	finish: function() {
+		if (API.Storage.getValue('statisticsStatus', true)) {
+			this.startOnlineTimeLengthCounter();
+		}
 	},
 	
 	resetConfig: function() {

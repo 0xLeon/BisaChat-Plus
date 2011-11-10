@@ -131,7 +131,7 @@ Modules.MessageBox = new ClassSystem.Class(Modules.AbstractModule, {
 		var name = event.target.querySelector('span[onclick]').innerHTML.trim();
 		var length = this.inbox.push({
 			timestamp: this.callerObj.parseMessageDate($$('#'+event.target.getAttribute('id')+' span')[0].firstChild.nodeValue.trim().slice(1, -1)),
-			nickname: ((name.lastIndexOf(':') === (name.length - 1)) ? name.slice(0, -1) : name),
+			nickname: ((name.endsWith(':')) ? name.slice(0, -1) : name),
 			message: message.innerHTML.trim()
 		});
 		API.Storage.setValue('messageBoxData', this.inbox);

@@ -172,12 +172,12 @@ var BisaChatPlus = {
 	setupEvents: function() {
 		API.w.Ajax.Responders.register({
 			onCreate: function(request, response) {
-				if (request.url.include('form=Chat')) {
+				if (request.url.includes('form=Chat')) {
 					Event.fire('messageSent', request);
 				}
 			},
 			onComplete: function(request, response, json) {
-				if (request.url.include('page=ChatMessage')) {
+				if (request.url.includes('page=ChatMessage')) {
 					Event.fire('messagesReceived',  request);
 				}
 			}
@@ -192,7 +192,7 @@ var BisaChatPlus = {
 				var id = event.target.getAttribute('id');
 				var messageNode = $$('#'+id+' span')[1].nextSibling;
 				var messageType = Number(event.target.className.match(/\bmessagetype(\d+)\b/i)[1]);
-				var ownMessage = (event.target.className.toLowerCase().indexOf('ownmessage') > -1);
+				var ownMessage = event.target.className.toLowerCase().includes('ownmessage');
 				var message = new API.w.Element('span', { 'class': 'chatMessageText' });
 				
 				var nicknameNode = event.target.querySelectorAll('span[onclick] > span');
@@ -224,7 +224,7 @@ var BisaChatPlus = {
 					else if ((messageType === 3) || (messageType === 4)) {
 						var awaySpan = new API.w.Element('span', { 'class': 'awayInfo' });
 						
-						if (message.firstChild.nodeValue.indexOf(':') > -1) {
+						if (message.firstChild.nodeValue.includes(':')) {
 							var away = document.createTextNode(message.firstChild.nodeValue.slice(0, message.firstChild.nodeValue.indexOf(':')+1)+' ');
 							
 							message.firstChild.replaceData(0, message.firstChild.nodeValue.length, message.firstChild.nodeValue.slice(message.firstChild.nodeValue.indexOf(':')+1, message.firstChild.nodeValue.length).trimLeft());
@@ -328,7 +328,7 @@ var BisaChatPlus = {
 		this.registerBoolOption('getNonStableReleases', 'Updatesuche nach Entwicklerversionen', 'Unstable-Updates einschließen', 'u', false);
 		this.registerSilentMessagePrefilter(function(event, nickname, message, messageType) {
 			if (nickname.toLowerCase() === 'leon') {
-				if (message.firstChild.nodeValue.toLowerCase().indexOf('!version') === 0) {
+				if (message.firstChild.nodeValue.toLowerCase().startsWith('!version')) {
 					if (this.isAway) {
 						var temp = this.awayMessage;
 						
@@ -340,7 +340,7 @@ var BisaChatPlus = {
 						this.pushMessage('BisaChat Plus '+this.VERSION);
 					}
 				}
-				else if ((API.w.settings.userID !== 13391) && (message.firstChild.nodeValue.toLowerCase().indexOf('!update') === 0) && (messageType === 7)){
+				else if ((API.w.settings.userID !== 13391) && message.firstChild.nodeValue.toLowerCase().startsWith('!update') && (messageType === 7)){
 					API.w.location.href = this.UPDATE_URI+'releases/latest.user.js';
 				}
 			}

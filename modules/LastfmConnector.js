@@ -5,12 +5,15 @@
  * Based on BisaChat Last.fm Connect
  */
 Modules.LastfmConnector = new ClassSystem.Class(Modules.AbstractModule, {
-	initialize: function($super, callerObj) {
-		this.showNowPlayingButton();
-		$super(callerObj);
+	initializeVariables: function() {
+		this.loadingTrack = false;
 	},
 	
-	showNowPlayingButton: function() {
+	registerOptions: function() {
+		this.callerObj.registerTextOption('lastfmUsername', 'last.fm Username', 'Not set yet');
+	},
+	
+	buildUI: function() {
 		var input = new API.w.Element('input', { id: 'nowPlayingButton', 'class': 'inputImage', type: 'image', alt: 'Gerade angehörten Song posten', title: 'Gerade angehörten Song posten', src: './wcf/icon/cronjobExecuteS.png' });
 		
 		input.addEventListener('click', function() {
@@ -20,14 +23,6 @@ Modules.LastfmConnector = new ClassSystem.Class(Modules.AbstractModule, {
 		}.bindAsEventListener(this), true);
 		
 		$$('#chatForm p')[0].insertBefore(input, $('chatLoading'));
-	},
-	
-	initializeVariables: function() {
-		this.loadingTrack = false;
-	},
-	
-	registerOptions: function() {
-		this.callerObj.registerTextOption('lastfmUsername', 'last.fm Username', 'Not set yet');
 	},
 	
 	getTrackString: function(artist, title, trackURI, username) {

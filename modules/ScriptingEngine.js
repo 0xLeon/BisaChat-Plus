@@ -16,19 +16,17 @@ Modules.ScriptingEngine = new ClassSystem.Class(Modules.AbstractModule, {
 		API.addStyle('#scriptingEngine dl dd:last-child hr { display: none; }');
 	},
 	
-	registerOptions: function() {
-		API.w.Ajax.Responders.register({
-			onCreate: function(request, response) {
-				if ((request.url.indexOf('form=Chat') > -1) && (request.parameters.text.trim().indexOf('/') === 0)) {
-					var command = request.parameters.text.trim().slice(1, ((request.parameters.text.trim().indexOf(' ') === -1) ? (request.parameters.text.trim().length) : request.parameters.text.trim().indexOf(' ')));
-					var parameter = ((request.parameters.text.trim().indexOf(' ') === -1) ? '' : request.parameters.text.trim().slice(request.parameters.text.trim().indexOf(' ')+1));
-					
-					if (!!this.commands.get(command)) {
-						request.options.postBody = 'text='+encodeURIComponent(this.parse(command, parameter))+((!!this.callerObj.moduleInstances.get('SmiliesPlus')) ? ((!!$('enablesmilies')) ? '&enablesmilies=on' : '') : (($('enablesmilies').checked) ? '&enablesmilies=on' : ''))+'&ajax=1'
-					}
+	addListeners: function() {
+		Event.register('messageSent', function(event) {
+			if (event.parameters.text.trim().startsWith('/')) {
+				var command = event.parameters.text.trim().slice(1, ((!event.parameters.text.trim().includes(' ')) ? (event.parameters.text.trim().length) : event.parameters.text.trim().indexOf(' ')));
+				var parameter = ((!event.parameters.text.trim().includes(' ')) ? '' : event.parameters.text.trim().slice(event.parameters.text.trim().indexOf(' ')+1));
+				
+				if (!!this.commands.get(command)) {
+					event.options.postBody = 'text='+encodeURIComponent(this.parse(command, parameter))+((!!this.callerObj.moduleInstances.get('SmiliesPlus')) ? ((!!$('enablesmilies')) ? '&enablesmilies=on' : '') : (($('enablesmilies').checked) ? '&enablesmilies=on' : ''))+'&ajax=1'
 				}
-			}.bind(this)
-		});
+			}
+		}, this);
 	},
 	
 	buildUI: function() {
@@ -181,7 +179,7 @@ Modules.ScriptingEngine = new ClassSystem.Class(Modules.AbstractModule, {
 	parse: function(command, parameter) {
 		var text = this.commands.get(command);
 		
-		if (text.indexOf('%mp3%') > -1) {
+		if (text.includes('%mp3%')) {
 			text = '*winamptret*';
 		}
 		

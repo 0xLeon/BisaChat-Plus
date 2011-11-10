@@ -3,32 +3,6 @@
  * Copyright (C) 2011 Stefan Hahn
  */
 Modules.Backup = new ClassSystem.Class(Modules.AbstractModule, {
-	initialize: function($super, callerObj) {
-		$super(callerObj);
-		
-		try {
-			this.startTimer();
-		}
-		catch (e) {
-			if (e.message === 'Backup inactive') {
-				new API.w.Effect.Morph('backupSmallButton', {
-					style: {
-						width: '0px'
-					},
-					beforeSetup: function(effect) {
-						this.buttonWidth = API.w.getComputedStyle(effect.element).getPropertyValue('width');
-					}.bind(this),
-					afterFinish: function(effect) {
-						effect.element.style.display = 'none';
-					}
-				});
-			}
-			else {
-				this.callerObj.pushInfo('Couldn\'t start backup timer. '+e.message);
-			}
-		}
-	},
-	
 	initializeVariables: function() {
 		this.intervalHandle = null;
 		this.buttonWidth = '';
@@ -90,6 +64,30 @@ Modules.Backup = new ClassSystem.Class(Modules.AbstractModule, {
 		function() {
 			this.overlayContentBuilder($$('#backup .overlayContent')[0]);
 		}.bind(this));
+	},
+	
+	finish: function() {
+		try {
+			this.startTimer();
+		}
+		catch (e) {
+			if (e.message === 'Backup inactive') {
+				new API.w.Effect.Morph('backupSmallButton', {
+					style: {
+						width: '0px'
+					},
+					beforeSetup: function(effect) {
+						this.buttonWidth = API.w.getComputedStyle(effect.element).getPropertyValue('width');
+					}.bind(this),
+					afterFinish: function(effect) {
+						effect.element.style.display = 'none';
+					}
+				});
+			}
+			else {
+				this.callerObj.pushInfo('Couldn\'t start backup timer. '+e.message);
+			}
+		}
 	},
 	
 	backupSettings: function() {

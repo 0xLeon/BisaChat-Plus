@@ -4,7 +4,7 @@
  * 
  * Based on BisaChat Last.fm Connect
  */
-Modules.LastfmConnector = new Class(Modules.AbstractModule, {
+Modules.LastfmConnector = new ClassSystem.Class(Modules.AbstractModule, {
 	initialize: function($super, callerObj) {
 		this.showNowPlayingButton();
 		$super(callerObj);

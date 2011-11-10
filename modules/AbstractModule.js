@@ -4,7 +4,7 @@
  * 
  * Copyright (C) 2011 Stefan Hahn
  */
-Modules.AbstractModule = new Class({
+Modules.AbstractModule = new ClassSystem.AbstractClass({
 	initialize: function(callerObj) {
 		this.callerObj = callerObj;
 		
@@ -21,4 +21,4 @@ Modules.AbstractModule = new Class({
 	addListeners: function() {},
 	buildUI: function() {},
 	finish: function() {},
-}, true);
+});

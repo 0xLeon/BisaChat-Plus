@@ -4,72 +4,107 @@
  * Taken from Prototype
  * Copyright (c) 2005-2010 Sam Stephenson
  */
-var Class = function() {
-	var parent = null, properties = $A(arguments), klass = null;
-	
-	if (Object.isFunction(properties[0])) parent = properties.shift();
-	
-	if ((typeof properties[properties.length - 1] === 'boolean') && properties[properties.length - 1]) {
-		klass = function() {
-			throw new Error('Trying to create instance of an abstract class');
-		}
-	}
-	else {
-		klass = function() {
-			this.initialize.apply(this, arguments);
-		}
+var ClassSystem = (function() {
+	function internalArrayCasting(iterable) {
+		if (!iterable) return [];
+		if ('toArray' in Object(iterable)) return iterable.toArray();
+		
+		var length = iterable.length || 0
+		var results = new Array(length);
+		
+		while (length--) results[length] = iterable[length];
+		
+		return results;
 	}
 	
-	Object.extend(klass, {
-		addMethods: function(source) {
-			var ancestor = this.superclass && this.superclass.prototype;
-			var properties = Object.keys(source);
-			
-			for (var i = 0, length = properties.length; i < length; i++) {
-				var property = properties[i];
-				var value = source[property];
+	function getKlass(isAbstract) {
+		if (isAbstract) {
+			return function() {
+				throw new Error('Trying to create instance of an abstract class');
+			}
+		}
+		else {
+			return function() {
+				this.initialize.apply(this, arguments);
+			}
+		}
+	}
+	
+	function createInternalStructure(klass, properties) {
+		var parent = null;
+		
+		if (Object.isFunction(properties[0])) parent = properties.shift();
+		
+		Object.extend(klass, {
+			addMethods: function(source) {
+				var ancestor = this.superclass && this.superclass.prototype;
+				var properties = Object.keys(source);
 				
-				if (ancestor && Object.isFunction(value) && (value.argumentNames()[0] === '$super')) {
-					var method = value;
+				for (var i = 0, length = properties.length; i < length; i++) {
+					var property = properties[i];
+					var value = source[property];
 					
-					value = (function(m) {
-						return function() {
-							return ancestor[m].apply(this, arguments);
-						};
-					})(property).wrap(method);
+					if (ancestor && Object.isFunction(value) && (value.argumentNames()[0] === '$super')) {
+						var method = value;
+						
+						value = (function(m) {
+							return function() {
+								return ancestor[m].apply(this, arguments);
+							};
+						})(property).wrap(method);
+						
+						value.valueOf = method.valueOf.bind(method);
+						value.toString = method.toString.bind(method);
+					}
 					
-					value.valueOf = method.valueOf.bind(method);
-					value.toString = method.toString.bind(method);
+					this.prototype[property] = value;
 				}
 				
-				this.prototype[property] = value;
+				return this;
 			}
-			
-			return this;
-		}
-	});
-	klass.superclass = parent;
-	klass.subclasses = [];
-	
-	if (parent) {
-		var subclass = function() { };
+		});
+		klass.superclass = parent;
+		klass.subclasses = [];
 		
-		subclass.prototype = parent.prototype;
-		klass.prototype = new subclass;
-		parent.subclasses.push(klass);
-	}
-	
-	for (var i = 0, length = properties.length; i < length; i++) {
-		if (typeof properties[i] === 'object' ) {
-			klass.addMethods(properties[i]);
+		if (parent) {
+			var subclass = function() { };
+			
+			subclass.prototype = parent.prototype;
+			klass.prototype = new subclass;
+			parent.subclasses.push(klass);
 		}
+		
+		for (var i = 0, length = properties.length; i < length; i++) {
+			if (typeof properties[i] === 'object' ) {
+				klass.addMethods(properties[i]);
+			}
+		}
+		
+		if (!Object.isFunction(klass.prototype.initialize)) {
+			klass.prototype.initialize = Function.empty;
+		}
+		
+		klass.prototype.constructor = klass;
 	}
 	
-	if (!Object.isFunction(klass.prototype.initialize)) {
-		klass.prototype.initialize = Function.empty;
+	function AbstractClass() {
+		var parent = null, properties = internalArrayCasting(arguments), klass = getKlass(true);
+		
+		createInternalStructure(klass, properties);
+		
+		return klass;
 	}
 	
-	klass.prototype.constructor = klass;
+	function Class() {
+		var properties = internalArrayCasting(arguments), klass = getKlass(false);
+		
+		createInternalStructure(klass, properties);
+		
+		return klass;
+	}
 	
-	return klass;
-};
+	return {
+		AbstractClass: AbstractClass,
+		Class:         Class
+	};
+})();

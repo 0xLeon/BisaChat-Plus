@@ -2,7 +2,7 @@
  * Smilies Plus Module
  * Copyright (C) 2011 Stefan Hahn
  */
-Modules.SmiliesPlus = new Class(Modules.AbstractModule, {
+Modules.SmiliesPlus = new ClassSystem.Class(Modules.AbstractModule, {
 	initialize: function($super, callerObj) {
 		this.setStatus(API.Storage.getValue('smiliesActiveStatus', false));
 		$super(callerObj);

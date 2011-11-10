@@ -2,7 +2,7 @@
  * Statistics Module
  * Copyright (C) 2011 Stefan Hahn
  */
-Modules.Statistics = new Class(Modules.AbstractModule, {
+Modules.Statistics = new ClassSystem.Class(Modules.AbstractModule, {
 	initialize: function($super, callerObj) {
 		$super(callerObj);
 		

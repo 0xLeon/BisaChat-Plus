@@ -2,7 +2,7 @@
  * Backup Module
  * Copyright (C) 2011 Stefan Hahn
  */
-Modules.Backup = new Class(Modules.AbstractModule, {
+Modules.Backup = new ClassSystem.Class(Modules.AbstractModule, {
 	initialize: function($super, callerObj) {
 		$super(callerObj);
 		

@@ -8,7 +8,7 @@ function $H(object) {
 	return new Hash(object);
 };
 
-var Hash = new Class(Enumerable, (function() {
+var Hash = new ClassSystem.Class(Enumerable, (function() {
 	function initialize(object) {
 		this._object = Object.isHash(object) ? object.toObject() : Object.clone(object);
 	}

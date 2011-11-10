@@ -2,7 +2,7 @@
  * Auto Away Module
  * Copyright (C) 2011 Stefan Hahn
  */
-Modules.AutoAway = new Class(Modules.AbstractModule, {
+Modules.AutoAway = new ClassSystem.Class(Modules.AbstractModule, {
 	initialize: function($super, callerObj) {
 		$super(callerObj);
 		if (API.Storage.getValue('autoAwayStatus', true)) this.startTimer();

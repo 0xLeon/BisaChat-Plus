@@ -2,7 +2,7 @@
  * Scripting Engine Module
  * Copyright (C) 2011 Stefan Hahn
  */
-Modules.ScriptingEngine = new Class(Modules.AbstractModule, {
+Modules.ScriptingEngine = new ClassSystem.Class(Modules.AbstractModule, {
 	initializeVariables: function() {
 		this.commands = $H(API.Storage.getValue('scriptingEngineCommands', {}));
 	},

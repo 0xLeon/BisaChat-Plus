@@ -88,17 +88,17 @@ var ClassSystem = (function() {
 	}
 	
 	function AbstractClass() {
-		var parent = null, properties = internalArrayCasting(arguments), klass = getKlass(true);
+		var klass = getKlass(true);
 		
-		createInternalStructure(klass, properties);
+		createInternalStructure(klass, internalArrayCasting(arguments));
 		
 		return klass;
 	}
 	
 	function Class() {
-		var properties = internalArrayCasting(arguments), klass = getKlass(false);
+		var klass = getKlass(false);
 		
-		createInternalStructure(klass, properties);
+		createInternalStructure(klass, internalArrayCasting(arguments));
 		
 		return klass;
 	}

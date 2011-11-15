@@ -41,7 +41,7 @@ var BisaChatPlus = {
 	 * @private
 	 * @type	{Array}
 	 */
-	messagePrefilters: [ ],
+	messagePrefilters: [],
 	
 	/**
 	 * Hash-like object of all access key listeners with access key as key
@@ -49,7 +49,7 @@ var BisaChatPlus = {
 	 * @private
 	 * @type	{Object}
 	 */
-	keydownListeners: { },
+	keydownListeners: {},
 	
 	/**
 	 * Hash of all active module instances
@@ -583,7 +583,7 @@ var BisaChatPlus = {
 		var caption = new API.w.Element('h3', { 'class': 'subHeadline' });
 		
 		overlaySmallButtonLink.addEventListener('click', function(event) {
-			if (Object.isFunction('function')) beforeShow.call();
+			if (Object.isFunction(beforeShow)) beforeShow.call();
 			new API.w.Effect.Appear(overlayID);
 		}, true);
 		

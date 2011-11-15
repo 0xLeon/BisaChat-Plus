@@ -2,7 +2,6 @@
  * Extended Array functions
  * 
  * Taken from Prototype
- * Except for parseAsColor
  * Copyright (c) 2005-2010 Sam Stephenson
  */
 function $A(iterable) {

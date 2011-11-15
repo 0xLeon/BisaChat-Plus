@@ -18,24 +18,37 @@ else {
 	$options['version'] = 'Unknown'; 
 }
 
-if ($argc == 1) {
+if ($argc === 1) {
 	echo "Which version do you want to build (Last was ".$options['version'].")?\n";
-	echo "Version number strings should follow the 'PHP-standarized' version number string guidline.\n";
+	echo "Version number strings should follow the 'PHP-standarized' version \nnumber string guidline.\n";
 	echo "Enter version string and press enter:\n";
 	echo "> ";
 	$options['version'] = trim(fread(STDIN, 1024));
 	echo "I will use ".$options['version']." as version number\n";
-
+	
+	do {
+		echo "Do you want to include all available modules? (Y/N)\n";
+		echo "> ";
+		$input = strtoupper(trim(fread(STDIN, 1024)));
+		
+		if ($input === 'Y') {
+			$options['modules'] = array_map(function($item) {
+				return basename($item, '.js');
+			}, glob('modules/*'));
+		}
+	} while ($input !== 'Y' && $input !== 'N');
+	
 	do {
 		echo "Do you want a minified version? (Y/N)\n";
 		echo "> ";
 		$input = strtoupper(trim(fread(STDIN, 1024)));
-		if ($input == 'Y') $options['minify'] = true;
-	} while ($input != 'Y' && $input != 'N');
+		
+		if ($input == 'Y') {
+			$options['minify'] = true;
+			echo "I will minify the script\n";
+		}
+	} while ($input !== 'Y' && $input !== 'N');
 	
-	if ($options['minify']) {
-		echo "I will minify the script\n";
-	}
 	echo "I have everything i need, starting build";
 	for ($i = 0; $i < 3; $i++) {
 		echo ".";

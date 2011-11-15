@@ -2,38 +2,20 @@
  * BisaChat Plus
  * Copyright (C) 2011 Stefan Hahn
  */
-var BisaChatPlus = {
-	/**
-	 * BisaChat Plus Version
-	 * 
-	 * @type	{String}
-	 */
-	get VERSION() {
-		return '{version}';
-	},
-	
-	/**
-	 * Update URI
-	 * 
-	 * @type	{String}
-	 */
-	get UPDATE_URI() {
-		return 'http://projects.swallow-all-lies.com/greasemonkey/files/bisachatPlus/';
-	},
-	
+var BisaChatPlus = new ClassSystem.Class((function() {
 	/**
 	 * Indicates wether or not the user is away
 	 * 
 	 * @type	{Boolean}
 	 */
-	isAway: false,
+	var isAway = false;
 	
 	/**
 	 * If available, contains the user's away status message
 	 * 
 	 * @type	{String}
 	 */
-	awayMessage: '',
+	var awayMessage = '';
 	
 	/**
 	 * Array of all registered prefilter functions
@@ -41,7 +23,7 @@ var BisaChatPlus = {
 	 * @private
 	 * @type	{Array}
 	 */
-	messagePrefilters: [],
+	var messagePrefilters = [];
 	
 	/**
 	 * Hash-like object of all access key listeners with access key as key
@@ -49,49 +31,34 @@ var BisaChatPlus = {
 	 * @private
 	 * @type	{Object}
 	 */
-	keydownListeners: {},
+	var keydownListeners = {};
 	
 	/**
 	 * Hash of all active module instances
 	 * 
 	 * @type	{Hash}
 	 */
-	moduleInstances: $H({}),
+	var moduleInstances = $H({});
 	
-	init: function() {
+	function initialize() {
 		try {
 			this.addStyleRules();
 			this.breakCage();
 			this.avoidMultipleLogin();
-			this.buildBox('options', './wcf/icon/editS.png', 'Optionen', function() {
-				var optionsContentDiv = new API.w.Element('div');
-				var optionsContentWaitingDiv = new API.w.Element('div', { id: 'optionsContentWaiting', style: 'position:absolute; width:100%; height:100%; background-image:url("./wcf/images/spinner.gif"); background-position:50% 50%; background-repeat:no-repeat;' });
-				var optionsContentWrapperDiv = new API.w.Element('div', { id: 'optionsContentWrapper', style: 'display:none' });
-				var optionsContentBoolOptionDiv = new API.w.Element('div', { id: 'optionsContentBoolOptionDiv', style: 'display:none;' });
-				var optionsContentTextOptionDiv = new API.w.Element('div', { id: 'optionsContentTextOptionDiv', style: 'display:none;' });
-				var optionsContentHr = new API.w.Element('hr', { id: 'optionsContentTypeSeparator', style: 'display:none; width:80%' });
-				
-				optionsContentWrapperDiv.appendChild(optionsContentBoolOptionDiv);
-				optionsContentWrapperDiv.appendChild(optionsContentHr);
-				optionsContentWrapperDiv.appendChild(optionsContentTextOptionDiv);
-				optionsContentDiv.appendChild(optionsContentWaitingDiv);
-				optionsContentDiv.appendChild(optionsContentWrapperDiv);
-				
-				return optionsContentDiv;
-			});
 			this.setupEvents();
 			this.addListeners();
+			this.buildUI();
 			
 			API.w.addEventListener('load', function(event) {
 				this.finish();
 			}.bindAsEventListener(this), true);
 		}
 		finally {
-			API.checkForUpdates(this.UPDATE_URI, this.VERSION, this.updateCallback, API.Storage.getValue('getNonStableReleasesStatus', false));
+			API.checkForUpdates(this.UPDATE_URI, this.VERSION, updateCallback, API.Storage.getValue('getNonStableReleasesStatus', false));
 		}
-	},
+	}
 	
-	addStyleRules: function() {
+	function addStyleRules() {
 		API.addStyle('body { overflow: hidden; }');
 		API.addStyle('html, body { height: '+API.inHeight+'px !important; }');
 		API.addStyle('*:focus { outline: 0px !important; }');
@@ -125,9 +92,9 @@ var BisaChatPlus = {
 		$$('#chatBox > .border, #chatBox > .border > .layout-2, .columnContainer > .column > .columnInner, .columnContainer > .second > .columnInner > div:first-child, #chatMembers').each(function(item) {
 			item.setAttribute('style', 'height: '+boxesHeight+' !important; border: none !important;');
 		});
-	},
+	}
 	
-	breakCage: function() {
+	function breakCage() {
 		var tmp = $('chatBox').cloneNode(true);
 		
 		$('headerContainer').parentNode.removeChild($('headerContainer'));
@@ -138,9 +105,9 @@ var BisaChatPlus = {
 		
 		$$('.tabMenu')[0].parentNode.removeChild($$('.tabMenu')[0]);
 		$('chatColorPickerContainer').parentNode.removeChild($('chatColorPickerContainer').nextSibling);
-	},
+	}
 	
-	avoidMultipleLogin: function() {
+	function avoidMultipleLogin() {
 		if (API.Storage.getValue('alreadyOnline', false)) {
 			var resetLink = new API.w.Element('a');
 			
@@ -167,9 +134,9 @@ var BisaChatPlus = {
 				API.Storage.setValue('alreadyOnline', false);
 			}, false);
 		}
-	},
+	}
 	
-	setupEvents: function() {
+	function setupEvents() {
 		API.w.Ajax.Responders.register({
 			onCreate: function(request, response) {
 				if (request.url.includes('form=Chat')) {
@@ -265,8 +232,8 @@ var BisaChatPlus = {
 				if (message !== null) {
 					event.target.appendChild(message);
 					
-					for (var i = 0; i < this.messagePrefilters.length; i++) {
-						this.messagePrefilters[i](event, nickname, message, messageType, ownMessage);
+					for (var i = 0; i < messagePrefilters.length; i++) {
+						messagePrefilters[i](event, nickname, message, messageType, ownMessage);
 					}
 					
 					Object.extend(event, {
@@ -288,9 +255,9 @@ var BisaChatPlus = {
 		API.w.document.addEventListener('blur', function(event) {
 			Event.fire('tabBlur', event);
 		}, false);
-	},
+	}
 	
-	addListeners: function() {
+	function addListeners() {
 		Event.register('windowResize', function(event) {
 			$('chatBox').style.height = API.w.innerHeight+'px';
 			$$('#chatBox .columnContainer')[0].style.width = API.w.innerWidth+'px';
@@ -304,12 +271,12 @@ var BisaChatPlus = {
 			if ((event.keyCode > 64) && (event.keyCode < 91) && event.altKey && !event.shiftKey && !event.ctrlKey && !event.metaKey) {
 				var key = String.fromCharCode(event.which).toLowerCase();
 				
-				if (Object.isString(this.keydownListeners[key])) {
-					$(this.keydownListeners[key]).click();
+				if (Object.isString(keydownListeners[key])) {
+					$(keydownListeners[key]).click();
 					event.preventDefault();
 				}
 			}
-		}, this);
+		});
 		
 		Event.register('keydown', function(event) {
 			if (event.keyCode === 27) {
@@ -321,9 +288,28 @@ var BisaChatPlus = {
 				});
 			}
 		});
-	},
+	}
 	
-	finish: function() {
+	function buildUI() {
+		this.buildBox('options', './wcf/icon/editS.png', 'Optionen', function() {
+			var optionsContentDiv = new API.w.Element('div');
+			var optionsContentWaitingDiv = new API.w.Element('div', { id: 'optionsContentWaiting', style: 'position:absolute; width:100%; height:100%; background-image:url("./wcf/images/spinner.gif"); background-position:50% 50%; background-repeat:no-repeat;' });
+			var optionsContentWrapperDiv = new API.w.Element('div', { id: 'optionsContentWrapper', style: 'display:none' });
+			var optionsContentBoolOptionDiv = new API.w.Element('div', { id: 'optionsContentBoolOptionDiv', style: 'display:none;' });
+			var optionsContentTextOptionDiv = new API.w.Element('div', { id: 'optionsContentTextOptionDiv', style: 'display:none;' });
+			var optionsContentHr = new API.w.Element('hr', { id: 'optionsContentTypeSeparator', style: 'display:none; width:80%' });
+			
+			optionsContentWrapperDiv.appendChild(optionsContentBoolOptionDiv);
+			optionsContentWrapperDiv.appendChild(optionsContentHr);
+			optionsContentWrapperDiv.appendChild(optionsContentTextOptionDiv);
+			optionsContentDiv.appendChild(optionsContentWaitingDiv);
+			optionsContentDiv.appendChild(optionsContentWrapperDiv);
+			
+			return optionsContentDiv;
+		});
+	}
+	
+	function finish() {
 		this.initModules();
 		this.registerBoolOption('getNonStableReleases', 'Updatesuche nach Entwicklerversionen', 'Unstable-Updates einschließen', 'u', false);
 		this.registerSilentMessagePrefilter(function(event, nickname, message, messageType) {
@@ -357,9 +343,9 @@ var BisaChatPlus = {
 		$('chatInput').focus();
 		
 		new API.w.Ajax.Updater('chatRoomSelect', './index.php?page=ChatRefreshRoomList'+API.w.SID_ARG_2ND, { evalScripts: true });
-	},
+	}
 	
-	initModules: function() {
+	function initModules() {
 		$H(Modules).each(function(pair) {
 			try {
 				if (pair.key !== 'AbstractModule') {
@@ -371,9 +357,9 @@ var BisaChatPlus = {
 				this.pushInfo(e.name+' - '+e.message);
 			}
 		}, this);
-	},
+	}
 	
-	updateCallback: function(xml) {
+	function updateCallback(xml) {
 		var updateSmallButton = new API.w.Element('li');
 		var updateSmallButtonLink = new API.w.Element('a', { href: xml.getElementsByTagName('url')[0].firstChild.nodeValue, title: 'BisaChat Plus-Update installieren', target: '_blank' });
 		var updateSmallButtonImg = new API.w.Element('img', { src: './wcf/icon/packageUpdateS.png', alt: '' });
@@ -386,7 +372,7 @@ var BisaChatPlus = {
 		updateSmallButton.appendChild(updateSmallButtonLink);
 		
 		$$('#chatOptions .smallButtons ul')[0].appendChild(updateSmallButton);
-	},
+	}
 	
 	/**
 	 * Saves position and display status of a node
@@ -395,7 +381,7 @@ var BisaChatPlus = {
 	 * @param	{String}	id	Valid DOMNode ID
 	 * @returns	{undefined}		Returns nothing
 	 */
-	saveBoxStatus: function(id) {
+	function saveBoxStatus(id) {
 		var visible = !($(id).style.display === 'none');
 		var top = $(id).style.top;
 		var left = $(id).style.left;
@@ -403,7 +389,7 @@ var BisaChatPlus = {
 		API.Storage.setValue(id+'boxVisible', visible);
 		API.Storage.setValue(id+'boxTop', top);
 		API.Storage.setValue(id+'boxLeft', left);
-	},
+	}
 	
 	/**
 	 * Post chat message
@@ -413,7 +399,7 @@ var BisaChatPlus = {
 	 * @param	{Object}	[context]	Indicates where 'this' points within onFinish callback
 	 * @returns	{undefined}				Returns nothing
 	 */
-	pushMessage: function(messageText, onFinish, context) {
+	function pushMessage(messageText, onFinish, context) {
 		new API.w.Ajax.Request('./index.php?form=Chat', {
 			parameters: {
 				text: messageText,
@@ -426,9 +412,9 @@ var BisaChatPlus = {
 			onFailure: function(transport) {
 				this.pushInfo('Nachricht »'+messageText+'« konnte nicht gesendet werden!');
 				this.pushInfo('HTTP '+transport.status+' - '+transport.statusText);
-			}
+			}.bind(this)
 		});
-	},
+	}
 	
 	/**
 	 * Shows information to the user only
@@ -436,7 +422,7 @@ var BisaChatPlus = {
 	 * @param	{String}	infoText	Text which to post in the user's chat stream
 	 * @returns	{undefined}				Returns nothing
 	 */
-	pushInfo: function(infoText) {
+	function pushInfo(infoText) {
 		var now = new Date();
 		var time = ((now.getHours() < 10) ? '0'+now.getHours() : now.getHours())+':'+((now.getMinutes() < 10) ? '0'+now.getMinutes() : now.getMinutes())+':'+((now.getSeconds() < 10) ? '0'+now.getSeconds() : now.getSeconds());
 		
@@ -454,7 +440,7 @@ var BisaChatPlus = {
 		
 		$$('#chatMessage'+API.w.chat.activeUserID+' ul')[0].appendChild(li);
 		$('chatMessage'+API.w.chat.activeUserID).scrollTop = $('chatMessage'+API.w.chat.activeUserID).scrollHeight;
-	},
+	}
 	
 	/**
 	 * Builds a toggable and draggable box with corresponding small button
@@ -465,7 +451,7 @@ var BisaChatPlus = {
 	 * @param	{Function}	contentBuilder	Generates box content, has to return a DOM node
 	 * @returns	{undefined}					Returns nothing
 	 */
-	buildBox: function(boxID, icon, title, contentBuilder) {
+	function buildBox(boxID, icon, title, contentBuilder) {
 		if (!!$(boxID)) throw new Error('boxID \''+boxID+'\' already used');
 		if (!Object.isFunction(contentBuilder)) throw new Error('contentBuilder has to be a function');
 		
@@ -551,7 +537,7 @@ var BisaChatPlus = {
 				else return false;
 			}
 		});
-	},
+	}
 	
 	/**
 	 * Builds a toggable overlay with corresponding small button
@@ -564,7 +550,7 @@ var BisaChatPlus = {
 	 * @param	{Object}	[context]		Indicates where 'this' points within contentBuilder and beforeShow callback
 	 * @returns	{undefined}					Returns nothing
 	 */
-	buildOverlay: function(overlayID, icon, title, contentBuilder, beforeShow, context) {
+	function buildOverlay(overlayID, icon, title, contentBuilder, beforeShow, context) {
 		if (!!$(overlayID)) throw new Error('overlayID \''+overlayID+'\' already used');
 		if (!Object.isFunction(contentBuilder)) throw new TypeError('contentBuilder has to be a function');
 		
@@ -617,7 +603,7 @@ var BisaChatPlus = {
 		}
 		
 		new API.w.Effect.Appear(overlayID+'SmallButton');
-	},
+	}
 	
 	/**
 	 * Builds a GUI element for user-defined text content, useful for short texts
@@ -628,7 +614,7 @@ var BisaChatPlus = {
 	 * @param	{Function}	[onChange]		Called when new value is set, new value passed as first argument
 	 * @param	{Object}	[context]		Indicates where 'this' points within onChange callback
 	 */
-	registerTextOption: function(optionID, optionText, defaultValue, onChange, context) {
+	function registerTextOption(optionID, optionText, defaultValue, onChange, context) {
 		if (!!$(optionID)) throw new Error('optionID \''+optionID+'\' already used');
 		
 		var p = new API.w.Element('p');
@@ -670,7 +656,7 @@ var BisaChatPlus = {
 		p.appendChild(input);
 		if (!!$('optionsContentTextOptionDiv').firstChild) $('optionsContentTextOptionDiv').appendChild(hr);
 		$('optionsContentTextOptionDiv').appendChild(p);
-	},
+	}
 	
 	/**
 	 * Builds a GUI element for switchable options
@@ -683,9 +669,9 @@ var BisaChatPlus = {
 	 * @param	{Function}	[switchCallback]	Called when option is about to be switched, option is only switched if switchCallback returns boolean true, two arguments passed: event{Object}: checkbox change event object, checked{Boolean}: wether or not the box is checked
 	 * @param	{Object}	[context]			Indicates where 'this' points within switchCallback
 	 */
-	registerBoolOption: function(optionID, optionTitle, optionText, accessKey, defaultValue, switchCallback, context) {
+	function registerBoolOption(optionID, optionTitle, optionText, accessKey, defaultValue, switchCallback, context) {
 		if (!!$(optionID)) throw new Error('optionID \''+optionID+'\' already used');
-		if ((!!accessKey) && Object.isString(this.keydownListeners[accessKey.toLowerCase()])) throw new Error('AccessKey \''+accessKey.toLowerCase()+'\' already used');
+		if ((!!accessKey) && Object.isString(keydownListeners[accessKey.toLowerCase()])) throw new Error('AccessKey \''+accessKey.toLowerCase()+'\' already used');
 		
 		var p = new API.w.Element('p');
 		var label = new API.w.Element('label', { 'for': optionID });
@@ -715,10 +701,10 @@ var BisaChatPlus = {
 		$('optionsContentBoolOptionDiv').appendChild(p);
 		
 		if (!!accessKey) {
-			this.keydownListeners[accessKey.toLowerCase()] = optionID;
+			keydownListeners[accessKey.toLowerCase()] = optionID;
 			$(optionID).parentNode.parentNode.setAttribute('title', 'Zum Ändern, Alt-Taste & '+accessKey.toLowerCase()+' drücken');
 		}
-	},
+	}
 	
 	/**
 	 * Builds a GUI element for switchable options combined with an prefilter applied to every chat message
@@ -732,12 +718,12 @@ var BisaChatPlus = {
 	 * @param	{Function}	[checkboxSwitchCallback]	Called when option is about to be switched, option is only switched if switchCallback returns boolean true, two arguments passed: event{Object}: checkbox change event object, checked{Boolean}: wether or not the box is checked
 	 * @param	{Object}	[context]					Indicates where 'this' points within prefilterFunction and switchCallback
 	 */
-	registerMessagePrefilter: function(optionID, optionTitle, optionText, accessKey, defaultValue, prefilterFunction, checkboxSwitchCallback, context) {
+	function registerMessagePrefilter(optionID, optionTitle, optionText, accessKey, defaultValue, prefilterFunction, checkboxSwitchCallback, context) {
 		this.registerBoolOption(optionID, optionTitle, optionText, accessKey, defaultValue, checkboxSwitchCallback, context);
-		return (this.messagePrefilters.push(function(event, nickname, message, messageType, ownMessage) {
+		return (messagePrefilters.push(function(event, nickname, message, messageType, ownMessage) {
 			prefilterFunction.call(this, event, $(optionID).checked, nickname, message, messageType, ownMessage);
 		}.bind(context))-1);
-	},
+	}
 	
 	/**
 	 * Apply prefilter without generating a GUI element
@@ -745,9 +731,9 @@ var BisaChatPlus = {
 	 * @param	{Function}	prefilterFunction	Called when new messages get appened to chat stream but only, if they contain actual user generated content (not on enter messages etc.); has to accept five parameters: event{Object}: event object of inserted message, nickname{String}: plain nickname, message{Object}: reference to actual message node, messageType{Number}: indicates type of message, ownMessage{Boolean}: indicates whether or not the message is written by the user himself
 	 * @param	{Object}	[context]			Indicates where 'this' points within prefilterFunction
 	 */
-	registerSilentMessagePrefilter: function(prefilterFunction, context) {
-		return (this.messagePrefilters.push(prefilterFunction.bind(context))-1);
-	},
+	function registerSilentMessagePrefilter(prefilterFunction, context) {
+		return (messagePrefilters.push(prefilterFunction.bind(context))-1);
+	}
 	
 	/**
 	 * Parses message date strings and returns an unix timestamp
@@ -755,23 +741,59 @@ var BisaChatPlus = {
 	 * @param	{String}	timeString	Valid time string, should look like this: <hours>:<minutes>:<seconds>
 	 * @returns	{Number}				unix timestamp in miliseconds
 	 */
-	parseMessageDate: function(timeString) {
+	function parseMessageDate(timeString) {
 		var timeArray = timeString.split(':');
 		var today = new Date();
 		
 		if (timeArray.length !== 3) throw new Error('invalid timeString »'+timeString+'«');
 		
 		return ((new Date(today.getFullYear(), today.getMonth(), today.getDate(), Number(timeArray[0]), Number(timeArray[1]), Number(timeArray[2]))).getTime());
-	},
-	
-	/**
-	 * user ID
-	 * 
-	 * @type	{Number}
-	 */
-	get chatUserID() {
-		return API.w.settings['userID'];
 	}
-};
+	
+	return {
+		/**
+		 * BisaChat Plus Version
+		 * 
+		 * @type	{String}
+		 */
+		get VERSION() {
+			return '{version}';
+		},
+		
+		/**
+		 * Update URI
+		 * 
+		 * @type	{String}
+		 */
+		get UPDATE_URI() {
+			return 'http://projects.swallow-all-lies.com/greasemonkey/files/bisachatPlus/';
+		},
+		
+		isAway:                         isAway,
+		awayMessage:                    awayMessage,
+		moduleInstances:                moduleInstances,
+		
+		initialize:                     initialize,
+		addStyleRules:                  addStyleRules,
+		breakCage:                      breakCage,
+		avoidMultipleLogin:             avoidMultipleLogin,
+		setupEvents:                    setupEvents,
+		addListeners:                   addListeners,
+		buildUI:                        buildUI,
+		finish:                         finish,
+		initModules:                    initModules,
+		
+		saveBoxStatus:                  saveBoxStatus,
+		pushMessage:                    pushMessage,
+		pushInfo:                       pushInfo,
+		buildBox:                       buildBox,
+		buildOverlay:                   buildOverlay,
+		registerTextOption:             registerTextOption,
+		registerBoolOption:             registerBoolOption,
+		registerMessagePrefilter:       registerMessagePrefilter,
+		registerSilentMessagePrefilter: registerSilentMessagePrefilter,
+		parseMessageDate:               parseMessageDate
+	};
+})());
 
-BisaChatPlus.init();
+new BisaChatPlus();

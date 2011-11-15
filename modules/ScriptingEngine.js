@@ -32,7 +32,7 @@ Modules.ScriptingEngine = new ClassSystem.Class(Modules.AbstractModule, {
 	buildUI: function() {
 		this.callerObj.buildOverlay('scriptingEngine', './wcf/icon/codeS.png', 'Scripting Engine', function() {
 			return this.overlayContentBuilder();
-		}.bind(this));
+		}, null, this);
 	},
 	
 	overlayContentBuilder: function() {

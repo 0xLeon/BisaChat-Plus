@@ -561,9 +561,10 @@ var BisaChatPlus = {
 	 * @param	{String}	title			small button and overlay text
 	 * @param	{Function}	contentBuilder	Generates overlay content, either has to return a DOM node OR accept content node reference as first parameter
 	 * @param	{Function}	[beforeShow]	Called every time the overlay gets displayed
+	 * @param	{Object}	[context]		Indicates where 'this' points within contentBuilder and beforeShow callback
 	 * @returns	{undefined}					Returns nothing
 	 */
-	buildOverlay: function(overlayID, icon, title, contentBuilder, beforeShow) {
+	buildOverlay: function(overlayID, icon, title, contentBuilder, beforeShow, context) {
 		if (!!$(overlayID)) throw new Error('overlayID \''+overlayID+'\' already used');
 		if (!Object.isFunction(contentBuilder)) throw new TypeError('contentBuilder has to be a function');
 		
@@ -583,9 +584,9 @@ var BisaChatPlus = {
 		var caption = new API.w.Element('h3', { 'class': 'subHeadline' });
 		
 		overlaySmallButtonLink.addEventListener('click', function(event) {
-			if (Object.isFunction(beforeShow)) beforeShow.call();
+			if (Object.isFunction(beforeShow)) beforeShow.call(context);
 			new API.w.Effect.Appear(overlayID);
-		}, true);
+		}.bindAsEventListener(context), true);
 		
 		overlaySmallButtonSpan.appendChild(document.createTextNode(title));
 		overlaySmallButtonLink.appendChild(overlaySmallButtonImg);
@@ -609,10 +610,10 @@ var BisaChatPlus = {
 		$('chatInitializing').parentNode.appendChild(overlayDiv);
 		
 		try {
-			contentDiv.appendChild(contentBuilder());
+			contentDiv.appendChild(contentBuilder.call(context));
 		}
 		catch (e) {
-			contentBuilder(contentDiv);
+			contentBuilder.call(context, contentDiv);
 		}
 		
 		new API.w.Effect.Appear(overlayID+'SmallButton');

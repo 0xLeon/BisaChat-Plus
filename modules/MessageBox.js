@@ -31,11 +31,11 @@ Modules.MessageBox = new ClassSystem.Class(Modules.AbstractModule, {
 	buildUI: function() {
 		this.callerObj.buildOverlay('messageBox', './wcf/icon/pmFullS.png', 'Message Box', function() {
 			return this.overlayContentBuilder();
-		}.bind(this),
+		},
 		function() {
 			this.unread = 0;
 			this.updateSpan();
-		}.bind(this));
+		}, this);
 	},
 	
 	clearInbox: function() {

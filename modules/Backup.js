@@ -60,10 +60,10 @@ Modules.Backup = new ClassSystem.Class(Modules.AbstractModule, {
 	buildUI: function() {
 		this.callerObj.buildOverlay('backup', './wcf/icon/dbImportL.png', 'Backup', function(overlayContentNode) {
 			this.overlayContentBuilder(overlayContentNode);
-		}.bind(this),
+		},
 		function() {
 			this.overlayContentBuilder($$('#backup .overlayContent')[0]);
-		}.bind(this));
+		}, this);
 	},
 	
 	finish: function() {

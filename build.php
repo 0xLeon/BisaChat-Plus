@@ -6,33 +6,34 @@
  * @author Tim Düsterhus
  */
 if (strtolower(php_sapi_name()) != 'cli') die("The build-script has to be invoked from cli\n");
-// configure
+
+
 echo "Welcome to Buildscript for Bisachat-Plus\n";
+$options = parseParams($argv);
+
 if (file_exists('builds/.lastversion')) {
-	$lastVersion = file_get_contents('builds/.lastversion');
+	$options['version'] = file_get_contents('builds/.lastversion');
 }
 else {
-	$lastVersion = 'Unknown'; 
+	$options['version'] = 'Unknown'; 
 }
+
 if ($argc == 1) {
-	echo "Which version do you want to build (Last was ".$lastVersion.")?\n";
+	echo "Which version do you want to build (Last was ".$options['version'].")?\n";
 	echo "Version number strings should follow the 'PHP-standarized' version number string guidline.\n";
 	echo "Enter version string and press enter:\n";
 	echo "> ";
-	$version = trim(fread(STDIN, 1024));
-	if (empty($version)) $version = $lastVersion;
-	echo "I will use ".$version." as version number\n";
+	$options['version'] = trim(fread(STDIN, 1024));
+	echo "I will use ".$options['version']." as version number\n";
 
 	do {
 		echo "Do you want a minified version? (Y/N)\n";
 		echo "> ";
 		$input = strtoupper(trim(fread(STDIN, 1024)));
-		if ($input == 'Y') $minify = true;
-		else if ($input == 'N') $minify = false;
-	}
-	while ($input != 'Y' && $input != 'N');
+		if ($input == 'Y') $options['minify'] = true;
+	} while ($input != 'Y' && $input != 'N');
 	
-	if ($minify) {
+	if ($options['minify']) {
 		echo "I will minify the script\n";
 	}
 	echo "I have everything i need, starting build";
@@ -41,16 +42,6 @@ if ($argc == 1) {
 		usleep(1E6/2);
 	}
 	echo "\n\n";
-}
-else {
-	if ($argc == 2) {
-		$version = $lastVersion;
-		$minify = (strtoupper($argv[1]) == 'Y');
-	}
-	else {
-		$version = $argv[2];
-		$minify = (strtoupper($argv[1]) == 'Y');
-	}
 }
 
 // build
@@ -62,8 +53,6 @@ $protoBasicFiles = array('Object', 'Function', 'Class', 'Enumerable', 'Array', '
 $tools = glob('tools/*');
 // find media resources
 $mediaResources = glob('media/*');
-// find modules
-$modules = glob('modules/*');
 
 // fileinfo object
 $finfo = new finfo(FILEINFO_MIME_TYPE);
@@ -110,15 +99,20 @@ MEDIA;
 }
 
 // add modules
-foreach ($modules as $module) {
-	echo "Adding module: ".$module."\n";
-	$result .= file_get_contents($module)."\n";
+foreach ($options['modules'] as $module) {
+	if (file_exists('./modules/'.$module.'.js')) {
+		echo "Adding module: ".$module."\n";
+		$result .= file_get_contents('./modules/'.$module.'.js')."\n";
+	}
+	else {
+		echo "Module ".$module." doesn't exist!\n";
+	}
 }
 
 $result .= file_get_contents('BisaChatPlus.js');
-$result = str_replace('{version}', $version, $result);
+$result = str_replace('{version}', $options['version'], $result);
 
-if ($minify) {
+if ($options['minify']) {
 	echo "Minifying\n";
 	$result = preg_replace_callback("~('.*?')~", 'removeStrings', $result);
 	$result = preg_replace_callback("~(// ==UserScript==.*// ==/UserScript==)~s", 'removeHeader', $result);
@@ -130,11 +124,11 @@ if ($minify) {
 	$result = StringStack::reinsertStrings($result, 'header');
 }
 $time = time();
-echo "Writing file builds/BisaChat Plus ".$version.' '.$time.".user.js\n";
+echo "Writing file builds/BisaChat Plus ".$options['version'].' '.$time.".user.js\n";
 // Write file
-file_put_contents('builds/BisaChat Plus '.$version.' '.$time.'.user.js', $result);
+file_put_contents('builds/BisaChat Plus '.$options['version'].' '.$time.'.user.js', $result);
 // save version
-file_put_contents('builds/.lastversion', $version);
+file_put_contents('builds/.lastversion', $options['version']);
 echo "Finished\n";
 
 if ($argc == 1) {
@@ -143,7 +137,37 @@ if ($argc == 1) {
 }
 
 
-
+function parseParams($argv) {
+	$options = array(
+		'version' => '',
+		'minify' => false,
+		'modules' => array('AbstractModule')
+	);
+	
+	for ($i = 1, $length = count($argv); $i < $length; $i++) {
+		$command = substr($argv[$i], 2, (((strrpos($argv[$i], '-')-1) > 2) ? (strrpos($argv[$i], '-')-1) : (strlen($argv[$i])-1)));
+		
+		if (strrpos($command, '-') === (strlen($command)-1)) {
+			$command = substr($command, 0, strlen($command)-1);
+		}
+		
+		switch ($command) {
+			case 'version':
+				$options['version'] = substr($argv[$i], strrpos($argv[$i], '-')+1);
+				break;
+			case 'minify':
+				$options['minify'] = true;
+				break;
+			case 'with-module':
+				$options['modules'][] = substr($argv[$i], strrpos($argv[$i], '-')+1);
+				break;
+		}
+	}
+	
+	$options['modules'] = array_unique($options['modules']);
+	
+	return $options;
+}
 
 function removeStrings($matches) {
 	return StringStack::pushToStringStack($matches[1], 'string');

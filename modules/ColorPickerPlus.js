@@ -8,7 +8,7 @@ Modules.ColorPickerPlus = new ClassSystem.Class(Modules.AbstractModule, {
 		$super(callerObj);
 	},
 	
-	initialzeVariables: function() {
+	initializeVariables: function() {
 		this.colorCache = '';
 	},
 	

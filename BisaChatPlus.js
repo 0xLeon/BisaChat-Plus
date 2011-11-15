@@ -338,7 +338,7 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 				item.style.display = 'block';
 			}
 		});
-		$('optionsContentTypeSeparator').style.display = (($('optionsContentTextOptionDiv').style.diplay !== 'none') && ($('optionsContentTextOptionDiv').style.diplay !== 'none')) ? 'block' : 'none';
+		$('optionsContentTypeSeparator').style.display = (($('optionsContentTextOptionDiv').style.display !== 'none') && ($('optionsContentBoolOptionDiv').style.display !== 'none')) ? 'block' : 'none';
 		new API.w.Effect.Appear('optionsContentWrapper');
 		$('chatInput').focus();
 		

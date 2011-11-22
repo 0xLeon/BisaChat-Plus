@@ -291,6 +291,15 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 	}
 	
 	function buildUI() {
+		var returnToForumsList = new API.w.Element('ul', { id: 'returnToForumsList' });
+		var returnToForumsListItem = new API.w.Element('li');
+		var returnToForumsLink = new API.w.Element('a', { href: '/' });
+		
+		returnToForumsLink.appendChild(document.createTextNode('Forum'));
+		returnToForumsListItem.appendChild(returnToForumsLink);
+		returnToForumsList.appendChild(returnToForumsListItem);
+		$('chatPrivatelist').parentNode.insertBefore(returnToForumsList, $('chatPrivatelist'));
+		
 		this.buildBox('options', './wcf/icon/editS.png', 'Optionen', function() {
 			var optionsContentDiv = new API.w.Element('div');
 			var optionsContentWaitingDiv = new API.w.Element('div', { id: 'optionsContentWaiting', style: 'position:absolute; width:100%; height:100%; background-image:url("./wcf/images/spinner.gif"); background-position:50% 50%; background-repeat:no-repeat;' });

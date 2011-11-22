@@ -145,7 +145,12 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 			},
 			onComplete: function(request, response, json) {
 				if (request.url.includes('page=ChatMessage')) {
-					Event.fire('messagesReceived',  request);
+					if (request.success()) {
+						Event.fire('messagesReceived',  request);
+					}
+					else {
+						Event.fire('messageReceiveError', request);
+					}
 				}
 			}
 		});

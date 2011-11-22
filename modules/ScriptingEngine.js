@@ -59,10 +59,10 @@ Modules.ScriptingEngine = new ClassSystem.Class(Modules.AbstractModule, {
 				commandAddDeleteButtonLink.addEventListener('click', function(event) {
 					var dt = ((event.target.nodeName.toLowerCase() === 'img') ? event.target.parentNode.parentNode : event.target.parentNode);
 					
-					new API.w.Effect.Parallel($A([
+					new API.w.Effect.Parallel([
 						new API.w.Effect.Fade(dt, { sync: true, afterFinish: function(effect) { effect.element.parentNode.removeChild(effect.element); } }),
 						new API.w.Effect.Fade(dt.nextSibling, { sync: true, afterFinish: function(effect) { effect.element.parentNode.removeChild(effect.element); } })
-					]), {
+					], {
 						afterFinish: function() {
 							this.checkListEmpty($$('#scriptingEngine dl')[0]);
 						}.bind(this)
@@ -97,15 +97,15 @@ Modules.ScriptingEngine = new ClassSystem.Class(Modules.AbstractModule, {
 									
 									this.buildCommandListElements(inputs[0].value.trim(), inputs[1].value.trim(), false, $$('#scriptingEngine dl')[0]);
 									
-									new API.w.Effect.Parallel($A([
+									new API.w.Effect.Parallel([
 										new API.w.Effect.Fade(inputs[0].parentNode, { sync: true, afterFinish: function(effect) { effect.element.parentNode.removeChild(effect.element); } }),
 										new API.w.Effect.Fade(inputs[1].parentNode, { sync: true, afterFinish: function(effect) { effect.element.parentNode.removeChild(effect.element); } })
-									]), {
+									], {
 										afterFinish: function() {
-											new API.w.Effect.Parallel($A([
+											new API.w.Effect.Parallel([
 												new API.w.Effect.Appear($$('#scriptingEngine dl dt').last(), { sync: true }),
 												new API.w.Effect.Appear($$('#scriptingEngine dl dd').last().previousSibling, { sync: true })
-											]));
+											]);
 										}
 									});
 								}
@@ -133,10 +133,10 @@ Modules.ScriptingEngine = new ClassSystem.Class(Modules.AbstractModule, {
 					$$('#scriptingEngine p')[0].parentNode.replaceChild(commandDl, $$('#scriptingEngine p')[0]);
 				}
 				
-				new API.w.Effect.Parallel($A([
+				new API.w.Effect.Parallel([
 					new API.w.Effect.Appear($$('#scriptingEngine dl dt').last(), { sync: true }),
 					new API.w.Effect.Appear($$('#scriptingEngine dl dd').last(), { sync: true })
-				]), {
+				], {
 					afterFinish: function() {
 						$$('#scriptingEngine dl dt input').last().focus();
 					}
@@ -203,11 +203,11 @@ Modules.ScriptingEngine = new ClassSystem.Class(Modules.AbstractModule, {
 			var ddHr = dd.nextSibling;
 			var commandName = dt.querySelector('span').firstChild.nodeValue;
 			
-			new API.w.Effect.Parallel($A([
+			new API.w.Effect.Parallel([
 				new API.w.Effect.Fade(dt, { sync: true, afterFinish: function(effect) { effect.element.parentNode.removeChild(effect.element); } }),
 				new API.w.Effect.Fade(dd, { sync: true, afterFinish: function(effect) { effect.element.parentNode.removeChild(effect.element); } }),
 				new API.w.Effect.Fade(ddHr, { sync: true, afterFinish: function(effect) { effect.element.parentNode.removeChild(effect.element); } })
-			]), {
+			], {
 				afterFinish: function() {
 					this.commands.unset(commandName);
 					API.Storage.setValue('scriptingEngineCommands', this.commands._object);

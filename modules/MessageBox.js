@@ -4,7 +4,7 @@
  */
 Modules.MessageBox = new ClassSystem.Class(Modules.AbstractModule, {
 	initializeVariables: function() {
-		this.inbox = $A(API.Storage.getValue('messageBoxData', []));
+		this.inbox = API.Storage.getValue('messageBoxData', []);
 		this.prefilterHandle = null;
 		this.unread = 0;
 	},

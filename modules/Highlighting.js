@@ -26,7 +26,7 @@ Modules.Highlighting = new ClassSystem.Class(Modules.AbstractModule, {
 	initializeVariables: function() {
 		this.docTitle = '';
 		this.regExp = null;
-		this.messageIDs = $A([]);
+		this.messageIDs = [];
 		this.title = '';
 		this.periodicalExecuter = null;
 		this.listenerFunction = null;
@@ -76,7 +76,7 @@ Modules.Highlighting = new ClassSystem.Class(Modules.AbstractModule, {
 	},
 	
 	buildRegExp: function(basicString) {
-		var regExpString = $A(basicString.split(',')).map(function(item) {
+		var regExpString = basicString.split(',').map(function(item) {
 			return RegExp.escape(item.trim());
 		}).join('|');
 		this.regExp = null;

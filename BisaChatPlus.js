@@ -60,7 +60,7 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 	
 	function addStyleRules() {
 		API.addStyle('body { overflow: hidden; }');
-		API.addStyle('html, body { height: '+API.inHeight+'px !important; }');
+		API.addStyle('html, body { height: '+API.w.innerHeight+'px !important; }');
 		API.addStyle('*:focus { outline: 0px !important; }');
 		API.addStyle('.hidden { display: none; }');
 		API.addStyle('.column { border: 0px !important; }');
@@ -68,7 +68,7 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 		API.addStyle('.loading, .error, .overlay, #chatCopyright { border: none !important; -moz-border-radius: 0px !important; z-index: 9000; }');
 		API.addStyle('.subTabMenu { padding: 0px !important; padding-top: 2px !important; border-top: none !important; border-left: none !important; border-right: none !important; }');
 		API.addStyle('.subTabMenu, .subTabMenu > * { -moz-border-radius: 0px !important; }');
-		API.addStyle('#chatBox { margin-top: 0px; width: 100%; height: '+API.inHeight+'px; }');
+		API.addStyle('#chatBox { margin-top: 0px; width: 100%; height: '+API.w.innerHeight+'px; }');
 		API.addStyle('#chatBox > .border { padding: 0px !important; border: none !important; margin: 0px !important; position: relative; }');
 		API.addStyle('#chatBox > .border > .layout-2, #chatBox .columnInner { margin: 0px !important; }');
 		API.addStyle('#chatPrivatelist > li { display: list-item !important; }');
@@ -81,14 +81,14 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 		API.addStyle('.overlay > div { padding: 15px 25px; }');
 		API.addStyle('.overlayCloseButton { float: right; }');
 		API.addStyle('.overlayCloseButton img { padding: 15px; }');
-		API.addStyle('.overlayContent { margin: 5px 0px 3px; max-height: '+(API.inHeight-110)+'px; overflow: auto; }');
+		API.addStyle('.overlayContent { margin: 5px 0px 3px; max-height: '+(API.w.innerHeight-110)+'px; overflow: auto; }');
 		API.addStyle('.boxSmallButton, .overlaySmallButton { position: relative; }');
 		API.addStyle('.bcplusBox { position: absolute; width: 255px; height: 155px !important; top: -160px; left: 0px; padding-left: 1px; padding-top: 1px; -moz-border-radius-bottomleft: 0px; -moz-border-radius-bottomright: 0px; }');
 		API.addStyle('.textOptionValue { cursor: pointer; }');
 		API.addStyle('.textOptionValue:hover { text-decoration: underline; }');
 		
-		$$('#chatBox .columnContainer')[0].style.width = API.inWidth+'px';
-		var boxesHeight = (API.inHeight-(parseInt($$('#chatBox .subTabMenu')[0].offsetHeight)))+'px';
+		$$('#chatBox .columnContainer')[0].style.width = API.w.innerWidth+'px';
+		var boxesHeight = (API.w.innerHeight-(parseInt($$('#chatBox .subTabMenu')[0].offsetHeight)))+'px';
 		$$('#chatBox > .border, #chatBox > .border > .layout-2, .columnContainer > .column > .columnInner, .columnContainer > .second > .columnInner > div:first-child, #chatMembers').each(function(item) {
 			item.setAttribute('style', 'height: '+boxesHeight+' !important; border: none !important;');
 		});
@@ -547,7 +547,7 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 			revert: function(element) {
 				var dragObjRect = element.getBoundingClientRect();
 				
-				if ((dragObjRect.left < 0) || (dragObjRect.top < 0) || (dragObjRect.right > API.inWidth) || (dragObjRect.bottom > API.inHeight)) return true;
+				if ((dragObjRect.left < 0) || (dragObjRect.top < 0) || (dragObjRect.right > API.w.innerWidth) || (dragObjRect.bottom > API.w.innerHeight)) return true;
 				else return false;
 			}
 		});

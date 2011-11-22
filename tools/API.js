@@ -243,24 +243,6 @@ var API = (function() {
 		 */
 		get w() {
 			return (unsafeWindow || window);
-		},
-		
-		/**
-		 * Width available inside browser content
-		 * 
-		 * @type	{Number}
-		 */
-		get inWidth() {
-			return parseInt(this.w.innerWidth);
-		},
-		
-		/**
-		 * Height available inside browser content
-		 * 
-		 * @type	{Number}
-		 */
-		get inHeight() {
-			return parseInt(this.w.innerHeight);
 		}
 	};
 })();

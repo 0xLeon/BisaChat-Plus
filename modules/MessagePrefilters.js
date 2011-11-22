@@ -13,7 +13,7 @@ Modules.MessagePrefilters = new ClassSystem.Class(Modules.AbstractModule, {
 		});
 		
 		this.callerObj.registerMessagePrefilter('greentext', 'Green text', 'Green text aktivieren', 'g', true, function(event, checked, nickname, message) {
-			if ((checked) && (message.firstChild.nodeType === 3) && (message.firstChild.nodeValue[0] === '>')) {
+			if ((checked) && (message.firstChild.nodeType === 3) && (message.firstChild.nodeValue.startsWith('>'))) {
 				message.style.color = '#792';
 			}
 		});

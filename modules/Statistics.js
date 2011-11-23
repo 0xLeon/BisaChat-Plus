@@ -66,6 +66,12 @@ Modules.Statistics = new ClassSystem.Class(Modules.AbstractModule, {
 		}, this);
 	},
 	
+	addListeners: function() {
+		Event.register('messageReceiveError', function(event) {
+			this.stopOnlineTimeLengthCounter();
+		}, this);
+	},
+	
 	finish: function() {
 		if (API.Storage.getValue('statisticsStatus', true)) {
 			this.startOnlineTimeLengthCounter();

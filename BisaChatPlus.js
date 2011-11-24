@@ -157,15 +157,26 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 			},
 			onComplete: function(request, response, json) {
 				if (request.url.includes('page=ChatMessage')) {
-					if (request.success()) {
-						Event.fire('messagesReceived',  request);
-					}
-					else {
+					if (!request.success()) {
 						Event.fire('messageReceiveError', request);
 					}
 				}
 			}
 		});
+		
+		API.w.Chat.prototype.update = function(request) {
+			this.loading = false;
+			$(this.prefix+'Loading').style.display = 'none';
+			
+			var json = request.responseJSON;
+			
+			json.messages.each(function(message) {
+				Event.fire('messageReceived', message);
+			});
+			
+			this.handleUserUpdate(json.users, json.permissions);
+			this.handleMessageUpdate(json.messages);
+		}
 		
 		API.w.addEventListener('resize', function(event) {
 			Event.fire('windowResize', event);

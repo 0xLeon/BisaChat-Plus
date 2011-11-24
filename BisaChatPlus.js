@@ -360,11 +360,9 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 	}
 	
 	function initModules() {
-		$H(Modules).each(function(pair) {
+		$H(Modules.AddOn).each(function(pair) {
 			try {
-				if (pair.key !== 'AbstractModule') {
-					this.moduleInstances.set(pair.key, new pair.value(this));
-				}
+				this.moduleInstances.set(pair.key, new pair.value(this));
 			}
 			catch (e) {
 				this.pushInfo('Modul »'+pair.key+'« konnte nicht initialisiert werden.');

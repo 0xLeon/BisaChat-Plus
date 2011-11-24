@@ -2,7 +2,7 @@
  * Backup Module
  * Copyright (C) 2011 Stefan Hahn
  */
-Modules.Backup = new ClassSystem.Class(Modules.AbstractModule, {
+Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 	initializeVariables: function() {
 		this.intervalHandle = null;
 		this.buttonWidth = '';

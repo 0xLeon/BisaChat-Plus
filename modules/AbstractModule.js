@@ -4,7 +4,7 @@
  * 
  * Copyright (C) 2011 Stefan Hahn
  */
-Modules.AbstractModule = new ClassSystem.AbstractClass({
+Modules.Util.AbstractModule = new ClassSystem.AbstractClass({
 	initialize: function(callerObj) {
 		this.callerObj = callerObj;
 		

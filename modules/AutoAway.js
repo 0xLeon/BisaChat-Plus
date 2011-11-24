@@ -2,7 +2,7 @@
  * Auto Away Module
  * Copyright (C) 2011 Stefan Hahn
  */
-Modules.AutoAway = new ClassSystem.Class(Modules.AbstractModule, {
+Modules.AddOn.AutoAway = new ClassSystem.Class(Modules.Util.AbstractModule, {
 	initializeVariables: function() {
 		this.timerHandle = null;
 	},

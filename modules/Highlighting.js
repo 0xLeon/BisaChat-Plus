@@ -2,7 +2,7 @@
  * Highlighting Module
  * Copyright (C) 2011 Stefan Hahn
  */
-Modules.Highlighting = new ClassSystem.Class(Modules.AbstractModule, {
+Modules.AddOn.Highlighting = new ClassSystem.Class(Modules.Util.AbstractModule, {
 	initialize: function($super, callerObj) {
 		this.removeBasicHighlighting();
 		$super(callerObj);

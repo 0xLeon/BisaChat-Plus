@@ -4,7 +4,7 @@
  * 
  * Based on BisaChat Last.fm Connect
  */
-Modules.LastfmConnector = new ClassSystem.Class(Modules.AbstractModule, {
+Modules.AddOn.LastfmConnector = new ClassSystem.Class(Modules.Util.AbstractModule, {
 	initializeVariables: function() {
 		this.loadingTrack = false;
 	},

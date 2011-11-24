@@ -5,7 +5,7 @@
  * Based on WCF BBCode parser by WoltLab <https://github.com/woltlab>
  * Copyright (C) 2001-2011 WoltLab GmbH
  */
-Modules.BBCodeParser = new ClassSystem.Class(Modules.AbstractModule, (function() {
+Modules.AddOn.BBCodeParser = new ClassSystem.Class(Modules.Util.AbstractModule, (function() {
 	var Parser = new ClassSystem.Class({
 		definedTags: $H({
 			'b': {

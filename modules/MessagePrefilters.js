@@ -2,7 +2,7 @@
  * Message Prefilter Module
  * Copyright (C) 2011 Stefan Hahn
  */
-Modules.MessagePrefilters = new ClassSystem.Class(Modules.AbstractModule, {
+Modules.AddOn.MessagePrefilters = new ClassSystem.Class(Modules.Util.AbstractModule, {
 	registerOptions: function() {
 		this.callerObj.registerMessagePrefilter('colorlessNicknames', 'Farblose Nicknamen', 'Nicknamen farblos anzeigen', 'n', false, function(event, checked, nickname, message) {
 			if (checked) {

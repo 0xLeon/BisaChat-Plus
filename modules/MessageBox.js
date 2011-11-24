@@ -2,7 +2,7 @@
  * Message Box Module
  * Copyright (C) 2011 Stefan Hahn
  */
-Modules.MessageBox = new ClassSystem.Class(Modules.AbstractModule, {
+Modules.AddOn.MessageBox = new ClassSystem.Class(Modules.Util.AbstractModule, {
 	initializeVariables: function() {
 		this.inbox = API.Storage.getValue('messageBoxData', []);
 		this.prefilterHandle = null;

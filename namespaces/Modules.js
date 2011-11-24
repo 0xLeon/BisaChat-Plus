@@ -1,4 +1,8 @@
 /* 
  * Modules Namespace
  */
-var Modules = { };
+var Modules = {
+	Core:  {},
+	AddOn: {},
+	Util:  {}
+};

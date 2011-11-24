@@ -2,7 +2,7 @@
  * Color Picker Plus Module
  * Copyright (C) 2011 Stefan Hahn
  */
-Modules.ColorPickerPlus = new ClassSystem.Class(Modules.AbstractModule, {
+Modules.AddOn.ColorPickerPlus = new ClassSystem.Class(Modules.Util.AbstractModule, {
 	initialize: function($super, callerObj) {
 		this.replaceBasicColorPicker();
 		$super(callerObj);

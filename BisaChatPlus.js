@@ -42,6 +42,7 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 	
 	function initialize() {
 		try {
+			this.initCoreModules();
 			this.addStyleRules();
 			this.breakCage();
 			this.avoidMultipleLogin();
@@ -56,6 +57,17 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 		finally {
 			API.checkForUpdates(this.UPDATE_URI, this.VERSION, updateCallback, API.Storage.getValue('getNonStableReleasesStatus', false));
 		}
+	}
+	
+	function initCoreModules() {
+		$H(Modules.Core).each(function(pair) {
+			try {
+				new pair.value(this);
+			}
+			catch (e) {
+				API.w.alert('Kernmodul »'+pair.key+'« konnte nicht initialisiert werden.'+"\n"+e.name+' - '+e.message);
+			}
+		}, this);
 	}
 	
 	function addStyleRules() {
@@ -786,6 +798,7 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 		moduleInstances:                moduleInstances,
 		
 		initialize:                     initialize,
+		initCoreModules:                initCoreModules,
 		addStyleRules:                  addStyleRules,
 		breakCage:                      breakCage,
 		avoidMultipleLogin:             avoidMultipleLogin,

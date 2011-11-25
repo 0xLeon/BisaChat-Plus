@@ -30,9 +30,5 @@ Modules.AddOn.MessagePrefilters = new ClassSystem.Class(Modules.Util.AbstractMod
 				event.target.querySelector('span[onclick]').setAttribute('onclick', 'chat.insert(\'/team \', false)');
 			}
 		});
-		
-		Event.register('messageReceived', function(event) {
-			event.text = event.text.gsub('<a', '<a target="_blank"');
-		});
 	}
 });

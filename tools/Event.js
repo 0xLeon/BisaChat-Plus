@@ -50,7 +50,12 @@ var Event = (function() {
 	function fire(name, eventObj) {
 		if (Object.isArray(events.get(name))) {
 			events.get(name).each(function(item) {
-				item(eventObj);
+				try {
+					item(eventObj);
+				}
+				catch (e) {
+					alert('Event Listener konnte nicht ausgeführt werden!'+"\n"+e.name+' - '+e.message);
+				}
 			});
 		}
 	}

@@ -288,7 +288,7 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 				li.appendChild(messageUsernameSpan);
 				
 				if (message.info.text !== '') {
-					messageInfoSpan.appendChild(document.createTextNode(message.info.text));
+					messageInfoSpan.innerHTML = message.info.text;
 					li.appendChild(document.createTextNode(' '));
 					li.appendChild(messageInfoSpan);
 				}

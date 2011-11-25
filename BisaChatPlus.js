@@ -164,117 +164,185 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 			}
 		});
 		
-		API.w.Chat.prototype.update = function(request) {
-			this.loading = false;
-			$(this.prefix+'Loading').style.display = 'none';
+		var bcplus = this;
+		API.w.Chat.prototype.handleMessageUpdate = function(messages) {
+			if ((messages.size() > 0) && this.enableAnimating && !Prototype.Browser.Opera) {
+				this.animate();
+			}
 			
-			var json = request.responseJSON;
+			this.id = messages.last().id;
 			
-			json.messages.each(function(message) {
-				Event.fire('messageReceived', message);
-			});
+			messages.each(function(item) {
+				var message = {
+					id: item.id,
+					type: parseInt(item.type, 10),
+					ownMessage: (item.usernameraw === API.w.settings.username),
+					classes: ['messageType'+item.type],
+					privateID: parseInt(item.privateID),
+					roomID: parseInt(item.roomID),
+					info: {
+						classes: [],
+						text: ''
+					},
+					time: item.time,
+					username: item.username,
+					usernameSimple: item.usernameraw,
+					text: item.text
+				};
+				
+				switch (message.type) {
+					case 9:
+						$(this.prefix+'Message0').innerHTML = '<ul style="list-style: none;"><li>&nbsp;</li></ul>';
+						message.info.classes.push(this.prefix+'ClearInfo');
+						message.info.text = message.text;
+						message.text = '';
+						break;
+					case 1:
+					case 2:
+						message.info.classes.push(this.prefix+'MoveInfo');
+						message.info.text = message.text;
+						message.text = '';
+						break;
+					case 3:
+					case 4:
+						message.info.classes.push(this.prefix+'AwayInfo');
+						
+						if (message.text.includes(':')) {
+							message.info.text = message.text.slice(0, message.text.indexOf(':'));
+							message.text = message.text.slice(message.text.indexOf(':')+1, message.text.length).trimLeft();
+						}
+						else {
+							message.info.text = message.text;
+							message.text = '';
+						}
+						
+						// switch away status
+						if (message.ownMessage) {
+							if (message.type === 3) {
+								bcplus.awayMessage = message.text;
+								bcplus.isAway = true;
+							}
+							else {
+								bcplus.awayMessage = '';
+								bcplus.isAway = false;
+							}
+							
+							Event.fire('awayStatusChange', {
+								isAway: bcplus.isAway,
+								awayMessage: bcplus.awayMessage
+							});
+						}
+						
+						break;
+					case 5:
+						message.info.classes.push(this.prefix+'ModerateInfo');
+						message.info.text = message.text;
+						message.text = '';
+						break;
+					case 7:
+						message.info.classes.push(this.prefix+'WhisperInfo');
+						message.info.text = message.text.slice(0, message.text.indexOf(':'));
+						message.text = message.text.slice(message.text.indexOf(':')+1, message.text.length).trimLeft();
+						break;
+					case 8:
+						message.username = API.w.language['wcf.chat.topic'];
+						message.usernameSimple = API.w.language['wcf.chat.topic'];
+						break;
+					case 10:
+						message.info.classes.push(this.prefix+'TeamInfo');
+						message.info.text = API.w.language['wcf.chat.team'].trim().slice(0, -1);
+						break;
+					case 11:
+						message.info.classes.push(this.prefix+'TeamInfo');
+						message.info.text = API.w.language['wcf.chat.global'].trim().slice(0, -1);
+						break;
+				}
+				
+				if (message.ownMessage) {
+					message.classes.push('ownMessage');
+				}
+				
+				Event.fire('messageBeforeNodeSetup', message);
+				
+				var li = new API.w.Element('li', { id: this.prefix+'Message'+message.id, 'class': message.classes.join(' ') });
+				var input = new API.w.Element('input', { type: 'checkbox', value: String.interpret(message.id), style: 'display: none; float: left;' });
+				var messageTimeSpan = new API.w.Element('span', { 'class': this.prefix+'MessageTime', style: 'font-size: 0.8em; font-weight: normal; font-style: normal;' });
+				var messageUsernameSpan = new API.w.Element('span', { 'class': this.prefix+'MessageTime', style: 'font-weight: bold;' });
+				var messageInfoSpan = new API.w.Element('span', { 'class': message.info.classes.join(' ') });
+				var messageTextSpan = new API.w.Element('span', { 'class': this.prefix+'MessageText' });
+				
+				Event.fire('messageAfterNodeSetup', Object.extend(message, {
+					nodes: {
+						timeSpan: messageTimeSpan,
+						usernameSpan: messageUsernameSpan,
+						infoSpan: messageInfoSpan,
+						textSpan: messageTextSpan
+					}
+				}));
+				
+				messageTimeSpan.appendChild(document.createTextNode('('+message.time+')'));
+				messageUsernameSpan.innerHTML = message.username;
+				li.appendChild(input);
+				li.appendChild(messageTimeSpan);
+				li.appendChild(document.createTextNode(' '));
+				li.appendChild(messageUsernameSpan);
+				
+				if (message.info.text !== '') {
+					messageInfoSpan.appendChild(document.createTextNode(message.info.text));
+					li.appendChild(document.createTextNode(' '));
+					li.appendChild(messageInfoSpan);
+				}
+				
+				if (message.text !== '') {
+					var sep = ' ';
+					
+					if (message.type !== 6) {
+						sep = ':'+sep;
+					}
+					
+					messageTextSpan.innerHTML = message.text;
+					li.appendChild(document.createTextNode(sep));
+					li.appendChild(messageTextSpan);
+				}
+				
+				if (API.w.settings.animation) {
+					li.style.display = 'none';
+				}
+				
+				if (this.isOpenChannel(message.privateID)) {
+					$$('#'+this.prefix+'Message'+message.privateID+' ul')[0].appendChild(li);
+					
+					if (this.activeUserID !== message.privateID) {
+						$$('#'+this.prefix+'Private'+message.privateID+' a')[0].className = ($$('#'+this.prefix+'Private'+message.privateID+' a')[0].className+' importantPrivate').trim();
+					}
+				}
+				else {
+					$$('#'+this.prefix+'Message0 ul')[0].appendChild(li);
+					
+					if (this.activeUserID !== 0) {
+						$$('#'+this.prefix+'Private0 a')[0].className = ($$('#'+this.prefix+'Private0 a')[0].className+' importantPrivate').trim();
+					}
+				}
+				
+				Event.fire('messageAfterNodeAppending', message);
+				
+				if (API.w.settings.animation) {
+					new API.w.Effect.Appear(li, {
+						duration: 0.4
+					});
+				}
+			}, this);
 			
-			this.handleUserUpdate(json.users, json.permissions);
-			this.handleMessageUpdate(json.messages);
+			if (this.autoscroll && !API.w.settings.animation) {
+				this.privateChannels.each(function(channel) {
+					$(this.prefix+'Message'+channel).scrollTop = $(this.prefix+'Message'+channel).scrollHeight;
+				}, this);
+			}
 		}
 		
 		API.w.addEventListener('resize', function(event) {
 			Event.fire('windowResize', event);
 		}, true);
-		
-		$('chatMessage').addEventListener('DOMNodeInserted', function(event) {
-			if (event.target.nodeName.toLowerCase() === 'li') {
-				var id = event.target.getAttribute('id');
-				var messageNode = $$('#'+id+' span')[1].nextSibling;
-				var messageType = Number(event.target.className.match(/\bmessagetype(\d+)\b/i)[1]);
-				var ownMessage = event.target.className.toLowerCase().includes('ownmessage');
-				var message = new API.w.Element('span', { 'class': 'chatMessageText' });
-				
-				var nicknameNode = event.target.querySelectorAll('span[onclick] > span');
-				var nickname = '';
-				
-				do {
-					message.appendChild(messageNode.parentNode.removeChild(messageNode).cloneNode(true));
-				} while (messageNode = $$('#'+id+' span')[1].nextSibling);
-				
-				for (var i = 0; i < nicknameNode.length; i++) {
-					nickname += nicknameNode[i].firstChild.nodeValue;
-				}
-				
-				if (message.firstChild.nodeType === 3) {
-					message.firstChild.replaceData(0, message.firstChild.nodeValue.length, message.firstChild.nodeValue.trimLeft());
-					
-					if (message.firstChild.nodeValue.length === 0) {
-						message.removeChild(message.firstChild);
-					}
-					
-					if ((messageType === 1) || (messageType === 2)) {
-						var moveSpan = new API.w.Element('span', { 'class': 'moveInfo' });
-						var move = document.createTextNode(message.firstChild.nodeValue);
-						
-						message = null;
-						moveSpan.appendChild(move);
-						event.target.appendChild(moveSpan);
-					}
-					else if ((messageType === 3) || (messageType === 4)) {
-						var awaySpan = new API.w.Element('span', { 'class': 'awayInfo' });
-						
-						if (message.firstChild.nodeValue.includes(':')) {
-							var away = document.createTextNode(message.firstChild.nodeValue.slice(0, message.firstChild.nodeValue.indexOf(':')+1)+' ');
-							
-							message.firstChild.replaceData(0, message.firstChild.nodeValue.length, message.firstChild.nodeValue.slice(message.firstChild.nodeValue.indexOf(':')+1, message.firstChild.nodeValue.length).trimLeft());
-						}
-						else {
-							var away = document.createTextNode(message.firstChild.nodeValue);
-							
-							message = null;
-						}
-						
-						awaySpan.appendChild(away);
-						event.target.appendChild(awaySpan);
-						
-						// switch away status
-						if (ownMessage) {
-							if (messageType === 3) {
-								this.awayMessage = (message === null) ? '' : message.firstChild.nodeValue;
-								this.isAway = true;
-							}
-							else {
-								this.awayMessage = '';
-								this.isAway = false;
-							}
-							
-							Event.fire('awayStatusChange', this);
-						}
-					}
-					else if (messageType === 7) {
-						var whisper = document.createTextNode(message.firstChild.nodeValue.slice(0, message.firstChild.nodeValue.indexOf(':')+1)+' ');
-						var whisperSpan = new API.w.Element('span', { 'class': 'whisperInfo' });
-						
-						message.firstChild.replaceData(0, message.firstChild.nodeValue.length, message.firstChild.nodeValue.slice(message.firstChild.nodeValue.indexOf(':')+1, message.firstChild.nodeValue.length).trimLeft());
-						whisperSpan.appendChild(whisper);
-						event.target.appendChild(whisperSpan);
-					}
-				}
-				
-				if (message !== null) {
-					event.target.appendChild(message);
-					
-					for (var i = 0; i < messagePrefilters.length; i++) {
-						messagePrefilters[i](event, nickname, message, messageType, ownMessage);
-					}
-					
-					Object.extend(event, {
-						nickname:    nickname,
-						message:     message,
-						messageType: messageType, 
-						ownMessage:  ownMessage
-					});
-					
-					Event.fire('userMessageInserted', event);
-				}
-			}
-		}.bindAsEventListener(this), true);
 		
 		API.w.document.addEventListener('keydown', function(event) {
 			Event.fire('keydown', event);
@@ -316,6 +384,22 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 				});
 			}
 		});
+		
+		Event.register('messageAfterNodeAppending', function(event) {
+			event.target = event.nodes.timeSpan.parentNode;
+			
+			for (var i = 0; i < messagePrefilters.length; i++) {
+				try {
+					if (event.text !== '') {
+						messagePrefilters[i](event, event.usernameSimple, event.nodes.textSpan, event.type, event.ownMessage);
+					}
+				}
+				catch (e) {
+					this.pushInfo('Message Prefilter konnte nicht ausgeführt werden.');
+					this.pushInfo(e.name+' - '+e.message);
+				}
+			}
+		}, this);
 	}
 	
 	function buildUI() {

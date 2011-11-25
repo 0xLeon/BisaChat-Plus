@@ -151,7 +151,7 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 	function setupEvents() {
 		API.w.Ajax.Responders.register({
 			onCreate: function(request, response) {
-				if (request.url.includes('form=Chat')) {
+				if (request.url.includes('form=Chat') && !request.url.includes('kill')) {
 					Event.fire('messageSent', request);
 				}
 			},

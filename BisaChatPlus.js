@@ -543,22 +543,15 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 	 */
 	function pushInfo(infoText) {
 		var now = new Date();
-		var time = ((now.getHours() < 10) ? '0'+now.getHours() : now.getHours())+':'+((now.getMinutes() < 10) ? '0'+now.getMinutes() : now.getMinutes())+':'+((now.getSeconds() < 10) ? '0'+now.getSeconds() : now.getSeconds());
 		
-		var li = new API.w.Element('li', { 'class': 'messageType8 ownMessage' });
-		var spanOne = new API.w.Element('span', { style: 'font-size:0.8em; font-weight:normal; font-style:normal;' });
-		var spanTwo = new API.w.Element('span', { style: 'font-weight:bold;' });
-		
-		spanOne.appendChild(document.createTextNode('('+time+')'));
-		spanTwo.appendChild(document.createTextNode('Information: '));
-		
-		li.appendChild(spanOne);
-		li.appendChild(document.createTextNode(' '));
-		li.appendChild(spanTwo);
-		li.appendChild(document.createTextNode(infoText));
-		
-		$$('#chatMessage'+API.w.chat.activeUserID+' ul')[0].appendChild(li);
-		$('chatMessage'+API.w.chat.activeUserID).scrollTop = $('chatMessage'+API.w.chat.activeUserID).scrollHeight;
+		API.w.chat.handleMessageUpdate([{
+			id: API.w.chat.id,
+			type: 8,
+			privateID: API.w.chat.activeUserID,
+			time: ((now.getHours() < 10) ? '0'+now.getHours() : now.getHours())+':'+((now.getMinutes() < 10) ? '0'+now.getMinutes() : now.getMinutes())+':'+((now.getSeconds() < 10) ? '0'+now.getSeconds() : now.getSeconds()),
+			usernameraw: 'Leon',
+			text: infoText
+		}]);
 	}
 	
 	/**

@@ -6,6 +6,9 @@
  * Copyright (c) 2005-2010 Sam Stephenson
  */
 Object.extend(String, {
+	interpret: function(value) {
+		return ((value == null) ? '' : String(value));
+	},
 	specialChar: {
 		'\b': '\\b',
 		'\t': '\\t',
@@ -29,6 +32,52 @@ Object.extend(String.prototype, (function() {
 		var d = this.length - pattern.length;
 		
 		return ((d >= 0) && (this.indexOf(pattern, d) === d));
+	}
+	
+	function sub(pattern, replacement, count) {
+		var replacementString = replacement.toString();
+		replacement = ((Object.isFunction(replacement)) ? replacement : (function(match) { return replacementString; }));
+		count = ((Object.isUndefined(count)) ? 1 : count);
+		
+		return this.gsub(pattern, function(match) {
+			if (--count < 0) {
+				return match[0];
+			}
+			
+			return replacement(match);
+		});
+	}
+	
+	function gsub(pattern, replacement) {
+		var result = '';
+		var source = this;
+		var match = null;
+		var replacementString = replacement.toString();
+		replacement = ((Object.isFunction(replacement)) ? replacement : (function(match) { return replacementString; }));
+		
+		if (Object.isString(pattern)) {
+			pattern = RegExp.escape(pattern);
+		}
+		
+		if (!(pattern.length || pattern.source)) {
+			replacement = replacement('');
+			
+			return replacement + source.split('').join(replacement) + replacement;
+		}
+		
+		while (source.length > 0) {
+			if (match = source.match(pattern)) {
+				result += source.slice(0, match.index);
+				result += String.interpret(replacement(match));
+				source = source.slice(match.index + match[0].length);
+			}
+			else {
+				result += source;
+				source = '';
+			}
+		}
+		
+		return result;
 	}
 	
 	function trim() {
@@ -88,6 +137,8 @@ Object.extend(String.prototype, (function() {
 		includes:     includes,
 		startsWith:   startsWith,
 		endsWith:     endsWith,
+		sub:          sub,
+		gsub:         gsub,
 		trim:         String.prototype.trim || trim,
 		strip:        String.prototype.trim || trim,
 		trimLeft:     String.prototype.trimLeft || trimLeft,

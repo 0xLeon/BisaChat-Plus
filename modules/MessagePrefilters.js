@@ -24,11 +24,5 @@ Modules.AddOn.MessagePrefilters = new ClassSystem.Class(Modules.Util.AbstractMod
 				Registry.setValue('messageNumber', (Registry.getValue('messageNumber') + 1));
 			}
 		});
-		
-		this.callerObj.registerSilentMessagePrefilter(function(event, nickname, message, messageType) {
-			if (messageType === 10) {
-				event.target.querySelector('span[onclick]').setAttribute('onclick', 'chat.insert(\'/team \', false)');
-			}
-		});
 	}
 });

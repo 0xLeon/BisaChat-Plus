@@ -187,7 +187,8 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 					time: item.time,
 					username: item.username,
 					usernameSimple: item.usernameraw,
-					text: item.text
+					text: item.text,
+					clickInsertion: '/whisper '+item.usernameraw+', '
 				};
 				
 				switch (message.type) {
@@ -246,11 +247,12 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 						break;
 					case 8:
 						message.username = API.w.language['wcf.chat.topic'];
-						message.usernameSimple = API.w.language['wcf.chat.topic'];
+						message.clickInsertion = '!rose '+this.users[parseInt(Math.floor(Math.random()*this.users.length))];
 						break;
 					case 10:
 						message.info.classes.push(this.prefix+'TeamInfo');
 						message.info.text = API.w.language['wcf.chat.team'].trim().slice(0, -1);
+						message.clickInsertion = '/team ';
 						break;
 					case 11:
 						message.info.classes.push(this.prefix+'TeamInfo');
@@ -279,6 +281,14 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 						textSpan: messageTextSpan
 					}
 				}));
+				
+				messageUsernameSpan.addEventListener('click', function(event) {
+					if (this.clickInsertion !== '') {
+						API.w.chat.insert(this.clickInsertion);
+					}
+					
+					Event.fire('messageUsernameClicked', $('chatMessage'+this.id));
+				}.bindAsEventListener(message), true);
 				
 				messageTimeSpan.appendChild(document.createTextNode('('+message.time+')'));
 				messageUsernameSpan.innerHTML = message.username;
@@ -549,7 +559,7 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 			type: 8,
 			privateID: API.w.chat.activeUserID,
 			time: ((now.getHours() < 10) ? '0'+now.getHours() : now.getHours())+':'+((now.getMinutes() < 10) ? '0'+now.getMinutes() : now.getMinutes())+':'+((now.getSeconds() < 10) ? '0'+now.getSeconds() : now.getSeconds()),
-			usernameraw: 'Leon',
+			usernameraw: API.w.settings.username,
 			text: infoText
 		}]);
 	}

@@ -269,7 +269,7 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 				var li = new API.w.Element('li', { id: this.prefix+'Message'+message.id, 'class': message.classes.join(' ') });
 				var input = new API.w.Element('input', { type: 'checkbox', value: String.interpret(message.id), style: 'display: none; float: left;' });
 				var messageTimeSpan = new API.w.Element('span', { 'class': this.prefix+'MessageTime', style: 'font-size: 0.8em; font-weight: normal; font-style: normal;' });
-				var messageUsernameSpan = new API.w.Element('span', { 'class': this.prefix+'MessageTime', style: 'font-weight: bold;' });
+				var messageUsernameSpan = new API.w.Element('span', { 'class': this.prefix+'MessageUsername', style: 'font-weight: bold;' });
 				var messageInfoSpan = new API.w.Element('span', { 'class': message.info.classes.join(' ') });
 				var messageTextSpan = new API.w.Element('span', { 'class': this.prefix+'MessageText' });
 				

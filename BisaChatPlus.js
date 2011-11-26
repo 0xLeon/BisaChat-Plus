@@ -275,10 +275,11 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 				
 				Event.fire('messageAfterNodeSetup', Object.extend(message, {
 					nodes: {
-						timeSpan: messageTimeSpan,
-						usernameSpan: messageUsernameSpan,
-						infoSpan: messageInfoSpan,
-						textSpan: messageTextSpan
+						wrapper: li,
+						time: messageTimeSpan,
+						username: messageUsernameSpan,
+						info: messageInfoSpan,
+						text: messageTextSpan
 					}
 				}));
 				
@@ -396,12 +397,12 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 		});
 		
 		Event.register('messageAfterNodeAppending', function(event) {
-			event.target = event.nodes.timeSpan.parentNode;
+			event.target = event.nodes.wrapper;
 			
 			for (var i = 0; i < messagePrefilters.length; i++) {
 				try {
 					if (event.text !== '') {
-						messagePrefilters[i](event, event.usernameSimple, event.nodes.textSpan, event.type, event.ownMessage);
+						messagePrefilters[i](event, event.usernameSimple, event.nodes.text, event.type, event.ownMessage);
 					}
 				}
 				catch (e) {

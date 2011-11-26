@@ -54,7 +54,7 @@ var Hash = new ClassSystem.Class(Enumerable, (function() {
 	}
 	
 	function values() {
-		return this.pluck('values');
+		return this.pluck('value');
 	}
 	
 	function merge(object) {

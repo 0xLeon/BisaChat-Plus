@@ -61,7 +61,7 @@ if ($argc === 1) {
 // find namespaces
 $namespaces = glob('namespaces/*');
 // find ProtoBasic files
-$protoBasicFiles = array('Object', 'Function', 'Class', 'Enumerable', 'Array', 'Hash', 'String', 'RegExp');
+$protoBasicFiles = array('Object', 'Function', 'Class', 'Enumerable', 'Array', 'Hash', 'String', 'RegExp', 'Date');
 // find tools
 $tools = glob('tools/*');
 // find media resources

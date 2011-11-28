@@ -123,7 +123,7 @@ Modules.AddOn.MessageBox = new ClassSystem.Class(Modules.Util.AbstractModule, {
 	 */
 	pushMessage: function(event) {
 		var length = this.inbox.push({
-			timestamp: this.callerObj.parseMessageDate(event.time),
+			timestamp: Date.fromMessageTime(event.time).getTime(),
 			nickname: event.username,
 			message: event.text
 		});

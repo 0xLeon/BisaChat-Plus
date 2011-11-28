@@ -814,21 +814,6 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 		}
 	}
 	
-	/**
-	 * Parses message date strings and returns an unix timestamp
-	 * 
-	 * @param	{String}	timeString	Valid time string, should look like this: <hours>:<minutes>:<seconds>
-	 * @returns	{Number}				unix timestamp in miliseconds
-	 */
-	function parseMessageDate(timeString) {
-		var timeArray = timeString.split(':');
-		var today = new Date();
-		
-		if (timeArray.length !== 3) throw new Error('invalid timeString »'+timeString+'«');
-		
-		return ((new Date(today.getFullYear(), today.getMonth(), today.getDate(), Number(timeArray[0]), Number(timeArray[1]), Number(timeArray[2]))).getTime());
-	}
-	
 	return {
 		/**
 		 * BisaChat Plus Version
@@ -869,8 +854,7 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 		buildBox:                       buildBox,
 		buildOverlay:                   buildOverlay,
 		registerTextOption:             registerTextOption,
-		registerBoolOption:             registerBoolOption,
-		parseMessageDate:               parseMessageDate
+		registerBoolOption:             registerBoolOption
 	};
 })());
 

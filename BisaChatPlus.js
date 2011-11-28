@@ -815,35 +815,6 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 	}
 	
 	/**
-	 * Builds a GUI element for switchable options combined with an prefilter applied to every chat message
-	 * 
-	 * @param	{String}	optionID					ID for optionInput DOM node
-	 * @param	{String}	optionTitle					Short description which is shown in chat stream when option is switched
-	 * @param	{String}	optionText					Short description which is displayed in front of actual value
-	 * @param	{String}	[accessKey]					One letter which indicates the acess key
-	 * @param	{Boolean}	defaultValue				Option status when there is nothing in storage
-	 * @param	{Function}	prefilterFunction			Called when new messages get appened to chat stream but only, if they contain actual user generated content (not on enter messages etc.); has to accept six parameters: event{Object}: event object of inserted message, checked{Boolean}: indicates if the corresponding checkbox is checked, nickname{String}: plain nickname, message{Object}: reference to actual message node, messageType{Number}: indicates type of message, ownMessage{Boolean}: indicates whether or not the message is written by the user himself
-	 * @param	{Function}	[checkboxSwitchCallback]	Called when option is about to be switched, option is only switched if switchCallback returns boolean true, two arguments passed: event{Object}: checkbox change event object, checked{Boolean}: wether or not the box is checked
-	 * @param	{Object}	[context]					Indicates where 'this' points within prefilterFunction and switchCallback
-	 */
-	function registerMessagePrefilter(optionID, optionTitle, optionText, accessKey, defaultValue, prefilterFunction, checkboxSwitchCallback, context) {
-		this.registerBoolOption(optionID, optionTitle, optionText, accessKey, defaultValue, checkboxSwitchCallback, context);
-		return (messagePrefilters.push(function(event, nickname, message, messageType, ownMessage) {
-			prefilterFunction.call(this, event, $(optionID).checked, nickname, message, messageType, ownMessage);
-		}.bind(context))-1);
-	}
-	
-	/**
-	 * Apply prefilter without generating a GUI element
-	 * 
-	 * @param	{Function}	prefilterFunction	Called when new messages get appened to chat stream but only, if they contain actual user generated content (not on enter messages etc.); has to accept five parameters: event{Object}: event object of inserted message, nickname{String}: plain nickname, message{Object}: reference to actual message node, messageType{Number}: indicates type of message, ownMessage{Boolean}: indicates whether or not the message is written by the user himself
-	 * @param	{Object}	[context]			Indicates where 'this' points within prefilterFunction
-	 */
-	function registerSilentMessagePrefilter(prefilterFunction, context) {
-		return (messagePrefilters.push(prefilterFunction.bind(context))-1);
-	}
-	
-	/**
 	 * Parses message date strings and returns an unix timestamp
 	 * 
 	 * @param	{String}	timeString	Valid time string, should look like this: <hours>:<minutes>:<seconds>
@@ -899,8 +870,6 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 		buildOverlay:                   buildOverlay,
 		registerTextOption:             registerTextOption,
 		registerBoolOption:             registerBoolOption,
-		registerMessagePrefilter:       registerMessagePrefilter,
-		registerSilentMessagePrefilter: registerSilentMessagePrefilter,
 		parseMessageDate:               parseMessageDate
 	};
 })());

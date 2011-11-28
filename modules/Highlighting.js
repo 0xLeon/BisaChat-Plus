@@ -37,31 +37,30 @@ Modules.AddOn.Highlighting = new ClassSystem.Class(Modules.Util.AbstractModule, 
 		this.callerObj.registerTextOption('highlightingText', 'Highlighten bei', API.w.settings.username, function(optionValue) {
 			this.buildRegExp(optionValue);
 		}, this);
-		this.callerObj.registerMessagePrefilter('highlighting', 'Highlighting', 'Highlighting aktivieren', 'l', false, function(event, checked, nickname, message, messageType) {
-			if (checked && (!document.hasFocus() || this.callerObj.isAway) && (nickname.toLowerCase() !== 'chatbot')) {
+		this.callerObj.registerBoolOption('highlighting', 'Highlighting', 'Highlighting aktivieren', 'l', false);
+	},
+	
+	addListeners: function() {
+		Event.register('messageAfterNodeSetup', function(event) {
+			if (API.Storage.getValue('highlightingStatus', false) && (!document.hasFocus() || this.callerObj.isAway) && (event.usernameSimple.toLowerCase() !== 'chatbot')) {
 				if (this.regExp === null) {
 					this.buildRegExp(API.Storage.getValue('highlightingTextValue', API.w.settings.username));
 				}
 				
-				var text = ((!!this.callerObj.moduleInstances.get('BBCodeParser') && !!this.callerObj.moduleInstances.get('BBCodeParser').stripTags) ? this.callerObj.moduleInstances.get('BBCodeParser').stripTags(message.textContent) : message.textContent);
-				
-				if (this.regExp.test(text)) {
-					this.title = 'Neue Nachricht enthält: '+this.regExp.exec(text)[1];
-					this.highlight(event.target.getAttribute('id'));
+				if (this.regExp.test(event.text)) {
+					this.title = 'Neue Nachricht enthält: '+this.regExp.exec(event.text)[1];
+					this.highlight(event.id);
 					
-					if (!!this.callerObj.moduleInstances.get('MessageBox') && !!this.callerObj.moduleInstances.get('MessageBox').pushMessage && (messageType !== 7)) {
-						this.callerObj.moduleInstances.get('MessageBox').pushMessage(event, message);
+					if (!!this.callerObj.moduleInstances.get('MessageBox') && !!this.callerObj.moduleInstances.get('MessageBox').pushMessage && (event.type !== 7)) {
+						this.callerObj.moduleInstances.get('MessageBox').pushMessage(event);
 					}
 				}
-				else if (messageType === 7) {
+				else if (event.type === 7) {
 					this.title = 'Du wurdest angeflüstert'
-					this.highlight(event.target.getAttribute('id'));
+					this.highlight(event.id);
 				}
 			}
-		}, null, this);
-	},
-	
-	addListeners: function() {
+		}, this);
 		document.addEventListener('blur', function(event) {
 			if (API.Storage.getValue('blurHRStatus', false)) {
 				$$('#chatMessage'+API.w.chat.activeUserID+' ul .blurHr').each(function(item) {
@@ -85,7 +84,7 @@ Modules.AddOn.Highlighting = new ClassSystem.Class(Modules.Util.AbstractModule, 
 	
 	highlight: function(id) {
 		new Audio(Media.bing.dataURI).play();
-		this.messageIDs.push(id);
+		this.messageIDs.push('chatMessage'+id);
 		
 		if (this.periodicalExecuter === null) {
 			this.docTitle = document.title;

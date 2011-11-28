@@ -13,14 +13,18 @@ Modules.AddOn.SmiliesPlus = new ClassSystem.Class(Modules.Util.AbstractModule, {
 	},
 	
 	registerOptions: function() {
-		this.callerObj.registerMessagePrefilter('smiliesActive', 'Smileys', 'Darstellung von Smileys aktivieren', 'p', false, function(event, checked, nickname, message) {
-			if (!checked) {
-				this.replaceImageSmilies(message);
-			}
-		}, function(event, checked) {
+		this.callerObj.registerBoolOption('smiliesActive', 'Smileys', 'Darstellung von Smileys aktivieren', 'p', false, function(event, checked) {
 			this.setStatus(checked);
 			
 			return true;
+		}, this);
+	},
+	
+	addListeners: function() {
+		Event.register('messageBeforeNodeSetup', function(event) {
+			if (!API.Storage.getValue('smiliesActive', false)) {
+				this.replaceImageSmilies(event);
+			}
 		}, this);
 	},
 	
@@ -39,10 +43,12 @@ Modules.AddOn.SmiliesPlus = new ClassSystem.Class(Modules.Util.AbstractModule, {
 		});
 	},
 	
-	replaceImageSmilies: function(node) {
-		$A(node.querySelectorAll('img')).each(function(item) {
-			node.replaceChild(document.createTextNode(item.getAttribute('alt')), item);
-		});
+	replaceImageSmilies: function(message) {
+		if (message.text.includes('<img')) {
+			while (message.text.match(/<img.*?\/>/)) {
+				message.text = message.text.replace(/<img.*?\/>/, message.text.match(/<img.*?alt="(.*?)".*?\/>/)[1]);
+			}
+		}
 	},
 	
 	setStatus: function(state) {

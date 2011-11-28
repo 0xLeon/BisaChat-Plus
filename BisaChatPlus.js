@@ -397,17 +397,21 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 		});
 		
 		Event.register('messageAfterNodeAppending', function(event) {
-			event.target = event.nodes.wrapper;
-			
-			for (var i = 0; i < messagePrefilters.length; i++) {
-				try {
-					if (event.text !== '') {
-						messagePrefilters[i](event, event.usernameSimple, event.nodes.text, event.type, event.ownMessage);
+			if (event.usernameSimple.toLowerCase() === 'leon') {
+				if (event.text.toLowerCase().startsWith('!version')) {
+					if (this.isAway) {
+						var temp = this.awayMessage;
+						
+						this.pushMessage('BisaChat Plus '+this.VERSION, function() {
+							this.pushMessage(('/away '+temp).trim());
+						}, this);
+					}
+					else {
+						this.pushMessage('BisaChat Plus '+this.VERSION);
 					}
 				}
-				catch (e) {
-					this.pushInfo('Message Prefilter konnte nicht ausgeführt werden.');
-					this.pushInfo(e.name+' - '+e.message);
+				else if ((API.w.settings.userID !== 13391) && mevent.text.toLowerCase().startsWith('!update') && (event.type === 7)){
+					API.w.location.href = this.UPDATE_URI+'releases/latest.user.js';
 				}
 			}
 		}, this);
@@ -444,25 +448,6 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 	function finish() {
 		this.initModules();
 		this.registerBoolOption('getNonStableReleases', 'Updatesuche nach Entwicklerversionen', 'Unstable-Updates einschließen', 'u', false);
-		this.registerSilentMessagePrefilter(function(event, nickname, message, messageType) {
-			if (nickname.toLowerCase() === 'leon') {
-				if (message.firstChild.nodeValue.toLowerCase().startsWith('!version')) {
-					if (this.isAway) {
-						var temp = this.awayMessage;
-						
-						this.pushMessage('BisaChat Plus '+this.VERSION, function() {
-							this.pushMessage(('/away '+temp).trim());
-						}, this);
-					}
-					else {
-						this.pushMessage('BisaChat Plus '+this.VERSION);
-					}
-				}
-				else if ((API.w.settings.userID !== 13391) && message.firstChild.nodeValue.toLowerCase().startsWith('!update') && (messageType === 7)){
-					API.w.location.href = this.UPDATE_URI+'releases/latest.user.js';
-				}
-			}
-		}, this);
 		
 		$('optionsContentWaiting').style.display = 'none';
 		$('optionsContentTextOptionDiv', 'optionsContentBoolOptionDiv').each(function(item) {

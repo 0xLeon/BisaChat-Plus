@@ -483,14 +483,18 @@ Modules.AddOn.BBCodeParser = new ClassSystem.Class(Modules.Util.AbstractModule, 
 	});
 	
 	function registerOptions() {
-		this.callerObj.registerMessagePrefilter('bbcode', 'BBCodes', 'BBCode aktivieren', 'b', false, function(event, checked, nickname, message, messageType) {
-			if (checked) {
-				message.innerHTML = new Parser(message.innerHTML).parse();
+		this.callerObj.registerBoolOption('bbcode', 'BBCodes', 'BBCode aktivieren', 'b', true);
+	}
+	
+	function addListeners() {
+		Event.register('messageBeforeNodeSetup', function(event) {
+			if (API.Storage.getValue('bbcodeStatus', true)) {
+				event.text = new Parser(event.text).parse();
 			}
 			else {
-				message.innerHTML = this.stripTags(message.innerHTML);
+				event.text = this.stripTags(event.text);
 			}
-		}, null, this);
+		}, this);
 	}
 	
 	function stripTags(text) {
@@ -499,6 +503,7 @@ Modules.AddOn.BBCodeParser = new ClassSystem.Class(Modules.Util.AbstractModule, 
 	
 	return {
 		registerOptions: registerOptions,
+		addListeners:    addListeners,
 		stripTags:       stripTags
 	};
 })());

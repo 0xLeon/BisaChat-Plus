@@ -9,15 +9,12 @@ Modules.AddOn.MessageBox = new ClassSystem.Class(Modules.Util.AbstractModule, {
 		this.unread = 0;
 	},
 	
-	registerOptions: function() {
-		this.callerObj.registerSilentMessagePrefilter(function(event, nickname, message, messageType) {
-			if ((this.callerObj.isAway || !document.hasFocus()) && (messageType === 7)) {
-				this.pushMessage(event, message);
+	addListeners: function() {
+		Event.register('messageAfterNodeSetup', function(event) {
+			if ((this.callerObj.isAway || !document.hasFocus()) && (event.type === 7)) {
+				this.pushMessage(event);
 			}
 		}, this);
-	},
-	
-	addListeners: function() {
 		Event.register('awayStatusChange', function(event) {
 			if (event.isAway) {
 				this.appendHr();
@@ -121,18 +118,14 @@ Modules.AddOn.MessageBox = new ClassSystem.Class(Modules.Util.AbstractModule, {
 	 * Appends a message to the message box.
 	 * Other modules should call this function, not the internal appendMessage
 	 * 
-	 * @param	{Object}	event		event object of the inserted message node
-	 * @param	{Object}	message		message node, which points directly to the actual message
+	 * @param	{Object}	event		event object of the fired message event
 	 * @returns	{undefined}
 	 */
-	pushMessage: function(event, message) {
-		if (!!this.callerObj.moduleInstances.get('SmiliesPlus') && !!this.callerObj.moduleInstances.get('SmiliesPlus').replaceImageSmilies && !API.Storage.getValue('smiliesActive')) this.callerObj.moduleInstances.get('SmiliesPlus').replaceImageSmilies(message);
-		
-		var name = event.target.querySelector('span[onclick]').innerHTML.trim();
+	pushMessage: function(event) {
 		var length = this.inbox.push({
-			timestamp: this.callerObj.parseMessageDate($$('#'+event.target.getAttribute('id')+' span')[0].firstChild.nodeValue.trim().slice(1, -1)),
-			nickname: ((name.endsWith(':')) ? name.slice(0, -1) : name),
-			message: message.innerHTML.trim()
+			timestamp: this.callerObj.parseMessageDate(event.time),
+			nickname: event.username,
+			message: event.text
 		});
 		API.Storage.setValue('messageBoxData', this.inbox);
 		this.unread++;

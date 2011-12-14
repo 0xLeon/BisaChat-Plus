@@ -56,15 +56,7 @@ Modules.AddOn.MessageBox = new ClassSystem.Class(Modules.Util.AbstractModule, (f
 			});
 			
 			a.addEventListener('click', function(event) {
-				this.clearInbox();
-				new API.w.Effect.Fade($$('#messageBox .overlayContent')[0].firstChild, {
-					afterFinish: function(effect) {
-						effect.element.parentNode.removeChild(effect.element);
-						$$('#messageBox .overlayContent')[0].style.display = 'none';
-						$$('#messageBox .overlayContent')[0].appendChild(overlayContentBuilder.call(this));
-						new API.w.Effect.Appear($$('#messageBox .overlayContent')[0]);
-					}.bind(this)
-				});
+				this.clearInbox(true);
 			}.bindAsEventListener(this), true);
 			
 			span.appendChild(document.createTextNode('Alle Nachrichten löschen'));
@@ -146,11 +138,24 @@ Modules.AddOn.MessageBox = new ClassSystem.Class(Modules.Util.AbstractModule, (f
 	
 	/**
 	 * Deletes all saved messages.
+	 * 
+	 * @param	{Boolean}	updateUI	true if the visual interface should be deleted too
 	 */
-	function clearInbox() {
+	function clearInbox(updateUI) {
 		this.inbox.clear();
 		API.Storage.setValue('messageBoxData', this.inbox);
 		this.updateSpan();
+		
+		if (updateUI) {
+			new API.w.Effect.Fade($$('#messageBox .overlayContent')[0].firstChild, {
+				afterFinish: function(effect) {
+					effect.element.parentNode.removeChild(effect.element);
+					$$('#messageBox .overlayContent')[0].style.display = 'none';
+					$$('#messageBox .overlayContent')[0].appendChild(overlayContentBuilder.call(this));
+					new API.w.Effect.Appear($$('#messageBox .overlayContent')[0]);
+				}.bind(this)
+			});
+		}
 	}
 	
 	return {

@@ -2,14 +2,14 @@
  * Message Box Module
  * Copyright (C) 2011 Stefan Hahn
  */
-Modules.AddOn.MessageBox = new ClassSystem.Class(Modules.Util.AbstractModule, {
-	initializeVariables: function() {
+Modules.AddOn.MessageBox = new ClassSystem.Class(Modules.Util.AbstractModule, (function() {
+	function initializeVariables() {
 		this.inbox = API.Storage.getValue('messageBoxData', []);
 		this.prefilterHandle = null;
 		this.unread = 0;
-	},
+	}
 	
-	addListeners: function() {
+	function addListeners() {
 		Event.register('messageAfterNodeSetup', function(event) {
 			if ((this.callerObj.isAway || !document.hasFocus()) && (event.type === 7)) {
 				this.pushMessage(event);
@@ -23,32 +23,19 @@ Modules.AddOn.MessageBox = new ClassSystem.Class(Modules.Util.AbstractModule, {
 		document.addEventListener('blur', function() {
 			this.appendHr();
 		}.bindAsEventListener(this), false);
-	},
+	}
 	
-	buildUI: function() {
+	function buildUI() {
 		this.callerObj.buildOverlay('messageBox', './wcf/icon/pmFullS.png', 'Message Box', function() {
-			return this.overlayContentBuilder();
+			return overlayContentBuilder.call(this);
 		},
 		function() {
 			this.unread = 0;
-			this.updateSpan();
+			updateSpan.call(this);
 		}, this);
-	},
+	}
 	
-	clearInbox: function() {
-		this.inbox.clear();
-		API.Storage.setValue('messageBoxData', this.inbox);
-		this.updateSpan();
-	},
-	
-	updateSpan: function() {
-		var text = 'Message Box';
-		
-		if (this.unread > 0) text += ' ('+this.unread+')';
-		$$('#messageBoxSmallButton span')[0].firstChild.replaceData(0, $$('#messageBoxSmallButton span')[0].firstChild.nodeValue.length, text);
-	},
-	
-	overlayContentBuilder: function() {
+	function overlayContentBuilder() {
 		var node = new API.w.Element('p');
 		
 		node.appendChild(document.createTextNode('Keine Nachrichten vorhanden.'));
@@ -65,8 +52,8 @@ Modules.AddOn.MessageBox = new ClassSystem.Class(Modules.Util.AbstractModule, {
 			var span = new API.w.Element('span');
 			
 			this.inbox.each(function(item, key) {
-				this.appendMessage(item, key, messageUl);
-			}, this);
+				appendMessage(item, key, messageUl);
+			});
 			
 			a.addEventListener('click', function(event) {
 				this.clearInbox();
@@ -74,7 +61,7 @@ Modules.AddOn.MessageBox = new ClassSystem.Class(Modules.Util.AbstractModule, {
 					afterFinish: function(effect) {
 						effect.element.parentNode.removeChild(effect.element);
 						$$('#messageBox .overlayContent')[0].style.display = 'none';
-						$$('#messageBox .overlayContent')[0].appendChild(this.overlayContentBuilder());
+						$$('#messageBox .overlayContent')[0].appendChild(overlayContentBuilder.call(this));
 						new API.w.Effect.Appear($$('#messageBox .overlayContent')[0]);
 					}.bind(this)
 				});
@@ -92,9 +79,9 @@ Modules.AddOn.MessageBox = new ClassSystem.Class(Modules.Util.AbstractModule, {
 		}
 		
 		return node;
-	},
+	}
 	
-	appendMessage: function(messageObj, index, targetNode) {
+	function appendMessage(messageObj, index, targetNode) {
 		var li = new API.w.Element('li', { id: 'whisperMessage'+index });
 		var timeSpan = new API.w.Element('span', { style: 'font-size:0.8em' });
 		var infoSpan = new API.w.Element('span', { style: 'font-weight:bold;' });
@@ -112,16 +99,31 @@ Modules.AddOn.MessageBox = new ClassSystem.Class(Modules.Util.AbstractModule, {
 		li.appendChild(document.createTextNode(': '));
 		li.appendChild(messageSpan);
 		targetNode.appendChild(li);
-	},
+	}
+	
+	function appendHr() {
+		if (!!($$('#messageBox .overlayContent ul')[1]) && ($$('#messageBox .overlayContent ul')[1].lastChild.firstChild.nodeName.toLowerCase() !== 'hr')) {
+			var li = new API.w.Element('li');
+			
+			li.appendChild(new API.w.Element('hr', { style: 'display:block; width:80%;' }));
+			$$('#messageBox .overlayContent ul')[1].appendChild(li);
+		}
+	}
+	
+	function updateSpan() {
+		var text = 'Message Box';
+		
+		if (this.unread > 0) text += ' ('+this.unread+')';
+		$$('#messageBoxSmallButton span')[0].firstChild.replaceData(0, $$('#messageBoxSmallButton span')[0].firstChild.nodeValue.length, text);
+	}
 	
 	/**
 	 * Appends a message to the message box.
-	 * Other modules should call this function, not the internal appendMessage
 	 * 
 	 * @param	{Object}	event		event object of the fired message event
 	 * @returns	{undefined}
 	 */
-	pushMessage: function(event) {
+	function pushMessage(event) {
 		var length = this.inbox.push({
 			timestamp: Date.fromMessageTime(event.time).getTime(),
 			nickname: event.username,
@@ -134,20 +136,29 @@ Modules.AddOn.MessageBox = new ClassSystem.Class(Modules.Util.AbstractModule, {
 			$$('#messageBox .overlayContent')[0].replaceChild(this.overlayContentBuilder(), $$('#messageBox .overlayContent')[0].firstChild);
 		}
 		else {
-			this.appendMessage(this.inbox[length-1], length, $$('#messageBox .overlayContent ul')[1]);
+			appendMessage(this.inbox[length-1], length, $$('#messageBox .overlayContent ul')[1]);
 		}
 		
 		if (!!$('messageBoxSmallButton')) {
-			this.updateSpan();
-		}
-	},
-	
-	appendHr: function() {
-		if (!!($$('#messageBox .overlayContent ul')[1]) && ($$('#messageBox .overlayContent ul')[1].lastChild.firstChild.nodeName.toLowerCase() !== 'hr')) {
-			var li = new API.w.Element('li');
-			
-			li.appendChild(new API.w.Element('hr', { style: 'display:block; width:80%;' }));
-			$$('#messageBox .overlayContent ul')[1].appendChild(li);
+			updateSpan.call(this);
 		}
 	}
-});
+	
+	/**
+	 * Deletes all saved messages.
+	 */
+	function clearInbox() {
+		this.inbox.clear();
+		API.Storage.setValue('messageBoxData', this.inbox);
+		this.updateSpan();
+	}
+	
+	return {
+		initializeVariables: initializeVariables,
+		addListeners:        addListeners,
+		buildUI:             buildUI,
+		
+		pushMessage:         pushMessage,
+		clearInbox:          clearInbox
+	};
+})());

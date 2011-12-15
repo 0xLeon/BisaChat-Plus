@@ -125,7 +125,7 @@ Modules.AddOn.MessageBox = new ClassSystem.Class(Modules.Util.AbstractModule, (f
 		this.unread++;
 		
 		if (length === 1) {
-			$$('#messageBox .overlayContent')[0].replaceChild(this.overlayContentBuilder(), $$('#messageBox .overlayContent')[0].firstChild);
+			$$('#messageBox .overlayContent')[0].replaceChild(overlayContentBuilder.call(this), $$('#messageBox .overlayContent')[0].firstChild);
 		}
 		else {
 			appendMessage(this.inbox[length-1], length, $$('#messageBox .overlayContent ul')[1]);

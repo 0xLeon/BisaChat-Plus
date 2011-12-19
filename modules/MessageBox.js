@@ -17,11 +17,11 @@ Modules.AddOn.MessageBox = new ClassSystem.Class(Modules.Util.AbstractModule, (f
 		}, this);
 		Event.register('awayStatusChange', function(event) {
 			if (event.isAway) {
-				this.appendHr();
+				appendHr.call(this);
 			}
 		}, this);
 		document.addEventListener('blur', function() {
-			this.appendHr();
+			appendHr.call(this);
 		}.bindAsEventListener(this), false);
 	}
 	
@@ -52,7 +52,7 @@ Modules.AddOn.MessageBox = new ClassSystem.Class(Modules.Util.AbstractModule, (f
 			var span = new API.w.Element('span');
 			
 			this.inbox.each(function(item, key) {
-				appendMessage(item, key, messageUl);
+				appendMessage.call(this, item, key, messageUl);
 			});
 			
 			a.addEventListener('click', function(event) {
@@ -128,7 +128,7 @@ Modules.AddOn.MessageBox = new ClassSystem.Class(Modules.Util.AbstractModule, (f
 			$$('#messageBox .overlayContent')[0].replaceChild(overlayContentBuilder.call(this), $$('#messageBox .overlayContent')[0].firstChild);
 		}
 		else {
-			appendMessage(this.inbox[length-1], length, $$('#messageBox .overlayContent ul')[1]);
+			appendMessage.call(this, this.inbox[length-1], length, $$('#messageBox .overlayContent ul')[1]);
 		}
 		
 		if (!!$('messageBoxSmallButton')) {
@@ -144,7 +144,7 @@ Modules.AddOn.MessageBox = new ClassSystem.Class(Modules.Util.AbstractModule, (f
 	function clearInbox(updateUI) {
 		this.inbox.clear();
 		API.Storage.setValue('messageBoxData', this.inbox);
-		this.updateSpan();
+		updateSpan.call(this);
 		
 		if (updateUI) {
 			new API.w.Effect.Fade($$('#messageBox .overlayContent')[0].firstChild, {

@@ -678,7 +678,7 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 		var caption = new API.w.Element('h3', { 'class': 'subHeadline' });
 		
 		overlaySmallButtonLink.addEventListener('click', function(event) {
-			if (Object.isFunction(beforeShow)) beforeShow.call(context);
+			if (Object.isFunction(beforeShow)) beforeShow.call(this);
 			new API.w.Effect.Appear(overlayID);
 		}.bindAsEventListener(context), true);
 		

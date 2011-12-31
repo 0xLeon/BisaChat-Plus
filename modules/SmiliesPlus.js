@@ -22,7 +22,7 @@ Modules.AddOn.SmiliesPlus = new ClassSystem.Class(Modules.Util.AbstractModule, {
 	
 	addListeners: function() {
 		Event.register('messageBeforeNodeSetup', function(event) {
-			if (!API.Storage.getValue('smiliesActive', false)) {
+			if (!API.Storage.getValue('smiliesActiveStatus', false)) {
 				this.replaceImageSmilies(event);
 			}
 		}, this);

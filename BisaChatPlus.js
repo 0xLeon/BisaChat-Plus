@@ -375,17 +375,6 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 		});
 		
 		Event.register('keydown', function(event) {
-			if ((event.keyCode > 64) && (event.keyCode < 91) && event.altKey && !event.shiftKey && !event.ctrlKey && !event.metaKey) {
-				var key = String.fromCharCode(event.which).toLowerCase();
-				
-				if (Object.isString(keydownListeners[key])) {
-					$(keydownListeners[key]).click();
-					event.preventDefault();
-				}
-			}
-		});
-		
-		Event.register('keydown', function(event) {
 			if (event.keyCode === 27) {
 				$$('.overlay').each(function(overlay) {
 					if (overlay.style.display !== 'none') {
@@ -393,6 +382,14 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 						$('chatInput').focus();
 					}
 				});
+			}
+			else if ((event.keyCode > 64) && (event.keyCode < 91) && event.altKey && !event.shiftKey && !event.ctrlKey && !event.metaKey) {
+				var key = String.fromCharCode(event.which).toLowerCase();
+				
+				if (Object.isString(keydownListeners[key])) {
+					$(keydownListeners[key]).click();
+					event.preventDefault();
+				}
 			}
 		});
 		

@@ -86,10 +86,10 @@ Object.extend(Function.prototype, (function() {
 	
 	
 	return {
-		argumentNames:       argumentNames,
-		bind:                Function.prototype.bind || bind,
-		bindAsEventListener: bindAsEventListener,
-		wrap:                wrap,
-		methodize:           methodize
+		argumentNames:		argumentNames,
+		bind:			Function.prototype.bind || bind,
+		bindAsEventListener:	bindAsEventListener,
+		wrap:			wrap,
+		methodize:		methodize
 	};
 })());

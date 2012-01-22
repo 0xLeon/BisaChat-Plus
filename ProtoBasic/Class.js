@@ -104,7 +104,7 @@ var ClassSystem = (function() {
 	}
 	
 	return {
-		AbstractClass: AbstractClass,
-		Class:         Class
+		AbstractClass:	AbstractClass,
+		Class:		Class
 	};
 })();

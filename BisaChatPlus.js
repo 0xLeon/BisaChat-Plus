@@ -490,8 +490,8 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 	 * Saves position and display status of a node
 	 * Useful for draggable objects
 	 * 
-	 * @param	{String}	id	Valid DOMNode ID
-	 * @returns	{undefined}		Returns nothing
+	 * @param	{String}	id			Valid DOMNode ID
+	 * @returns	{undefined}				Returns nothing
 	 */
 	function saveBoxStatus(id) {
 		var visible = !($(id).style.display === 'none');
@@ -506,9 +506,9 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 	/**
 	 * Post chat message
 	 * 
-	 * @param	{String}	messageText	Text which to post in chat stream
-	 * @param	{Function}	[onFinish]	Gets called after successful posting, ajax transport object passed as first argument
-	 * @param	{Object}	[context]	Indicates where 'this' points within onFinish callback
+	 * @param	{String}	messageText		Text which to post in chat stream
+	 * @param	{Function}	[onFinish]		Gets called after successful posting, ajax transport object passed as first argument
+	 * @param	{Object}	[context]		Indicates where 'this' points within onFinish callback
 	 * @returns	{undefined}				Returns nothing
 	 */
 	function pushMessage(messageText, onFinish, context) {
@@ -531,7 +531,7 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 	/**
 	 * Shows information to the user only
 	 * 
-	 * @param	{String}	infoText	Text which to post in the user's chat stream
+	 * @param	{String}	infoText		Text which to post in the user's chat stream
 	 * @returns	{undefined}				Returns nothing
 	 */
 	function pushInfo(infoText) {
@@ -553,8 +553,8 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 	 * @param	{String}	boxID			ID for box DOM node
 	 * @param	{String}	icon			URI to icon image, 16*16px recommended
 	 * @param	{String}	title			small button and box title text
-	 * @param	{Function}	contentBuilder	Generates box content, has to return a DOM node
-	 * @returns	{undefined}					Returns nothing
+	 * @param	{Function}	contentBuilder		Generates box content, has to return a DOM node
+	 * @returns	{undefined}				Returns nothing
 	 */
 	function buildBox(boxID, icon, title, contentBuilder) {
 		if (!!$(boxID)) throw new Error('boxID \''+boxID+'\' already used');
@@ -650,10 +650,10 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 	 * @param	{String}	overlayID		ID for overlay DOM node
 	 * @param	{String}	icon			URI to icon image, 16*16px recommended
 	 * @param	{String}	title			small button and overlay text
-	 * @param	{Function}	contentBuilder	Generates overlay content, either has to return a DOM node OR accept content node reference as first parameter
-	 * @param	{Function}	[beforeShow]	Called every time the overlay gets displayed
+	 * @param	{Function}	contentBuilder		Generates overlay content, either has to return a DOM node OR accept content node reference as first parameter
+	 * @param	{Function}	[beforeShow]		Called every time the overlay gets displayed
 	 * @param	{Object}	[context]		Indicates where 'this' points within contentBuilder and beforeShow callback
-	 * @returns	{undefined}					Returns nothing
+	 * @returns	{undefined}				Returns nothing
 	 */
 	function buildOverlay(overlayID, icon, title, contentBuilder, beforeShow, context) {
 		if (!!$(overlayID)) throw new Error('overlayID \''+overlayID+'\' already used');
@@ -715,7 +715,7 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 	 * 
 	 * @param	{String}	optionID		ID for optionSpan DOM node
 	 * @param	{String}	optionText		Short description which is displayed in front of actual value
-	 * @param	{String}	defaultValue	Text option value if nothing is saved in storage
+	 * @param	{String}	defaultValue		Text option value if nothing is saved in storage
 	 * @param	{Function}	[onChange]		Called when new value is set, new value passed as first argument
 	 * @param	{Object}	[context]		Indicates where 'this' points within onChange callback
 	 */
@@ -766,13 +766,13 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 	/**
 	 * Builds a GUI element for switchable options
 	 * 
-	 * @param	{String}	optionID			ID for optionInput DOM node
-	 * @param	{String}	optionTitle			Short description which is shown in chat stream when option is switched
-	 * @param	{String}	optionText			Short description which is displayed in front of actual value
-	 * @param	{String}	[accessKey]			One letter which indicates the acess key
+	 * @param	{String}	optionID		ID for optionInput DOM node
+	 * @param	{String}	optionTitle		Short description which is shown in chat stream when option is switched
+	 * @param	{String}	optionText		Short description which is displayed in front of actual value
+	 * @param	{String}	[accessKey]		One letter which indicates the acess key
 	 * @param	{Boolean}	defaultValue		Option status when there is nothing in storage
 	 * @param	{Function}	[switchCallback]	Called when option is about to be switched, option is only switched if switchCallback returns boolean true, two arguments passed: event{Object}: checkbox change event object, checked{Boolean}: wether or not the box is checked
-	 * @param	{Object}	[context]			Indicates where 'this' points within switchCallback
+	 * @param	{Object}	[context]		Indicates where 'this' points within switchCallback
 	 */
 	function registerBoolOption(optionID, optionTitle, optionText, accessKey, defaultValue, switchCallback, context) {
 		if (!!$(optionID)) throw new Error('optionID \''+optionID+'\' already used');

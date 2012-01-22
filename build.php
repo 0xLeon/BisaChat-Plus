@@ -192,12 +192,12 @@ function removeHeader($matches) {
 /**
  * Replaces quoted strings in a text.
  * 
- * @author 	Marcel Werk
+ * @author	Marcel Werk
  * @copyright	2001-2009 WoltLab GmbH
  * @license	GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  * @package	com.woltlab.wcf
  * @subpackage	util
- * @category 	Community Framework
+ * @category	Community Framework
  */
 class StringStack {
 	protected static $stringStack = array();

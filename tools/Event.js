@@ -19,7 +19,7 @@ var Event = (function() {
 	 * @param	{String]	name		event name
 	 * @param	{Function}	handler		event handler function, has to accept one parameter of type Object
 	 * @param	{Object}	[context]	optional object which this will reference to within handler function
-	 * @returns	{Number}				index of event handler, necessary when you want to unregister the listener
+	 * @returns	{Number}			index of event handler, necessary when you want to unregister the listener
 	 */
 	function register(name, handler, context) {
 		if (Object.isUndefined(events.get(name))) {
@@ -32,8 +32,8 @@ var Event = (function() {
 	/**
 	 * Remove an event listener
 	 * 
-	 * @param	{String}	name	event name
-	 * @param	{Number}	index	index retuern by Event.register
+	 * @param	{String}	name		event name
+	 * @param	{Number}	index		index retuern by Event.register
 	 * @returns	{undefined}			Returns nothing
 	 */
 	function unregister(name, index) {
@@ -45,7 +45,7 @@ var Event = (function() {
 	 * 
 	 * @param	{String}	name		event name
 	 * @param	{Object}	eventObj	object passed to event handlers
-	 * @returns	{undefined}				Returns nothing
+	 * @returns	{undefined}			Returns nothing
 	 */
 	function fire(name, eventObj) {
 		if (Object.isArray(events.get(name))) {

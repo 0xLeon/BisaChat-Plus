@@ -70,16 +70,16 @@ Object.extend(Array.prototype, (function() {
 	}
 	
 	return {
-		_each:    arrayProto.forEach,
-		_reverse: arrayProto.reverse,
-		clear:    clear,
-		first:    first,
-		last:     last,
-		compact:  compact,
-		without:  without,
-		reverse:  reverse,
-		clone:    clone,
-		size:     size,
-		inspect:  inspect,
+		_each:		arrayProto.forEach,
+		_reverse:	arrayProto.reverse,
+		clear:		clear,
+		first:		first,
+		last:		last,
+		compact:	compact,
+		without:	without,
+		reverse:	reverse,
+		clone:		clone,
+		size:		size,
+		inspect:	inspect,
 	};
 })());

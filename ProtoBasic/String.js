@@ -134,16 +134,16 @@ Object.extend(String.prototype, (function() {
 	}
 	
 	return {
-		includes:     includes,
-		startsWith:   startsWith,
-		endsWith:     endsWith,
-		sub:          sub,
-		gsub:         gsub,
-		trim:         String.prototype.trim || trim,
-		strip:        String.prototype.trim || trim,
-		trimLeft:     String.prototype.trimLeft || trimLeft,
-		trimRight:    String.prototype.trimRight || trimRight,
-		parseAsColor: parseAsColor,
-		inspect:      inspect
+		includes:	includes,
+		startsWith:	startsWith,
+		endsWith:	endsWith,
+		sub:		sub,
+		gsub:		gsub,
+		trim:		String.prototype.trim || trim,
+		strip:		String.prototype.trim || trim,
+		trimLeft:	String.prototype.trimLeft || trimLeft,
+		trimRight:	String.prototype.trimRight || trimRight,
+		parseAsColor:	parseAsColor,
+		inspect:	inspect
 	};
 })());

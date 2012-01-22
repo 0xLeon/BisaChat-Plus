@@ -84,18 +84,18 @@ var Hash = new ClassSystem.Class(Enumerable, (function() {
 	}
 	
 	return {
-		initialize: initialize,
-		_each:      _each,
-		set:        set,
-		get:        get,
-		unset:      unset,
-		index:      index,
-		keys:       keys,
-		values:     values,
-		merge:      merge,
-		update:     update,
-		toObject:   toObject,
-		clone:      clone,
-		inspect:    inspect
+		initialize:	initialize,
+		_each:		_each,
+		set:		set,
+		get:		get,
+		unset:		unset,
+		index:		index,
+		keys:		keys,
+		values:		values,
+		merge:		merge,
+		update:		update,
+		toObject:	toObject,
+		clone:		clone,
+		inspect:	inspect
 	};
 })());

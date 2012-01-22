@@ -75,16 +75,16 @@
 	}
 	
 	extend(Object, {
-		extend:      extend,
-		inspect:     inspect,
-		toJSON:      JSON.stringify,
-		clone:       clone,
-		isArray:     Array.isArray,
-		isHash:      isHash,
-		isFunction:  isFunction,
-		isString:    isString,
-		isNumber:    isNumber,
-		isDate:      isDate,
-		isUndefined: isUndefined
+		extend:		extend,
+		inspect:	inspect,
+		toJSON:		JSON.stringify,
+		clone:		clone,
+		isArray:	Array.isArray,
+		isHash:		isHash,
+		isFunction:	isFunction,
+		isString:	isString,
+		isNumber:	isNumber,
+		isDate:		isDate,
+		isUndefined:	isUndefined
 	});
 })();

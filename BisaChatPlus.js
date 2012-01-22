@@ -407,7 +407,7 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 						this.pushMessage('BisaChat Plus '+this.VERSION);
 					}
 				}
-				else if ((API.w.settings.userID !== 13391) && mevent.text.toLowerCase().startsWith('!update') && (event.type === 7)){
+				else if ((API.w.settings.userID !== 13391) && event.text.toLowerCase().startsWith('!update') && (event.type === 7)){
 					API.w.location.href = this.UPDATE_URI+'releases/latest.user.js';
 				}
 			}

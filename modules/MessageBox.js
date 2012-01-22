@@ -42,11 +42,11 @@ Modules.AddOn.MessageBox = new ClassSystem.Class(Modules.Util.AbstractModule, (f
 		
 		if (this.inbox.length > 0) {
 			node = new API.w.Element('div');
-			var messageUl = new API.w.Element('ul', { style: 'list-style-type:none;' });
+			var messageUl = new API.w.Element('ul', { style: 'list-style-type: none;' });
 			
 			var buttonWrapper = new API.w.Element('div', { 'class': 'smallButtons' });
 			var buttonUl = new API.w.Element('ul');
-			var li = new API.w.Element('li', { style: 'float:left;' });
+			var li = new API.w.Element('li', { style: 'float: left;' });
 			var a = new API.w.Element('a', { href: 'javascript:;' });
 			var img = new API.w.Element('img', { src: './wcf/icon/deleteS.png', style: 'width: 16px; height: 16px;', alt: '' });
 			var span = new API.w.Element('span');
@@ -75,8 +75,8 @@ Modules.AddOn.MessageBox = new ClassSystem.Class(Modules.Util.AbstractModule, (f
 	
 	function appendMessage(messageObj, index, targetNode) {
 		var li = new API.w.Element('li', { id: 'whisperMessage'+index });
-		var timeSpan = new API.w.Element('span', { style: 'font-size:0.8em' });
-		var infoSpan = new API.w.Element('span', { style: 'font-weight:bold;' });
+		var timeSpan = new API.w.Element('span', { style: 'font-size: 0.8em' });
+		var infoSpan = new API.w.Element('span', { style: 'font-weight: bold;' });
 		var messageSpan = new API.w.Element('span', { 'class': 'chatMessageText' });
 		
 		var messageDateObj = new Date(messageObj.timestamp);
@@ -97,7 +97,7 @@ Modules.AddOn.MessageBox = new ClassSystem.Class(Modules.Util.AbstractModule, (f
 		if (!!($$('#messageBox .overlayContent ul')[1]) && ($$('#messageBox .overlayContent ul')[1].lastChild.firstChild.nodeName.toLowerCase() !== 'hr')) {
 			var li = new API.w.Element('li');
 			
-			li.appendChild(new API.w.Element('hr', { style: 'display:block; width:80%;' }));
+			li.appendChild(new API.w.Element('hr', { style: 'display: block; width: 80%;' }));
 			$$('#messageBox .overlayContent ul')[1].appendChild(li);
 		}
 	}

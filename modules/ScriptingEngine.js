@@ -40,7 +40,7 @@ Modules.AddOn.ScriptingEngine = new ClassSystem.Class(Modules.Util.AbstractModul
 		
 		var buttonWrapper = new API.w.Element('div', { 'class': 'smallButtons' });
 		var buttonUl = new API.w.Element('ul');
-		var buttonLi = new API.w.Element('li', { style: 'float:left;' });
+		var buttonLi = new API.w.Element('li', { style: 'float: left;' });
 		var buttonLink = new API.w.Element('a', { href: 'javascript:;' });
 		var buttonImg = new API.w.Element('img', { src: './wcf/icon/addS.png', style: 'width: 16px; height: 16px;', alt: '' });
 		var buttonSpan = new API.w.Element('span');

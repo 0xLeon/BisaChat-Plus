@@ -363,7 +363,7 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 								$$('#backup .overlayContent')[0].firstChild.addEventListener('transitionend', function(event) {
 									this.displayBackupData($$('#backup .overlayContent')[0], true);
 								}.bindAsEventListener(this), true);
-								$$('#backup .overlayContent')[0].firstChild.className = ($$('#backup .overlayContent')[0].firstChild.className + 'transitionFade').trim();
+								$$('#backup .overlayContent')[0].firstChild.className = ($$('#backup .overlayContent')[0].firstChild.className + ' transitionFade').trim();
 							}.bind(this)
 						});
 					}
@@ -374,7 +374,7 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 								$$('#backup .overlayContent')[0].firstChild.addEventListener('transitionend', function(event) {
 									this.displayBackupData($$('#backup .overlayContent')[0], true);
 								}.bindAsEventListener(this), true);
-								$$('#backup .overlayContent')[0].firstChild.className = ($$('#backup .overlayContent')[0].firstChild.className + 'transitionFade').trim();
+								$$('#backup .overlayContent')[0].firstChild.className = ($$('#backup .overlayContent')[0].firstChild.className + ' transitionFade').trim();
 							}.bind(this)
 						});
 					}
@@ -477,7 +477,7 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 			$$('#backup .overlayContent')[0].firstChild.addEventListener('transitionend', function(event) {
 				this.displayBackupData($$('#backup .overlayContent')[0], true);
 			}.bindAsEventListener(this), true);
-			$$('#backup .overlayContent')[0].firstChild.className = ($$('#backup .overlayContent')[0].firstChild.className + 'transitionFade').trim();
+			$$('#backup .overlayContent')[0].firstChild.className = ($$('#backup .overlayContent')[0].firstChild.className + ' transitionFade').trim();
 		}.bindAsEventListener(this), true);
 		
 		logoutLink.addEventListener('click', function(event) {
@@ -559,7 +559,7 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 											$$('#backup .overlayContent')[0].firstChild.addEventListener('transitionend', function(event) {
 												this.displayBackupData($$('#backup .overlayContent')[0], true);
 											}.bindAsEventListener(this), true);
-											$$('#backup .overlayContent')[0].firstChild.className = ($$('#backup .overlayContent')[0].firstChild.className + 'transitionFade').trim();
+											$$('#backup .overlayContent')[0].firstChild.className = ($$('#backup .overlayContent')[0].firstChild.className + ' transitionFade').trim();
 										}.bind(this)
 									});
 								}
@@ -570,7 +570,7 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 											$$('#backup .overlayContent')[0].firstChild.addEventListener('transitionend', function(event) {
 												this.displayBackupData($$('#backup .overlayContent')[0], true);
 											}.bindAsEventListener(this), true);
-											$$('#backup .overlayContent')[0].firstChild.className = ($$('#backup .overlayContent')[0].firstChild.className + 'transitionFade').trim();
+											$$('#backup .overlayContent')[0].firstChild.className = ($$('#backup .overlayContent')[0].firstChild.className + ' transitionFade').trim();
 										}.bind(this)
 									});
 								}

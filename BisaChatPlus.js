@@ -429,11 +429,11 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 		
 		this.buildBox('options', './wcf/icon/editS.png', 'Optionen', function() {
 			var optionsContentDiv = new API.w.Element('div');
-			var optionsContentWaitingDiv = new API.w.Element('div', { id: 'optionsContentWaiting', style: 'position:absolute; width:100%; height:100%; background-image:url("./wcf/images/spinner.gif"); background-position:50% 50%; background-repeat:no-repeat;' });
-			var optionsContentWrapperDiv = new API.w.Element('div', { id: 'optionsContentWrapper', style: 'display:none' });
-			var optionsContentBoolOptionDiv = new API.w.Element('div', { id: 'optionsContentBoolOptionDiv', style: 'display:none;' });
-			var optionsContentTextOptionDiv = new API.w.Element('div', { id: 'optionsContentTextOptionDiv', style: 'display:none;' });
-			var optionsContentHr = new API.w.Element('hr', { id: 'optionsContentTypeSeparator', style: 'display:none; width:80%' });
+			var optionsContentWaitingDiv = new API.w.Element('div', { id: 'optionsContentWaiting', style: 'position: absolute; width: 100%; height: 100%; background-image: url("./wcf/images/spinner.gif"); background-position: 50% 50%; background-repeat: no-repeat;' });
+			var optionsContentWrapperDiv = new API.w.Element('div', { id: 'optionsContentWrapper', style: 'display: none' });
+			var optionsContentBoolOptionDiv = new API.w.Element('div', { id: 'optionsContentBoolOptionDiv', style: 'display: none;' });
+			var optionsContentTextOptionDiv = new API.w.Element('div', { id: 'optionsContentTextOptionDiv', style: 'display: none;' });
+			var optionsContentHr = new API.w.Element('hr', { id: 'optionsContentTypeSeparator', style: 'display: none; width: 80%' });
 			
 			optionsContentWrapperDiv.appendChild(optionsContentBoolOptionDiv);
 			optionsContentWrapperDiv.appendChild(optionsContentHr);
@@ -563,15 +563,15 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 		if (!!$(boxID)) throw new Error('boxID \''+boxID+'\' already used');
 		if (!Object.isFunction(contentBuilder)) throw new Error('contentBuilder has to be a function');
 		
-		var boxSmallButton = new API.w.Element('li', { id: boxID+'SmallButton', 'class': 'boxSmallButton', style: 'display:none;' });
+		var boxSmallButton = new API.w.Element('li', { id: boxID+'SmallButton', 'class': 'boxSmallButton', style: 'display: none;' });
 		var boxSmallButtonLink = new API.w.Element('a', { href: 'javascript:;' });
-		var boxSmallButtonImg = new API.w.Element('img', { src: icon, alt: '', style: 'width:16px; height:16px;' });
+		var boxSmallButtonImg = new API.w.Element('img', { src: icon, alt: '', style: 'width: 16px; height: 16px;' });
 		var boxSmallButtonSpan = new API.w.Element('span');
 		
-		var boxDiv = new API.w.Element('div', { id: boxID, 'class': 'border messageInner bcplusBox', style: 'z-index:500;' });
-		var boxHeadlineDiv = new API.w.Element('div', { id: boxID+'Headline', 'class': 'containerHead', style: 'cursor:move;' });
+		var boxDiv = new API.w.Element('div', { id: boxID, 'class': 'border messageInner bcplusBox', style: 'z-index: 500;' });
+		var boxHeadlineDiv = new API.w.Element('div', { id: boxID+'Headline', 'class': 'containerHead', style: 'cursor: move;' });
 		var boxHeadline = new API.w.Element('h3');
-		var boxContentDiv = new API.w.Element('div', { id: boxID+'Content', style: 'height:132px; padding-left:3px; overflow-y:auto;' });
+		var boxContentDiv = new API.w.Element('div', { id: boxID+'Content', style: 'height: 132px; padding-left: 3px; overflow-y: auto;' });
 		
 		boxDiv.style.display = (API.Storage.getValue(boxID+'boxVisible', false)) ? '' : 'none';
 		boxDiv.style.top = API.Storage.getValue(boxID+'boxTop', '-160px');
@@ -662,12 +662,12 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 		if (!!$(overlayID)) throw new Error('overlayID \''+overlayID+'\' already used');
 		if (!Object.isFunction(contentBuilder)) throw new TypeError('contentBuilder has to be a function');
 		
-		var overlaySmallButton = new API.w.Element('li', { id: overlayID+'SmallButton', 'class': 'overlaySmallButton', style: 'display:none;' });
+		var overlaySmallButton = new API.w.Element('li', { id: overlayID+'SmallButton', 'class': 'overlaySmallButton', style: 'display: none;' });
 		var overlaySmallButtonLink = new API.w.Element('a', { href: 'javascript:;' });
-		var overlaySmallButtonImg = new API.w.Element('img', { src: icon, alt: '', style: 'width:16px; height:16px;' });
+		var overlaySmallButtonImg = new API.w.Element('img', { src: icon, alt: '', style: 'width: 16px; height: 16px;' });
 		var overlaySmallButtonSpan = new API.w.Element('span');
 		
-		var overlayDiv = new API.w.Element('div', { id: overlayID, 'class': 'overlay container-1', style: 'display:none;' });
+		var overlayDiv = new API.w.Element('div', { id: overlayID, 'class': 'overlay container-1', style: 'display: none;' });
 		var wrapperDiv = new API.w.Element('div');
 		var contentDiv = new API.w.Element('div', { 'class': 'overlayContent' });
 		
@@ -728,7 +728,7 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 		var p = new API.w.Element('p');
 		var span = new API.w.Element('span', { id: optionID, 'class': 'textOptionValue', title: 'Zum Ändern anklicken' });
 		var input = new API.w.Element('input', { id: optionID+'Input', 'class': 'hidden', type: 'text', size: '8', autocomplete: 'off', value: API.Storage.getValue(optionID+'Value', defaultValue) });
-		var hr = new API.w.Element('hr', { style: 'display:block; width:80%' });
+		var hr = new API.w.Element('hr', { style: 'display: block; width: 80%' });
 		
 		span.addEventListener('click', function(event) {
 			var optionSpan = event.target;
@@ -784,7 +784,7 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 		var p = new API.w.Element('p');
 		var label = new API.w.Element('label', { 'for': optionID });
 		var checkbox = new API.w.Element('input', { id: optionID, name: optionID, type: 'checkbox' });
-		var hr = new API.w.Element('hr', { style: 'display:block; width:80%' });
+		var hr = new API.w.Element('hr', { style: 'display: block; width: 80%' });
 		
 		checkbox.addEventListener('focus', function() {
 			$('chatInput').focus();

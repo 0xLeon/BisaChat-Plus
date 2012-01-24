@@ -822,28 +822,28 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 			return 'http://projects.swallow-all-lies.com/greasemonkey/files/bisachatPlus/';
 		},
 		
-		isAway:                         isAway,
-		awayMessage:                    awayMessage,
-		moduleInstances:                moduleInstances,
+		isAway:			isAway,
+		awayMessage:		awayMessage,
+		moduleInstances:	moduleInstances,
 		
-		initialize:                     initialize,
-		initCoreModules:                initCoreModules,
-		addStyleRules:                  addStyleRules,
-		breakCage:                      breakCage,
-		avoidMultipleLogin:             avoidMultipleLogin,
-		setupEvents:                    setupEvents,
-		addListeners:                   addListeners,
-		buildUI:                        buildUI,
-		finish:                         finish,
-		initModules:                    initModules,
+		initialize:		initialize,
+		initCoreModules:	initCoreModules,
+		addStyleRules:		addStyleRules,
+		breakCage:		breakCage,
+		avoidMultipleLogin:	avoidMultipleLogin,
+		setupEvents:		setupEvents,
+		addListeners:		addListeners,
+		buildUI:		buildUI,
+		finish:			finish,
+		initModules:		initModules,
 		
-		saveBoxStatus:                  saveBoxStatus,
-		pushMessage:                    pushMessage,
-		pushInfo:                       pushInfo,
-		buildBox:                       buildBox,
-		buildOverlay:                   buildOverlay,
-		registerTextOption:             registerTextOption,
-		registerBoolOption:             registerBoolOption
+		saveBoxStatus:		saveBoxStatus,
+		pushMessage:		pushMessage,
+		pushInfo:		pushInfo,
+		buildBox:		buildBox,
+		buildOverlay:		buildOverlay,
+		registerTextOption:	registerTextOption,
+		registerBoolOption:	registerBoolOption
 	};
 })());
 

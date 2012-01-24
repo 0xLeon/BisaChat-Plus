@@ -18,14 +18,6 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 	var awayMessage = '';
 	
 	/**
-	 * Array of all registered prefilter functions
-	 * 
-	 * @private
-	 * @type	{Array}
-	 */
-	var messagePrefilters = [];
-	
-	/**
 	 * Hash-like object of all access key listeners with access key as key
 	 * 
 	 * @private

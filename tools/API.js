@@ -2,7 +2,7 @@
  * BisaChat API
  * Provides useful functions for userscripts
  *
- * Copyright (C) 2011 Stefan Hahn
+ * Copyright (C) 2011-2012 Stefan Hahn
  */
 var API = (function() {
 	/**

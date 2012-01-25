@@ -1,6 +1,6 @@
 /* 
  * Highlighting Module
- * Copyright (C) 2011 Stefan Hahn
+ * Copyright (C) 2011-2012 Stefan Hahn
  */
 Modules.AddOn.Highlighting = new ClassSystem.Class(Modules.Util.AbstractModule, {
 	initialize: function($super, callerObj) {

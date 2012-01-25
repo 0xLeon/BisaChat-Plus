@@ -3,13 +3,13 @@
 // @description    Add's a few more comfortable functions to BisaChat
 // @version        {version}
 // @author         Stefan Hahn
-// @copyright      2011, Stefan Hahn
+// @copyright      2011-2012, Stefan Hahn
 // @licence        GNU Lesser General Public License, version 2
 // @namespace      http://projects.swallow-all-lies.com/greasemonkey/namsespaces/bisachat.plus
 // @include        http*://www.bisaboard.de/*?page=Chat*
 // ==/UserScript==
 /*
- * Copyright (C) 2011 Stefan Hahn
+ * Copyright (C) 2011-2012 Stefan Hahn
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

@@ -1,6 +1,6 @@
 /*
  * Last.fm Connect Module
- * Copyright (C) 2011 Stefan Hahn
+ * Copyright (C) 2011-2012 Stefan Hahn
  * 
  * Based on BisaChat Last.fm Connect
  */

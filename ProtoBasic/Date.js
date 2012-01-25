@@ -1,7 +1,6 @@
 /* 
  * Extended Date functions
- * 
- * Copyright (c) 2011 Stefan Hahn
+ * Copyright (c) 2011-2012 Stefan Hahn
  */
 Object.extend(Date, {
 	fromMessageTime: function(timeString) {

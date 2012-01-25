@@ -1,5 +1,6 @@
 /* 
  * Extended Function functions
+ * Copyright (C) 2011-2012 Stefan Hahn
  * 
  * Taken from Prototype
  * Copyright (c) 2005-2010 Sam Stephenson

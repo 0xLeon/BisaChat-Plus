@@ -2,7 +2,7 @@
  * Abstract Module class
  * All modules should inhert from this class
  * 
- * Copyright (C) 2011 Stefan Hahn
+ * Copyright (C) 2011-2012 Stefan Hahn
  */
 Modules.Util.AbstractModule = new ClassSystem.AbstractClass({
 	initialize: function(callerObj) {

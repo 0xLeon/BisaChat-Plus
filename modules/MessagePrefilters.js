@@ -1,6 +1,6 @@
 /*
  * Message Prefilter Module
- * Copyright (C) 2011 Stefan Hahn
+ * Copyright (C) 2011-2012 Stefan Hahn
  */
 Modules.AddOn.MessagePrefilters = new ClassSystem.Class(Modules.Util.AbstractModule, {
 	registerOptions: function() {

@@ -2,7 +2,7 @@
  * Registry
  * Storage engine for temp value storage
  * 
- * Copyright (C) 2011 Stefan Hahn
+ * Copyright (C) 2011-2012 Stefan Hahn
  */
 var Registry = (function() {
 	/**

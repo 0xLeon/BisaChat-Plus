@@ -1,5 +1,6 @@
 /* 
  * Extended String functions
+ * Copyright (C) 2011-2012 Stefan Hahn
  * 
  * Taken from Prototype
  * Except for parseAsColor

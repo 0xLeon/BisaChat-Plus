@@ -1,6 +1,6 @@
 /* 
  * Scripting Engine Module
- * Copyright (C) 2011 Stefan Hahn
+ * Copyright (C) 2011-2012 Stefan Hahn
  */
 Modules.AddOn.ScriptingEngine = new ClassSystem.Class(Modules.Util.AbstractModule, {
 	initializeVariables: function() {

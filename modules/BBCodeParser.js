@@ -1,6 +1,6 @@
 /*
  * BBCode Parser
- * Copyright (C) 2011 Stefan Hahn
+ * Copyright (C) 2011-2012 Stefan Hahn
  * 
  * Based on WCF BBCode parser by WoltLab <https://github.com/woltlab>
  * Copyright (C) 2001-2011 WoltLab GmbH

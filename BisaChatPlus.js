@@ -34,7 +34,6 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 	
 	function initialize() {
 		try {
-			this.initCoreModules();
 			this.addStyleRules();
 			this.breakCage();
 			this.avoidMultipleLogin();
@@ -47,7 +46,7 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 			}.bindAsEventListener(this), true);
 		}
 		finally {
-			API.checkForUpdates(this.UPDATE_URI, this.VERSION, updateCallback, API.Storage.getValue('getNonStableReleasesStatus', false));
+			this.initCoreModules();
 		}
 	}
 	
@@ -436,7 +435,6 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 	
 	function finish() {
 		this.initModules();
-		this.registerBoolOption('getNonStableReleases', 'Updatesuche nach Entwicklerversionen', 'Unstable-Updates einschließen', 'u', false);
 		
 		$('optionsContentWaiting').style.display = 'none';
 		$('optionsContentTextOptionDiv', 'optionsContentBoolOptionDiv').each(function(item) {
@@ -803,25 +801,34 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 		}
 	}
 	
+	/**
+	 * Returns the URI where the update server for this application is located
+	 * 
+	 * @return	{String}				Update server URI
+	 */
+	function getUpdateServer() {
+		return 'http://projects.swallow-all-lies.com/greasemonkey/files/bisachatPlus/';
+	}
+	
+	/**
+	 * Returns the version of the application
+	 * 
+	 * @return	{String}				Version number string
+	 */
+	function getVersion() {
+		return '{version}';
+	}
+	
+	/**
+	 * Returns a function which handles an update xml given as the only parameter
+	 * 
+	 * @return	{Function}				Update callback function
+	 */
+	function getUpdateCallback() {
+		return updateCallback;
+	}
+	
 	return {
-		/**
-		 * BisaChat Plus Version
-		 * 
-		 * @type	{String}
-		 */
-		get VERSION() {
-			return '{version}';
-		},
-		
-		/**
-		 * Update URI
-		 * 
-		 * @type	{String}
-		 */
-		get UPDATE_URI() {
-			return 'http://projects.swallow-all-lies.com/greasemonkey/files/bisachatPlus/';
-		},
-		
 		isAway:			isAway,
 		awayMessage:		awayMessage,
 		moduleInstances:	moduleInstances,
@@ -843,7 +850,10 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 		buildBox:		buildBox,
 		buildOverlay:		buildOverlay,
 		registerTextOption:	registerTextOption,
-		registerBoolOption:	registerBoolOption
+		registerBoolOption:	registerBoolOption,
+		getUpdateServer:	getUpdateServer,
+		getVersion:		getVersion,
+		getUpdateCallback:	getUpdateCallback
 	};
 })());
 

@@ -204,37 +204,10 @@ var API = (function() {
 		this.Selector.getElementsByCSSExpression('head')[0].appendChild(styleNode);
 	}
 	
-	/**
-	 * Checks for latest version of userscript
-	 * 
-	 * @param	{String}	updateServer			Valid URI pointing to an update server
-	 * @param	{String}	version				Version number string
-	 * @param	{Function}	callback			Gets called if there's a new version, response xml dom passed as first argument
-	 * @param	{Boolean}	[getNonStableReleases]		Indicates wether or not to include developer versions in update checking
-	 * @returns {undefined}						Returns nothing
-	 */
-	function checkForUpdates(updateServer, version, callback, getNonStableReleases) {
-		GM_xmlhttpRequest({
-			method: 'GET',
-			url: updateServer+'?version='+encodeURIComponent(version)+'&getNonStableReleases='+((getNonStableReleases) ? '1' : '0'),
-			headers: {
-				'Accept': 'text/xml'
-			},
-			onload: function(response) {
-				var xml = ((!response.responseXML) ? (new DOMParser()).parseFromString(response.responseText, 'text/xml') : response.responseXML);
-				
-				if (xml.documentElement.getAttribute('newVersion') === 'true') {
-					callback(xml);
-				}
-			}
-		});
-	}
-	
 	return {
 		Storage:         Storage,
 		Selector:        Selector,
 		addStyle:        addStyle,
-		checkForUpdates: checkForUpdates,
 		
 		/**
 		 * Unrestricted window object

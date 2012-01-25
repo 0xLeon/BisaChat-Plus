@@ -525,13 +525,11 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 	 * @returns	{undefined}				Returns nothing
 	 */
 	function pushInfo(infoText) {
-		var now = new Date();
-		
 		API.w.chat.handleMessageUpdate([{
 			id: API.w.chat.id,
 			type: 8,
 			privateID: API.w.chat.activeUserID,
-			time: ((now.getHours() < 10) ? '0'+now.getHours() : now.getHours())+':'+((now.getMinutes() < 10) ? '0'+now.getMinutes() : now.getMinutes())+':'+((now.getSeconds() < 10) ? '0'+now.getSeconds() : now.getSeconds()),
+			time: (new Date()).getMessageDate(),
 			usernameraw: API.w.settings.username,
 			text: infoText
 		}]);

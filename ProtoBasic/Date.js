@@ -12,3 +12,9 @@ Object.extend(Date, {
 		return (new Date(now.getFullYear(), now.getMonth(), now.getDate(), parseInt(timeArray[0], 10), parseInt(timeArray[1], 10), parseInt(timeArray[2], 10)));
 	}
 });
+
+Object.extend(Date.prototype, {
+	getMessageDate: function() {
+		return ((this.getHours() < 10) ? '0'+this.getHours() : this.getHours())+':'+((this.getMinutes() < 10) ? '0'+this.getMinutes() : this.getMinutes())+':'+((this.getSeconds() < 10) ? '0'+this.getSeconds() : this.getSeconds());
+	}
+});

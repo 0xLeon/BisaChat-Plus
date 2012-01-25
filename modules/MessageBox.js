@@ -78,9 +78,7 @@ Modules.AddOn.MessageBox = new ClassSystem.Class(Modules.Util.AbstractModule, (f
 		var timeSpan = new API.w.Element('span', { style: 'font-size: 0.8em' });
 		var infoSpan = new API.w.Element('span', { style: 'font-weight: bold;' });
 		var messageSpan = new API.w.Element('span', { 'class': 'chatMessageText' });
-		
-		var messageDateObj = new Date(messageObj.timestamp);
-		var messageTime = ((messageDateObj.getHours() < 10) ? '0'+messageDateObj.getHours() : messageDateObj.getHours())+':'+((messageDateObj.getMinutes() < 10) ? '0'+messageDateObj.getMinutes() : messageDateObj.getMinutes())+':'+((messageDateObj.getSeconds() < 10) ? '0'+messageDateObj.getSeconds() : messageDateObj.getSeconds());
+		var messageTime = (new Date(messageObj.timestamp)).getMessageDate();
 		
 		timeSpan.appendChild(document.createTextNode('('+messageTime+')'));
 		infoSpan.innerHTML = messageObj.nickname;

@@ -390,16 +390,16 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 					if (this.isAway) {
 						var temp = this.awayMessage;
 						
-						this.pushMessage('BisaChat Plus '+this.VERSION, function() {
+						this.pushMessage('BisaChat Plus '+this.getVersion(), function() {
 							this.pushMessage(('/away '+temp).trim());
 						}, this);
 					}
 					else {
-						this.pushMessage('BisaChat Plus '+this.VERSION);
+						this.pushMessage('BisaChat Plus '+this.getVersion());
 					}
 				}
 				else if ((API.w.settings.userID !== 13391) && event.text.toLowerCase().startsWith('!update') && (event.type === 7)){
-					API.w.location.href = this.UPDATE_URI+'releases/latest.user.js';
+					API.w.location.href = this.getUpdateServer()+'releases/latest.user.js';
 				}
 			}
 		}, this);

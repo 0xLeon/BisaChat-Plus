@@ -36,10 +36,10 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 		try {
 			this.addStyleRules();
 			this.breakCage();
-			this.avoidMultipleLogin();
 			this.setupEvents();
 			this.addListeners();
 			this.buildUI();
+			this.avoidMultipleLogin();
 			
 			API.w.addEventListener('load', function(event) {
 				this.finish();

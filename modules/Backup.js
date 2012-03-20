@@ -4,13 +4,14 @@
  */
 Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 	initializeVariables: function() {
+		this.transitionendUIFunction = null;
 		this.intervalHandle = null;
 		this.buttonWidth = '';
 	},
 	
 	addStyleRules: function() {
 		API.addStyle('#backupSmallButton, #backupDataList li { overflow: hidden !important; }');
-		API.addStyle('.transitionFade { -moz-transition: opacity 1s ease-in-out; opacity: 0; }');
+		API.addStyle('#backup .overlayContent { -moz-transition: opacity 1s ease-in-out; }');
 	},
 	
 	registerOptions: function() {
@@ -88,6 +89,13 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 				this.callerObj.pushInfo('Couldn\'t start backup timer. '+e.message);
 			}
 		}
+		
+		$$('#backup .overlayContent')[0].addEventListener('transitionend', function(event) {
+			if (this.transitionendUIFunction !== null) {
+				this.transitionendUIFunction(event.target);
+				this.transitionendUIFunction = null;
+			}
+		}.bindAsEventListener(this), true);
 	},
 	
 	backupSettings: function() {
@@ -168,34 +176,28 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 		}
 	},
 	
-	displayBackupData: function(overlayContentNode, doAppear) {
+	displayBackupData: function(overlayContentNode) {
 		GM_xmlhttpRequest({
 			method: 'GET',
 			url: 'http://projects.swallow-all-lies.com/greasemonkey/files/bisachatPlus/backup/?action=getList&username='+API.Storage.getValue('backupUsername')+'&password='+API.Storage.getValue('backupPassword'),
 			onload: function(transport) {
 				if (transport.readyState === 4) {
-					var node = new API.w.Element('div', { style: 'display: '+((doAppear) ? 'none' : 'block')+';' });
+					var node = new API.w.Element('div');
 					var userP = new API.w.Element('p');
 					var panelLink = new API.w.Element('a', { href: 'javascript:;' });
 					var logoutLink = new API.w.Element('a', { href: 'javascript:;' });
 					
 					panelLink.addEventListener('click', function(event) {
-						new API.w.Effect.Fade($$('#backup .overlayContent')[0].firstChild, {
-							afterFinish: function(effect) {
-								this.displayUserPanel($$('#backup .overlayContent')[0], true);
-							}.bind(this)
-						});
+						this.transitionendUIFunction = this.displayUserPanel;
+						$$('#backup .overlayContent')[0].style.opacity = 0;
 					}.bindAsEventListener(this), true);
 					
 					logoutLink.addEventListener('click', function(event) {
 						API.Storage.unsetValue('backupUsername');
 						API.Storage.unsetValue('backupPassword');
 						this.stopTimer();
-						new API.w.Effect.Fade($$('#backup .overlayContent')[0].firstChild, {
-							afterFinish: function(effect) {
-								this.displayLoginForm($$('#backup .overlayContent')[0], true);
-							}.bind(this)
-						});
+						this.transitionendUIFunction = this.displayLoginForm;
+						$$('#backup .overlayContent')[0].style.opacity = 0;
 					}.bindAsEventListener(this), true);
 					
 					userP.appendChild(document.createTextNode('Angemeldet als '+API.Storage.getValue('backupUsername')));
@@ -331,16 +333,14 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 						overlayContentNode.appendChild(node);
 					}
 					
-					if (doAppear) {
-						new API.w.Effect.Appear(node);
-					}
+					overlayContentNode.style.opacity = 1.0;
 				}
 			}.bind(this)
 		});
 	},
 	
-	displayLoginForm: function(overlayContentNode, doAppear) {
-		var node = new API.w.Element('div', { style: 'display: '+((doAppear) ? 'none' : 'block')+';' });
+	displayLoginForm: function(overlayContentNode) {
+		var node = new API.w.Element('div');
 		var labelUsername = new API.w.Element('label', { 'for': 'inputUsername' });
 		var labelPassword = new API.w.Element('label', { 'for': 'inputPassword' });
 		var inputUsername = new API.w.Element('input', { type: 'text', id: 'inputUsername', name: 'inputUsername', size: '15', style: 'margin-bottom: 5px;' });
@@ -356,14 +356,12 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 					API.Storage.setValue('backupPassword', $('inputPassword').value);
 					$('backupUserFormInfo').innerHTML = infoText;
 					this.startTimer();
+					this.transitionendUIFunction = this.displayBackupData;
 					
 					if ($('backupUserFormInfo').style.display !== 'none') {
 						new API.w.Effect.Highlight($('backupUserFormInfo'), {
 							afterFinish: function() {
-								$$('#backup .overlayContent')[0].firstChild.addEventListener('transitionend', function(event) {
-									this.displayBackupData($$('#backup .overlayContent')[0], true);
-								}.bindAsEventListener(this), true);
-								$$('#backup .overlayContent')[0].firstChild.className = ($$('#backup .overlayContent')[0].firstChild.className + ' transitionFade').trim();
+								$$('#backup .overlayContent')[0].style.opacity = 0;
 							}.bind(this)
 						});
 					}
@@ -371,10 +369,7 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 						new API.w.Effect.Appear($('backupUserFormInfo'), {
 							afterFinish: function(effect) {
 								effect.element.style.display = 'inline-block';
-								$$('#backup .overlayContent')[0].firstChild.addEventListener('transitionend', function(event) {
-									this.displayBackupData($$('#backup .overlayContent')[0], true);
-								}.bindAsEventListener(this), true);
-								$$('#backup .overlayContent')[0].firstChild.className = ($$('#backup .overlayContent')[0].firstChild.className + ' transitionFade').trim();
+								$$('#backup .overlayContent')[0].style.opacity = 0;
 							}.bind(this)
 						});
 					}
@@ -453,13 +448,11 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 			overlayContentNode.appendChild(node);
 		}
 		
-		if (doAppear) {
-			new API.w.Effect.Appear(node);
-		}
+		overlayContentNode.style.opacity = 1.0;
 	},
 	
-	displayUserPanel: function(overlayContentNode, doAppear) {
-		var node = new API.w.Element('div', { style: 'display: '+((doAppear) ? 'none' : 'block')+';' });
+	displayUserPanel: function(overlayContentNode) {
+		var node = new API.w.Element('div');
 		var userP = new API.w.Element('p');
 		var returnLink = new API.w.Element('a', { href: 'javascript:;' });
 		var logoutLink = new API.w.Element('a', { href: 'javascript:;' });
@@ -474,21 +467,16 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 		var info = new API.w.Element('p', { id: 'backupUserFormInfo', style: 'display: none;' });
 		
 		returnLink.addEventListener('click', function(event) {
-			$$('#backup .overlayContent')[0].firstChild.addEventListener('transitionend', function(event) {
-				this.displayBackupData($$('#backup .overlayContent')[0], true);
-			}.bindAsEventListener(this), true);
-			$$('#backup .overlayContent')[0].firstChild.className = ($$('#backup .overlayContent')[0].firstChild.className + ' transitionFade').trim();
+			this.transitionendUIFunction = this.displayBackupData;
+			$$('#backup .overlayContent')[0].style.opacity = 0;
 		}.bindAsEventListener(this), true);
 		
 		logoutLink.addEventListener('click', function(event) {
 			API.Storage.unsetValue('backupUsername');
 			API.Storage.unsetValue('backupPassword');
 			this.stopTimer();
-			new API.w.Effect.Fade($$('#backup .overlayContent')[0].firstChild, {
-				afterFinish: function(effect) {
-					this.displayLoginForm($$('#backup .overlayContent')[0], true);
-				}.bind(this)
-			});
+			this.transitionendUIFunction = this.displayLoginForm;
+			$$('#backup .overlayContent')[0].style.opacity = 0;
 		}.bindAsEventListener(this), true);
 		
 		deleteLink.addEventListener('click', function(event) {
@@ -506,11 +494,8 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 							API.Storage.unsetValue('backupPassword');
 							API.Storage.unsetValue('lastBackup');
 							this.stopTimer();
-							new API.w.Effect.Fade($$('#backup .overlayContent')[0].firstChild, {
-								afterFinish: function(effect) {
-									this.displayLoginForm($$('#backup .overlayContent')[0], true);
-								}.bind(this)
-							});
+							this.transitionendUIFunction = this.displayLoginForm;
+							$$('#backup .overlayContent')[0].style.opacity = 0;
 						}
 						else {
 							try {
@@ -552,14 +537,12 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 							if (response.status === 200) {
 								API.Storage.setValue('backupPassword', $('inputAlterPasswordNew').value);
 								$('backupUserFormInfo').innerHTML = 'Passwort geändert';
+								this.transitionendUIFunction = this.displayBackupData;
 								
 								if ($('backupUserFormInfo').style.display !== 'none') {
 									new API.w.Effect.Highlight($('backupUserFormInfo'), {
 										afterFinish: function() {
-											$$('#backup .overlayContent')[0].firstChild.addEventListener('transitionend', function(event) {
-												this.displayBackupData($$('#backup .overlayContent')[0], true);
-											}.bindAsEventListener(this), true);
-											$$('#backup .overlayContent')[0].firstChild.className = ($$('#backup .overlayContent')[0].firstChild.className + ' transitionFade').trim();
+										$$('#backup .overlayContent')[0].style.opacity = 0;
 										}.bind(this)
 									});
 								}
@@ -567,10 +550,7 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 									new API.w.Effect.Appear($('backupUserFormInfo'), {
 										afterFinish: function(effect) {
 											effect.element.style.display = 'inline-block';
-											$$('#backup .overlayContent')[0].firstChild.addEventListener('transitionend', function(event) {
-												this.displayBackupData($$('#backup .overlayContent')[0], true);
-											}.bindAsEventListener(this), true);
-											$$('#backup .overlayContent')[0].firstChild.className = ($$('#backup .overlayContent')[0].firstChild.className + ' transitionFade').trim();
+											$$('#backup .overlayContent')[0].style.opacity = 0;
 										}.bind(this)
 									});
 								}
@@ -653,8 +633,6 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 			overlayContentNode.appendChild(node);
 		}
 		
-		if (doAppear) {
-			new API.w.Effect.Appear(node);
-		}
+		overlayContentNode.style.opacity = 1.0;
 	}
 });

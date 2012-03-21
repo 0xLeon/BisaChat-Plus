@@ -30,8 +30,8 @@ Modules.AddOn.SmiliesPlus = new ClassSystem.Class(Modules.Util.AbstractModule, {
 	
 	buildUI: function() {
 		this.callerObj.buildBox('smilies', './wcf/images/smilies/smile.png', 'Smileys', function() {
-			var smiliesListDiv = new API.w.Element('div', { id: 'smiliesList' });
-			var smiliesUl = new API.w.Element('ul', { 'class': 'smileys' });
+			var smiliesListDiv = new Element('div', { id: 'smiliesList' });
+			var smiliesUl = new Element('ul', { 'class': 'smileys' });
 			
 			$$('#smileyList ul > li').each(function(item) {
 				smiliesUl.appendChild(item.cloneNode(true));
@@ -54,7 +54,7 @@ Modules.AddOn.SmiliesPlus = new ClassSystem.Class(Modules.Util.AbstractModule, {
 	setStatus: function(state) {
 		if (state) {
 			if (!!$('enablesmilies')) $('enablesmilies').parentNode.removeChild($('enablesmilies'));
-			$('chatForm').appendChild(new API.w.Element('input', { id: 'enablesmilies', name: 'enablesmilies', type: 'hidden', value: 'on' }));
+			$('chatForm').appendChild(new Element('input', { id: 'enablesmilies', name: 'enablesmilies', type: 'hidden', value: 'on' }));
 		}
 		else {
 			if (!!$('enablesmilies')) $('enablesmilies').parentNode.removeChild($('enablesmilies'));

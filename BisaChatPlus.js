@@ -112,7 +112,7 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 	
 	function avoidMultipleLogin() {
 		if (API.Storage.getValue('alreadyOnline', false)) {
-			var resetLink = new API.w.Element('a');
+			var resetLink = new Element('a');
 			
 			resetLink.addEventListener('click', function(event) {
 				API.Storage.setValue('alreadyOnline', false);
@@ -120,7 +120,7 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 			}, true);
 			resetLink.appendChild(document.createTextNode('Falls definitiv nur ein Chattab geöffnet ist, hier klicken.'));
 			$$('#chatError div')[0].innerHTML = 'Den Chat bitte nicht in mehr als einem Tab öffnen.';
-			$$('#chatError div')[0].appendChild((new API.w.Element('br')));
+			$$('#chatError div')[0].appendChild((new Element('br')));
 			$$('#chatError div')[0].appendChild(resetLink);
 			$('chatError').style.display = '';
 			API.w.onunload = Function.empty;
@@ -257,12 +257,12 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 				
 				Event.fire('messageBeforeNodeSetup', message);
 				
-				var li = new API.w.Element('li', { id: this.prefix+'Message'+message.id, 'class': message.classes.join(' ') });
-				var input = new API.w.Element('input', { type: 'checkbox', value: String.interpret(message.id), style: 'display: none; float: left;' });
-				var messageTimeSpan = new API.w.Element('span', { 'class': this.prefix+'MessageTime', style: 'font-size: 0.8em; font-weight: normal; font-style: normal;' });
-				var messageUsernameSpan = new API.w.Element('span', { 'class': this.prefix+'MessageUsername', style: 'font-weight: bold;' });
-				var messageInfoSpan = new API.w.Element('span', { 'class': message.info.classes.join(' ') });
-				var messageTextSpan = new API.w.Element('span', { 'class': this.prefix+'MessageText' });
+				var li = new Element('li', { id: this.prefix+'Message'+message.id, 'class': message.classes.join(' ') });
+				var input = new Element('input', { type: 'checkbox', value: String.interpret(message.id), style: 'display: none; float: left;' });
+				var messageTimeSpan = new Element('span', { 'class': this.prefix+'MessageTime', style: 'font-size: 0.8em; font-weight: normal; font-style: normal;' });
+				var messageUsernameSpan = new Element('span', { 'class': this.prefix+'MessageUsername', style: 'font-weight: bold;' });
+				var messageInfoSpan = new Element('span', { 'class': message.info.classes.join(' ') });
+				var messageTextSpan = new Element('span', { 'class': this.prefix+'MessageText' });
 				
 				Event.fire('messageAfterNodeSetup', Object.extend(message, {
 					nodes: {
@@ -406,9 +406,9 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 	}
 	
 	function buildUI() {
-		var returnToForumsList = new API.w.Element('ul', { id: 'returnToForumsList' });
-		var returnToForumsListItem = new API.w.Element('li');
-		var returnToForumsLink = new API.w.Element('a', { href: '/' });
+		var returnToForumsList = new Element('ul', { id: 'returnToForumsList' });
+		var returnToForumsListItem = new Element('li');
+		var returnToForumsLink = new Element('a', { href: '/' });
 		
 		returnToForumsLink.appendChild(document.createTextNode('Forum'));
 		returnToForumsListItem.appendChild(returnToForumsLink);
@@ -416,12 +416,12 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 		$('chatPrivatelist').parentNode.insertBefore(returnToForumsList, $('chatPrivatelist'));
 		
 		this.buildBox('options', './wcf/icon/editS.png', 'Optionen', function() {
-			var optionsContentDiv = new API.w.Element('div');
-			var optionsContentWaitingDiv = new API.w.Element('div', { id: 'optionsContentWaiting', style: 'position: absolute; width: 100%; height: 100%; background-image: url("./wcf/images/spinner.gif"); background-position: 50% 50%; background-repeat: no-repeat;' });
-			var optionsContentWrapperDiv = new API.w.Element('div', { id: 'optionsContentWrapper', style: 'display: none' });
-			var optionsContentBoolOptionDiv = new API.w.Element('div', { id: 'optionsContentBoolOptionDiv', style: 'display: none;' });
-			var optionsContentTextOptionDiv = new API.w.Element('div', { id: 'optionsContentTextOptionDiv', style: 'display: none;' });
-			var optionsContentHr = new API.w.Element('hr', { id: 'optionsContentTypeSeparator', style: 'display: none; width: 80%' });
+			var optionsContentDiv = new Element('div');
+			var optionsContentWaitingDiv = new Element('div', { id: 'optionsContentWaiting', style: 'position: absolute; width: 100%; height: 100%; background-image: url("./wcf/images/spinner.gif"); background-position: 50% 50%; background-repeat: no-repeat;' });
+			var optionsContentWrapperDiv = new Element('div', { id: 'optionsContentWrapper', style: 'display: none' });
+			var optionsContentBoolOptionDiv = new Element('div', { id: 'optionsContentBoolOptionDiv', style: 'display: none;' });
+			var optionsContentTextOptionDiv = new Element('div', { id: 'optionsContentTextOptionDiv', style: 'display: none;' });
+			var optionsContentHr = new Element('hr', { id: 'optionsContentTypeSeparator', style: 'display: none; width: 80%' });
 			
 			optionsContentWrapperDiv.appendChild(optionsContentBoolOptionDiv);
 			optionsContentWrapperDiv.appendChild(optionsContentHr);
@@ -462,10 +462,10 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 	}
 	
 	function updateCallback(xml) {
-		var updateSmallButton = new API.w.Element('li');
-		var updateSmallButtonLink = new API.w.Element('a', { href: xml.getElementsByTagName('url')[0].firstChild.nodeValue, title: 'BisaChat Plus-Update installieren', target: '_blank' });
-		var updateSmallButtonImg = new API.w.Element('img', { src: './wcf/icon/packageUpdateS.png', alt: '' });
-		var updateSmallButtonSpan = new API.w.Element('span');
+		var updateSmallButton = new Element('li');
+		var updateSmallButtonLink = new Element('a', { href: xml.getElementsByTagName('url')[0].firstChild.nodeValue, title: 'BisaChat Plus-Update installieren', target: '_blank' });
+		var updateSmallButtonImg = new Element('img', { src: './wcf/icon/packageUpdateS.png', alt: '' });
+		var updateSmallButtonSpan = new Element('span');
 		
 		updateSmallButtonSpan.appendChild(document.createTextNode('Neue Version verfügbar'));
 		updateSmallButtonLink.appendChild(updateSmallButtonImg);
@@ -548,15 +548,15 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 		if (!!$(boxID)) throw new Error('boxID \''+boxID+'\' already used');
 		if (!Object.isFunction(contentBuilder)) throw new Error('contentBuilder has to be a function');
 		
-		var boxSmallButton = new API.w.Element('li', { id: boxID+'SmallButton', 'class': 'boxSmallButton', style: 'display: none;' });
-		var boxSmallButtonLink = new API.w.Element('a', { href: 'javascript:;' });
-		var boxSmallButtonImg = new API.w.Element('img', { src: icon, alt: '', style: 'width: 16px; height: 16px;' });
-		var boxSmallButtonSpan = new API.w.Element('span');
+		var boxSmallButton = new Element('li', { id: boxID+'SmallButton', 'class': 'boxSmallButton', style: 'display: none;' });
+		var boxSmallButtonLink = new Element('a', { href: 'javascript:;' });
+		var boxSmallButtonImg = new Element('img', { src: icon, alt: '', style: 'width: 16px; height: 16px;' });
+		var boxSmallButtonSpan = new Element('span');
 		
-		var boxDiv = new API.w.Element('div', { id: boxID, 'class': 'border messageInner bcplusBox', style: 'z-index: 500;' });
-		var boxHeadlineDiv = new API.w.Element('div', { id: boxID+'Headline', 'class': 'containerHead', style: 'cursor: move;' });
-		var boxHeadline = new API.w.Element('h3');
-		var boxContentDiv = new API.w.Element('div', { id: boxID+'Content', style: 'height: 132px; padding-left: 3px; overflow-y: auto;' });
+		var boxDiv = new Element('div', { id: boxID, 'class': 'border messageInner bcplusBox', style: 'z-index: 500;' });
+		var boxHeadlineDiv = new Element('div', { id: boxID+'Headline', 'class': 'containerHead', style: 'cursor: move;' });
+		var boxHeadline = new Element('h3');
+		var boxContentDiv = new Element('div', { id: boxID+'Content', style: 'height: 132px; padding-left: 3px; overflow-y: auto;' });
 		
 		boxDiv.style.display = (API.Storage.getValue(boxID+'boxVisible', false)) ? '' : 'none';
 		boxDiv.style.top = API.Storage.getValue(boxID+'boxTop', '-160px');
@@ -647,20 +647,20 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 		if (!!$(overlayID)) throw new Error('overlayID \''+overlayID+'\' already used');
 		if (!Object.isFunction(contentBuilder)) throw new TypeError('contentBuilder has to be a function');
 		
-		var overlaySmallButton = new API.w.Element('li', { id: overlayID+'SmallButton', 'class': 'overlaySmallButton', style: 'display: none;' });
-		var overlaySmallButtonLink = new API.w.Element('a', { href: 'javascript:;' });
-		var overlaySmallButtonImg = new API.w.Element('img', { src: icon, alt: '', style: 'width: 16px; height: 16px;' });
-		var overlaySmallButtonSpan = new API.w.Element('span');
+		var overlaySmallButton = new Element('li', { id: overlayID+'SmallButton', 'class': 'overlaySmallButton', style: 'display: none;' });
+		var overlaySmallButtonLink = new Element('a', { href: 'javascript:;' });
+		var overlaySmallButtonImg = new Element('img', { src: icon, alt: '', style: 'width: 16px; height: 16px;' });
+		var overlaySmallButtonSpan = new Element('span');
 		
-		var overlayDiv = new API.w.Element('div', { id: overlayID, 'class': 'overlay container-1', style: 'display: none;' });
-		var wrapperDiv = new API.w.Element('div');
-		var contentDiv = new API.w.Element('div', { 'class': 'overlayContent' });
+		var overlayDiv = new Element('div', { id: overlayID, 'class': 'overlay container-1', style: 'display: none;' });
+		var wrapperDiv = new Element('div');
+		var contentDiv = new Element('div', { 'class': 'overlayContent' });
 		
-		var closeButtonDiv = new API.w.Element('div', { 'class': 'overlayCloseButton', title: 'Zum Schließen, ESC-Taste drücken' });
-		var closeButtonLink = new API.w.Element('a', { href: 'javascript:;' });
-		var closeButtonImg = new API.w.Element('img', { src: 'wcf/icon/closeS.png', alt: '' });
+		var closeButtonDiv = new Element('div', { 'class': 'overlayCloseButton', title: 'Zum Schließen, ESC-Taste drücken' });
+		var closeButtonLink = new Element('a', { href: 'javascript:;' });
+		var closeButtonImg = new Element('img', { src: 'wcf/icon/closeS.png', alt: '' });
 		
-		var caption = new API.w.Element('h3', { 'class': 'subHeadline' });
+		var caption = new Element('h3', { 'class': 'subHeadline' });
 		
 		overlaySmallButtonLink.addEventListener('click', function(event) {
 			if (Object.isFunction(beforeShow)) beforeShow.call(this);
@@ -710,10 +710,10 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 	function registerTextOption(optionID, optionText, defaultValue, onChange, context) {
 		if (!!$(optionID)) throw new Error('optionID \''+optionID+'\' already used');
 		
-		var p = new API.w.Element('p');
-		var span = new API.w.Element('span', { id: optionID, 'class': 'textOptionValue', title: 'Zum Ändern anklicken' });
-		var input = new API.w.Element('input', { id: optionID+'Input', 'class': 'hidden', type: 'text', size: '8', autocomplete: 'off', value: API.Storage.getValue(optionID+'Value', defaultValue) });
-		var hr = new API.w.Element('hr', { style: 'display: block; width: 80%' });
+		var p = new Element('p');
+		var span = new Element('span', { id: optionID, 'class': 'textOptionValue', title: 'Zum Ändern anklicken' });
+		var input = new Element('input', { id: optionID+'Input', 'class': 'hidden', type: 'text', size: '8', autocomplete: 'off', value: API.Storage.getValue(optionID+'Value', defaultValue) });
+		var hr = new Element('hr', { style: 'display: block; width: 80%' });
 		
 		span.addEventListener('click', function(event) {
 			var optionSpan = event.target;
@@ -766,10 +766,10 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 		if (!!$(optionID)) throw new Error('optionID \''+optionID+'\' already used');
 		if ((!!accessKey) && Object.isString(keydownListeners[accessKey.toLowerCase()])) throw new Error('AccessKey \''+accessKey.toLowerCase()+'\' already used');
 		
-		var p = new API.w.Element('p');
-		var label = new API.w.Element('label', { 'for': optionID });
-		var checkbox = new API.w.Element('input', { id: optionID, name: optionID, type: 'checkbox' });
-		var hr = new API.w.Element('hr', { style: 'display: block; width: 80%' });
+		var p = new Element('p');
+		var label = new Element('label', { 'for': optionID });
+		var checkbox = new Element('input', { id: optionID, name: optionID, type: 'checkbox' });
+		var hr = new Element('hr', { style: 'display: block; width: 80%' });
 		
 		checkbox.addEventListener('focus', function() {
 			$('chatInput').focus();

@@ -182,10 +182,10 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 			url: 'http://projects.swallow-all-lies.com/greasemonkey/files/bisachatPlus/backup/?action=getList&username='+API.Storage.getValue('backupUsername')+'&password='+API.Storage.getValue('backupPassword'),
 			onload: function(transport) {
 				if (transport.readyState === 4) {
-					var node = new API.w.Element('div');
-					var userP = new API.w.Element('p');
-					var panelLink = new API.w.Element('a', { href: 'javascript:;' });
-					var logoutLink = new API.w.Element('a', { href: 'javascript:;' });
+					var node = new Element('div');
+					var userP = new Element('p');
+					var panelLink = new Element('a', { href: 'javascript:;' });
+					var logoutLink = new Element('a', { href: 'javascript:;' });
 					
 					panelLink.addEventListener('click', function(event) {
 						this.transitionendUIFunction = this.displayUserPanel;
@@ -201,7 +201,7 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 					}.bindAsEventListener(this), true);
 					
 					userP.appendChild(document.createTextNode('Angemeldet als '+API.Storage.getValue('backupUsername')));
-					userP.appendChild(new API.w.Element('br'));
+					userP.appendChild(new Element('br'));
 					panelLink.appendChild(document.createTextNode('Benutzereinstellungen öffnen'));
 					logoutLink.appendChild(document.createTextNode('Ausloggen'));
 					userP.appendChild(panelLink);
@@ -209,21 +209,21 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 					userP.appendChild(logoutLink);
 					
 					node.appendChild(userP);
-					node.appendChild(new API.w.Element('hr', { style: 'display: block;' }));
+					node.appendChild(new Element('hr', { style: 'display: block;' }));
 					
 					if ((transport.status >= 200) && (transport.status < 300)) {
 						var xml = ((!transport.responseXML) ? (new DOMParser()).parseFromString(transport.responseText, 'text/xml') : transport.responseXML);
 						
 						if (xml.querySelectorAll('entry').length > 0) {
-							var buttonsList = new API.w.Element('ul', { id: 'backupDataList', 'class': 'memberList' });
+							var buttonsList = new Element('ul', { id: 'backupDataList', 'class': 'memberList' });
 							
 							$A(xml.querySelectorAll('entry')).each(function(item) {
-								var button = new API.w.Element('li', { 'class': 'deletable' });
-								var textLink = new API.w.Element('a', { 'class': 'memberName', href: 'javascript:;', title: 'Klicken zum Einspielen der Datensicherung' });
-								var textSpan = new API.w.Element('span');
-								var deleteLink = new API.w.Element('a', { 'class': 'memberRemove deleteButton', href: 'javascript:;', title: 'Klicken zum Löschen der Datensicherung' });
-								var deleteImage = new API.w.Element('img', { src: './wcf/icon/deleteS.png', alt: '' });
-								var input = new API.w.Element('input', { 'type': 'hidden', value: String(item.querySelector('index').firstChild.nodeValue) });
+								var button = new Element('li', { 'class': 'deletable' });
+								var textLink = new Element('a', { 'class': 'memberName', href: 'javascript:;', title: 'Klicken zum Einspielen der Datensicherung' });
+								var textSpan = new Element('span');
+								var deleteLink = new Element('a', { 'class': 'memberRemove deleteButton', href: 'javascript:;', title: 'Klicken zum Löschen der Datensicherung' });
+								var deleteImage = new Element('img', { src: './wcf/icon/deleteS.png', alt: '' });
+								var input = new Element('input', { 'type': 'hidden', value: String(item.querySelector('index').firstChild.nodeValue) });
 								
 								var backupTimeObj = new Date(Math.floor(Number(item.querySelector('timestamp').firstChild.nodeValue) * 1000));
 								var backupTimeString = '';
@@ -271,7 +271,7 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 													new API.w.Effect.Scale(li, 0, {
 														afterFinish: function(effect) {
 															if ($$('#backupDataList li').length === 1) {
-																var info = new API.w.Element('p', { style: 'display: none;' });
+																var info = new Element('p', { style: 'display: none;' });
 																
 																info.appendChild(document.createTextNode('Keine Datensicherungen auf dem Server vorhanden.'));
 																effect.element.parentNode.parentNode.replaceChild(info, effect.element.parentNode);
@@ -300,24 +300,24 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 							node.appendChild(buttonsList);
 						}
 						else {
-							var info = new API.w.Element('p');
+							var info = new Element('p');
 							
 							info.appendChild(document.createTextNode('Keine Datensicherungen auf dem Server vorhanden.'));
 							node.appendChild(info);
 						}
 					}
 					else {
-						var info = new API.w.Element('p');
+						var info = new Element('p');
 						
 						info.appendChild(document.createTextNode('Fehler beim Abfragen der gespeicherten Datensicherungen.'));
-						info.appendChild(new API.w.Element('br'));
+						info.appendChild(new Element('br'));
 						info.appendChild(document.createTextNode(transport.status+' - '+transport.statusText));
 							
 						try {
 							var xml = (new DOMParser()).parseFromString(transport.responseText, 'text/xml');
 							
 							if (!!xml.querySelector('error')) {
-								info.appendChild(new API.w.Element('br'));
+								info.appendChild(new Element('br'));
 								info.appendChild(document.createTextNode(xml.querySelector('error > message').firstChild.nodeValue));
 							}
 						}
@@ -340,14 +340,14 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 	},
 	
 	displayLoginForm: function(overlayContentNode) {
-		var node = new API.w.Element('div');
-		var labelUsername = new API.w.Element('label', { 'for': 'inputUsername' });
-		var labelPassword = new API.w.Element('label', { 'for': 'inputPassword' });
-		var inputUsername = new API.w.Element('input', { type: 'text', id: 'inputUsername', name: 'inputUsername', size: '15', style: 'margin-bottom: 5px;' });
-		var inputPassword = new API.w.Element('input', { type: 'password', id: 'inputPassword', name: 'inputPassword', size: '15', style: 'margin-bottom: 5px;' });
-		var buttonLoginUser = new API.w.Element('button', { type: 'button' });
-		var buttonRegisterUser = new API.w.Element('button', { type: 'button' });
-		var info = new API.w.Element('p', { id: 'backupUserFormInfo', style: 'display: none;' });
+		var node = new Element('div');
+		var labelUsername = new Element('label', { 'for': 'inputUsername' });
+		var labelPassword = new Element('label', { 'for': 'inputPassword' });
+		var inputUsername = new Element('input', { type: 'text', id: 'inputUsername', name: 'inputUsername', size: '15', style: 'margin-bottom: 5px;' });
+		var inputPassword = new Element('input', { type: 'password', id: 'inputPassword', name: 'inputPassword', size: '15', style: 'margin-bottom: 5px;' });
+		var buttonLoginUser = new Element('button', { type: 'button' });
+		var buttonRegisterUser = new Element('button', { type: 'button' });
+		var info = new Element('p', { id: 'backupUserFormInfo', style: 'display: none;' });
 		
 		var buttonLoadFunction = function(response, infoText, errorText) {
 			if (response.readyState === 4) {
@@ -431,14 +431,14 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 		buttonLoginUser.appendChild(document.createTextNode('Einloggen'));
 		buttonRegisterUser.appendChild(document.createTextNode('User anlegen'));
 		node.appendChild(labelUsername);
-		node.appendChild(new API.w.Element('br'));
+		node.appendChild(new Element('br'));
 		node.appendChild(labelPassword);
-		node.appendChild(new API.w.Element('br'));
+		node.appendChild(new Element('br'));
 		node.appendChild(buttonLoginUser);
 		node.appendChild(document.createTextNode(' '));
 		node.appendChild(buttonRegisterUser);
-		node.appendChild(new API.w.Element('br'));
-		node.appendChild(new API.w.Element('br'));
+		node.appendChild(new Element('br'));
+		node.appendChild(new Element('br'));
 		node.appendChild(info);
 		
 		if (!!overlayContentNode.firstChild) {
@@ -452,19 +452,19 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 	},
 	
 	displayUserPanel: function(overlayContentNode) {
-		var node = new API.w.Element('div');
-		var userP = new API.w.Element('p');
-		var returnLink = new API.w.Element('a', { href: 'javascript:;' });
-		var logoutLink = new API.w.Element('a', { href: 'javascript:;' });
+		var node = new Element('div');
+		var userP = new Element('p');
+		var returnLink = new Element('a', { href: 'javascript:;' });
+		var logoutLink = new Element('a', { href: 'javascript:;' });
 		
-		var wrapper = new API.w.Element('div');
-		var deleteLink = new API.w.Element('a', { href: 'javascript:;' });
-		var inputAlterPasswordOld = new API.w.Element('input', { type: 'password', id: 'inputAlterPasswordOld', name: 'inputAlterPasswordOld', size: '15', style: 'margin-bottom: 5px;' });
-		var labelAlterPasswordOld = new API.w.Element('label', { 'for': 'inputAlterPasswordOld' });
-		var inputAlterPasswordNew = new API.w.Element('input', { type: 'password', id: 'inputAlterPasswordNew', name: 'inputAlterPasswordNew', size: '15', style: 'margin-bottom: 5px;' });
-		var labelAlterPasswordNew = new API.w.Element('label', { 'for': 'inputAlterPasswordNew' });
-		var buttonAlterPassword = new API.w.Element('button', { type: 'button' });
-		var info = new API.w.Element('p', { id: 'backupUserFormInfo', style: 'display: none;' });
+		var wrapper = new Element('div');
+		var deleteLink = new Element('a', { href: 'javascript:;' });
+		var inputAlterPasswordOld = new Element('input', { type: 'password', id: 'inputAlterPasswordOld', name: 'inputAlterPasswordOld', size: '15', style: 'margin-bottom: 5px;' });
+		var labelAlterPasswordOld = new Element('label', { 'for': 'inputAlterPasswordOld' });
+		var inputAlterPasswordNew = new Element('input', { type: 'password', id: 'inputAlterPasswordNew', name: 'inputAlterPasswordNew', size: '15', style: 'margin-bottom: 5px;' });
+		var labelAlterPasswordNew = new Element('label', { 'for': 'inputAlterPasswordNew' });
+		var buttonAlterPassword = new Element('button', { type: 'button' });
+		var info = new Element('p', { id: 'backupUserFormInfo', style: 'display: none;' });
 		
 		returnLink.addEventListener('click', function(event) {
 			this.transitionendUIFunction = this.displayBackupData;
@@ -599,7 +599,7 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 		}.bindAsEventListener(this), true);
 		
 		userP.appendChild(document.createTextNode('Angemeldet als '+API.Storage.getValue('backupUsername')));
-		userP.appendChild(new API.w.Element('br'));
+		userP.appendChild(new Element('br'));
 		returnLink.appendChild(document.createTextNode('Zurück'));
 		logoutLink.appendChild(document.createTextNode('Ausloggen'));
 		userP.appendChild(returnLink);
@@ -613,16 +613,16 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 		labelAlterPasswordNew.appendChild(document.createTextNode(' neues Passwort'));
 		buttonAlterPassword.appendChild(document.createTextNode('Passwort ändern'));
 		wrapper.appendChild(deleteLink);
-		wrapper.appendChild(new API.w.Element('hr', { style: 'display: block;' }));
+		wrapper.appendChild(new Element('hr', { style: 'display: block;' }));
 		wrapper.appendChild(labelAlterPasswordOld);
-		wrapper.appendChild(new API.w.Element('br'));
+		wrapper.appendChild(new Element('br'));
 		wrapper.appendChild(labelAlterPasswordNew);
-		wrapper.appendChild(new API.w.Element('br'));
+		wrapper.appendChild(new Element('br'));
 		wrapper.appendChild(buttonAlterPassword);
 		
 		node.appendChild(userP);
-		node.appendChild(new API.w.Element('hr', { style: 'display: block;' }));
-		node.appendChild(new API.w.Element('hr', { style: 'display: block;' }));
+		node.appendChild(new Element('hr', { style: 'display: block;' }));
+		node.appendChild(new Element('hr', { style: 'display: block;' }));
 		node.appendChild(wrapper);
 		node.appendChild(info);
 		

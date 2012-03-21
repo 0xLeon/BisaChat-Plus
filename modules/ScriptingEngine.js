@@ -36,25 +36,25 @@ Modules.AddOn.ScriptingEngine = new ClassSystem.Class(Modules.Util.AbstractModul
 	},
 	
 	overlayContentBuilder: function() {
-		var node = new API.w.Element('div');
+		var node = new Element('div');
 		
-		var buttonWrapper = new API.w.Element('div', { 'class': 'smallButtons' });
-		var buttonUl = new API.w.Element('ul');
-		var buttonLi = new API.w.Element('li', { style: 'float: left;' });
-		var buttonLink = new API.w.Element('a', { href: 'javascript:;' });
-		var buttonImg = new API.w.Element('img', { src: './wcf/icon/addS.png', style: 'width: 16px; height: 16px;', alt: '' });
-		var buttonSpan = new API.w.Element('span');
+		var buttonWrapper = new Element('div', { 'class': 'smallButtons' });
+		var buttonUl = new Element('ul');
+		var buttonLi = new Element('li', { style: 'float: left;' });
+		var buttonLink = new Element('a', { href: 'javascript:;' });
+		var buttonImg = new Element('img', { src: './wcf/icon/addS.png', style: 'width: 16px; height: 16px;', alt: '' });
+		var buttonSpan = new Element('span');
 		
 		buttonLink.addEventListener('click', function(event) {
 			if (!$$('#scriptingEngine dl dd:last-child')[0] || ($$('#scriptingEngine dl dd:last-child')[0].previousSibling.firstChild.nodeType === 3)) {
-				var commandDl = (($$('#scriptingEngine dl')[0]) || (new API.w.Element('dl')));
-				var commandAddDt = new API.w.Element('dt', { style: 'display: none;' });
-				var	commandAddDd = new API.w.Element('dd', { style: 'display: none;' });
-				var commandAddInput = new API.w.Element('input', { 'class': 'inputText', type: 'text', size: 7, value: 'Befehlsname', style: 'font-style: italic;' });
-				var commandAddTextInput = new API.w.Element('input', { 'class': 'inputText', type: 'text', size: 12, value: 'Befehlstext', style: 'font-style: italic;' });
+				var commandDl = (($$('#scriptingEngine dl')[0]) || (new Element('dl')));
+				var commandAddDt = new Element('dt', { style: 'display: none;' });
+				var	commandAddDd = new Element('dd', { style: 'display: none;' });
+				var commandAddInput = new Element('input', { 'class': 'inputText', type: 'text', size: 7, value: 'Befehlsname', style: 'font-style: italic;' });
+				var commandAddTextInput = new Element('input', { 'class': 'inputText', type: 'text', size: 12, value: 'Befehlstext', style: 'font-style: italic;' });
 				
-				var commandAddDeleteButtonLink = new API.w.Element('a', { href: 'javascript:;' });
-				var commandAddDeleteButtonImg = new API.w.Element('img', { src: './wcf/icon/deleteS.png', style: 'width: 16px; height: 16px;', alt: '' });
+				var commandAddDeleteButtonLink = new Element('a', { href: 'javascript:;' });
+				var commandAddDeleteButtonImg = new Element('img', { src: './wcf/icon/deleteS.png', style: 'width: 16px; height: 16px;', alt: '' });
 				
 				commandAddDeleteButtonLink.addEventListener('click', function(event) {
 					var dt = ((event.target.nodeName.toLowerCase() === 'img') ? event.target.parentNode.parentNode : event.target.parentNode);
@@ -158,7 +158,7 @@ Modules.AddOn.ScriptingEngine = new ClassSystem.Class(Modules.Util.AbstractModul
 		node.appendChild(buttonWrapper);
 		
 		if (this.commands.size() > 0) {
-			var commandsDl = new API.w.Element('dl');
+			var commandsDl = new Element('dl');
 			
 			this.commands.each(function(command) {
 				this.buildCommandListElements(command.key, command.value, true, commandsDl);
@@ -167,7 +167,7 @@ Modules.AddOn.ScriptingEngine = new ClassSystem.Class(Modules.Util.AbstractModul
 			node.appendChild(commandsDl);
 		}
 		else {
-			var p = new API.w.Element('p');
+			var p = new Element('p');
 			
 			p.appendChild(document.createTextNode('Keine Befehle vorhanden.'));
 			node.appendChild(p);
@@ -189,13 +189,13 @@ Modules.AddOn.ScriptingEngine = new ClassSystem.Class(Modules.Util.AbstractModul
 	},
 	
 	buildCommandListElements: function(command, text, visible, targetList) {
-		var commandDt = new API.w.Element('dt', { style: ((visible) ? '' : 'display: none;') });
-		var commandSpan = new API.w.Element('span');
-		var commandDd = new API.w.Element('dd', { style: ((visible) ? '' : 'display: none;') });
-		var commandDdHr = new API.w.Element('dd');
+		var commandDt = new Element('dt', { style: ((visible) ? '' : 'display: none;') });
+		var commandSpan = new Element('span');
+		var commandDd = new Element('dd', { style: ((visible) ? '' : 'display: none;') });
+		var commandDdHr = new Element('dd');
 		
-		var commandDeleteButtonLink = new API.w.Element('a', { href: 'javascript:;' });
-		var commandDeleteButtonImg = new API.w.Element('img', { src: './wcf/icon/deleteS.png', style: 'width: 16px; height: 16px;', alt: '' });
+		var commandDeleteButtonLink = new Element('a', { href: 'javascript:;' });
+		var commandDeleteButtonImg = new Element('img', { src: './wcf/icon/deleteS.png', style: 'width: 16px; height: 16px;', alt: '' });
 		
 		commandDeleteButtonLink.addEventListener('click', function(event) {
 			var dt = ((event.target.nodeName.toLowerCase() === 'img') ? event.target.parentNode.parentNode : event.target.parentNode);
@@ -223,7 +223,7 @@ Modules.AddOn.ScriptingEngine = new ClassSystem.Class(Modules.Util.AbstractModul
 		commandDt.appendChild(document.createTextNode(' '));
 		commandDt.appendChild(commandSpan);
 		commandDd.appendChild(document.createTextNode(text));
-		commandDdHr.appendChild(new API.w.Element('hr'));
+		commandDdHr.appendChild(new Element('hr'));
 		targetList.appendChild(commandDt);
 		targetList.appendChild(commandDd);
 		targetList.appendChild(commandDdHr);
@@ -231,7 +231,7 @@ Modules.AddOn.ScriptingEngine = new ClassSystem.Class(Modules.Util.AbstractModul
 	
 	checkListEmpty: function(targetList) {
 		if (this.commands.size() === 0) {
-			var p = new API.w.Element('p', { style: 'display: none;' });
+			var p = new Element('p', { style: 'display: none;' });
 			
 			p.appendChild(document.createTextNode('Keine Befehle vorhanden.'));
 			targetList.parentNode.replaceChild(p, targetList);

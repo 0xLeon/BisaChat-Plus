@@ -36,20 +36,20 @@ Modules.AddOn.MessageBox = new ClassSystem.Class(Modules.Util.AbstractModule, (f
 	}
 	
 	function overlayContentBuilder() {
-		var node = new API.w.Element('p');
+		var node = new Element('p');
 		
 		node.appendChild(document.createTextNode('Keine Nachrichten vorhanden.'));
 		
 		if (this.inbox.length > 0) {
-			node = new API.w.Element('div');
-			var messageUl = new API.w.Element('ul', { style: 'list-style-type: none;' });
+			node = new Element('div');
+			var messageUl = new Element('ul', { style: 'list-style-type: none;' });
 			
-			var buttonWrapper = new API.w.Element('div', { 'class': 'smallButtons' });
-			var buttonUl = new API.w.Element('ul');
-			var li = new API.w.Element('li', { style: 'float: left;' });
-			var a = new API.w.Element('a', { href: 'javascript:;' });
-			var img = new API.w.Element('img', { src: './wcf/icon/deleteS.png', style: 'width: 16px; height: 16px;', alt: '' });
-			var span = new API.w.Element('span');
+			var buttonWrapper = new Element('div', { 'class': 'smallButtons' });
+			var buttonUl = new Element('ul');
+			var li = new Element('li', { style: 'float: left;' });
+			var a = new Element('a', { href: 'javascript:;' });
+			var img = new Element('img', { src: './wcf/icon/deleteS.png', style: 'width: 16px; height: 16px;', alt: '' });
+			var span = new Element('span');
 			
 			this.inbox.each(function(item, key) {
 				appendMessage.call(this, item, key, messageUl);
@@ -74,10 +74,10 @@ Modules.AddOn.MessageBox = new ClassSystem.Class(Modules.Util.AbstractModule, (f
 	}
 	
 	function appendMessage(messageObj, index, targetNode) {
-		var li = new API.w.Element('li', { id: 'whisperMessage'+index });
-		var timeSpan = new API.w.Element('span', { style: 'font-size: 0.8em' });
-		var infoSpan = new API.w.Element('span', { style: 'font-weight: bold;' });
-		var messageSpan = new API.w.Element('span', { 'class': 'chatMessageText' });
+		var li = new Element('li', { id: 'whisperMessage'+index });
+		var timeSpan = new Element('span', { style: 'font-size: 0.8em' });
+		var infoSpan = new Element('span', { style: 'font-weight: bold;' });
+		var messageSpan = new Element('span', { 'class': 'chatMessageText' });
 		var messageTime = (new Date(messageObj.timestamp)).getMessageDate();
 		
 		timeSpan.appendChild(document.createTextNode('('+messageTime+')'));
@@ -93,9 +93,9 @@ Modules.AddOn.MessageBox = new ClassSystem.Class(Modules.Util.AbstractModule, (f
 	
 	function appendHr() {
 		if (!!($$('#messageBox .overlayContent ul')[1]) && ($$('#messageBox .overlayContent ul')[1].lastChild.firstChild.nodeName.toLowerCase() !== 'hr')) {
-			var li = new API.w.Element('li');
+			var li = new Element('li');
 			
-			li.appendChild(new API.w.Element('hr', { style: 'display: block; width: 80%;' }));
+			li.appendChild(new Element('hr', { style: 'display: block; width: 80%;' }));
 			$$('#messageBox .overlayContent ul')[1].appendChild(li);
 		}
 	}

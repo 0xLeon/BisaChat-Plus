@@ -14,7 +14,7 @@ Modules.AddOn.LastfmConnector = new ClassSystem.Class(Modules.Util.AbstractModul
 	},
 	
 	buildUI: function() {
-		var input = new API.w.Element('input', { id: 'nowPlayingButton', 'class': 'inputImage', type: 'image', alt: 'Gerade angehörten Song posten', title: 'Gerade angehörten Song posten', src: './wcf/icon/cronjobExecuteS.png' });
+		var input = new Element('input', { id: 'nowPlayingButton', 'class': 'inputImage', type: 'image', alt: 'Gerade angehörten Song posten', title: 'Gerade angehörten Song posten', src: './wcf/icon/cronjobExecuteS.png' });
 		
 		input.addEventListener('click', function() {
 			if (!this.loadingTrack) {

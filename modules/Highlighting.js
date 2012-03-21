@@ -66,9 +66,9 @@ Modules.AddOn.Highlighting = new ClassSystem.Class(Modules.Util.AbstractModule, 
 				$$('#chatMessage'+API.w.chat.activeUserID+' ul .blurHr').each(function(item) {
 					item.parentNode.removeChild(item);
 				});
-				var line = (new API.w.Element('li', { 'class': 'blurHr' }));
+				var line = (new Element('li', { 'class': 'blurHr' }));
 				
-				line.appendChild(new API.w.Element('hr', { style: 'display: block; width: 75%;' }));
+				line.appendChild(new Element('hr', { style: 'display: block; width: 75%;' }));
 				$$('#chatMessage'+API.w.chat.activeUserID+' ul')[0].appendChild(line);
 			}
 		}, false);

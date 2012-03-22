@@ -23,9 +23,7 @@ desired features:
  - Priority Levels for modules (mid)
  - add function for registering commands (mid)
  - Abstract application class (high)
- - Combine all abstract stuff into a userscript framework (mid)
- - Separate addon and core modules in file structure (high)
- - Include core modules automatically (high)
+ - Maybe merge tools, core modules and ProtoBasic into an abstract Userscript Framework (mid)
 ------------
 Copyright (C) 2011-2012 Stefan Hahn
 

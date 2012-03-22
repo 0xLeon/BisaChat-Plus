@@ -142,10 +142,10 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 		
 		
 		if ((API.Storage.getValue('backupUsername', '') !== '') && (API.Storage.getValue('backupPassword', '') !== '')) {
-			this.displayBackupData(overlayContentNode, false);
+			this.displayBackupData(overlayContentNode);
 		}
 		else {
-			this.displayLoginForm(overlayContentNode, false);
+			this.displayLoginForm(overlayContentNode);
 		}
 			
 		return null;
@@ -362,7 +362,7 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 						new API.w.Effect.Highlight($('backupUserFormInfo'), {
 							afterFinish: function() {
 								$$('#backup .overlayContent')[0].style.opacity = 0;
-							}.bind(this)
+							}
 						});
 					}
 					else {
@@ -370,7 +370,7 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 							afterFinish: function(effect) {
 								effect.element.style.display = 'inline-block';
 								$$('#backup .overlayContent')[0].style.opacity = 0;
-							}.bind(this)
+							}
 						});
 					}
 				}
@@ -408,7 +408,7 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 					buttonLoadFunction(response, 'Benutzer eingeloggt', 'Benutzer konnte nicht eingeloggt werden');
 				}
 			});
-		}.bindAsEventListener(this), true);
+		}, true);
 		
 		buttonRegisterUser.addEventListener('click', function(event) {
 			GM_xmlhttpRequest({
@@ -422,7 +422,7 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 					buttonLoadFunction(response, 'Benutzer angelegt und eingeloggt', 'Benutzer konnte nicht angelegt werden');
 				}
 			});
-		}.bindAsEventListener(this), true);
+		}, true);
 		
 		labelUsername.appendChild(inputUsername);
 		labelUsername.appendChild(document.createTextNode(' Username'));
@@ -542,8 +542,8 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 								if ($('backupUserFormInfo').style.display !== 'none') {
 									new API.w.Effect.Highlight($('backupUserFormInfo'), {
 										afterFinish: function() {
-										$$('#backup .overlayContent')[0].style.opacity = 0;
-										}.bind(this)
+											$$('#backup .overlayContent')[0].style.opacity = 0;
+										}
 									});
 								}
 								else {
@@ -551,7 +551,7 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 										afterFinish: function(effect) {
 											effect.element.style.display = 'inline-block';
 											$$('#backup .overlayContent')[0].style.opacity = 0;
-										}.bind(this)
+										}
 									});
 								}
 							}

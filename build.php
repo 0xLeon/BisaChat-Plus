@@ -32,9 +32,9 @@ if ($argc === 1) {
 		$input = strtoupper(trim(fread(STDIN, 1024)));
 		
 		if ($input === 'Y') {
-			$options['modules'] = array_map(function($item) {
+			$options['modules']['AddOn'] = array_map(function($item) {
 				return basename($item, '.js');
-			}, glob('modules/*'));
+			}, glob('modules/AddOn/*.js'));
 		}
 	} while ($input !== 'Y' && $input !== 'N');
 	
@@ -112,13 +112,15 @@ MEDIA;
 }
 
 // add modules
-foreach ($options['modules'] as $module) {
-	if (file_exists('./modules/'.$module.'.js')) {
-		echo "Adding module: ".$module."\n";
-		$result .= file_get_contents('./modules/'.$module.'.js')."\n";
-	}
-	else {
-		echo "Module ".$module." doesn't exist!\n";
+foreach ($options['modules'] as $categoryName => $category) {
+	foreach ($category as $module) {
+		if (file_exists('./modules/'.$categoryName.'/'.$module.'.js')) {
+			echo "Adding ".strtolower($categoryName)." module: ".$module."\n";
+			$result .= file_get_contents('./modules/'.$categoryName.'/'.$module.'.js')."\n";
+		}
+		else {
+			echo $categoryName." module ".$module." doesn't exist!\n";
+		}
 	}
 }
 
@@ -154,7 +156,15 @@ function parseParams($argv) {
 	$options = array(
 		'version' => '',
 		'minify' => false,
-		'modules' => array('AbstractModule')
+		'modules' => array(
+			'Util' => array_map(function($entry) {
+					return basename($entry, '.js');
+				}, glob('modules/Util/*.js')),
+			'Core' => array_map(function($entry) {
+					return basename($entry, '.js');
+				}, glob('modules/Core/*.js')),
+			'AddOn' => array()
+		)
 	);
 	
 	for ($i = 1, $length = count($argv); $i < $length; $i++) {
@@ -172,12 +182,12 @@ function parseParams($argv) {
 				$options['minify'] = true;
 				break;
 			case 'with-module':
-				$options['modules'][] = substr($argv[$i], strrpos($argv[$i], '-')+1);
+				$options['modules']['AddOn'][] = substr($argv[$i], strrpos($argv[$i], '-')+1);
 				break;
 		}
 	}
 	
-	$options['modules'] = array_unique($options['modules']);
+	$options['modules']['AddOn'] = array_unique($options['modules']['AddOn']);
 	
 	return $options;
 }

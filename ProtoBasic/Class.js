@@ -2,7 +2,7 @@
  * Basic Class implementation
  * Copyright (C) 2011-2012 Stefan Hahn
  * 
- * Taken from Prototype
+ * Based on Prototype
  * Copyright (c) 2005-2010 Sam Stephenson
  */
 var ClassSystem = (function() {

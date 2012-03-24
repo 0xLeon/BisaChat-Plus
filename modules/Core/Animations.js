@@ -2,8 +2,126 @@
  * Animations Core Module
  * Copyright (C) 2011-2012 Stefan Hahn
  */
-Modules.Core.Animations = new ClassSystem.Class(Modules.Util.AbstractModule, {
-	addStyleRules: function() {
-		
+Modules.Core.Animations = new ClassSystem.Class(Modules.Util.AbstractModule, (function() {
+	function initialize($super, callerObj) {
+		getAnimationVendorPrefixes.call(this);
+		$super(callerObj);
 	}
-});
+	
+	function addStyleRules() {
+		API.addStyle('@'+this.config.cssVendorPrefix+'keyframes fadeIn {\n'+
+			'from {\n'+
+				'opacity: 0;\n'+
+			'}\n'+
+			'to {\n'+
+				'opacity: 1;\n'+
+			'}\n'+
+		'}');
+		API.addStyle('@'+this.config.cssVendorPrefix+'keyframes fadeOut {\n'+
+			'from {\n'+
+				'opacity: 1;\n'+
+			'}\n'+
+			'to {\n'+
+				'opacity: 0;\n'+
+			'}\n'+
+		'}');
+	}
+	
+	function getAnimationVendorPrefixes() {
+		var prefixes = ['Moz', 'Webkit', 'O'];
+		
+		this.config = {
+			animation: false,
+			domAnimationString: 'animation',
+			cssVendorPrefix: ''
+		};
+		
+		if (!Object.isUndefined($$('body')[0].style.animationName)) {
+			this.config.animation = true;
+		}
+		
+		if (!this.config.animation) {
+			prefixes.each(function(prefix) {
+				if (!Object.isUndefined($$('body')[0].style[prefix+'AnimationName'])) {
+					this.config.animation = true;
+					this.config.domAnimationString = prefix+'Animation';
+					this.config.cssVendorPrefix = '-'+prefix.toLowerCase()+'-';
+					
+					throw $break;
+				}
+			}, this);
+		}
+	}
+	
+	function addGlobalAnimationListeners(element) {
+		if (!element.animationGlobalListenersAdded) {
+			element.addEventListener('animationstart', function(event) {
+				event.target.animating = true;
+				
+				switch (event.animationName) {
+					case 'fadeIn':
+						event.target.style.display = '';
+						break;
+				}
+				
+				if (Object.isFunction(event.target.onAnimationStart)) {
+					event.target.onAnimationStart(event);
+				}
+			}, false);
+			element.addEventListener('animationend', function(event) {
+				switch (event.animationName) {
+					case 'fadeOut':
+						event.target.style.display = 'none';
+						break;
+				}
+				
+				if (Object.isFunction(event.target.onAnimationEnd)) {
+					event.target.onAnimationEnd(event);
+				}
+				
+				delete event.target.onAnimationStart;
+				delete event.target.onAnimationEnd;
+				
+				event.target.animating = false;
+			}, false);
+			
+			element.animationGlobalListenersAdded = true;
+		}
+	}
+	
+	function fadeIn(element, config) {
+		element = $(element);
+		config = config || {};
+		
+		addGlobalAnimationListeners(element);
+		
+		if (!element.animating) {
+			if (Object.isFunction(config.onAnimationStart)) element.onAnimationStart = config.onAnimationStart;
+			if (Object.isFunction(config.onAnimationEnd)) element.onAnimationEnd = config.onAnimationEnd;
+			
+			element.style[this.config.domAnimationString] = 'fadeIn 1s ease-in-out forwards';
+		}
+	}
+	
+	function fadeOut(element, config) {
+		element = $(element);
+		config = config || {};
+		
+		addGlobalAnimationListeners(element);
+		
+		if (!element.animating) {
+			if (Object.isFunction(config.onAnimationStart)) element.onAnimationStart = config.onAnimationStart;
+			if (Object.isFunction(config.onAnimationEnd)) element.onAnimationEnd = config.onAnimationEnd;
+			
+			element.style[this.config.domAnimationString] = 'fadeOut 1s ease-in-out forwards';
+		}
+	}
+	
+	return {
+		initialize:	initialize,
+		addStyleRules:	addStyleRules,
+		
+		fadeIn:		fadeIn,
+		fadeOut:	fadeOut
+	};
+})());

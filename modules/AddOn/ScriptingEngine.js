@@ -235,7 +235,7 @@ Modules.AddOn.ScriptingEngine = new ClassSystem.Class(Modules.Util.AbstractModul
 			
 			p.appendChild(document.createTextNode('Keine Befehle vorhanden.'));
 			targetList.parentNode.replaceChild(p, targetList);
-			new API.w.Effect.Appear($$('#scriptingEngine p')[0]);
+			this.callerObj.coreModuleInstances.get('Animations').fadeIn($$('#scriptingEngine p')[0]);
 		}
 	}
 });

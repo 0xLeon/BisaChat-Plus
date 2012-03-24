@@ -275,18 +275,18 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 																
 																info.appendChild(document.createTextNode('Keine Datensicherungen auf dem Server vorhanden.'));
 																effect.element.parentNode.parentNode.replaceChild(info, effect.element.parentNode);
-																new API.w.Effect.Appear(info);
+																this.callerObj.coreModuleInstances.get('Animations').fadeIn(info);
 															}
 															else {
 																effect.element.parentNode.removeChild(effect.element);
 															}
-														}
+														}.bind(this)
 													});
 												}
 											}
-										}
+										}.bind(this)
 									});
-								}, true);
+								}.bindAsEventListener(this), true);
 								
 								textSpan.appendChild(document.createTextNode('Datensicherung vom '+backupTimeString));
 								textLink.appendChild(textSpan);
@@ -295,7 +295,7 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 								button.appendChild(textLink);
 								button.appendChild(deleteLink);
 								buttonsList.appendChild(button);
-							});
+							}, this);
 							
 							node.appendChild(buttonsList);
 						}
@@ -366,9 +366,9 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 						});
 					}
 					else {
-						new API.w.Effect.Appear($('backupUserFormInfo'), {
-							afterFinish: function(effect) {
-								effect.element.style.display = 'inline-block';
+						this.callerObj.coreModuleInstances.get('Animations').fadeIn('backupUserFormInfo', {
+							onAnimationEnd: function(event) {
+								event.target.style.display = 'inline-block';
 								$$('#backup .overlayContent')[0].style.opacity = 0;
 							}
 						});
@@ -388,9 +388,9 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 						new API.w.Effect.Highlight($('backupUserFormInfo'));
 					}
 					else {
-						new API.w.Effect.Appear($('backupUserFormInfo'), {
-							afterFinish: function(effect) {
-								effect.element.style.display = 'inline-block';
+						this.callerObj.coreModuleInstances.get('Animations').fadeIn('backupUserFormInfo', {
+							onAnimationEnd: function(event) {
+								event.target.style.display = 'inline-block';
 							}
 						});
 					}
@@ -511,9 +511,9 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 								new API.w.Effect.Highlight($('backupUserFormInfo'));
 							}
 							else {
-								new API.w.Effect.Appear($('backupUserFormInfo'), {
-									afterFinish: function(effect) {
-										effect.element.style.display = 'inline-block';
+								this.callerObj.coreModuleInstances.get('Animations').fadeIn('backupUserFormInfo', {
+									onAnimationEnd: function(event) {
+										event.target.style.display = 'inline-block';
 									}
 								});
 							}
@@ -547,9 +547,9 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 									});
 								}
 								else {
-									new API.w.Effect.Appear($('backupUserFormInfo'), {
-										afterFinish: function(effect) {
-											effect.element.style.display = 'inline-block';
+									this.callerObj.coreModuleInstances.get('Animations').fadeIn('backupUserFormInfo', {
+										onAnimationEnd: function(event) {
+											event.target.style.display = 'inline-block';
 											$$('#backup .overlayContent')[0].style.opacity = 0;
 										}
 									});
@@ -569,15 +569,15 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 									new API.w.Effect.Highlight($('backupUserFormInfo'));
 								}
 								else {
-									new API.w.Effect.Appear($('backupUserFormInfo'), {
-										afterFinish: function(effect) {
-											effect.element.style.display = 'inline-block';
+									this.callerObj.coreModuleInstances.get('Animations').fadeIn('backupUserFormInfo', {
+										onAnimationEnd: function(event) {
+											event.target.style.display = 'inline-block';
 										}
 									});
 								}
 							}
 						}
-					}
+					}.bind(this)
 				});
 			}
 			else {
@@ -587,9 +587,9 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 					new API.w.Effect.Highlight($('backupUserFormInfo'));
 				}
 				else {
-					new API.w.Effect.Appear($('backupUserFormInfo'), {
-						afterFinish: function(effect) {
-							effect.element.style.display = 'inline-block';
+					this.callerObj.coreModuleInstances.get('Animations').fadeIn('backupUserFormInfo', {
+						onAnimationEnd: function(event) {
+							event.target.style.display = 'inline-block';
 						}
 					});
 				}

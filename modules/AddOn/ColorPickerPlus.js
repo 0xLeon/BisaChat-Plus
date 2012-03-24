@@ -29,14 +29,14 @@ Modules.AddOn.ColorPickerPlus = new ClassSystem.Class(Modules.Util.AbstractModul
 	addListeners: function() {
 		$$('#chatColorPickerContainer > a')[0].addEventListener('click', function(event) {
 			if ($('chatColorPicker').style.display === 'none') {
-				new API.w.Effect.Appear('chatColorPicker');
+				this.callerObj.coreModuleInstances.get('Animations').fadeIn('chatColorPicker');
 			}
 			else {
-				new API.w.Effect.Fade('chatColorPicker');
+				this.callerObj.coreModuleInstances.get('Animations').fadeOut('chatColorPicker');
 			}
 			
 			$('chatInput').focus();
-		}, true);
+		}.bindAsEventListener(this), true);
 	},
 	
 	finish: function() {
@@ -52,7 +52,7 @@ Modules.AddOn.ColorPickerPlus = new ClassSystem.Class(Modules.Util.AbstractModul
 				this.callerObj.pushInfo('Erste Farbe '+this.colorCache+' ausgewählt. Wähle nun eine zweite Farbe.');
 			}
 			else {
-				new API.w.Effect.Fade('chatColorPicker');
+				this.callerObj.coreModuleInstances.get('Animations').fadeOut('chatColorPicker');
 				$('chatInput').focus();
 				this.callerObj.pushInfo('Zweite Farbe '+color+' ausgewählt.');
 				this.callerObj.pushMessage('/color '+this.colorCache+' '+color);
@@ -60,7 +60,7 @@ Modules.AddOn.ColorPickerPlus = new ClassSystem.Class(Modules.Util.AbstractModul
 			}
 		}
 		else {
-			new API.w.Effect.Fade('chatColorPicker');
+			this.callerObj.coreModuleInstances.get('Animations').fadeOut('chatColorPicker');
 			$('chatInput').focus();
 			this.colorCache = '';
 		}

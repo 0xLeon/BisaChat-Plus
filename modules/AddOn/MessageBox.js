@@ -145,12 +145,12 @@ Modules.AddOn.MessageBox = new ClassSystem.Class(Modules.Util.AbstractModule, (f
 		updateSpan.call(this);
 		
 		if (updateUI) {
-			new API.w.Effect.Fade($$('#messageBox .overlayContent')[0].firstChild, {
-				afterFinish: function(effect) {
-					effect.element.parentNode.removeChild(effect.element);
+			this.callerObj.coreModuleInstances.get('Animations').fadeOut($$('#messageBox .overlayContent')[0].firstChild, {
+				onAnimationEnd: function(event) {
+					event.target.parentNode.removeChild(event.target);
 					$$('#messageBox .overlayContent')[0].style.display = 'none';
 					$$('#messageBox .overlayContent')[0].appendChild(overlayContentBuilder.call(this));
-					new API.w.Effect.Appear($$('#messageBox .overlayContent')[0]);
+					this.callerObj.coreModuleInstances.get('Animations').fadeIn($$('#messageBox .overlayContent')[0]);
 				}.bind(this)
 			});
 		}

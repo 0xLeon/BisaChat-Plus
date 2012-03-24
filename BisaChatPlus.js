@@ -375,7 +375,7 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 						this.coreModuleInstances.get('Animations').fadeOut(overlay);
 						$('chatInput').focus();
 					}
-				});
+				}, this);
 			}
 			else if ((event.keyCode > 64) && (event.keyCode < 91) && event.altKey && !event.shiftKey && !event.ctrlKey && !event.metaKey) {
 				var key = String.fromCharCode(event.which).toLowerCase();

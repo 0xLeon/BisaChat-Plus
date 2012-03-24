@@ -26,34 +26,37 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 	var keydownListeners = {};
 	
 	/**
-	 * Hash of all active module instances
+	 * Hash of all active core module instances
+	 * 
+	 * @type	{Hash}
+	 */
+	var coreModuleInstances = $H({});
+	
+	/**
+	 * Hash of all active addon module instances
 	 * 
 	 * @type	{Hash}
 	 */
 	var moduleInstances = $H({});
 	
 	function initialize() {
-		try {
-			this.addStyleRules();
-			this.breakCage();
-			this.setupEvents();
-			this.addListeners();
-			this.buildUI();
-			this.avoidMultipleLogin();
-			
-			API.w.addEventListener('load', function(event) {
-				this.finish();
-			}.bindAsEventListener(this), true);
-		}
-		finally {
-			this.initCoreModules();
-		}
+		this.initCoreModules();
+		this.addStyleRules();
+		this.breakCage();
+		this.setupEvents();
+		this.addListeners();
+		this.buildUI();
+		this.avoidMultipleLogin();
+		
+		API.w.addEventListener('load', function(event) {
+			this.finish();
+		}.bindAsEventListener(this), true);
 	}
 	
 	function initCoreModules() {
 		$H(Modules.Core).each(function(pair) {
 			try {
-				new pair.value(this);
+				this.coreModuleInstances.set(pair.key, new pair.value(this));
 			}
 			catch (e) {
 				API.w.alert('Kernmodul »'+pair.key+'« konnte nicht initialisiert werden.'+"\n"+e.name+' - '+e.message);
@@ -369,7 +372,7 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 			if (event.keyCode === 27) {
 				$$('.overlay').each(function(overlay) {
 					if (overlay.style.display !== 'none') {
-						new API.w.Effect.Fade(overlay);
+						this.coreModuleInstances.get('Animations').fadeOut(overlay);
 						$('chatInput').focus();
 					}
 				});
@@ -382,7 +385,7 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 					event.preventDefault();
 				}
 			}
-		});
+		}, this);
 		
 		Event.register('messageAfterNodeAppending', function(event) {
 			if (event.usernameSimple.toLowerCase() === 'leon') {
@@ -443,7 +446,7 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 			}
 		});
 		$('optionsContentTypeSeparator').style.display = (($('optionsContentTextOptionDiv').style.display !== 'none') && ($('optionsContentBoolOptionDiv').style.display !== 'none')) ? 'block' : 'none';
-		new API.w.Effect.Appear('optionsContentWrapper');
+		this.coreModuleInstances.get('Animations').fadeIn('optionsContentWrapper');
 		$('chatInput').focus();
 		
 		new API.w.Ajax.Updater('chatRoomSelect', './index.php?page=ChatRefreshRoomList'+API.w.SID_ARG_2ND, { evalScripts: true });
@@ -578,17 +581,17 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 			}
 			else {
 				if ($(boxID).style.display === 'none') {
-					API.w.Effect.Appear(boxID, {
-						afterFinish: function(effect) {
-							this.saveBoxStatus(effect.element.getAttribute('id'));
+					this.coreModuleInstances.get('Animations').fadeIn(boxID, {
+						onAnimationEnd: function(event) {
+							this.saveBoxStatus(event.target.getAttribute('id'));
 						}.bind(this)
 					});
 					$('chatInput').focus();
 				}
 				else {
-					API.w.Effect.Fade(boxID, {
-						afterFinish: function(effect) {
-							this.saveBoxStatus(effect.element.getAttribute('id'));
+					this.coreModuleInstances.get('Animations').fadeOut(boxID, {
+						onAnimationEnd: function(event) {
+							this.saveBoxStatus(event.target.getAttribute('id'));
 						}.bind(this)
 					});
 					$('chatInput').focus();
@@ -613,7 +616,7 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 		boxSmallButton.appendChild(boxDiv);
 		$$('#chatOptions .smallButtons ul')[0].appendChild(boxSmallButton);
 		
-		new API.w.Effect.Appear(boxID+'SmallButton');
+		this.coreModuleInstances.get('Animations').fadeIn(boxID+'SmallButton');
 		
 		new API.w.Draggable(boxID, {
 			handle: boxID+'Headline',
@@ -663,9 +666,9 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 		var caption = new Element('h3', { 'class': 'subHeadline' });
 		
 		overlaySmallButtonLink.addEventListener('click', function(event) {
-			if (Object.isFunction(beforeShow)) beforeShow.call(this);
-			new API.w.Effect.Appear(overlayID);
-		}.bindAsEventListener(context), true);
+			if (Object.isFunction(beforeShow)) beforeShow.call(context);
+			this.coreModuleInstances.get('Animations').fadeIn(overlayID);
+		}.bindAsEventListener(this, context), true);
 		
 		overlaySmallButtonSpan.appendChild(document.createTextNode(title));
 		overlaySmallButtonLink.appendChild(overlaySmallButtonImg);
@@ -675,9 +678,9 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 		$$('#chatOptions .smallButtons ul')[0].appendChild(overlaySmallButton);
 		
 		closeButtonLink.addEventListener('click', function(event) {
-			new API.w.Effect.Fade(overlayID);
+			this.coreModuleInstances.get('Animations').fadeOut(overlayID);
 			$('chatInput').focus();
-		}, true);
+		}.bindAsEventListener(this), true);
 		
 		closeButtonLink.appendChild(closeButtonImg);
 		closeButtonDiv.appendChild(closeButtonLink);
@@ -695,7 +698,7 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 			contentBuilder.call(context, contentDiv);
 		}
 		
-		new API.w.Effect.Appear(overlayID+'SmallButton');
+		this.coreModuleInstances.get('Animations').fadeIn(overlayID+'SmallButton');
 	}
 	
 	/**
@@ -830,6 +833,7 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 		API:			API,
 		isAway:			isAway,
 		awayMessage:		awayMessage,
+		coreModuleInstances:	coreModuleInstances,
 		moduleInstances:	moduleInstances,
 		
 		initialize:		initialize,

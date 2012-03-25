@@ -10,10 +10,10 @@ Modules.AddOn.ScriptingEngine = new ClassSystem.Class(Modules.Util.AbstractModul
 	addStyleRules: function() {
 		API.addStyle('#scriptingEngine dl dt { clear: both; margin: 3px; }');
 		API.addStyle('#scriptingEngine dl dt span { font-weight: bold; }');
-		API.addStyle('#scriptingEngine dl hr { display: block; width: 80%; float: left; }');
+		API.addStyle('#scriptingEngine dl hr { display: block; width: 100%; }');
 		API.addStyle('#scriptingEngine dl dt input { width: 8% }');
 		API.addStyle('#scriptingEngine dl dd input { width: 11% }');
-		API.addStyle('#scriptingEngine dl dd:last-child hr { display: none; }');
+		API.addStyle('#scriptingEngine dl div:last-child hr { display: none; }');
 	},
 	
 	addListeners: function() {
@@ -48,8 +48,9 @@ Modules.AddOn.ScriptingEngine = new ClassSystem.Class(Modules.Util.AbstractModul
 		buttonLink.addEventListener('click', function(event) {
 			if (!$$('#scriptingEngine dl dd:last-child')[0] || ($$('#scriptingEngine dl dd:last-child')[0].previousSibling.firstChild.nodeType === 3)) {
 				var commandDl = (($$('#scriptingEngine dl')[0]) || (new Element('dl')));
-				var commandAddDt = new Element('dt', { style: 'display: none;' });
-				var	commandAddDd = new Element('dd', { style: 'display: none;' });
+				var commandAddWrapper = new Element('div', { style: 'display: none;' });
+				var commandAddDt = new Element('dt');
+				var commandAddDd = new Element('dd');
 				var commandAddInput = new Element('input', { 'class': 'inputText', type: 'text', size: 7, placeholder: 'Befehlsname' });
 				var commandAddTextInput = new Element('input', { 'class': 'inputText', type: 'text', size: 12, placeholder: 'Befehlstext' });
 				
@@ -57,13 +58,11 @@ Modules.AddOn.ScriptingEngine = new ClassSystem.Class(Modules.Util.AbstractModul
 				var commandAddDeleteButtonImg = new Element('img', { src: './wcf/icon/deleteS.png', style: 'width: 16px; height: 16px;', alt: '' });
 				
 				commandAddDeleteButtonLink.addEventListener('click', function(event) {
-					var dt = ((event.target.nodeName.toLowerCase() === 'img') ? event.target.parentNode.parentNode : event.target.parentNode);
+					var wrapper = ((event.target.nodeName.toLowerCase() === 'img') ? event.target.parentNode.parentNode.parentNode : event.target.parentNode.parentNode);
 					
-					new API.w.Effect.Parallel([
-						new API.w.Effect.Fade(dt, { sync: true, afterFinish: function(effect) { effect.element.parentNode.removeChild(effect.element); } }),
-						new API.w.Effect.Fade(dt.nextSibling, { sync: true, afterFinish: function(effect) { effect.element.parentNode.removeChild(effect.element); } })
-					], {
-						afterFinish: function() {
+					this.callerObj.coreModuleInstances.get('Animations').fadeOut(wrapper, {
+						onAnimationEnd: function(event) {
+							event.target.parentNode.removeChild(event.target);
 							this.checkListEmpty($$('#scriptingEngine dl')[0]);
 						}.bind(this)
 					});
@@ -81,16 +80,12 @@ Modules.AddOn.ScriptingEngine = new ClassSystem.Class(Modules.Util.AbstractModul
 									
 									this.buildCommandListElements(inputs[0].value.trim(), inputs[1].value.trim(), false, $$('#scriptingEngine dl')[0]);
 									
-									new API.w.Effect.Parallel([
-										new API.w.Effect.Fade(inputs[0].parentNode, { sync: true, afterFinish: function(effect) { effect.element.parentNode.removeChild(effect.element); } }),
-										new API.w.Effect.Fade(inputs[1].parentNode, { sync: true, afterFinish: function(effect) { effect.element.parentNode.removeChild(effect.element); } })
-									], {
-										afterFinish: function() {
-											new API.w.Effect.Parallel([
-												new API.w.Effect.Appear($$('#scriptingEngine dl dt').last(), { sync: true }),
-												new API.w.Effect.Appear($$('#scriptingEngine dl dd').last().previousSibling, { sync: true })
-											]);
-										}
+									this.callerObj.coreModuleInstances.get('Animations').fadeOut(inputs[0].parentNode.parentNode, {
+										onAnimationEnd: function(event) {
+											event.target.parentNode.removeChild(event.target);
+											
+											this.callerObj.coreModuleInstances.get('Animations').fadeIn($$('#scriptingEngine dl div').last());
+										}.bind(this)
 									});
 								}
 								else {
@@ -110,18 +105,16 @@ Modules.AddOn.ScriptingEngine = new ClassSystem.Class(Modules.Util.AbstractModul
 				commandAddDt.appendChild(commandAddDeleteButtonLink);
 				commandAddDt.appendChild(commandAddInput);
 				commandAddDd.appendChild(commandAddTextInput);
-				commandDl.appendChild(commandAddDt);
-				commandDl.appendChild(commandAddDd);
+				commandAddWrapper.appendChild(commandAddDt);
+				commandAddWrapper.appendChild(commandAddDd);
+				commandDl.appendChild(commandAddWrapper);
 				
 				if (!commandDl.parentNode) {
 					$$('#scriptingEngine p')[0].parentNode.replaceChild(commandDl, $$('#scriptingEngine p')[0]);
 				}
 				
-				new API.w.Effect.Parallel([
-					new API.w.Effect.Appear($$('#scriptingEngine dl dt').last(), { sync: true }),
-					new API.w.Effect.Appear($$('#scriptingEngine dl dd').last(), { sync: true })
-				], {
-					afterFinish: function() {
+				this.callerObj.coreModuleInstances.get('Animations').fadeIn($$('#scriptingEngine dl div').last(), {
+					onAnimationEnd: function(event) {
 						$$('#scriptingEngine dl dt input').last().focus();
 					}
 				});
@@ -173,28 +166,25 @@ Modules.AddOn.ScriptingEngine = new ClassSystem.Class(Modules.Util.AbstractModul
 	},
 	
 	buildCommandListElements: function(command, text, visible, targetList) {
-		var commandDt = new Element('dt', { style: ((visible) ? '' : 'display: none;') });
+		var commandWrapper = new Element('div', { style: ((visible) ? '' : 'display: none;') });
+		var commandDt = new Element('dt')
 		var commandSpan = new Element('span');
-		var commandDd = new Element('dd', { style: ((visible) ? '' : 'display: none;') });
+		var commandDd = new Element('dd')
 		var commandDdHr = new Element('dd');
 		
 		var commandDeleteButtonLink = new Element('a', { href: 'javascript:;' });
 		var commandDeleteButtonImg = new Element('img', { src: './wcf/icon/deleteS.png', style: 'width: 16px; height: 16px;', alt: '' });
 		
 		commandDeleteButtonLink.addEventListener('click', function(event) {
-			var dt = ((event.target.nodeName.toLowerCase() === 'img') ? event.target.parentNode.parentNode : event.target.parentNode);
-			var dd = dt.nextSibling;
-			var ddHr = dd.nextSibling;
-			var commandName = dt.querySelector('span').firstChild.nodeValue;
+			var wrapper = ((event.target.nodeName.toLowerCase() === 'img') ? event.target.parentNode.parentNode.parentNode : event.target.parentNode.parentNode);
 			
-			new API.w.Effect.Parallel([
-				new API.w.Effect.Fade(dt, { sync: true, afterFinish: function(effect) { effect.element.parentNode.removeChild(effect.element); } }),
-				new API.w.Effect.Fade(dd, { sync: true, afterFinish: function(effect) { effect.element.parentNode.removeChild(effect.element); } }),
-				new API.w.Effect.Fade(ddHr, { sync: true, afterFinish: function(effect) { effect.element.parentNode.removeChild(effect.element); } })
-			], {
-				afterFinish: function() {
+			this.callerObj.coreModuleInstances.get('Animations').fadeOut(wrapper, {
+				onAnimationEnd: function(event) {
+					var commandName = event.target.querySelector('span').firstChild.nodeValue;
+					
 					this.commands.unset(commandName);
 					API.Storage.setValue('scriptingEngineCommands', this.commands._object);
+					event.target.parentNode.removeChild(event.target);
 					
 					this.checkListEmpty(targetList);
 				}.bind(this)
@@ -208,9 +198,10 @@ Modules.AddOn.ScriptingEngine = new ClassSystem.Class(Modules.Util.AbstractModul
 		commandDt.appendChild(commandSpan);
 		commandDd.appendChild(document.createTextNode(text));
 		commandDdHr.appendChild(new Element('hr'));
-		targetList.appendChild(commandDt);
-		targetList.appendChild(commandDd);
-		targetList.appendChild(commandDdHr);
+		commandWrapper.appendChild(commandDt);
+		commandWrapper.appendChild(commandDd);
+		commandWrapper.appendChild(commandDdHr);
+		targetList.appendChild(commandWrapper);
 	},
 	
 	checkListEmpty: function(targetList) {

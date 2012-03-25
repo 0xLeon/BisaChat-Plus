@@ -50,8 +50,8 @@ Modules.AddOn.ScriptingEngine = new ClassSystem.Class(Modules.Util.AbstractModul
 				var commandDl = (($$('#scriptingEngine dl')[0]) || (new Element('dl')));
 				var commandAddDt = new Element('dt', { style: 'display: none;' });
 				var	commandAddDd = new Element('dd', { style: 'display: none;' });
-				var commandAddInput = new Element('input', { 'class': 'inputText', type: 'text', size: 7, value: 'Befehlsname', style: 'font-style: italic;' });
-				var commandAddTextInput = new Element('input', { 'class': 'inputText', type: 'text', size: 12, value: 'Befehlstext', style: 'font-style: italic;' });
+				var commandAddInput = new Element('input', { 'class': 'inputText', type: 'text', size: 7, placeholder: 'Befehlsname' });
+				var commandAddTextInput = new Element('input', { 'class': 'inputText', type: 'text', size: 12, placeholder: 'Befehlstext' });
 				
 				var commandAddDeleteButtonLink = new Element('a', { href: 'javascript:;' });
 				var commandAddDeleteButtonImg = new Element('img', { src: './wcf/icon/deleteS.png', style: 'width: 16px; height: 16px;', alt: '' });
@@ -70,22 +70,6 @@ Modules.AddOn.ScriptingEngine = new ClassSystem.Class(Modules.Util.AbstractModul
 				}.bindAsEventListener(this), true);
 				
 				[commandAddInput, commandAddTextInput].each(function(input) {
-					input.addEventListener('focus', function(event) {
-						if ((event.target.value === 'Befehlsname') || (event.target.value === 'Befehlstext')) {
-							event.target.value = '';
-						}
-						
-						event.target.style.fontStyle = 'normal';
-						event.target.select();
-					}, true);
-					
-					input.addEventListener('blur', function(event) {
-						if (event.target.value === '') {
-							event.target.style.fontStyle = 'italic';
-							event.target.value = ['', '', '', '', '', '', '', 'Befehlsname', '', '', '', '', 'Befehlstext'][parseInt(event.target.size)];
-						}
-					}, true);
-					
 					input.addEventListener('keydown', function(event) {
 						var inputs = $$('#scriptingEngine dl input');
 						

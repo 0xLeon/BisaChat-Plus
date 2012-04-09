@@ -37,8 +37,7 @@
 			if (table.values[attr]) {
 				name = table.values[attr](element, value);
 			}
-			
-			if ((value === false) || (value === null)) {
+			else if ((value === false) || (value === null)) {
 				element.removeAttribute(name);
 			}
 			else if (value === true) {

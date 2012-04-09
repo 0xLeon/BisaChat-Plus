@@ -109,8 +109,8 @@ Modules.AddOn.Highlighting = new ClassSystem.Class(Modules.Util.AbstractModule, 
 					this.docTitle = '';
 					
 					this.messageIDs.each(function(item) {
-						new API.w.Effect.Highlight(item);
-					});
+						this.callerObj.coreModuleInstances.get('Animations').highlight(item);
+					}, this);
 					this.messageIDs.clear();
 					
 					Event.unregister('awayStatusChange', this.listenerFunction);
@@ -128,8 +128,8 @@ Modules.AddOn.Highlighting = new ClassSystem.Class(Modules.Util.AbstractModule, 
 					this.docTitle = '';
 					
 					this.messageIDs.each(function(item) {
-						new API.w.Effect.Highlight(item);
-					});
+						this.callerObj.coreModuleInstances.get('Animations').highlight(item);
+					}, this);
 					this.messageIDs.clear();
 					
 					document.removeEventListener('focus', this.listenerFunction, false)

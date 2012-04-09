@@ -359,8 +359,8 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 					this.transitionendUIFunction = this.displayBackupData;
 					
 					if ($('backupUserFormInfo').style.display !== 'none') {
-						new API.w.Effect.Highlight($('backupUserFormInfo'), {
-							afterFinish: function() {
+						this.callerObj.coreModuleInstances.get('Animations').highlight('backupUserFormInfo', {
+							onAnimationEnd: function(event) {
 								$$('#backup .overlayContent')[0].style.opacity = 0;
 							}
 						});
@@ -385,7 +385,7 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 					}
 					
 					if ($('backupUserFormInfo').style.display !== 'none') {
-						new API.w.Effect.Highlight($('backupUserFormInfo'));
+						this.callerObj.coreModuleInstances.get('Animations').highlight('backupUserFormInfo');
 					}
 					else {
 						this.callerObj.coreModuleInstances.get('Animations').fadeIn('backupUserFormInfo', {
@@ -508,7 +508,7 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 							}
 							
 							if ($('backupUserFormInfo').style.display !== 'none') {
-								new API.w.Effect.Highlight($('backupUserFormInfo'));
+								this.callerObj.coreModuleInstances.get('Animations').highlight('backupUserFormInfo');
 							}
 							else {
 								this.callerObj.coreModuleInstances.get('Animations').fadeIn('backupUserFormInfo', {
@@ -540,8 +540,8 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 								this.transitionendUIFunction = this.displayBackupData;
 								
 								if ($('backupUserFormInfo').style.display !== 'none') {
-									new API.w.Effect.Highlight($('backupUserFormInfo'), {
-										afterFinish: function() {
+									this.callerObj.coreModuleInstances.get('Animations').highlight('backupUserFormInfo', {
+										onAnimationEnd: function(event) {
 											$$('#backup .overlayContent')[0].style.opacity = 0;
 										}
 									});
@@ -566,7 +566,7 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 								}
 								
 								if ($('backupUserFormInfo').style.display !== 'none') {
-									new API.w.Effect.Highlight($('backupUserFormInfo'));
+									this.callerObj.coreModuleInstances.get('Animations').highlight('backupUserFormInfo');
 								}
 								else {
 									this.callerObj.coreModuleInstances.get('Animations').fadeIn('backupUserFormInfo', {
@@ -584,7 +584,7 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 				$('backupUserFormInfo').innerHTML = 'Das bisherige Passwort ist inkorrekt';
 				
 				if ($('backupUserFormInfo').style.display !== 'none') {
-					new API.w.Effect.Highlight($('backupUserFormInfo'));
+					this.callerObj.coreModuleInstances.get('Animations').highlight('backupUserFormInfo');
 				}
 				else {
 					this.callerObj.coreModuleInstances.get('Animations').fadeIn('backupUserFormInfo', {

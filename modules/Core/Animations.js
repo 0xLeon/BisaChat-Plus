@@ -4,7 +4,7 @@
  */
 Modules.Core.Animations = new ClassSystem.Class(Modules.Util.AbstractModule, (function() {
 	function initialize($super, callerObj) {
-		getAnimationVendorPrefixes.call(this);
+		getAnimationConfig.call(this);
 		$super(callerObj);
 	}
 	
@@ -25,9 +25,20 @@ Modules.Core.Animations = new ClassSystem.Class(Modules.Util.AbstractModule, (fu
 				'opacity: 0;\n'+
 			'}\n'+
 		'}');
+		API.addStyle('@'+this.config.cssVendorPrefix+'keyframes highlight {\n'+
+			'0% {\n'+
+				'background-color: rgba(255, 255, 153, 0);\n'+
+			'}\n'+
+			'15% {\n'+
+				'background-color: rgba(255, 255, 153, 1);\n'+
+			'}\n'+
+			'100% {\n'+
+				'background-color: transparent;\n'+
+			'}\n'+
+		'}');
 	}
 	
-	function getAnimationVendorPrefixes() {
+	function getAnimationConfig() {
 		var prefixes = ['Moz', 'Webkit', 'O'];
 		
 		this.config = {
@@ -83,38 +94,37 @@ Modules.Core.Animations = new ClassSystem.Class(Modules.Util.AbstractModule, (fu
 				delete event.target.onAnimationEnd;
 				
 				event.target.animating = false;
-			}, false);
+				event.target.style[this.config.domAnimationString] = '';
+			}.bind(this), false);
 			
 			element.animationGlobalListenersAdded = true;
 		}
 	}
 	
-	function fadeIn(element, config) {
+	function doAnimation(element, config, animationString) {
 		element = $(element);
 		config = config || {};
 		
-		addGlobalAnimationListeners(element);
+		addGlobalAnimationListeners.call(this, element);
 		
 		if (!element.animating) {
 			if (Object.isFunction(config.onAnimationStart)) element.onAnimationStart = config.onAnimationStart;
 			if (Object.isFunction(config.onAnimationEnd)) element.onAnimationEnd = config.onAnimationEnd;
 			
-			element.style[this.config.domAnimationString] = 'fadeIn 1s ease-in-out forwards';
+			element.style[this.config.domAnimationString] = animationString;
 		}
 	}
 	
+	function fadeIn(element, config) {
+		doAnimation.apply(this, [element, config, 'fadeIn 1s ease-in-out forwards']);
+	}
+	
 	function fadeOut(element, config) {
-		element = $(element);
-		config = config || {};
-		
-		addGlobalAnimationListeners(element);
-		
-		if (!element.animating) {
-			if (Object.isFunction(config.onAnimationStart)) element.onAnimationStart = config.onAnimationStart;
-			if (Object.isFunction(config.onAnimationEnd)) element.onAnimationEnd = config.onAnimationEnd;
-			
-			element.style[this.config.domAnimationString] = 'fadeOut 1s ease-in-out forwards';
-		}
+		doAnimation.apply(this, [element, config, 'fadeOut 1s ease-in-out forwards']);
+	}
+	
+	function highlight(element, config) {
+		doAnimation.apply(this, [element, config, 'highlight 2s linear forwards']);
 	}
 	
 	return {
@@ -122,6 +132,7 @@ Modules.Core.Animations = new ClassSystem.Class(Modules.Util.AbstractModule, (fu
 		addStyleRules:	addStyleRules,
 		
 		fadeIn:		fadeIn,
-		fadeOut:	fadeOut
+		fadeOut:	fadeOut,
+		highlight:	highlight
 	};
 })());

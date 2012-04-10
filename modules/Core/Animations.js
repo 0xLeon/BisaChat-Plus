@@ -44,7 +44,8 @@ Modules.Core.Animations = new ClassSystem.Class(Modules.Util.AbstractModule, (fu
 		this.config = {
 			animation: false,
 			domAnimationString: 'animation',
-			cssVendorPrefix: ''
+			cssVendorPrefix: '',
+			styleID: 17
 		};
 		
 		if (!Object.isUndefined($$('body')[0].style.animationName)) {
@@ -62,6 +63,16 @@ Modules.Core.Animations = new ClassSystem.Class(Modules.Util.AbstractModule, (fu
 				}
 			}, this);
 		}
+		
+		$$('head > link[rel="stylesheet"]').each(function(styleNode) {
+			var result = null;
+			
+			if (!!(result = styleNode.getAttribute('href').match(/style-(\d+)\.css$/))) {
+				this.config.styleID = parseInt(result[1], 10);
+				
+				throw $break;
+			}
+		}, this);
 	}
 	
 	function addGlobalAnimationListeners(element) {

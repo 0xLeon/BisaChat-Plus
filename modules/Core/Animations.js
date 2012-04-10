@@ -135,7 +135,7 @@ Modules.Core.Animations = new ClassSystem.Class(Modules.Util.AbstractModule, (fu
 	}
 	
 	function highlight(element, config) {
-		doAnimation.apply(this, [element, config, 'highlight 2s linear forwards']);
+		doAnimation.apply(this, [element, config, 'highlight 1500ms linear forwards']);
 	}
 	
 	return {

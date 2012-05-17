@@ -3,10 +3,6 @@
  * Copyright (C) 2011-2012 Stefan Hahn
  */
 Modules.Core.Update = new ClassSystem.Class(Modules.Util.AbstractModule, {
-	registerOptions: function() {
-		//this.callerObj.registerBoolOption('getNonStableReleases', 'Updatesuche nach Entwicklerversionen', 'Unstable-Updates einschließen', 'u', false);
-	},
-	
 	finish: function() {
 		this.check();
 	},

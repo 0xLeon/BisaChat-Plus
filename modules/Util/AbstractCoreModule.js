@@ -4,7 +4,16 @@
  * 
  * Copyright (C) 2011-2012 Stefan Hahn
  */
-Modules.Util.AbstractCoreModule = new ClassSystem.AbstractClass(Modules.Util.AbstractCoreModule, {
+Modules.Util.AbstractCoreModule = new ClassSystem.AbstractClass(Modules.Util.AbstractModule, {
+	initialize: function($super, callerObj) {
+		this.callerObj = callerObj;
+		
+		this.initializeVariables();
+		this.addStyleRules();
+		this.addListeners();
+		this.finish();
+	},
+	
 	registerOptions: function($super) {
 		throw new Error('User interface functions are not available from core modules');
 	},

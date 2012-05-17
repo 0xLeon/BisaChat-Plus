@@ -2,7 +2,7 @@
  * Update Core Module
  * Copyright (C) 2011-2012 Stefan Hahn
  */
-Modules.Core.Update = new ClassSystem.Class(Modules.Util.AbstractModule, {
+Modules.Core.Update = new ClassSystem.Class(Modules.Util.AbstractCoreModule, {
 	finish: function() {
 		this.check();
 	},

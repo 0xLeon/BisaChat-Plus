@@ -72,6 +72,10 @@ Modules.AddOn.Statistics = new ClassSystem.Class(Modules.Util.AbstractModule, {
 	},
 	
 	finish: function() {
+		if (this.getOnlineTimeStart() === 0) {
+			this.setOnlineTimeStart((new Date()).getTime());
+		}
+		
 		if (API.Storage.getValue('statisticsStatus', true)) {
 			this.startOnlineTimeLengthCounter();
 		}
@@ -100,7 +104,7 @@ Modules.AddOn.Statistics = new ClassSystem.Class(Modules.Util.AbstractModule, {
 	},
 	
 	getOnlineTimeStart: function() {
-		return API.Storage.getValue('statisticsOnlineTimeStart', (new Date()).getTime());
+		return API.Storage.getValue('statisticsOnlineTimeStart', 0);
 	},
 	setOnlineTimeStart: function(value) {
 		API.Storage.setValue('statisticsOnlineTimeStart', value);

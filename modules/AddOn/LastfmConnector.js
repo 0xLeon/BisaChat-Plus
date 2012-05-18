@@ -50,7 +50,7 @@ Modules.AddOn.LastfmConnector = new ClassSystem.Class(Modules.Util.AbstractModul
 			},
 			onload: function(response) {
 				try {
-					var xml = ((!response.responseXML) ? (new DOMParser()).parseFromString(response.responseText, 'text/xml') : response.responseXML);
+					var xml = (new DOMParser()).parseFromString(response.responseText, 'text/xml')
 					
 					if (xml.documentElement.getAttribute('status') === 'ok') {
 						if ((xml.querySelectorAll('track').length > 0) && (xml.querySelector('recenttracks > track:first-child').getAttribute('nowplaying') === 'true')) {

@@ -15,7 +15,7 @@ Modules.Core.Update = new ClassSystem.Class(Modules.Util.AbstractCoreModule, {
 				'Accept': 'text/xml'
 			},
 			onload: function(response) {
-				var xml = ((!response.responseXML) ? (new DOMParser()).parseFromString(response.responseText, 'text/xml') : response.responseXML);
+				var xml = (new DOMParser()).parseFromString(response.responseText, 'text/xml');
 				
 				if (xml.documentElement.getAttribute('newVersion') === 'true') {
 					(this.callerObj.getUpdateCallback())(xml);

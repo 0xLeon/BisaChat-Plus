@@ -212,7 +212,7 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 					node.appendChild(new Element('hr', { style: 'display: block;' }));
 					
 					if ((transport.status >= 200) && (transport.status < 300)) {
-						var xml = ((!transport.responseXML) ? (new DOMParser()).parseFromString(transport.responseText, 'text/xml') : transport.responseXML);
+						var xml = (new DOMParser()).parseFromString(transport.responseText, 'text/xml');
 						
 						if (xml.querySelectorAll('entry').length > 0) {
 							var buttonsList = new Element('ul', { id: 'backupDataList', 'class': 'memberList' });

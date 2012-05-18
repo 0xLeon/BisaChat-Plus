@@ -12,7 +12,8 @@ Modules.AddOn.Highlighting = new ClassSystem.Class(Modules.Util.AbstractModule, 
 		var basicHighlightingButton = $$('#chatOptions .smallButtons > ul > li')[2];
 		API.w.chat.enableAnimating = false;
 		
-		basicHighlightingButton.style.overflow = 'hidden';
+		// TODO: remove button in a smooth way
+		/*basicHighlightingButton.style.overflow = 'hidden';
 		new API.w.Effect.Morph(basicHighlightingButton, {
 			style: {
 				width: '0px'
@@ -20,7 +21,8 @@ Modules.AddOn.Highlighting = new ClassSystem.Class(Modules.Util.AbstractModule, 
 			afterFinish: function(effect) {
 				effect.element.parentNode.removeChild(effect.element);
 			}
-		});
+		});*/
+		basicHighlightingButton.parentNode.removeChild(basicHighlightingButton);
 	},
 	
 	initializeVariables: function() {

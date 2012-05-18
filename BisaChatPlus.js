@@ -449,6 +449,7 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 		this.coreModuleInstances.get('Animations').fadeIn('optionsContentWrapper');
 		$('chatInput').focus();
 		
+		// TODO: get chrome to reload this
 		new API.w.Ajax.Updater('chatRoomSelect', './index.php?page=ChatRefreshRoomList'+API.w.SID_ARG_2ND, { evalScripts: true });
 	}
 	
@@ -618,7 +619,8 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 		
 		this.coreModuleInstances.get('Animations').fadeIn(boxID+'SmallButton');
 		
-		new API.w.Draggable(boxID, {
+		// TODO: add working dragging
+		/*new API.w.Draggable(boxID, {
 			handle: boxID+'Headline',
 			zindex: 2000,
 			starteffect: void(0),
@@ -632,7 +634,7 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 				if ((dragObjRect.left < 0) || (dragObjRect.top < 0) || (dragObjRect.right > API.w.innerWidth) || (dragObjRect.bottom > API.w.innerHeight)) return true;
 				else return false;
 			}
-		});
+		});*/
 	}
 	
 	/**

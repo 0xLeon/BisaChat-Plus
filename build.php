@@ -12,11 +12,13 @@ echo "Welcome to Buildscript for Bisachat-Plus\n";
 $options = parseParams($argv);
 $time = time();
 
-if (file_exists('builds/.lastversion')) {
-	$options['version'] = file_get_contents('builds/.lastversion');
-}
-else {
-	$options['version'] = 'Unknown'; 
+if ($options['version'] === '') {
+	if (file_exists('builds/.lastversion')) {
+		$options['version'] = file_get_contents('builds/.lastversion');
+	}
+	else {
+		$options['version'] = 'Unknown'; 
+	}
 }
 
 if ($argc === 1) {

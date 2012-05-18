@@ -45,7 +45,12 @@ Modules.Core.Animations = new ClassSystem.Class(Modules.Util.AbstractCoreModule,
 			animation: false,
 			domAnimationString: 'animation',
 			cssVendorPrefix: '',
-			styleID: 17
+			styleID: 17,
+			events: {
+				start: 'animationstart',
+				end: 'animationend',
+				iteration: 'animationiteration'
+			}
 		};
 		
 		if (!Object.isUndefined($$('body')[0].style.animationName)) {
@@ -58,6 +63,12 @@ Modules.Core.Animations = new ClassSystem.Class(Modules.Util.AbstractCoreModule,
 					this.config.animation = true;
 					this.config.domAnimationString = prefix+'Animation';
 					this.config.cssVendorPrefix = '-'+prefix.toLowerCase()+'-';
+					
+					if (prefix == 'Webkit') {
+						this.config.events.start = 'webkitAnimationStart';
+						this.config.events.end = 'webkitAnimationEnd';
+						this.config.events.iteration = 'webkitAnimationIteration';
+					}
 					
 					throw $break;
 				}
@@ -77,7 +88,7 @@ Modules.Core.Animations = new ClassSystem.Class(Modules.Util.AbstractCoreModule,
 	
 	function addGlobalAnimationListeners(element) {
 		if (!element.animationGlobalListenersAdded) {
-			element.addEventListener('animationstart', function(event) {
+			element.addEventListener(this.config.events.start, function(event) {
 				event.target.animating = true;
 				
 				switch (event.animationName) {
@@ -90,7 +101,7 @@ Modules.Core.Animations = new ClassSystem.Class(Modules.Util.AbstractCoreModule,
 					event.target.onAnimationStart(event);
 				}
 			}, false);
-			element.addEventListener('animationend', function(event) {
+			element.addEventListener(this.config.events.end, function(event) {
 				switch (event.animationName) {
 					case 'fadeOut':
 						event.target.style.display = 'none';

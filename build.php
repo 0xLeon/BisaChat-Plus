@@ -10,7 +10,6 @@ if (strtolower(php_sapi_name()) != 'cli') die("The build-script has to be invoke
 
 echo "Welcome to Buildscript for Bisachat-Plus\n";
 $options = parseParams($argv);
-$time = time();
 
 if ($options['version'] === '') {
 	if (file_exists('builds/.lastversion')) {
@@ -128,7 +127,7 @@ foreach ($options['modules'] as $categoryName => $category) {
 }
 
 $result .= file_get_contents('BisaChatPlus.js');
-$result = str_replace('{version}', $options['version'].'-'.$time, $result);
+$result = str_replace('{version}', $options['version'].'-'.$options['build'], $result);
 
 if ($options['minify']) {
 	echo "Minifying\n";
@@ -142,11 +141,13 @@ if ($options['minify']) {
 	$result = StringStack::reinsertStrings($result, 'header');
 }
 
-echo "Writing file builds/BisaChat Plus ".$options['version'].'-'.$time.".user.js\n";
+echo "Writing file builds/BisaChat Plus ".$options['version'].'-'.$options['build'].".user.js\n";
 // Write file
-file_put_contents('builds/BisaChat Plus '.$options['version'].'-'.$time.'.user.js', $result);
+file_put_contents('builds/BisaChat Plus '.$options['version'].'-'.$options['build'].'.user.js', $result);
 // save version
 file_put_contents('builds/.lastversion', $options['version']);
+// save build
+file_put_contents('builds/.lastbuild', $options['build']);
 echo "Finished\n";
 
 if ($argc == 1) {
@@ -158,6 +159,7 @@ if ($argc == 1) {
 function parseParams($argv) {
 	$options = array(
 		'version' => '',
+		'build' => 1,
 		'minify' => false,
 		'modules' => array(
 			// TODO: get util module stuff dynamic
@@ -187,6 +189,10 @@ function parseParams($argv) {
 				$options['modules']['AddOn'][] = substr($argv[$i], strrpos($argv[$i], '-')+1);
 				break;
 		}
+	}
+	
+	if (file_exists('builds/.lastbuild')) {
+		$options['build'] = (string)(intval(file_get_contents('builds/.lastbuild')) + 1);
 	}
 	
 	$options['modules']['AddOn'] = array_unique($options['modules']['AddOn']);

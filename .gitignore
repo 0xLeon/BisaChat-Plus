@@ -59,6 +59,8 @@ requirements/*.tar.gz
 
 # Stuff
 screenshots/
+project.diff
+project.log
 
 # BCPlus
 builds/

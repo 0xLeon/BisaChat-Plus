@@ -160,9 +160,8 @@ function parseParams($argv) {
 		'version' => '',
 		'minify' => false,
 		'modules' => array(
-			'Util' => array_map(function($entry) {
-					return basename($entry, '.js');
-				}, glob('modules/Util/*.js')),
+			// TODO: get util module stuff dynamic
+			'Util' => array('AbstractModule', 'AbstractCoreModule'),
 			'Core' => array_map(function($entry) {
 					return basename($entry, '.js');
 				}, glob('modules/Core/*.js')),

@@ -49,6 +49,7 @@ nbactions.xml
 
 # WCF Package Builder
 build.php
+builds/
 
 # Community Framework
 # Ignore packages build directly in the workspace. They can however be added manually via git add, if wanted.
@@ -61,6 +62,3 @@ requirements/*.tar.gz
 screenshots/
 project.diff
 project.log
-
-# BCPlus
-builds/

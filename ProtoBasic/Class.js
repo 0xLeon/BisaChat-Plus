@@ -10,7 +10,7 @@ var ClassSystem = (function() {
 		if (!iterable) return [];
 		if ('toArray' in Object(iterable)) return iterable.toArray();
 		
-		var length = iterable.length || 0
+		var length = iterable.length || 0;
 		var results = new Array(length);
 		
 		while (length--) results[length] = iterable[length];

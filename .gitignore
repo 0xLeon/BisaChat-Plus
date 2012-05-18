@@ -48,7 +48,6 @@ nbactions.xml
 .externalToolBuilders/
 
 # WCF Package Builder
-build.php
 builds/
 
 # Community Framework

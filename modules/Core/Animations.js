@@ -133,12 +133,13 @@ Modules.Core.Animations = new ClassSystem.Class(Modules.Util.AbstractCoreModule,
 			if (Object.isFunction(config.onAnimationStart)) element.onAnimationStart = config.onAnimationStart;
 			if (Object.isFunction(config.onAnimationEnd)) element.onAnimationEnd = config.onAnimationEnd;
 			
-			// TODO: Chrome doen't start any animation
 			element.style[this.config.domAnimationString] = animationString;
 		}
 	}
 	
 	function fadeIn(element, config) {
+		if (this.config.domAnimationString === 'WebkitAnimation') element.style.display = '';
+		
 		doAnimation.apply(this, [element, config, 'fadeIn 1s ease-in-out forwards']);
 	}
 	

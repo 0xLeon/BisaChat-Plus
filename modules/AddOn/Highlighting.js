@@ -63,7 +63,7 @@ Modules.AddOn.Highlighting = new ClassSystem.Class(Modules.Util.AbstractModule, 
 				}
 			}
 		}, this);
-		document.addEventListener('blur', function(event) {
+		Event.register('tabBlur', function(event) {
 			if (API.Storage.getValue('blurHRStatus', false)) {
 				$$('#chatMessage'+API.w.chat.activeUserID+' ul .blurHr').each(function(item) {
 					item.parentNode.removeChild(item);
@@ -73,7 +73,7 @@ Modules.AddOn.Highlighting = new ClassSystem.Class(Modules.Util.AbstractModule, 
 				line.appendChild(new Element('hr', { style: 'display: block; width: 75%;' }));
 				$$('#chatMessage'+API.w.chat.activeUserID+' ul')[0].appendChild(line);
 			}
-		}, false);
+		});
 	},
 	
 	buildRegExp: function(basicString) {
@@ -120,7 +120,7 @@ Modules.AddOn.Highlighting = new ClassSystem.Class(Modules.Util.AbstractModule, 
 				}, this);
 			}
 			else if (!document.hasFocus()) {
-				this.listenerFunction = function(event) {
+				this.listenerFunction = Event.register('tabFocus', function(event) {
 					if (this.periodicalExecuter !== null) {
 						this.periodicalExecuter.stop();
 						this.periodicalExecuter = null;
@@ -134,11 +134,9 @@ Modules.AddOn.Highlighting = new ClassSystem.Class(Modules.Util.AbstractModule, 
 					}, this);
 					this.messageIDs.clear();
 					
-					document.removeEventListener('focus', this.listenerFunction, false)
+					Event.unregister('tabFocus', this.ListenerFunction);
 					this.listenerFunction = null;
-				}.bindAsEventListener(this);
-				
-				document.addEventListener('focus', this.listenerFunction, false);
+				}, this);
 			}
 		}
 	}

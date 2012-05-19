@@ -353,7 +353,11 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 			Event.fire('keydown', event);
 		}, true);
 		
-		API.w.document.addEventListener('blur', function(event) {
+		API.w.addEventListener('focus', function(event) {
+			Event.fire('tabFocus', event);
+		}, false);
+		
+		API.w.addEventListener('blur', function(event) {
 			Event.fire('tabBlur', event);
 		}, false);
 	}

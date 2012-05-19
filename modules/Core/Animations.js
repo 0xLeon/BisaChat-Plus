@@ -138,7 +138,7 @@ Modules.Core.Animations = new ClassSystem.Class(Modules.Util.AbstractCoreModule,
 	}
 	
 	function fadeIn(element, config) {
-		if (this.config.domAnimationString === 'WebkitAnimation') element.style.display = '';
+		if (this.config.domAnimationString === 'WebkitAnimation') $(element).style.display = '';
 		
 		doAnimation.apply(this, [element, config, 'fadeIn 1s ease-in-out forwards']);
 	}

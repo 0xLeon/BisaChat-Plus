@@ -93,7 +93,19 @@ var Enumerable = (function() {
 		
 		return results;
 	}
-	
+
+	function reject(iterator, context) {
+		var results = [];
+		
+		this.each(function(value, index) {
+			if (!iterator.call(context, value, index)) {
+				results.push(value);
+			}
+		});
+		
+		return results;
+	}
+
 	function include(object) {
 		if (Object.isFunction(this.indexOf)) {
 			return (this.indexOf(object) !== -1);
@@ -155,6 +167,7 @@ var Enumerable = (function() {
 		findAll:	findAll,
 		select:		findAll,
 		filter:		findAll,
+		reject:		reject,
 		include:	include,
 		member:		include,
 		invoke:		invoke,

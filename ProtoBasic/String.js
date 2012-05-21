@@ -119,6 +119,12 @@ Object.extend(String.prototype, (function() {
 		}
 	}
 	
+	function camelize() {
+		return this.replace(/-+(.)?/g, function(match, chr) {
+			return ((chr) ? (chr.toUpperCase()) : (''));
+		});
+	}
+	
 	function inspect(useDoubleQuotes) {
 		var escapedString = this.replace(/[\x00-\x1f\\]/g, function(character) {
 			if (character in String.specialChar) {
@@ -144,6 +150,7 @@ Object.extend(String.prototype, (function() {
 		trimLeft:	String.prototype.trimLeft || trimLeft,
 		trimRight:	String.prototype.trimRight || trimRight,
 		parseAsColor:	parseAsColor,
+		camelize:	camelize,
 		inspect:	inspect
 	};
 })());

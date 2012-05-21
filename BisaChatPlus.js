@@ -623,12 +623,11 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 		
 		this.coreModuleInstances.get('Animations').fadeIn(boxID+'SmallButton');
 		
-		// TODO: add working dragging
-		/*new API.w.Draggable(boxID, {
+		new Draggable($(boxID), {
 			handle: boxID+'Headline',
 			zindex: 2000,
-			starteffect: void(0),
-			endeffect: void(0),
+			starteffect: null,
+			endeffect: null,
 			onEnd: function(draggable) {
 				this.saveBoxStatus(draggable.element.getAttribute('id'));
 			}.bind(this),
@@ -638,7 +637,7 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 				if ((dragObjRect.left < 0) || (dragObjRect.top < 0) || (dragObjRect.right > API.w.innerWidth) || (dragObjRect.bottom > API.w.innerHeight)) return true;
 				else return false;
 			}
-		});*/
+		});
 	}
 	
 	/**

@@ -12,7 +12,24 @@ var Event = (function() {
 	 * @type	{Hash}
 	 */
 	var events = $H({});
-	
+
+	var keys = {
+		KEY_BACKSPACE:	8,
+		KEY_TAB:	9,
+		KEY_RETURN:	13,
+		KEY_ESC:	27,
+		KEY_LEFT:	37,
+		KEY_UP:		38,
+		KEY_RIGHT:	39,
+		KEY_DOWN:	40,
+		KEY_DELETE:	46,
+		KEY_HOME:	36,
+		KEY_END:	35,
+		KEY_PAGEUP:	33,
+		KEY_PAGEDOWN:	34,
+		KEY_INSERT:	45
+	};
+
 	/**
 	 * Register an event handler for an event
 	 * 
@@ -60,9 +77,78 @@ var Event = (function() {
 		}
 	}
 	
+	function stop(event) {
+		event.preventDefault();
+		event.stopPropagation();
+
+		event.stopped = true;
+	}
+	
+	
+	function pointerX(event) {
+		var docElement = document.documentElement;
+		var body = document.body || {
+			scrollLeft: 0
+		};
+		
+		return (event.pageX || (event.clientX + (docElement.scrollLeft || body.scrollLeft) - (docElement.clientLeft || 0)));
+	}
+
+	
+	function pointerY(event) {
+		var docElement = document.documentElement;
+		var body = document.body || {
+			scrollTop: 0
+		};
+
+		return (event.pageY || (event.clientY + (docElement.scrollTop || body.scrollTop) - (docElement.clientTop || 0)));
+	}
+
+	if (WEBKIT) {
+		_isButton = function(event, code) {
+			switch (code) {
+				case 0:
+					return ((event.which == 1) && !event.metaKey);
+				case 1:
+					return ((event.which == 2) || ((event.which == 1) && event.metaKey));
+				case 2:
+					return (event.which == 3);
+				default:
+					return false;
+			}
+		}
+
+	}
+	else {
+		_isButton = function(event, code) {
+			return ((event.which) ? (event.which === code + 1) : (event.button === code));
+		}
+	}
+
+	function isLeftClick(event) {
+		return _isButton(event, 0);
+	}
+	
+	function isMiddleClick(event) {
+		return _isButton(event, 1);
+	}
+	
+	function isRightClick(event) {
+		return _isButton(event, 2);
+	}
+
+	
 	return {
-		register:   register,
-		unregister: unregister,
-		fire:       fire
+		register:	register,
+		unregister:	unregister,
+		fire:		fire,
+		
+		keys:		keys,
+		stop:		stop,
+		pointerX:	pointerX,
+		pointerY:	pointerY,
+		isLeftClick:	isLeftClick,
+		isMiddleClick:	isMiddleClick,
+		isRightClick:	isRightClick
 	};
 })();

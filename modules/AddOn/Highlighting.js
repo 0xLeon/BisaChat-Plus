@@ -134,7 +134,7 @@ Modules.AddOn.Highlighting = new ClassSystem.Class(Modules.Util.AbstractModule, 
 					}, this);
 					this.messageIDs.clear();
 					
-					Event.unregister('tabFocus', this.ListenerFunction);
+					Event.unregister('tabFocus', this.listenerFunction);
 					this.listenerFunction = null;
 				}, this);
 			}

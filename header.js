@@ -25,4 +25,13 @@
  * with this program; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
- 
+
+const GECKO = (function() {
+	return ((navigator.userAgent.indexOf('Gecko') > -1) && (navigator.userAgent.indexOf('KHTML') === -1));
+})();
+const WEBKIT = (function() {
+	return (navigator.userAgent.indexOf('AppleWebKit/') > -1);
+})();
+const OPERA = (function() {
+	return (Object.prototype.toString.call(window.opera) == '[object Opera]');
+})();

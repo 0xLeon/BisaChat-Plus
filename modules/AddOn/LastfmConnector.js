@@ -19,6 +19,7 @@ Modules.AddOn.LastfmConnector = new ClassSystem.Class(Modules.Util.AbstractModul
 		input.addEventListener('click', function() {
 			if (!this.loadingTrack) {
 				this.getTrack();
+				$('chatInput').focus();
 			}
 		}.bindAsEventListener(this), true);
 		

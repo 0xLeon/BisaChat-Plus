@@ -452,9 +452,6 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 		$('optionsContentTypeSeparator').style.display = (($('optionsContentTextOptionDiv').style.display !== 'none') && ($('optionsContentBoolOptionDiv').style.display !== 'none')) ? 'block' : 'none';
 		this.coreModuleInstances.get('Animations').fadeIn('optionsContentWrapper');
 		$('chatInput').focus();
-		
-		// TODO: get chrome to reload this
-		new API.w.Ajax.Updater('chatRoomSelect', './index.php?page=ChatRefreshRoomList'+API.w.SID_ARG_2ND, { evalScripts: true });
 	}
 	
 	function initModules() {

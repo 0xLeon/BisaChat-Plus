@@ -467,7 +467,7 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 	}
 	
 	function updateCallback(xml) {
-		var updateSmallButton = new Element('li');
+		var updateSmallButton = new Element('li', { style: 'display: none;' });
 		var updateSmallButtonLink = new Element('a', { href: xml.getElementsByTagName('url')[0].firstChild.nodeValue, title: 'BisaChat Plus-Update installieren', target: '_blank' });
 		var updateSmallButtonImg = new Element('img', { src: './wcf/icon/packageUpdateS.png', alt: '' });
 		var updateSmallButtonSpan = new Element('span');
@@ -479,6 +479,7 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 		updateSmallButton.appendChild(updateSmallButtonLink);
 		
 		$$('#chatOptions .smallButtons ul')[0].appendChild(updateSmallButton);
+		this.coreModuleInstances.get('Animations').fadeIn(updateSmallButton);
 	}
 	
 	/**
@@ -828,7 +829,7 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 	 * @return	{Function}				Update callback function
 	 */
 	function getUpdateCallback() {
-		return updateCallback;
+		return updateCallback.bind(this);
 	}
 	
 	return {

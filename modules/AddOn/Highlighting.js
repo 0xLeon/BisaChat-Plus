@@ -26,11 +26,9 @@ Modules.AddOn.Highlighting = new ClassSystem.Class(Modules.Util.AbstractModule, 
 	},
 	
 	initializeVariables: function() {
-		this.docTitle = '';
+		this.docTitle = document.title;
 		this.regExp = null;
 		this.messageIDs = [];
-		this.title = '';
-		this.periodicalExecuter = null;
 		this.listenerFunction = null;
 	},
 	
@@ -50,7 +48,6 @@ Modules.AddOn.Highlighting = new ClassSystem.Class(Modules.Util.AbstractModule, 
 				}
 				
 				if (this.regExp.test(event.text)) {
-					this.title = 'Neue Nachricht enthält: '+this.regExp.exec(event.text)[1];
 					this.highlight(event.id);
 					
 					if (!!this.callerObj.moduleInstances.get('MessageBox') && !!this.callerObj.moduleInstances.get('MessageBox').pushMessage && (event.type !== 7)) {
@@ -58,7 +55,6 @@ Modules.AddOn.Highlighting = new ClassSystem.Class(Modules.Util.AbstractModule, 
 					}
 				}
 				else if (event.type === 7) {
-					this.title = 'Du wurdest angeflüstert'
 					this.highlight(event.id);
 				}
 			}
@@ -84,36 +80,28 @@ Modules.AddOn.Highlighting = new ClassSystem.Class(Modules.Util.AbstractModule, 
 		this.regExp = new RegExp('\\b('+regExpString+')\\b', 'i');
 	},
 	
+	updateDocTitle: function() {
+		if (this.messageIDs.size() > 0) {
+			document.title = this.docTitle + ' (' + this.messageIDs.size().toString() + ')';
+		}
+		else {
+			document.title = this.docTitle;
+		}
+	},
+	
 	highlight: function(id) {
 		new Audio(Media.bing.dataURI).play();
 		this.messageIDs.push('chatMessage'+id);
+		this.updateDocTitle();
 		
-		if (this.periodicalExecuter === null) {
-			this.docTitle = document.title;
-			this.periodicalExecuter = new API.w.PeriodicalExecuter(function() {
-				if (document.title === this.docTitle) {
-					document.title = this.title;
-				}
-				else {
-					document.title = this.docTitle;
-				}
-			}.bind(this), 1.5);
-		}
 		if (this.listenerFunction === null) {
 			if (this.callerObj.isAway) {
 				this.listenerFunction = Event.register('awayStatusChange', function(event) {
-					if (this.periodicalExecuter !== null) {
-						this.periodicalExecuter.stop();
-						this.periodicalExecuter = null;
-					}
-					
-					document.title = this.docTitle;
-					this.docTitle = '';
-					
 					this.messageIDs.each(function(item) {
 						this.callerObj.coreModuleInstances.get('Animations').highlight(item);
 					}, this);
 					this.messageIDs.clear();
+					this.updateDocTitle();
 					
 					Event.unregister('awayStatusChange', this.listenerFunction);
 					this.listenerFunction = null;
@@ -121,18 +109,11 @@ Modules.AddOn.Highlighting = new ClassSystem.Class(Modules.Util.AbstractModule, 
 			}
 			else if (!document.hasFocus()) {
 				this.listenerFunction = Event.register('tabFocus', function(event) {
-					if (this.periodicalExecuter !== null) {
-						this.periodicalExecuter.stop();
-						this.periodicalExecuter = null;
-					}
-					
-					document.title = this.docTitle;
-					this.docTitle = '';
-					
 					this.messageIDs.each(function(item) {
 						this.callerObj.coreModuleInstances.get('Animations').highlight(item);
 					}, this);
 					this.messageIDs.clear();
+					this.updateDocTitle();
 					
 					Event.unregister('tabFocus', this.listenerFunction);
 					this.listenerFunction = null;

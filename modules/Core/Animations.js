@@ -47,9 +47,14 @@ Modules.Core.Animations = new ClassSystem.Class(Modules.Util.AbstractCoreModule,
 			cssVendorPrefix: '',
 			styleID: 17,
 			events: {
-				start: 'animationstart',
-				end: 'animationend',
-				iteration: 'animationiteration'
+				animation: {
+					start: 'animationstart',
+					end: 'animationend',
+					iteration: 'animationiteration'
+				},
+				transition: {
+					end: 'transitionend'
+				}
 			}
 		};
 		
@@ -65,9 +70,10 @@ Modules.Core.Animations = new ClassSystem.Class(Modules.Util.AbstractCoreModule,
 					this.config.cssVendorPrefix = '-'+prefix.toLowerCase()+'-';
 					
 					if (prefix == 'Webkit') {
-						this.config.events.start = 'webkitAnimationStart';
-						this.config.events.end = 'webkitAnimationEnd';
-						this.config.events.iteration = 'webkitAnimationIteration';
+						this.config.events.animation.start = 'webkitAnimationStart';
+						this.config.events.animation.end = 'webkitAnimationEnd';
+						this.config.events.animation.iteration = 'webkitAnimationIteration';
+						this.config.events.transition.end = 'webkitTransitionEnd'; 
 					}
 					
 					throw $break;
@@ -88,7 +94,7 @@ Modules.Core.Animations = new ClassSystem.Class(Modules.Util.AbstractCoreModule,
 	
 	function addGlobalAnimationListeners(element) {
 		if (!element.animationGlobalListenersAdded) {
-			element.addEventListener(this.config.events.start, function(event) {
+			element.addEventListener(this.config.events.animation.start, function(event) {
 				event.target.animating = true;
 				
 				switch (event.animationName) {
@@ -101,7 +107,7 @@ Modules.Core.Animations = new ClassSystem.Class(Modules.Util.AbstractCoreModule,
 					event.target.onAnimationStart(event);
 				}
 			}, false);
-			element.addEventListener(this.config.events.end, function(event) {
+			element.addEventListener(this.config.events.animation.end, function(event) {
 				switch (event.animationName) {
 					case 'fadeOut':
 						event.target.style.display = 'none';

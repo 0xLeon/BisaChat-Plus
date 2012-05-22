@@ -11,7 +11,7 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 	
 	addStyleRules: function() {
 		API.addStyle('#backupSmallButton, #backupDataList li { overflow: hidden !important; }');
-		API.addStyle('#backup .overlayContent { -moz-transition: opacity 1s ease-in-out; }');
+		API.addStyle('#backup .overlayContent { ' + this.callerObj.coreModuleInstances.get('Animations').config.cssVendorPrefix + 'transition: opacity 1s ease-in-out; }');
 	},
 	
 	registerOptions: function() {
@@ -90,7 +90,7 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 			}
 		}
 		
-		$$('#backup .overlayContent')[0].addEventListener('transitionend', function(event) {
+		$$('#backup .overlayContent')[0].addEventListener(this.callerObj.coreModuleInstances.get('Animations').config.events.transition.end, function(event) {
 			if (this.transitionendUIFunction !== null) {
 				this.transitionendUIFunction(event.target);
 				this.transitionendUIFunction = null;

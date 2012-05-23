@@ -198,7 +198,7 @@ var API = (function() {
 	 * @returns	{undefined}					Returns nothing
 	 */
 	function addStyle(CSSString) {
-		var styleNode = new this.w.Element('style', { 'type': 'text/css' });
+		var styleNode = new Element('style', { 'type': 'text/css' });
 		
 		styleNode.appendChild(document.createTextNode(CSSString));
 		this.Selector.getElementsByCSSExpression('head')[0].appendChild(styleNode);

@@ -410,8 +410,8 @@ var Draggable = new ClassSystem.Class({
 		
 		if (this.options.ghosting) {
 			var r = Element.cumulativeScrollOffset(this.element);
-			pos[0] += r[0] - Position.deltaX;
-			pos[1] += r[1] - Position.deltaY;
+			pos[0] += r[0] - (document.documentElement.scrollLeft || document.body.scrollLeft);
+			pos[1] += r[1] -(document.documentElement.scrollTop || document.body.scrollTop);
 		}
 
 		var d = this.currentDelta();

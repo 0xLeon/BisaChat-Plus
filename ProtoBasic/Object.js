@@ -52,27 +52,27 @@
 	}
 	
 	function isHash(object) {
-		return object instanceof Hash;
+		return (object instanceof Hash);
 	}
 	
 	function isFunction(object) {
-		return _toString.call(object) === FUNCTION_CLASS;
+		return (_toString.call(object) === FUNCTION_CLASS);
 	}
 	
 	function isString(object) {
-		return _toString.call(object) === STRING_CLASS;
+		return (_toString.call(object) === STRING_CLASS);
 	}
 	
 	function isNumber(object) {
-		return _toString.call(object) === NUMBER_CLASS;
+		return (_toString.call(object) === NUMBER_CLASS);
 	}
 	
 	function isDate(object) {
-		return _toString.call(object) === DATE_CLASS;
+		return (_toString.call(object) === DATE_CLASS);
 	}
 	
 	function isUndefined(object) {
-		return typeof object === 'undefined';
+		return (typeof object === 'undefined');
 	}
 	
 	extend(Object, {

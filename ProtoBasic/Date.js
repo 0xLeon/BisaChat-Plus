@@ -15,6 +15,6 @@ Object.extend(Date, {
 
 Object.extend(Date.prototype, {
 	getMessageDate: function() {
-		return ((this.getHours() < 10) ? '0'+this.getHours() : this.getHours())+':'+((this.getMinutes() < 10) ? '0'+this.getMinutes() : this.getMinutes())+':'+((this.getSeconds() < 10) ? '0'+this.getSeconds() : this.getSeconds());
+		return ((this.getHours() < 10) ? '0' + this.getHours() : this.getHours()) + ':' + ((this.getMinutes() < 10) ? '0' + this.getMinutes() : this.getMinutes()) + ':' + ((this.getSeconds() < 10) ? '0' + this.getSeconds() : this.getSeconds());
 	}
 });

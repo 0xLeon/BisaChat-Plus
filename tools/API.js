@@ -115,13 +115,13 @@ var API = (function() {
 		}
 		
 		return {
-			getValue:       getValue,
-			setValue:       setValue,
-			unsetValue:     unsetValue,
-			clear:          clear,
-			key:            key,
-			importSettings: importSettings,
-			exportSettings: exportSettings,
+			getValue:	getValue,
+			setValue:	setValue,
+			unsetValue:	unsetValue,
+			clear:		clear,
+			key:		key,
+			importSettings:	importSettings,
+			exportSettings:	exportSettings,
 			
 			/**
 			 * Amount of saved key value pairs
@@ -186,8 +186,8 @@ var API = (function() {
 		}
 		
 		return {
-			getElementsByIDs:           getElementsByIDs,
-			getElementsByCSSExpression: getElementsByCSSExpression
+			getElementsByIDs:		getElementsByIDs,
+			getElementsByCSSExpression:	getElementsByCSSExpression
 		};
 	})();
 	
@@ -205,9 +205,9 @@ var API = (function() {
 	}
 	
 	return {
-		Storage:         Storage,
-		Selector:        Selector,
-		addStyle:        addStyle,
+		Storage:	Storage,
+		Selector:	Selector,
+		addStyle:	addStyle,
 		
 		/**
 		 * Unrestricted window object

@@ -71,11 +71,11 @@ var Registry = (function() {
 	}
 	
 	return {
-		getValue:   getValue,
-		setValue:   setValue,
-		unsetValue: unsetValue,
-		clear:      clear,
-		key:        key,
+		getValue:	getValue,
+		setValue:	setValue,
+		unsetValue:	unsetValue,
+		clear:		clear,
+		key:		key,
 		
 		/**
 		 * Amount of saved key value pairs

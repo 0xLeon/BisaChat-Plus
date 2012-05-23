@@ -502,8 +502,8 @@ Modules.AddOn.BBCodeParser = new ClassSystem.Class(Modules.Util.AbstractModule, 
 	}
 	
 	return {
-		registerOptions: registerOptions,
-		addListeners:    addListeners,
-		stripTags:       stripTags
+		registerOptions:	registerOptions,
+		addListeners:		addListeners,
+		stripTags:		stripTags
 	};
 })());

@@ -411,7 +411,7 @@ var Draggable = new ClassSystem.Class({
 		if (this.options.ghosting) {
 			var r = Element.cumulativeScrollOffset(this.element);
 			pos[0] += r[0] - (document.documentElement.scrollLeft || document.body.scrollLeft);
-			pos[1] += r[1] -(document.documentElement.scrollTop || document.body.scrollTop);
+			pos[1] += r[1] - (document.documentElement.scrollTop || document.body.scrollTop);
 		}
 
 		var d = this.currentDelta();
@@ -424,7 +424,7 @@ var Draggable = new ClassSystem.Class({
 		}
 
 		var p = [0, 1].map(function(i) {
-			return (point[i] - pos[i] - this.offset[i])
+			return (point[i] - pos[i] - this.offset[i]);
 		}.bind(this));
 
 		if (this.options.snap) {

@@ -157,11 +157,11 @@ Modules.AddOn.MessageBox = new ClassSystem.Class(Modules.Util.AbstractModule, (f
 	}
 	
 	return {
-		initializeVariables: initializeVariables,
-		addListeners:        addListeners,
-		buildUI:             buildUI,
+		initializeVariables:	initializeVariables,
+		addListeners:		addListeners,
+		buildUI:		buildUI,
 		
-		pushMessage:         pushMessage,
-		clearInbox:          clearInbox
+		pushMessage:		pushMessage,
+		clearInbox:		clearInbox
 	};
 })());

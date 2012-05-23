@@ -44,10 +44,10 @@ var Hash = new ClassSystem.Class(Enumerable, (function() {
 	
 	function index(value) {
 		var match = this.detect(function(pair) {
-			return pair.value === value;
+			return (pair.value === value);
 		});
 		
-		return match && match.key;
+		return (match && match.key);
 	}
 	
 	function keys() {

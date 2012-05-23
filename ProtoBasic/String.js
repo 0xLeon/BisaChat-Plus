@@ -111,7 +111,7 @@ Object.extend(String.prototype, (function() {
 				return hexColor+basic;
 			}
 			else if (basic.length === 3) {
-				return hexColor+basic[0]+basic[0]+basic[1]+basic[1]+basic[2]+basic[2];
+				return hexColor + basic[0] + basic[0] + basic[1] + basic[1] + basic[2] + basic[2];
 			}
 			else {
 				return '';

@@ -42,7 +42,7 @@ Modules.AddOn.Highlighting = new ClassSystem.Class(Modules.Util.AbstractModule, 
 	
 	addListeners: function() {
 		Event.register('messageAfterNodeSetup', function(event) {
-			if (API.Storage.getValue('highlightingStatus', false) && (!document.hasFocus() || this.callerObj.isAway) && (event.usernameSimple.toLowerCase() !== 'chatbot')) {
+			if (API.Storage.getValue('highlightingStatus', false) && (!document.hasFocus() || this.callerObj.isAway) && (event.usernameSimple.toLowerCase() !== 'chatbot') && !event.text.startsWith('np:')) {
 				if (this.regExp === null) {
 					this.buildRegExp(API.Storage.getValue('highlightingTextValue', API.w.settings.username));
 				}

@@ -71,9 +71,9 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 		API.addStyle('.hidden { display: none; }');
 		API.addStyle('.column { border: 0px !important; }');
 		API.addStyle('#smileys { display: none; }');
-		API.addStyle('.loading, .error, .overlay, #chatCopyright { border: none !important; -moz-border-radius: 0px !important; z-index: 9000; }');
+		API.addStyle('.loading, .error, .overlay, #chatCopyright { border: none !important; ' + this.coreModuleInstances.get('Animations').config.cssVendorPrefix + 'border-radius: 0px !important; z-index: 9000; }');
 		API.addStyle('.subTabMenu { padding: 0px !important; padding-top: 2px !important; border-top: none !important; border-left: none !important; border-right: none !important; }');
-		API.addStyle('.subTabMenu, .subTabMenu > * { -moz-border-radius: 0px !important; }');
+		API.addStyle('.subTabMenu, .subTabMenu > * { ' + this.coreModuleInstances.get('Animations').config.cssVendorPrefix + 'border-radius: 0px !important; }');
 		API.addStyle('#chatBox { margin-top: 0px; width: 100%; height: '+API.w.innerHeight+'px; }');
 		API.addStyle('#chatBox > .border { padding: 0px !important; border: none !important; margin: 0px !important; position: relative; }');
 		API.addStyle('#chatBox > .border > .layout-2, #chatBox .columnInner { margin: 0px !important; }');
@@ -89,7 +89,7 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 		API.addStyle('.overlayCloseButton img { padding: 15px; }');
 		API.addStyle('.overlayContent { margin: 5px 0px 3px; max-height: '+(API.w.innerHeight-110)+'px; overflow: auto; }');
 		API.addStyle('.boxSmallButton, .overlaySmallButton { position: relative; }');
-		API.addStyle('.bcplusBox { position: absolute; width: 255px; height: 155px !important; top: -160px; left: 0px; padding-left: 1px; padding-top: 1px; -moz-border-radius-bottomleft: 0px; -moz-border-radius-bottomright: 0px; }');
+		API.addStyle('.bcplusBox { position: absolute; width: 255px; height: 155px !important; top: -160px; left: 0px; padding-left: 1px; padding-top: 1px; ' + this.coreModuleInstances.get('Animations').config.cssVendorPrefix + 'border-radius-bottomleft: 0px; ' + this.coreModuleInstances.get('Animations').config.cssVendorPrefix + 'border-radius-bottomright: 0px; }');
 		API.addStyle('.textOptionValue { cursor: pointer; }');
 		API.addStyle('.textOptionValue:hover { text-decoration: underline; }');
 		

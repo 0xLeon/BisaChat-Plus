@@ -3,10 +3,6 @@
  * Copyright (C) 2011-2012 Stefan Hahn
  */
 Modules.AddOn.RoomSelect = new ClassSystem.Class(Modules.Util.AbstractModule, {
-	initialize: function($super, callerObj) {
-		this.callerObj = callerObj;
-	},
-	
 	addStyleRules: function() {
 		API.addStyle('#chatChangeRoom span:after { content: " "; }');
 	},

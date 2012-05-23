@@ -34,6 +34,7 @@ Modules.AddOn.RoomSelect = new ClassSystem.Class(Modules.Util.AbstractModule, {
 				$('chatChangeRoomMenu').innerHTML = '<ul>' + roomList + '</ul>';
 				$('chatChangeRoom').querySelector('img').addEventListener('click', function(event) {
 					this.buildUI();
+					Event.stop(event);
 				}.bindAsEventListener(this), true);
 				$$('#chatChangeRoomMenu li > a').each(function(element) {
 					element.addEventListener('click', function(event) {

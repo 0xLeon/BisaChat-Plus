@@ -5,15 +5,6 @@
 Modules.AddOn.RoomSelect = new ClassSystem.Class(Modules.Util.AbstractModule, {
 	initialize: function($super, callerObj) {
 		this.callerObj = callerObj;
-		
-		if (WEBKIT) {
-			$super(callerObj);
-		}
-		else {
-			new API.w.Ajax.Updater('chatRoomSelect', './index.php?page=ChatRefreshRoomList' + API.w.SID_ARG_2ND, {
-				evalScripts: true
-			});
-		}
 	},
 	
 	addStyleRules: function() {

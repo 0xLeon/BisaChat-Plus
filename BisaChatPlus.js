@@ -83,15 +83,19 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 		API.addStyle('#chatMessage > div[id^="chatMessage"] { height: 100% !important; padding-left: 25px; }');
 		API.addStyle('#chatFormContainer { margin-left: 25px; margin-right: 25px }');
 		API.addStyle('#chatMembers { margin-left: 8px; }');
+		API.addStyle('.smallButtons > ul > li > img { width: 16px; height: 16px; }')
 		API.addStyle('.overlay { position: absolute; width: 100%; height: 100%; margin: 0px !important; clear: both; }');
 		API.addStyle('.overlay > div { padding: 15px 25px; }');
 		API.addStyle('.overlayCloseButton { float: right; }');
 		API.addStyle('.overlayCloseButton img { padding: 15px; }');
 		API.addStyle('.overlayContent { margin: 5px 0px 3px; max-height: '+(API.w.innerHeight-110)+'px; overflow: auto; }');
 		API.addStyle('.boxSmallButton, .overlaySmallButton { position: relative; }');
-		API.addStyle('.bcplusBox { position: absolute; width: 255px; height: 155px !important; top: -160px; left: 0px; padding-left: 1px; padding-top: 1px; ' + this.coreModuleInstances.get('Animations').config.cssVendorPrefix + 'border-radius-bottomleft: 0px; ' + this.coreModuleInstances.get('Animations').config.cssVendorPrefix + 'border-radius-bottomright: 0px; }');
+		API.addStyle('.bcplusBox { position: absolute; width: 255px; height: 155px !important; top: -160px; left: 0px; padding-left: 1px; padding-top: 1px; }');
+		API.addStyle('.bcplusBox .containerHead { cursor: move; }');
+		API.addStyle('.bcplusBox .containerContent { height: 132px; padding-left: 3px; overflow-y: auto; }')
 		API.addStyle('.textOptionValue { cursor: pointer; }');
 		API.addStyle('.textOptionValue:hover { text-decoration: underline; }');
+		API.addStyle('#options hr { display: block; width: 80%; }')
 		
 		$$('#chatBox .columnContainer')[0].style.width = API.w.innerWidth+'px';
 		var boxesHeight = (API.w.innerHeight-(parseInt($$('#chatBox .subTabMenu')[0].offsetHeight)))+'px';
@@ -428,7 +432,7 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 			var optionsContentWrapperDiv = new Element('div', { id: 'optionsContentWrapper', style: 'display: none' });
 			var optionsContentBoolOptionDiv = new Element('div', { id: 'optionsContentBoolOptionDiv', style: 'display: none;' });
 			var optionsContentTextOptionDiv = new Element('div', { id: 'optionsContentTextOptionDiv', style: 'display: none;' });
-			var optionsContentHr = new Element('hr', { id: 'optionsContentTypeSeparator', style: 'display: none; width: 80%' });
+			var optionsContentHr = new Element('hr', { id: 'optionsContentTypeSeparator', style: 'display: none;' });
 			
 			optionsContentWrapperDiv.appendChild(optionsContentBoolOptionDiv);
 			optionsContentWrapperDiv.appendChild(optionsContentHr);
@@ -556,13 +560,13 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 		
 		var boxSmallButton = new Element('li', { id: boxID+'SmallButton', 'class': 'boxSmallButton', style: 'display: none;' });
 		var boxSmallButtonLink = new Element('a', { href: 'javascript:;' });
-		var boxSmallButtonImg = new Element('img', { src: icon, alt: '', style: 'width: 16px; height: 16px;' });
+		var boxSmallButtonImg = new Element('img', { src: icon, alt: '' });
 		var boxSmallButtonSpan = new Element('span');
 		
-		var boxDiv = new Element('div', { id: boxID, 'class': 'border messageInner bcplusBox', style: 'z-index: 500;' });
-		var boxHeadlineDiv = new Element('div', { id: boxID+'Headline', 'class': 'containerHead', style: 'cursor: move;' });
+		var boxDiv = new Element('div', { id: boxID, 'class': 'border titleBarPanel bcplusBox', style: 'z-index: 500;' });
+		var boxHeadlineDiv = new Element('div', { id: boxID+'Headline', 'class': 'containerHead' });
 		var boxHeadline = new Element('h3');
-		var boxContentDiv = new Element('div', { id: boxID+'Content', style: 'height: 132px; padding-left: 3px; overflow-y: auto;' });
+		var boxContentDiv = new Element('div', { id: boxID+'Content', 'class': 'containerContent' });
 		
 		boxDiv.style.display = (API.Storage.getValue(boxID+'boxVisible', false)) ? '' : 'none';
 		boxDiv.style.top = API.Storage.getValue(boxID+'boxTop', '-160px');
@@ -655,7 +659,7 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 		
 		var overlaySmallButton = new Element('li', { id: overlayID+'SmallButton', 'class': 'overlaySmallButton', style: 'display: none;' });
 		var overlaySmallButtonLink = new Element('a', { href: 'javascript:;' });
-		var overlaySmallButtonImg = new Element('img', { src: icon, alt: '', style: 'width: 16px; height: 16px;' });
+		var overlaySmallButtonImg = new Element('img', { src: icon, alt: '' });
 		var overlaySmallButtonSpan = new Element('span');
 		
 		var overlayDiv = new Element('div', { id: overlayID, 'class': 'overlay container-1', style: 'display: none;' });
@@ -719,7 +723,7 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 		var p = new Element('p');
 		var span = new Element('span', { id: optionID, 'class': 'textOptionValue', title: 'Zum Ändern anklicken' });
 		var input = new Element('input', { id: optionID+'Input', 'class': 'hidden', type: 'text', size: '8', autocomplete: 'off', value: API.Storage.getValue(optionID+'Value', defaultValue) });
-		var hr = new Element('hr', { style: 'display: block; width: 80%' });
+		var hr = new Element('hr');
 		
 		span.addEventListener('click', function(event) {
 			var optionSpan = event.target;
@@ -775,7 +779,7 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 		var p = new Element('p');
 		var label = new Element('label', { 'for': optionID });
 		var checkbox = new Element('input', { id: optionID, name: optionID, type: 'checkbox' });
-		var hr = new Element('hr', { style: 'display: block; width: 80%' });
+		var hr = new Element('hr');
 		
 		checkbox.addEventListener('focus', function() {
 			$('chatInput').focus();

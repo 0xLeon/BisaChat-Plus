@@ -4,8 +4,19 @@
  */
 Modules.AddOn.MessageBox = new ClassSystem.Class(Modules.Util.AbstractModule, (function() {
 	function initializeVariables() {
-		this.inbox = API.Storage.getValue('messageBoxData', []);
 		this.unread = 0;
+		this.inbox = API.Storage.getValue('messageBoxData', []);
+		
+		if (!(this.inbox instanceof Array)) {
+			this.inbox = JSON.parse(this.inbox);
+			
+			try {
+				this.inbox = $A(this.inbox);
+			}
+			catch (e) {
+				this.inbox = [];
+			}
+		}
 	}
 	
 	function addListeners() {

@@ -5,7 +5,6 @@
 Modules.AddOn.MessageBox = new ClassSystem.Class(Modules.Util.AbstractModule, (function() {
 	function initializeVariables() {
 		this.inbox = API.Storage.getValue('messageBoxData', []);
-		this.prefilterHandle = null;
 		this.unread = 0;
 	}
 	

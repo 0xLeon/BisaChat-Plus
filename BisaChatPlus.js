@@ -71,9 +71,9 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 		API.addStyle('.hidden { display: none; }');
 		API.addStyle('.column { border: 0px !important; }');
 		API.addStyle('#smileys { display: none; }');
-		API.addStyle('.loading, .error, .overlay, #chatCopyright { border: none !important; ' + this.coreModuleInstances.get('Animations').config.cssVendorPrefix + 'border-radius: 0px !important; z-index: 9000; }');
+		API.addStyle('.loading, .error, .overlay, #chatCopyright { border: none !important; ' + this.coreModuleInstances.get('Animations').config.cssVendorPrefix + 'border-radius: 0px !important; border-radius: 0px !important; z-index: 9000; }');
 		API.addStyle('.subTabMenu { padding: 0px !important; padding-top: 2px !important; border-top: none !important; border-left: none !important; border-right: none !important; }');
-		API.addStyle('.subTabMenu, .subTabMenu > * { ' + this.coreModuleInstances.get('Animations').config.cssVendorPrefix + 'border-radius: 0px !important; }');
+		API.addStyle('.subTabMenu, .subTabMenu > * { ' + this.coreModuleInstances.get('Animations').config.cssVendorPrefix + 'border-radius: 0px !important; border-radius: 0px !important; }');
 		API.addStyle('#chatBox { margin-top: 0px; width: 100%; height: '+API.w.innerHeight+'px; }');
 		API.addStyle('#chatBox > .border { padding: 0px !important; border: none !important; margin: 0px !important; position: relative; }');
 		API.addStyle('#chatBox > .border > .layout-2, #chatBox .columnInner { margin: 0px !important; }');
@@ -83,7 +83,7 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 		API.addStyle('#chatMessage > div[id^="chatMessage"] { height: 100% !important; padding-left: 25px; }');
 		API.addStyle('#chatFormContainer { margin-left: 25px; margin-right: 25px }');
 		API.addStyle('#chatMembers { margin-left: 8px; }');
-		API.addStyle('.smallButtons > ul > li > img { width: 16px; height: 16px; }')
+		API.addStyle('.smallButtons > ul > li > a > img { width: 16px; height: 16px; }')
 		API.addStyle('.overlay { position: absolute; width: 100%; height: 100%; margin: 0px !important; clear: both; }');
 		API.addStyle('.overlay > div { padding: 15px 25px; }');
 		API.addStyle('.overlayCloseButton { float: right; }');

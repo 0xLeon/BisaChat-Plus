@@ -83,6 +83,22 @@
 		return ((element.compareDocumentPosition(ancestor) & 8) === 8);
 	}
 	
+	function hasClassName(element, className) {
+		// element = $(element);
+		
+		return element.className.includes(className);
+	}
+	
+	function addClassName(element, className) {
+		// element = $(element);
+		
+		if (!hasClassName(element, className)) {
+			 element.className += ((element.className) ? (' ') : ('')) + className;
+		}
+		
+		return element;
+	}
+	
 	function getStyle(element, style) {
 		// element = $(element);
 		style = normalizeStyleName(style);
@@ -205,6 +221,8 @@
 		Offset:			Offset,
 		
 		writeAttribute:		writeAttribute,
+		hasClassName:		hasClassName,
+		addClassName:		addClassName,
 		getStyle:		getStyle,
 		cumulativeOffset:	cumulativeOffset,
 		cumulativeScrollOffset:	cumulativeScrollOffset,

@@ -92,7 +92,7 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 		API.addStyle('.boxSmallButton, .overlaySmallButton { position: relative; }');
 		API.addStyle('.bcplusBox { position: absolute; width: 255px; height: 155px !important; top: -160px; left: 0px; padding-left: 1px; padding-top: 1px; }');
 		API.addStyle('.bcplusBox .containerHead { cursor: move; }');
-		API.addStyle('.bcplusBox .containerContent { height: 132px; padding-left: 3px; overflow-y: auto; }')
+		API.addStyle('.bcplusBox .containerContent { height: 132px; padding-left: 3px; overflow-y: auto; margin: 0px !important; }')
 		API.addStyle('.textOptionValue { cursor: pointer; }');
 		API.addStyle('.textOptionValue:hover { text-decoration: underline; }');
 		API.addStyle('#options hr { display: block; width: 80%; }')

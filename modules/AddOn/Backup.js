@@ -11,7 +11,6 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 	
 	addStyleRules: function() {
 		API.addStyle('#backupSmallButton, #backupDataList li { overflow: hidden !important; }');
-		API.addStyle('#backup .overlayContent { ' + this.callerObj.coreModuleInstances.get('Animations').config.cssVendorPrefix + 'transition: opacity 1s ease-in-out; }');
 	},
 	
 	registerOptions: function() {
@@ -60,6 +59,7 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 	
 	buildUI: function() {
 		this.callerObj.buildOverlay('backup', './wcf/icon/dbImportL.png', 'Backup', function(overlayContentNode) {
+			Element.addClassName(overlayContentNode, 'transitionOpacity');
 			this.overlayContentBuilder(overlayContentNode);
 		},
 		function() {

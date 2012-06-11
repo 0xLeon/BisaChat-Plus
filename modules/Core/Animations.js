@@ -36,6 +36,7 @@ Modules.Core.Animations = new ClassSystem.Class(Modules.Util.AbstractCoreModule,
 				'background-color: transparent;\n'+
 			'}\n'+
 		'}');
+		API.addStyle('.transitionOpacity { ' + this.config.cssVendorPrefix + 'transition: opacity 1s ease-in-out; transition: opacity 1s ease-in-out; }');
 	}
 	
 	function getAnimationConfig() {

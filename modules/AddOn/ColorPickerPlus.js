@@ -29,14 +29,14 @@ Modules.AddOn.ColorPickerPlus = new ClassSystem.Class(Modules.Util.AbstractModul
 	addListeners: function() {
 		$$('#chatColorPickerContainer > a')[0].addEventListener('click', function(event) {
 			if ($('chatColorPicker').style.display === 'none') {
-				this.callerObj.coreModuleInstances.get('Animations').fadeIn('chatColorPicker');
+				new Animations.FadeIn($('chatColorPicker'));
 			}
 			else {
-				this.callerObj.coreModuleInstances.get('Animations').fadeOut('chatColorPicker');
+				new Animations.FadeOut($('chatColorPicker'));
 			}
 			
 			$('chatInput').focus();
-		}.bindAsEventListener(this), true);
+		}, true);
 	},
 	
 	finish: function() {

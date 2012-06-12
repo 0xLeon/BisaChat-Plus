@@ -71,9 +71,9 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 		API.addStyle('.hidden { display: none; }');
 		API.addStyle('.column { border: 0px !important; }');
 		API.addStyle('#smileys { display: none; }');
-		API.addStyle('.loading, .error, .overlay, #chatCopyright { border: none !important; ' + this.coreModuleInstances.get('Animations').config.cssVendorPrefix + 'border-radius: 0px !important; border-radius: 0px !important; z-index: 9000; }');
+		API.addStyle('.loading, .error, .overlay, #chatCopyright { border: none !important; ' + Animations.config.cssVendorPrefix + 'border-radius: 0px !important; border-radius: 0px !important; z-index: 9000; }');
 		API.addStyle('.subTabMenu { padding: 0px !important; padding-top: 2px !important; border-top: none !important; border-left: none !important; border-right: none !important; }');
-		API.addStyle('.subTabMenu, .subTabMenu > * { ' + this.coreModuleInstances.get('Animations').config.cssVendorPrefix + 'border-radius: 0px !important; border-radius: 0px !important; }');
+		API.addStyle('.subTabMenu, .subTabMenu > * { ' + Animations.config.cssVendorPrefix + 'border-radius: 0px !important; border-radius: 0px !important; }');
 		API.addStyle('#chatBox { margin-top: 0px; width: 100%; height: '+API.w.innerHeight+'px; }');
 		API.addStyle('#chatBox > .border { padding: 0px !important; border: none !important; margin: 0px !important; position: relative; }');
 		API.addStyle('#chatBox > .border > .layout-2, #chatBox .columnInner { margin: 0px !important; }');
@@ -380,7 +380,7 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 			if (event.keyCode === 27) {
 				$$('.overlay').each(function(overlay) {
 					if (overlay.style.display !== 'none') {
-						this.coreModuleInstances.get('Animations').fadeOut(overlay);
+						new Animations.FadeOut(overlay);
 						$('chatInput').focus();
 					}
 				}, this);
@@ -454,7 +454,7 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 			}
 		});
 		$('optionsContentTypeSeparator').style.display = (($('optionsContentTextOptionDiv').style.display !== 'none') && ($('optionsContentBoolOptionDiv').style.display !== 'none')) ? 'block' : 'none';
-		this.coreModuleInstances.get('Animations').fadeIn('optionsContentWrapper');
+		new Animations.FadeIn($('optionsContentWrapper'));
 		$('chatInput').focus();
 	}
 	
@@ -483,7 +483,7 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 		updateSmallButton.appendChild(updateSmallButtonLink);
 		
 		$$('#chatOptions .smallButtons ul')[0].appendChild(updateSmallButton);
-		this.coreModuleInstances.get('Animations').fadeIn(updateSmallButton);
+		new Animations.FadeIn(updateSmallButton);
 	}
 	
 	/**
@@ -579,18 +579,18 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 					event.target.style.left = '0px';
 					
 					Element.removeClassName(event.target, 'transitionBoxRevert');
-					event.target.removeEventListener(this.coreModuleInstances.get('Animations').config.events.transition.end, transitionListener, true);
+					event.target.removeEventListener(Animations.config.events.transition.end, transitionListener, true);
 					this.saveBoxStatus(event.target.getAttribute('id'));
 				}.bind(this);
 				
 				Element.addClassName($(boxID), 'transitionBoxRevert');
-				$(boxID).addEventListener(this.coreModuleInstances.get('Animations').config.events.transition.end, transitionListener, true);
+				$(boxID).addEventListener(Animations.config.events.transition.end, transitionListener, true);
 				$(boxID).style.top = '-160px';
 				$(boxID).style.left = '0px';
 			}
 			else {
 				if ($(boxID).style.display === 'none') {
-					this.coreModuleInstances.get('Animations').fadeIn(boxID, {
+					new Animations.FadeIn($(boxID), {
 						onAnimationEnd: function(event) {
 							this.saveBoxStatus(event.target.getAttribute('id'));
 						}.bind(this)
@@ -598,7 +598,7 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 					$('chatInput').focus();
 				}
 				else {
-					this.coreModuleInstances.get('Animations').fadeOut(boxID, {
+					new Animations.FadeOut($(boxID), {
 						onAnimationEnd: function(event) {
 							this.saveBoxStatus(event.target.getAttribute('id'));
 						}.bind(this)
@@ -625,7 +625,7 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 		boxSmallButton.appendChild(boxDiv);
 		$$('#chatOptions .smallButtons ul')[0].appendChild(boxSmallButton);
 		
-		this.coreModuleInstances.get('Animations').fadeIn(boxID+'SmallButton');
+		new Animations.FadeIn(boxSmallButton);
 		
 		new Draggable($(boxID), {
 			handle: boxID+'Headline',
@@ -676,7 +676,8 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 		
 		overlaySmallButtonLink.addEventListener('click', function(event) {
 			if (Object.isFunction(beforeShow)) beforeShow.call(context);
-			this.coreModuleInstances.get('Animations').fadeIn(overlayID);
+			
+			new Animations.FadeIn($(overlayID));
 		}.bindAsEventListener(this, context), true);
 		
 		overlaySmallButtonSpan.appendChild(document.createTextNode(title));
@@ -687,7 +688,8 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 		$$('#chatOptions .smallButtons ul')[0].appendChild(overlaySmallButton);
 		
 		closeButtonLink.addEventListener('click', function(event) {
-			this.coreModuleInstances.get('Animations').fadeOut(overlayID);
+			new Animations.FadeOut($(overlayID));
+			
 			$('chatInput').focus();
 		}.bindAsEventListener(this), true);
 		
@@ -707,7 +709,7 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 			contentBuilder.call(context, contentDiv);
 		}
 		
-		this.coreModuleInstances.get('Animations').fadeIn(overlayID+'SmallButton');
+		new Animations.FadeIn(overlaySmallButton);
 	}
 	
 	/**

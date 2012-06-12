@@ -60,7 +60,7 @@ Modules.AddOn.ScriptingEngine = new ClassSystem.Class(Modules.Util.AbstractModul
 				commandAddDeleteButtonLink.addEventListener('click', function(event) {
 					var wrapper = ((event.target.nodeName.toLowerCase() === 'img') ? event.target.parentNode.parentNode.parentNode : event.target.parentNode.parentNode);
 					
-					this.callerObj.coreModuleInstances.get('Animations').fadeOut(wrapper, {
+					new Animations.FadeOut(wrapper, {
 						onAnimationEnd: function(event) {
 							event.target.parentNode.removeChild(event.target);
 							this.checkListEmpty($$('#scriptingEngine dl')[0]);
@@ -80,12 +80,12 @@ Modules.AddOn.ScriptingEngine = new ClassSystem.Class(Modules.Util.AbstractModul
 									
 									this.buildCommandListElements(inputs[0].value.trim(), inputs[1].value.trim(), false, $$('#scriptingEngine dl')[0]);
 									
-									this.callerObj.coreModuleInstances.get('Animations').fadeOut(inputs[0].parentNode.parentNode, {
+									new Animations.FadeOut(inputs[0].parentNode.parentNode, {
 										onAnimationEnd: function(event) {
 											event.target.parentNode.removeChild(event.target);
 											
-											this.callerObj.coreModuleInstances.get('Animations').fadeIn($$('#scriptingEngine dl div').last());
-										}.bind(this)
+											new Animations.FadeIn($$('#scriptingEngine dl div').last());
+										}
 									});
 								}
 								else {
@@ -113,7 +113,7 @@ Modules.AddOn.ScriptingEngine = new ClassSystem.Class(Modules.Util.AbstractModul
 					$$('#scriptingEngine p')[0].parentNode.replaceChild(commandDl, $$('#scriptingEngine p')[0]);
 				}
 				
-				this.callerObj.coreModuleInstances.get('Animations').fadeIn($$('#scriptingEngine dl div').last(), {
+				new Animations.FadeIn($$('#scriptingEngine dl div').last(), {
 					onAnimationEnd: function(event) {
 						$$('#scriptingEngine dl dt input').last().focus();
 					}
@@ -178,7 +178,7 @@ Modules.AddOn.ScriptingEngine = new ClassSystem.Class(Modules.Util.AbstractModul
 		commandDeleteButtonLink.addEventListener('click', function(event) {
 			var wrapper = ((event.target.nodeName.toLowerCase() === 'img') ? event.target.parentNode.parentNode.parentNode : event.target.parentNode.parentNode);
 			
-			this.callerObj.coreModuleInstances.get('Animations').fadeOut(wrapper, {
+			new Animations.FadeOut(wrapper, {
 				onAnimationEnd: function(event) {
 					var commandName = event.target.querySelector('span').firstChild.nodeValue;
 					
@@ -210,7 +210,7 @@ Modules.AddOn.ScriptingEngine = new ClassSystem.Class(Modules.Util.AbstractModul
 			
 			p.appendChild(document.createTextNode('Keine Befehle vorhanden.'));
 			targetList.parentNode.replaceChild(p, targetList);
-			this.callerObj.coreModuleInstances.get('Animations').fadeIn($$('#scriptingEngine p')[0]);
+			new Animations.FadeIn(p);
 		}
 	}
 });

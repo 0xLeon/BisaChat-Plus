@@ -98,7 +98,7 @@ Modules.AddOn.Highlighting = new ClassSystem.Class(Modules.Util.AbstractModule, 
 			if (this.callerObj.isAway) {
 				this.listenerFunction = Event.register('awayStatusChange', function(event) {
 					this.messageIDs.each(function(item) {
-						this.callerObj.coreModuleInstances.get('Animations').highlight(item);
+						new Animations.Highlight($(item));
 					}, this);
 					this.messageIDs.clear();
 					this.updateDocTitle();
@@ -110,7 +110,7 @@ Modules.AddOn.Highlighting = new ClassSystem.Class(Modules.Util.AbstractModule, 
 			else if (!document.hasFocus()) {
 				this.listenerFunction = Event.register('tabFocus', function(event) {
 					this.messageIDs.each(function(item) {
-						this.callerObj.coreModuleInstances.get('Animations').highlight(item);
+						new Animations.Highlight($(item));
 					}, this);
 					this.messageIDs.clear();
 					this.updateDocTitle();

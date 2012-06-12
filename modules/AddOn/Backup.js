@@ -90,7 +90,7 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 			}
 		}
 		
-		$$('#backup .overlayContent')[0].addEventListener(this.callerObj.coreModuleInstances.get('Animations').config.events.transition.end, function(event) {
+		$$('#backup .overlayContent')[0].addEventListener(Animations.config.events.transition.end, function(event) {
 			if (this.transitionendUIFunction !== null) {
 				this.transitionendUIFunction(event.target);
 				this.transitionendUIFunction = null;
@@ -275,12 +275,12 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 																
 																info.appendChild(document.createTextNode('Keine Datensicherungen auf dem Server vorhanden.'));
 																effect.element.parentNode.parentNode.replaceChild(info, effect.element.parentNode);
-																this.callerObj.coreModuleInstances.get('Animations').fadeIn(info);
+																new Animations.FadeIn(info);
 															}
 															else {
 																effect.element.parentNode.removeChild(effect.element);
 															}
-														}.bind(this)
+														}
 													});
 												}
 											}
@@ -359,14 +359,14 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 					this.transitionendUIFunction = this.displayBackupData;
 					
 					if ($('backupUserFormInfo').style.display !== 'none') {
-						this.callerObj.coreModuleInstances.get('Animations').highlight('backupUserFormInfo', {
+						new Animations.Highlight($('backupUserFormInfo'), {
 							onAnimationEnd: function(event) {
 								$$('#backup .overlayContent')[0].style.opacity = 0;
 							}
 						});
 					}
 					else {
-						this.callerObj.coreModuleInstances.get('Animations').fadeIn('backupUserFormInfo', {
+						new Animations.FadeIn($('backupUserFormInfo'), {
 							onAnimationEnd: function(event) {
 								event.target.style.display = 'inline-block';
 								$$('#backup .overlayContent')[0].style.opacity = 0;
@@ -385,10 +385,10 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 					}
 					
 					if ($('backupUserFormInfo').style.display !== 'none') {
-						this.callerObj.coreModuleInstances.get('Animations').highlight('backupUserFormInfo');
+						new Animations.Highlight($('backupUserFormInfo'));
 					}
 					else {
-						this.callerObj.coreModuleInstances.get('Animations').fadeIn('backupUserFormInfo', {
+						new Animations.FadeIn($('backupUserFormInfo'), {
 							onAnimationEnd: function(event) {
 								event.target.style.display = 'inline-block';
 							}
@@ -508,10 +508,10 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 							}
 							
 							if ($('backupUserFormInfo').style.display !== 'none') {
-								this.callerObj.coreModuleInstances.get('Animations').highlight('backupUserFormInfo');
+								new Animations.Highlight($('backupUserFormInfo'));
 							}
 							else {
-								this.callerObj.coreModuleInstances.get('Animations').fadeIn('backupUserFormInfo', {
+								new Animations.FadeIn($('backupUserFormInfo'), {
 									onAnimationEnd: function(event) {
 										event.target.style.display = 'inline-block';
 									}
@@ -540,14 +540,14 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 								this.transitionendUIFunction = this.displayBackupData;
 								
 								if ($('backupUserFormInfo').style.display !== 'none') {
-									this.callerObj.coreModuleInstances.get('Animations').highlight('backupUserFormInfo', {
+									new Animations.Highlight($('backupUserFormInfo'), {
 										onAnimationEnd: function(event) {
 											$$('#backup .overlayContent')[0].style.opacity = 0;
 										}
 									});
 								}
 								else {
-									this.callerObj.coreModuleInstances.get('Animations').fadeIn('backupUserFormInfo', {
+									new Animations.FadeIn($('backupUserFormInfo'), {
 										onAnimationEnd: function(event) {
 											event.target.style.display = 'inline-block';
 											$$('#backup .overlayContent')[0].style.opacity = 0;
@@ -566,10 +566,10 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 								}
 								
 								if ($('backupUserFormInfo').style.display !== 'none') {
-									this.callerObj.coreModuleInstances.get('Animations').highlight('backupUserFormInfo');
+									new Animations.Highlight($('backupUserFormInfo'));
 								}
 								else {
-									this.callerObj.coreModuleInstances.get('Animations').fadeIn('backupUserFormInfo', {
+									new Animations.FadeIn($('backupUserFormInfo'), {
 										onAnimationEnd: function(event) {
 											event.target.style.display = 'inline-block';
 										}
@@ -584,10 +584,10 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 				$('backupUserFormInfo').innerHTML = 'Das bisherige Passwort ist inkorrekt';
 				
 				if ($('backupUserFormInfo').style.display !== 'none') {
-					this.callerObj.coreModuleInstances.get('Animations').highlight('backupUserFormInfo');
+					new Animations.Highlight($('backupUserFormInfo'));
 				}
 				else {
-					this.callerObj.coreModuleInstances.get('Animations').fadeIn('backupUserFormInfo', {
+					new Animations.FadeIn($('backupUserFormInfo'), {
 						onAnimationEnd: function(event) {
 							event.target.style.display = 'inline-block';
 						}

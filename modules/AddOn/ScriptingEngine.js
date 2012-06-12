@@ -46,7 +46,7 @@ Modules.AddOn.ScriptingEngine = new ClassSystem.Class(Modules.Util.AbstractModul
 		var buttonSpan = new Element('span');
 		
 		buttonLink.addEventListener('click', function(event) {
-			if (!$$('#scriptingEngine dl dd:last-child')[0] || ($$('#scriptingEngine dl dd:last-child')[0].previousSibling.firstChild.nodeType === 3)) {
+			if ($$('#scriptingEngine dl input').size() === 0) {
 				var commandDl = (($$('#scriptingEngine dl')[0]) || (new Element('dl')));
 				var commandAddWrapper = new Element('div', { style: 'display: none;' });
 				var commandAddDt = new Element('dt');

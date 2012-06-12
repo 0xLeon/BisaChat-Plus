@@ -37,6 +37,7 @@ Modules.Core.Animations = new ClassSystem.Class(Modules.Util.AbstractCoreModule,
 			'}\n'+
 		'}');
 		API.addStyle('.transitionOpacity { ' + this.config.cssVendorPrefix + 'transition: opacity 1s ease-in-out; transition: opacity 1s ease-in-out; }');
+		API.addStyle('.transitionBoxRevert { ' + this.config.cssVendorPrefix + 'transition-property: top, left; ' + this.config.cssVendorPrefix + 'transition-duration: 1s; ' + this.config.cssVendorPrefix + 'transition-timing-function: ease-in-out; transition-property: top, left; transition-duration: 1s; transition-timing-function: ease-in-out; }');
 	}
 	
 	function getAnimationConfig() {

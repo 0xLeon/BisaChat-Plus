@@ -574,17 +574,19 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 		
 		boxSmallButtonLink.addEventListener('click', function(event) {
 			if (event.altKey) {
-				new API.w.Effect.Morph(boxID, {
-					style: {
-						display: 'block',
-						top: '-160px',
-						left: '0px'
-					},
+				var transitionListener = function(event) {
+					event.target.style.top = '-160px';
+					event.target.style.left = '0px';
 					
-					afterFinish: function(effect) {
-						this.saveBoxStatus(effect.element.getAttribute('id'));
-					}.bind(this)
-				});
+					Element.removeClassName(event.target, 'transitionBoxRevert');
+					event.target.removeEventListener(this.coreModuleInstances.get('Animations').config.events.transition.end, transitionListener, true);
+					this.saveBoxStatus(event.target.getAttribute('id'));
+				}.bind(this);
+				
+				Element.addClassName($(boxID), 'transitionBoxRevert');
+				$(boxID).addEventListener(this.coreModuleInstances.get('Animations').config.events.transition.end, transitionListener, true);
+				$(boxID).style.top = '-160px';
+				$(boxID).style.left = '0px';
 			}
 			else {
 				if ($(boxID).style.display === 'none') {

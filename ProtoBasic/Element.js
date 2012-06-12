@@ -99,6 +99,14 @@
 		return element;
 	}
 	
+	function removeClassName(element, className) {
+		// element = $(element);
+		
+		element.className = element.className.replace(className, '').strip();
+		
+		return element;
+	}
+	
 	function getStyle(element, style) {
 		// element = $(element);
 		style = normalizeStyleName(style);
@@ -223,6 +231,7 @@
 		writeAttribute:		writeAttribute,
 		hasClassName:		hasClassName,
 		addClassName:		addClassName,
+		removeClassName:	removeClassName,
 		getStyle:		getStyle,
 		cumulativeOffset:	cumulativeOffset,
 		cumulativeScrollOffset:	cumulativeScrollOffset,

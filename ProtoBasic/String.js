@@ -92,6 +92,10 @@ Object.extend(String.prototype, (function() {
 		return this.replace(/\s*$/, '');
 	}
 	
+	function strip() {
+		return this.trim().replace(/\s+/g, ' ');
+	}
+	
 	function parseAsColor() {
 		var hexColor = '#';
 		
@@ -146,9 +150,9 @@ Object.extend(String.prototype, (function() {
 		sub:		sub,
 		gsub:		gsub,
 		trim:		String.prototype.trim || trim,
-		strip:		String.prototype.trim || trim,
 		trimLeft:	String.prototype.trimLeft || trimLeft,
 		trimRight:	String.prototype.trimRight || trimRight,
+		strip:		strip,
 		parseAsColor:	parseAsColor,
 		camelize:	camelize,
 		inspect:	inspect

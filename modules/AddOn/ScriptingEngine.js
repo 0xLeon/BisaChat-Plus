@@ -13,7 +13,7 @@ Modules.AddOn.ScriptingEngine = new ClassSystem.Class(Modules.Util.AbstractModul
 		API.addStyle('#scriptingEngine dl hr { display: block; width: 100%; }');
 		API.addStyle('#scriptingEngine dl dt input { width: 8% }');
 		API.addStyle('#scriptingEngine dl dd input { width: 11% }');
-		API.addStyle('#scriptingEngine dl div:last-child hr { display: none; }');
+		API.addStyle('#scriptingEngine dl div:last-child hr { opacity: 0; }');
 	},
 	
 	addListeners: function() {
@@ -197,7 +197,7 @@ Modules.AddOn.ScriptingEngine = new ClassSystem.Class(Modules.Util.AbstractModul
 		commandDt.appendChild(document.createTextNode(' '));
 		commandDt.appendChild(commandSpan);
 		commandDd.appendChild(document.createTextNode(text));
-		commandDdHr.appendChild(new Element('hr'));
+		commandDdHr.appendChild(new Element('hr', { 'class': 'transitionOpacity' }));
 		commandWrapper.appendChild(commandDt);
 		commandWrapper.appendChild(commandDd);
 		commandWrapper.appendChild(commandDdHr);

@@ -109,7 +109,7 @@ Modules.AddOn.BBCodeParser = new ClassSystem.Class(Modules.Util.AbstractModule, 
 									var infoKey = -1;
 									
 									messages.each(function(item, key) {
-										if ((infoKey === -1) && (Number(item.type) === 8) && (Number(item.privateID) === API.w.settings.userID)) {
+										if ((infoKey === -1) && (Number(item.type) === 8)) {
 											var div = new Element('div');
 											
 											div.innerHTML = item.text;

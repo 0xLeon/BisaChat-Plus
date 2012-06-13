@@ -865,4 +865,4 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 	};
 })());
 
-unsafeWindow.bcplus = new BisaChatPlus();
+API.w.bcplus = new BisaChatPlus();

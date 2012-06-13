@@ -40,9 +40,9 @@ Modules.AddOn.Highlighting = new ClassSystem.Class(Modules.Util.AbstractModule, 
 	
 	addListeners: function() {
 		Event.register('messageAfterNodeSetup', function(event) {
-			if (API.Storage.getValue('highlightingStatus', false) && (!document.hasFocus() || this.callerObj.isAway) && (event.usernameSimple.toLowerCase() !== 'chatbot') && !event.text.startsWith('np:')) {
+			if (this.storage.getValue('highlightingStatus', false) && (!document.hasFocus() || this.callerObj.isAway) && (event.usernameSimple.toLowerCase() !== 'chatbot') && !event.text.startsWith('np:')) {
 				if (this.regExp === null) {
-					this.buildRegExp(API.Storage.getValue('highlightingTextValue', API.w.settings.username));
+					this.buildRegExp(this.storage.getValue('highlightingTextValue', API.w.settings.username));
 				}
 				
 				if (this.regExp.test(event.text)) {
@@ -58,7 +58,7 @@ Modules.AddOn.Highlighting = new ClassSystem.Class(Modules.Util.AbstractModule, 
 			}
 		}, this);
 		Event.register('tabBlur', function(event) {
-			if (API.Storage.getValue('blurHRStatus', false)) {
+			if (this.storage.getValue('blurHRStatus', false)) {
 				$$('#chatMessage'+API.w.chat.activeUserID+' ul .blurHr').each(function(item) {
 					item.parentNode.removeChild(item);
 				});
@@ -67,7 +67,7 @@ Modules.AddOn.Highlighting = new ClassSystem.Class(Modules.Util.AbstractModule, 
 				line.appendChild(new Element('hr', { style: 'display: block; width: 75%;' }));
 				$$('#chatMessage'+API.w.chat.activeUserID+' ul')[0].appendChild(line);
 			}
-		});
+		}, this);
 	},
 	
 	buildRegExp: function(basicString) {

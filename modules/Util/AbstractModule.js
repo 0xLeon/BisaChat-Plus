@@ -7,6 +7,7 @@
 Modules.Util.AbstractModule = new ClassSystem.AbstractClass({
 	initialize: function(callerObj) {
 		this.callerObj = callerObj;
+		this.storage = this.callerObj.storage;
 		
 		this.initializeVariables();
 		this.addStyleRules();

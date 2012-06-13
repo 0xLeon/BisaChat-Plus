@@ -4,7 +4,7 @@
  */
 Modules.AddOn.ScriptingEngine = new ClassSystem.Class(Modules.Util.AbstractModule, {
 	initializeVariables: function() {
-		this.commands = $H(API.Storage.getValue('scriptingEngineCommands', {}));
+		this.commands = $H(this.storage.getValue('scriptingEngineCommands', {}));
 	},
 	
 	addStyleRules: function() {
@@ -76,7 +76,7 @@ Modules.AddOn.ScriptingEngine = new ClassSystem.Class(Modules.Util.AbstractModul
 							if (inputs.all(function(n) { return (n.value.trim().length > 0); })) {
 								if (!this.commands.get(inputs[0].value.trim())) {
 									this.commands.set(inputs[0].value.trim(), inputs[1].value.trim());
-									API.Storage.setValue('scriptingEngineCommands', this.commands._object);
+									this.storage.setValue('scriptingEngineCommands', this.commands._object);
 									
 									this.buildCommandListElements(inputs[0].value.trim(), inputs[1].value.trim(), false, $$('#scriptingEngine dl')[0]);
 									
@@ -183,7 +183,7 @@ Modules.AddOn.ScriptingEngine = new ClassSystem.Class(Modules.Util.AbstractModul
 					var commandName = event.target.querySelector('span').firstChild.nodeValue;
 					
 					this.commands.unset(commandName);
-					API.Storage.setValue('scriptingEngineCommands', this.commands._object);
+					this.storage.setValue('scriptingEngineCommands', this.commands._object);
 					event.target.parentNode.removeChild(event.target);
 					
 					this.checkListEmpty(targetList);

@@ -10,7 +10,7 @@ Modules.Core.Update = new ClassSystem.Class(Modules.Util.AbstractCoreModule, {
 	check: function() {
 		GM_xmlhttpRequest({
 			method: 'GET',
-			url: this.callerObj.getUpdateServer()+'?version='+encodeURIComponent(this.callerObj.getVersion())+'&getNonStableReleases='+((API.Storage.getValue('getNonStableReleasesStatus', false)) ? '1' : '0'),
+			url: this.callerObj.getUpdateServer()+'?version='+encodeURIComponent(this.callerObj.getVersion())+'&getNonStableReleases='+((this.storage.getValue('getNonStableReleasesStatus', false)) ? '1' : '0'),
 			headers: {
 				'Accept': 'text/xml'
 			},

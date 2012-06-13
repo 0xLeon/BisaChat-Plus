@@ -4,7 +4,7 @@
  */
 Modules.AddOn.SmiliesPlus = new ClassSystem.Class(Modules.Util.AbstractModule, {
 	initialize: function($super, callerObj) {
-		this.setStatus(API.Storage.getValue('smiliesActiveStatus', false));
+		this.setStatus(callerObj.storage.getValue('smiliesActiveStatus', false));
 		$super(callerObj);
 	},
 	
@@ -22,7 +22,7 @@ Modules.AddOn.SmiliesPlus = new ClassSystem.Class(Modules.Util.AbstractModule, {
 	
 	addListeners: function() {
 		Event.register('messageBeforeNodeSetup', function(event) {
-			if (!API.Storage.getValue('smiliesActiveStatus', false)) {
+			if (!this.storage.getValue('smiliesActiveStatus', false)) {
 				this.replaceImageSmilies(event);
 			}
 		}, this);

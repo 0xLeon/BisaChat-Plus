@@ -27,7 +27,7 @@ Modules.AddOn.LastfmConnector = new ClassSystem.Class(Modules.Util.AbstractModul
 	},
 	
 	getTrackString: function(artist, title, trackURI, username) {
-		return API.Storage.getValue('formatString', 'np: $artist – $title').replace('$artist', artist).replace('$title', title).replace('$url', trackURI).replace('$profil', 'http://www.last.fm/user/'+encodeURIComponent(username));
+		return this.storage.getValue('formatString', 'np: $artist – $title').replace('$artist', artist).replace('$title', title).replace('$url', trackURI).replace('$profil', 'http://www.last.fm/user/'+encodeURIComponent(username));
 	},
 	
 	getTrack: function() {
@@ -35,7 +35,7 @@ Modules.AddOn.LastfmConnector = new ClassSystem.Class(Modules.Util.AbstractModul
 		$('nowPlayingButton').disabled = true;
 		this.loadingTrack = true;
 		
-		if (API.Storage.getValue('lastfmUsernameValue', undefined) === undefined) {
+		if (this.storage.getValue('lastfmUsernameValue', undefined) === undefined) {
 			this.callerObj.pushInfo('Error catching track! Username not set');
 			$('nowPlayingButton').style.opacity = 1.0;
 			$('nowPlayingButton').disabled = false;
@@ -45,7 +45,7 @@ Modules.AddOn.LastfmConnector = new ClassSystem.Class(Modules.Util.AbstractModul
 		
 		GM_xmlhttpRequest({
 			method: 'GET',
-			url: 'http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user='+encodeURIComponent(API.Storage.getValue('lastfmUsernameValue'))+'&limit=1&api_key=b02a99b9d7e6402de934c7ab59491171',
+			url: 'http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user='+encodeURIComponent(this.storage.getValue('lastfmUsernameValue'))+'&limit=1&api_key=b02a99b9d7e6402de934c7ab59491171',
 			headers: {
 				'Accept': 'text/xml'
 			},

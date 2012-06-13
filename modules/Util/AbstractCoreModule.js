@@ -7,6 +7,7 @@
 Modules.Util.AbstractCoreModule = new ClassSystem.AbstractClass(Modules.Util.AbstractModule, {
 	initialize: function($super, callerObj) {
 		this.callerObj = callerObj;
+		this.storage = this.callerObj.storage;
 		
 		this.initializeVariables();
 		this.addStyleRules();

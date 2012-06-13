@@ -9,7 +9,7 @@ Modules.AddOn.AutoAway = new ClassSystem.Class(Modules.Util.AbstractModule, {
 	
 	registerOptions: function() {
 		this.callerObj.registerTextOption('autoAwayTimeout', 'Zeit bis zum Away-Status in Minuten', 5, function(newValue) {
-			if (API.Storage.getValue('autoAwayStatus', false)) this.startTimer();
+			if (this.storage.getValue('autoAwayStatus', false)) this.startTimer();
 		}, this);
 		this.callerObj.registerBoolOption('autoAway', 'Auto Away', 'Auto Away aktivieren', 'a', false, function(event, checked) {
 			if (checked) {
@@ -25,14 +25,14 @@ Modules.AddOn.AutoAway = new ClassSystem.Class(Modules.Util.AbstractModule, {
 	
 	addListeners: function() {
 		Event.register('messageAfterNodeAppending', function(event) {
-			if (API.Storage.getValue('autoAwayStatus', false) && event.ownMessage) {
+			if (this.storage.getValue('autoAwayStatus', false) && event.ownMessage) {
 				this.startTimer();
 			}
 		}, this);
 	},
 	
 	finish: function() {
-		if (API.Storage.getValue('autoAwayStatus', false)) {
+		if (this.storage.getValue('autoAwayStatus', false)) {
 			this.startTimer();
 		}
 	},
@@ -41,7 +41,7 @@ Modules.AddOn.AutoAway = new ClassSystem.Class(Modules.Util.AbstractModule, {
 		this.stopTimer();
 		this.timerHandle = API.w.setTimeout(function() {
 			if (!this.callerObj.isAway) this.callerObj.pushMessage('/away');
-		}.bind(this), API.Storage.getValue('autoAwayTimeoutValue', 5)*60000);
+		}.bind(this), this.storage.getValue('autoAwayTimeoutValue', 5)*60000);
 	},
 	
 	stopTimer: function() {

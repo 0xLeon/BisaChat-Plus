@@ -488,7 +488,7 @@ Modules.AddOn.BBCodeParser = new ClassSystem.Class(Modules.Util.AbstractModule, 
 	
 	function addListeners() {
 		Event.register('messageBeforeNodeSetup', function(event) {
-			if (API.Storage.getValue('bbcodeStatus', true)) {
+			if (this.storage.getValue('bbcodeStatus', true)) {
 				event.text = new Parser(event.text).parse();
 			}
 			else {

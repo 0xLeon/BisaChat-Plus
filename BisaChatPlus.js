@@ -17,6 +17,14 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 	 */
 	var awayMessage = '';
 	
+	
+	/**
+	 * Interface to access global storage
+	 * 
+	 * @type	{StorageInterface}
+	 */
+	var storage = Storage.getInterfaceByNamespace('global');
+	
 	/**
 	 * Hash-like object of all access key listeners with access key as key
 	 * 
@@ -118,13 +126,13 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 	}
 	
 	function avoidMultipleLogin() {
-		if (API.Storage.getValue('alreadyOnline', false)) {
+		if (this.storage.getValue('alreadyOnline', false)) {
 			var resetLink = new Element('a');
 			
 			resetLink.addEventListener('click', function(event) {
-				API.Storage.setValue('alreadyOnline', false);
+				this.storage.setValue('alreadyOnline', false);
 				API.w.location.reload();
-			}, true);
+			}.bindAsEventListener(this), true);
 			resetLink.appendChild(document.createTextNode('Falls definitiv nur ein Chattab geöffnet ist, hier klicken.'));
 			$$('#chatError div')[0].innerHTML = 'Den Chat bitte nicht in mehr als einem Tab öffnen.';
 			$$('#chatError div')[0].appendChild((new Element('br')));
@@ -139,10 +147,10 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 			throw new Error('BisaChat Plus: Already online');
 		}
 		else {
-			API.Storage.setValue('alreadyOnline', true);
+			this.storage.setValue('alreadyOnline', true);
 			API.w.addEventListener('unload', function(event) {
-				API.Storage.setValue('alreadyOnline', false);
-			}, false);
+				this.storage.setValue('alreadyOnline', false);
+			}.bindAsEventListener(this), false);
 		}
 	}
 	
@@ -498,9 +506,9 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 		var top = $(id).style.top;
 		var left = $(id).style.left;
 		
-		API.Storage.setValue(id+'boxVisible', visible);
-		API.Storage.setValue(id+'boxTop', top);
-		API.Storage.setValue(id+'boxLeft', left);
+		this.storage.setValue(id+'boxVisible', visible);
+		this.storage.setValue(id+'boxTop', top);
+		this.storage.setValue(id+'boxLeft', left);
 	}
 	
 	/**
@@ -568,9 +576,9 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 		var boxHeadline = new Element('h3');
 		var boxContentDiv = new Element('div', { id: boxID+'Content', 'class': 'containerContent' });
 		
-		boxDiv.style.display = (API.Storage.getValue(boxID+'boxVisible', false)) ? '' : 'none';
-		boxDiv.style.top = API.Storage.getValue(boxID+'boxTop', '-160px');
-		boxDiv.style.left = API.Storage.getValue(boxID+'boxLeft', '0px');
+		boxDiv.style.display = (this.storage.getValue(boxID+'boxVisible', false)) ? '' : 'none';
+		boxDiv.style.top = this.storage.getValue(boxID+'boxTop', '-160px');
+		boxDiv.style.left = this.storage.getValue(boxID+'boxLeft', '0px');
 		
 		boxSmallButtonLink.addEventListener('click', function(event) {
 			if (event.altKey) {
@@ -720,7 +728,7 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 		
 		var p = new Element('p');
 		var span = new Element('span', { id: optionID, 'class': 'textOptionValue', title: 'Zum Ändern anklicken' });
-		var input = new Element('input', { id: optionID+'Input', 'class': 'hidden', type: 'text', size: '8', autocomplete: 'off', value: API.Storage.getValue(optionID+'Value', defaultValue) });
+		var input = new Element('input', { id: optionID+'Input', 'class': 'hidden', type: 'text', size: '8', autocomplete: 'off', value: this.storage.getValue(optionID+'Value', defaultValue) });
 		var hr = new Element('hr');
 		
 		span.addEventListener('click', function(event) {
@@ -741,17 +749,17 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 				var optionSpan = event.target.previousSibling;
 				var optionInput = event.target;
 				
-				API.Storage.setValue(optionSpan.getAttribute('id')+'Value', optionInput.value);
-				optionSpan.firstChild.replaceData(0, optionSpan.firstChild.nodeValue.length, API.Storage.getValue(optionSpan.getAttribute('id')+'Value', defaultValue));
+				this.storage.setValue(optionSpan.getAttribute('id')+'Value', optionInput.value);
+				optionSpan.firstChild.replaceData(0, optionSpan.firstChild.nodeValue.length, this.storage.getValue(optionSpan.getAttribute('id')+'Value', defaultValue));
 				optionInput.className = (optionInput.className + ' hidden').trim();
 				optionSpan.className = optionSpan.className.replace('hidden', '').trim();
-				if (Object.isFunction(onChange)) onChange.call(this, optionInput.value);
+				if (Object.isFunction(onChange)) onChange.call(context, optionInput.value);
 				$('chatInput').focus();
 				event.preventDefault();
 			}
-		}.bindAsEventListener(context), true);
+		}.bindAsEventListener(this), true);
 		
-		span.appendChild(document.createTextNode(API.Storage.getValue(optionID+'Value', defaultValue)));
+		span.appendChild(document.createTextNode(this.storage.getValue(optionID+'Value', defaultValue)));
 		p.appendChild(document.createTextNode(optionText+': '));
 		p.appendChild(span);
 		p.appendChild(input);
@@ -791,10 +799,10 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 				event.target.checked = !event.target.checked;
 			}
 			
-			API.Storage.setValue(event.target.getAttribute('id')+'Status', event.target.checked);
+			this.storage.setValue(event.target.getAttribute('id')+'Status', event.target.checked);
 		}.bindAsEventListener(this), true);
 		
-		checkbox.checked = API.Storage.getValue(optionID+'Status', defaultValue);
+		checkbox.checked = this.storage.getValue(optionID+'Status', defaultValue);
 		label.appendChild(checkbox);
 		label.appendChild(document.createTextNode(' '+optionText))
 		p.appendChild(label);
@@ -838,6 +846,7 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 		API:			API,
 		isAway:			isAway,
 		awayMessage:		awayMessage,
+		storage:		storage,
 		coreModuleInstances:	coreModuleInstances,
 		moduleInstances:	moduleInstances,
 		

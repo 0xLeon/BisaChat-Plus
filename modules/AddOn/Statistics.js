@@ -29,7 +29,7 @@ Modules.AddOn.Statistics = new ClassSystem.Class(Modules.Util.AbstractModule, {
 	
 	addListeners: function() {
 		Event.register('messageAfterNodeAppending', function(event) {
-			if (API.Storage.getValue('statisticsStatus', true) && event.ownMessage) {
+			if (this.storage.getValue('statisticsStatus', true) && event.ownMessage) {
 				if ([0,6,7,10].indexOf(event.type) > -1) {
 					this.setMessageCount(this.getMessageCount()+1);
 				}
@@ -76,7 +76,7 @@ Modules.AddOn.Statistics = new ClassSystem.Class(Modules.Util.AbstractModule, {
 			this.setOnlineTimeStart((new Date()).getTime());
 		}
 		
-		if (API.Storage.getValue('statisticsStatus', true)) {
+		if (this.storage.getValue('statisticsStatus', true)) {
 			this.startOnlineTimeLengthCounter();
 		}
 	},
@@ -104,23 +104,23 @@ Modules.AddOn.Statistics = new ClassSystem.Class(Modules.Util.AbstractModule, {
 	},
 	
 	getOnlineTimeStart: function() {
-		return API.Storage.getValue('statisticsOnlineTimeStart', 0);
+		return this.storage.getValue('statisticsOnlineTimeStart', 0);
 	},
 	setOnlineTimeStart: function(value) {
-		API.Storage.setValue('statisticsOnlineTimeStart', value);
+		this.storage.setValue('statisticsOnlineTimeStart', value);
 	},
 	
 	getOnlineTimeLength: function() {
-		return API.Storage.getValue('statisticsOnlineTimeLength', 0);
+		return this.storage.getValue('statisticsOnlineTimeLength', 0);
 	},
 	setOnlineTimeLength: function(value) {
-		API.Storage.setValue('statisticsOnlineTimeLength', value);
+		this.storage.setValue('statisticsOnlineTimeLength', value);
 	},
 	
 	getMessageCount: function() {
-		return API.Storage.getValue('statisticsMessageCount', 0);
+		return this.storage.getValue('statisticsMessageCount', 0);
 	},
 	setMessageCount: function(value) {
-		API.Storage.setValue('statisticsMessageCount', value);
+		this.storage.setValue('statisticsMessageCount', value);
 	},
 });

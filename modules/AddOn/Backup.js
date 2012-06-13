@@ -28,7 +28,7 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 				}
 				
 				try {
-					API.Storage.setValue('backupActiveStatus', true);
+					this.storage.setValue('backupActiveStatus', true);
 					this.startTimer();
 				}
 				catch (e) {
@@ -99,8 +99,8 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 	},
 	
 	backupSettings: function() {
-		if (API.Storage.getValue('lastBackup', 0) + 86400000 < (new Date()).getTime()) {
-			var settings = API.Storage.exportSettings();
+		if (this.storage.getValue('lastBackup', 0) + 86400000 < (new Date()).getTime()) {
+			var settings = this.storage.exportSettings();
 			
 			if (!!settings.backupUsername) delete settings.backupUsername;
 			if (!!settings.backupPassword) delete settings.backupPassword;
@@ -111,11 +111,11 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 				headers: {
 					'Content-Type': 'application/x-www-form-urlencoded'
 				},
-				data: 'action=saveData&username='+encodeURIComponent(API.Storage.getValue('backupUsername'))+'&password='+encodeURIComponent(API.Storage.getValue('backupPassword'))+'&settings='+encodeURIComponent(JSON.stringify(settings)),
+				data: 'action=saveData&username='+encodeURIComponent(this.storage.getValue('backupUsername'))+'&password='+encodeURIComponent(this.storage.getValue('backupPassword'))+'&settings='+encodeURIComponent(JSON.stringify(settings)),
 				onload: function(transport) {
 					if (transport.readyState === 4) {
 						if ((transport.status >= 200) && (transport.status < 300)) {
-							API.Storage.setValue('lastBackup', (new Date()).getTime());
+							this.storage.setValue('lastBackup', (new Date()).getTime());
 							this.callerObj.pushInfo('Deine Einstellungen wurden erfolgreich gesichert.');
 						}
 						else {
@@ -141,7 +141,7 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 		if (typeof overlayContentNode !== 'object') throw new TypeError('overlayContentNode has to be of type object');
 		
 		
-		if ((API.Storage.getValue('backupUsername', '') !== '') && (API.Storage.getValue('backupPassword', '') !== '')) {
+		if ((this.storage.getValue('backupUsername', '') !== '') && (this.storage.getValue('backupPassword', '') !== '')) {
 			this.displayBackupData(overlayContentNode);
 		}
 		else {
@@ -152,8 +152,8 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 	},
 	
 	startTimer: function() {
-		if (API.Storage.getValue('backupActiveStatus', true)) {
-			if ((API.Storage.getValue('backupUsername', '') !== '') && (API.Storage.getValue('backupPassword') !== '')) {
+		if (this.storage.getValue('backupActiveStatus', true)) {
+			if ((this.storage.getValue('backupUsername', '') !== '') && (this.storage.getValue('backupPassword') !== '')) {
 				this.stopTimer();
 				this.backupSettings();
 				this.intervalHandle = API.w.setInterval(function() {
@@ -179,7 +179,7 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 	displayBackupData: function(overlayContentNode) {
 		GM_xmlhttpRequest({
 			method: 'GET',
-			url: 'http://projects.swallow-all-lies.com/greasemonkey/files/bisachatPlus/backup/?action=getList&username='+API.Storage.getValue('backupUsername')+'&password='+API.Storage.getValue('backupPassword'),
+			url: 'http://projects.swallow-all-lies.com/greasemonkey/files/bisachatPlus/backup/?action=getList&username='+this.storage.getValue('backupUsername')+'&password='+this.storage.getValue('backupPassword'),
 			onload: function(transport) {
 				if (transport.readyState === 4) {
 					var node = new Element('div');
@@ -193,14 +193,14 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 					}.bindAsEventListener(this), true);
 					
 					logoutLink.addEventListener('click', function(event) {
-						API.Storage.unsetValue('backupUsername');
-						API.Storage.unsetValue('backupPassword');
+						this.storage.unsetValue('backupUsername');
+						this.storage.unsetValue('backupPassword');
 						this.stopTimer();
 						this.transitionendUIFunction = this.displayLoginForm;
 						$$('#backup .overlayContent')[0].style.opacity = 0;
 					}.bindAsEventListener(this), true);
 					
-					userP.appendChild(document.createTextNode('Angemeldet als '+API.Storage.getValue('backupUsername')));
+					userP.appendChild(document.createTextNode('Angemeldet als '+this.storage.getValue('backupUsername')));
 					userP.appendChild(new Element('br'));
 					panelLink.appendChild(document.createTextNode('Benutzereinstellungen öffnen'));
 					logoutLink.appendChild(document.createTextNode('Ausloggen'));
@@ -236,7 +236,7 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 									
 									GM_xmlhttpRequest({
 										method: 'GET',
-										url: 'http://projects.swallow-all-lies.com/greasemonkey/files/bisachatPlus/backup/index.php?action=getData&username='+API.Storage.getValue('backupUsername')+'&password='+API.Storage.getValue('backupPassword')+'&index='+li.querySelector('input').getAttribute('value'),
+										url: 'http://projects.swallow-all-lies.com/greasemonkey/files/bisachatPlus/backup/index.php?action=getData&username='+this.storage.getValue('backupUsername')+'&password='+this.storage.getValue('backupPassword')+'&index='+li.querySelector('input').getAttribute('value'),
 										headers: {
 											'Accept': 'application/json'
 										},
@@ -245,15 +245,15 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 												if (response.status === 200) {
 													var data = response.responseJSON;
 													
-													data.backupUsername = API.Storage.getValue('backupUsername');
-													data.backupPassword = API.Storage.getValue('backupPassword');
-													API.Storage.importSettings(data);
+													data.backupUsername = this.storage.getValue('backupUsername');
+													data.backupPassword = this.storage.getValue('backupPassword');
+													this.storage.importSettings(data);
 													API.w.location.reload();
 												}
 											}
-										}
+										}.bind(this)
 									});
-								}, true);
+								}.bindAsEventListener(this), true);
 								
 								deleteLink.addEventListener('click', function(event) {
 									var li = ((event.target.nodeName.toLowerCase() === 'a') ? event.target.parentNode : event.target.parentNode.parentNode);
@@ -264,7 +264,7 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 										headers: {
 											'Content-Type': 'application/x-www-form-urlencoded'
 										},
-										data: 'action=deleteData&username='+encodeURIComponent(API.Storage.getValue('backupUsername'))+'&password='+encodeURIComponent(API.Storage.getValue('backupPassword'))+'&index='+li.querySelector('input').getAttribute('value'),
+										data: 'action=deleteData&username='+encodeURIComponent(this.storage.getValue('backupUsername'))+'&password='+encodeURIComponent(this.storage.getValue('backupPassword'))+'&index='+li.querySelector('input').getAttribute('value'),
 										onload: function(response) {
 											if (response.readyState === 4) {
 												if (response.status === 200) {
@@ -352,8 +352,8 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 		var buttonLoadFunction = function(response, infoText, errorText) {
 			if (response.readyState === 4) {
 				if (response.status === 200) {
-					API.Storage.setValue('backupUsername', $('inputUsername').value);
-					API.Storage.setValue('backupPassword', $('inputPassword').value);
+					this.storage.setValue('backupUsername', $('inputUsername').value);
+					this.storage.setValue('backupPassword', $('inputPassword').value);
 					$('backupUserFormInfo').innerHTML = infoText;
 					this.startTimer();
 					this.transitionendUIFunction = this.displayBackupData;
@@ -472,8 +472,8 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 		}.bindAsEventListener(this), true);
 		
 		logoutLink.addEventListener('click', function(event) {
-			API.Storage.unsetValue('backupUsername');
-			API.Storage.unsetValue('backupPassword');
+			this.storage.unsetValue('backupUsername');
+			this.storage.unsetValue('backupPassword');
 			this.stopTimer();
 			this.transitionendUIFunction = this.displayLoginForm;
 			$$('#backup .overlayContent')[0].style.opacity = 0;
@@ -486,13 +486,13 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 				headers: {
 					'Content-Type': 'application/x-www-form-urlencoded'
 				},
-				data: 'action=deleteUser&username='+encodeURIComponent(API.Storage.getValue('backupUsername'))+'&password='+encodeURIComponent(API.Storage.getValue('backupPassword')),
+				data: 'action=deleteUser&username='+encodeURIComponent(this.storage.getValue('backupUsername'))+'&password='+encodeURIComponent(this.storage.getValue('backupPassword')),
 				onload: function(response) {
 					if (response.readyState === 4) {
 						if (response.status === 200) {
-							API.Storage.unsetValue('backupUsername');
-							API.Storage.unsetValue('backupPassword');
-							API.Storage.unsetValue('lastBackup');
+							this.storage.unsetValue('backupUsername');
+							this.storage.unsetValue('backupPassword');
+							this.storage.unsetValue('lastBackup');
 							this.stopTimer();
 							this.transitionendUIFunction = this.displayLoginForm;
 							$$('#backup .overlayContent')[0].style.opacity = 0;
@@ -524,18 +524,18 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 		}.bindAsEventListener(this), true);
 		
 		buttonAlterPassword.addEventListener('click', function(event) {
-			if ($('inputAlterPasswordOld').value === API.Storage.getValue('backupPassword')) {
+			if ($('inputAlterPasswordOld').value === this.storage.getValue('backupPassword')) {
 				GM_xmlhttpRequest({
 					method: 'POST',
 					url: 'http://projects.swallow-all-lies.com/greasemonkey/files/bisachatPlus/backup/user.php',
 					headers: {
 						'Content-Type': 'application/x-www-form-urlencoded'
 					},
-					data: 'action=alterPassword&username='+encodeURIComponent(API.Storage.getValue('backupUsername'))+'&oldPassword='+encodeURIComponent(API.Storage.getValue('backupPassword'))+'&newPassword='+encodeURIComponent($('inputAlterPasswordNew').value),
+					data: 'action=alterPassword&username='+encodeURIComponent(this.storage.getValue('backupUsername'))+'&oldPassword='+encodeURIComponent(this.storage.getValue('backupPassword'))+'&newPassword='+encodeURIComponent($('inputAlterPasswordNew').value),
 					onload: function(response) {
 						if (response.readyState === 4) {
 							if (response.status === 200) {
-								API.Storage.setValue('backupPassword', $('inputAlterPasswordNew').value);
+								this.storage.setValue('backupPassword', $('inputAlterPasswordNew').value);
 								$('backupUserFormInfo').innerHTML = 'Passwort geändert';
 								this.transitionendUIFunction = this.displayBackupData;
 								
@@ -598,7 +598,7 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 			}
 		}.bindAsEventListener(this), true);
 		
-		userP.appendChild(document.createTextNode('Angemeldet als '+API.Storage.getValue('backupUsername')));
+		userP.appendChild(document.createTextNode('Angemeldet als '+this.storage.getValue('backupUsername')));
 		userP.appendChild(new Element('br'));
 		returnLink.appendChild(document.createTextNode('Zurück'));
 		logoutLink.appendChild(document.createTextNode('Ausloggen'));

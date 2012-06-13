@@ -5,7 +5,7 @@
 Modules.AddOn.MessageBox = new ClassSystem.Class(Modules.Util.AbstractModule, (function() {
 	function initializeVariables() {
 		this.unread = 0;
-		this.inbox = API.Storage.getValue('messageBoxData', []);
+		this.inbox = this.storage.getValue('messageBoxData', []);
 		
 		if (!(this.inbox instanceof Array)) {
 			this.inbox = JSON.parse(this.inbox);
@@ -129,7 +129,7 @@ Modules.AddOn.MessageBox = new ClassSystem.Class(Modules.Util.AbstractModule, (f
 			nickname: event.username,
 			message: event.text
 		});
-		API.Storage.setValue('messageBoxData', this.inbox);
+		this.storage.setValue('messageBoxData', this.inbox);
 		this.unread++;
 		
 		if (length === 1) {
@@ -151,7 +151,7 @@ Modules.AddOn.MessageBox = new ClassSystem.Class(Modules.Util.AbstractModule, (f
 	 */
 	function clearInbox(updateUI) {
 		this.inbox.clear();
-		API.Storage.setValue('messageBoxData', this.inbox);
+		this.storage.setValue('messageBoxData', this.inbox);
 		updateSpan.call(this);
 		
 		if (updateUI) {

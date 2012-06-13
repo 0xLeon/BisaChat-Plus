@@ -5,7 +5,7 @@
 var Animations = (function() {
 	var AbstractAnimation = new ClassSystem.AbstractClass({
 		doAnimation: function(element, config, animationString) {
-			// element = $(element);
+			element = $(element);
 			config = config || {};
 			
 			this.addGlobalAnimationListeners(element);
@@ -74,7 +74,7 @@ var Animations = (function() {
 	});
 	var Morph = new ClassSystem.Class({
 		initialize: function(element, config) {
-			this.element = /*$(*/element/*)*/;
+			this.element = $(element);
 			this.config = config || {};
 			
 			if (!this.config.properties) {
@@ -160,15 +160,13 @@ var Animations = (function() {
 		}
 	};
 	
-	// if (!Object.isUndefined($$('body')[0].style.animationName)) {
-	if (!Object.isUndefined(document.querySelector('body').style.animationName)) {
+	if (!Object.isUndefined($$('body')[0].style.animationName)) {
 		config.animation = true;
 	}
 	
 	if (!config.animation) {
 		['Moz', 'Webkit', 'O'].each(function(prefix) {
-			//if (!Object.isUndefined($$('body')[0].style[prefix+'AnimationName'])) {
-			if (!Object.isUndefined(document.querySelector('body').style[prefix+'AnimationName'])) {
+			if (!Object.isUndefined($$('body')[0].style[prefix+'AnimationName'])) {
 				config.animation = true;
 				config.domAnimationString = prefix+'Animation';
 				config.cssVendorPrefix = '-'+prefix.toLowerCase()+'-';
@@ -185,8 +183,7 @@ var Animations = (function() {
 		});
 	}
 	
-	// $$('head > link[rel="stylesheet"]').each(function(styleNode) {
-	$A(document.querySelectorAll('head > link[rel="stylesheet"]')).each(function(styleNode) {
+	$$('head > link[rel="stylesheet"]').each(function(styleNode) {
 		var result = null;
 		
 		if (!!(result = styleNode.getAttribute('href').match(/style-(\d+)\.css$/))) {

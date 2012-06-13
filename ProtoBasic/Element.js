@@ -32,6 +32,57 @@
 		}
 	});
 	
+	/**
+	 * Selector Engine
+	 * Provides methods for selecting elements with DOM tree
+	 * 
+	 * @type	{Object}
+	 */
+	var Selector = (function() {
+		/**
+		 * Gets element nodes via ID
+		 * Accepts as many parameters as you want
+		 * Returns an array of all found nodes
+		 * 
+		 * @param	{Object|String}		element		Node or ID string
+		 * @returns	{Object|Array}				Single element node or array of nodes
+		 */
+		function getElementsByIDs(element) {
+			if (arguments.length > 1) {
+				for (var i = 0, elements = [], length = arguments.length; i < length; i++) {
+					elements.push(getElementsByIDs(arguments[i]));
+				}
+				
+				return $A(elements);
+			}
+
+			if (Object.isString(element)) {
+				element = document.getElementById(element);
+			}
+			
+			return element;
+		}
+		
+		/**
+		 * Gets element nodes via CSS expression
+		 * Accepts as many parameters as you want
+		 * Returns an array of all found nodes
+		 * 
+		 * @param	{String}	cssExpression		CSS expression
+		 * @returns	{Array}					Array of nodes
+		 */
+		function getElementsByCSSExpression() {
+			var expression = $A(arguments).join(', ');
+			
+			return $A(document.querySelectorAll(expression));
+		}
+		
+		return {
+			getElementsByIDs:		getElementsByIDs,
+			getElementsByCSSExpression:	getElementsByCSSExpression
+		};
+	})();
+	
 	function Element(tagName, attributes) {
 		attributes = attributes || {};
 		tagName = tagName.toLowerCase();
@@ -44,7 +95,7 @@
 	}
 	
 	function writeAttribute(element, name, value) {
-		// element = $(element);
+		element = Selector.getElementsByIDs(element);
 		var attributes = {};
 		var table = ATTRIBUTE_TRANSLATIONS.write;
 		
@@ -77,20 +128,20 @@
 	}
 	
 	function descendantOf(element, ancestor) {
-		// element = $(element);
-		// ancestor = $(ancestor);
+		element = Selector.getElementsByIDs(element);
+		ancestor = Selector.getElementsByIDs(ancestor);
 		
 		return ((element.compareDocumentPosition(ancestor) & 8) === 8);
 	}
 	
 	function hasClassName(element, className) {
-		// element = $(element);
+		element = Selector.getElementsByIDs(element);
 		
 		return element.className.includes(className);
 	}
 	
 	function addClassName(element, className) {
-		// element = $(element);
+		element = Selector.getElementsByIDs(element);
 		
 		if (!hasClassName(element, className)) {
 			 element.className += ((element.className) ? (' ') : ('')) + className;
@@ -100,7 +151,7 @@
 	}
 	
 	function removeClassName(element, className) {
-		// element = $(element);
+		element = Selector.getElementsByIDs(element);
 		
 		element.className = element.className.replace(className, '').strip();
 		
@@ -108,7 +159,7 @@
 	}
 	
 	function getStyle(element, style) {
-		// element = $(element);
+		element = Selector.getElementsByIDs(element);
 		style = normalizeStyleName(style);
 		var value = element.style[style];
 		
@@ -127,7 +178,7 @@
 	}
 	
 	function cumulativeOffset(element) {
-		// element = $(element);
+		element = Selector.getElementsByIDs(element);
 		var valueT = 0;
 		var valueL = 0;
 		
@@ -143,7 +194,7 @@
 	}
 	
 	function cumulativeScrollOffset(element) {
-		// element = $(element);
+		element = Selector.getElementsByIDs(element);
 		var valueT = 0;
 		var valueL = 0;
 		
@@ -160,7 +211,7 @@
 		var valueT = 0;
 		var valueL = 0;
 		var docBody = document.body;
-		var element = /*$(*/forElement/*)*/;
+		var element = Selector.getElementsByIDs(forElement);
 		
 		do {
 			valueT += element.offsetTop || 0;
@@ -227,6 +278,7 @@
 	
 	Object.extend(Element, {
 		Offset:			Offset,
+		Selector:		Selector,
 		
 		writeAttribute:		writeAttribute,
 		hasClassName:		hasClassName,
@@ -243,4 +295,8 @@
 	
 	Object.extend(window.Element, oldElement || {});
 	if (oldElement) window.Element.prototype = oldElement.prototype;
+	
+	// wrappers for selector functions
+	window.$ = Element.Selector.getElementsByIDs;
+	window.$$ = Element.Selector.getElementsByCSSExpression;
 })();

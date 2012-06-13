@@ -454,7 +454,7 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 			}
 		});
 		$('optionsContentTypeSeparator').style.display = (($('optionsContentTextOptionDiv').style.display !== 'none') && ($('optionsContentBoolOptionDiv').style.display !== 'none')) ? 'block' : 'none';
-		new Animations.FadeIn($('optionsContentWrapper'));
+		new Animations.FadeIn('optionsContentWrapper');
 		$('chatInput').focus();
 	}
 	
@@ -574,7 +574,7 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 		
 		boxSmallButtonLink.addEventListener('click', function(event) {
 			if (event.altKey) {
-				new Animations.Morph($(boxID), {
+				new Animations.Morph(boxID, {
 					properties: ['top', 'left'],
 					values: ['-160px', '0px'],
 					onAnimationEnd: function(event) {
@@ -584,7 +584,7 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 			}
 			else {
 				if ($(boxID).style.display === 'none') {
-					new Animations.FadeIn($(boxID), {
+					new Animations.FadeIn(boxID, {
 						onAnimationEnd: function(event) {
 							this.saveBoxStatus(event.target.getAttribute('id'));
 						}.bind(this)
@@ -592,7 +592,7 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 					$('chatInput').focus();
 				}
 				else {
-					new Animations.FadeOut($(boxID), {
+					new Animations.FadeOut(boxID, {
 						onAnimationEnd: function(event) {
 							this.saveBoxStatus(event.target.getAttribute('id'));
 						}.bind(this)
@@ -621,7 +621,7 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 		
 		new Animations.FadeIn(boxSmallButton);
 		
-		new Draggable($(boxID), {
+		new Draggable(boxID, {
 			handle: boxID+'Headline',
 			zindex: 2000,
 			starteffect: null,
@@ -669,10 +669,10 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 		var caption = new Element('h3', { 'class': 'subHeadline' });
 		
 		overlaySmallButtonLink.addEventListener('click', function(event) {
-			if (Object.isFunction(beforeShow)) beforeShow.call(context);
+			if (Object.isFunction(beforeShow)) beforeShow.call(this);
 			
-			new Animations.FadeIn($(overlayID));
-		}.bindAsEventListener(this, context), true);
+			new Animations.FadeIn(overlayID);
+		}.bindAsEventListener(context), true);
 		
 		overlaySmallButtonSpan.appendChild(document.createTextNode(title));
 		overlaySmallButtonLink.appendChild(overlaySmallButtonImg);
@@ -682,10 +682,10 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 		$$('#chatOptions .smallButtons ul')[0].appendChild(overlaySmallButton);
 		
 		closeButtonLink.addEventListener('click', function(event) {
-			new Animations.FadeOut($(overlayID));
+			new Animations.FadeOut(overlayID);
 			
 			$('chatInput').focus();
-		}.bindAsEventListener(this), true);
+		}, true);
 		
 		closeButtonLink.appendChild(closeButtonImg);
 		closeButtonDiv.appendChild(closeButtonLink);

@@ -29,10 +29,10 @@ Modules.AddOn.ColorPickerPlus = new ClassSystem.Class(Modules.Util.AbstractModul
 	addListeners: function() {
 		$$('#chatColorPickerContainer > a')[0].addEventListener('click', function(event) {
 			if ($('chatColorPicker').style.display === 'none') {
-				new Animations.FadeIn($('chatColorPicker'));
+				new Animations.FadeIn('chatColorPicker');
 			}
 			else {
-				new Animations.FadeOut($('chatColorPicker'));
+				new Animations.FadeOut('chatColorPicker');
 			}
 			
 			$('chatInput').focus();

@@ -178,8 +178,7 @@ var Draggable = new ClassSystem.Class({
 		
 		var options = Object.extend(defaults, arguments[1] || { });
 		
-		// TODO: $ available?
-		this.element = /*$(*/element/*)*/;
+		this.element = $(element);
 		
 		if (options.handle && Object.isString(options.handle)) this.handle = this.element.querySelector('.' + options.handle);
 		if (!this.handle) this.handle = $(options.handle);

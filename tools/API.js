@@ -135,63 +135,6 @@ var API = (function() {
 	})();
 	
 	/**
-	 * Selector Engine
-	 * Provides methods for selecting elements with DOM tree
-	 * 
-	 * @type	{Object}
-	 */
-	var Selector = (function() {
-		/**
-		 * Gets element nodes via ID
-		 * Accepts as many parameters as you want
-		 * Returns an array of all found nodes
-		 * 
-		 * Based on Prototype function
-		 * Copyright (c) 2005-2010 Sam Stephenson
-		 * 
-		 * @param	{Object|String}		element		Node or ID string
-		 * @returns	{Object|Array}				Single element node or array of nodes
-		 */
-		function getElementsByIDs(element) {
-			if (arguments.length > 1) {
-				for (var i = 0, elements = [], length = arguments.length; i < length; i++) {
-					elements.push(getElementsByIDs(arguments[i]));
-				}
-				
-				return $A(elements);
-			}
-
-			if (Object.isString(element)) {
-				element = document.getElementById(element);
-			}
-			
-			return element;
-		}
-		
-		/**
-		 * Gets element nodes via CSS expression
-		 * Accepts as many parameters as you want
-		 * Returns an array of all found nodes
-		 * 
-		 * Based on Prototype function
-		 * Copyright (c) 2005-2010 Sam Stephenson
-		 * 
-		 * @param	{String}	cssExpression		CSS expression
-		 * @returns	{Array}					Array of nodes
-		 */
-		function getElementsByCSSExpression() {
-			var expression = $A(arguments).join(', ');
-			
-			return $A(document.documentElement.querySelectorAll(expression));
-		}
-		
-		return {
-			getElementsByIDs:		getElementsByIDs,
-			getElementsByCSSExpression:	getElementsByCSSExpression
-		};
-	})();
-	
-	/**
 	 * Add style rules to document
 	 * 
 	 * @param	{String}	CSSString			Valid CSS style rules
@@ -201,12 +144,11 @@ var API = (function() {
 		var styleNode = new Element('style', { 'type': 'text/css' });
 		
 		styleNode.appendChild(document.createTextNode(CSSString));
-		this.Selector.getElementsByCSSExpression('head')[0].appendChild(styleNode);
+		$$('head')[0].appendChild(styleNode);
 	}
 	
 	return {
 		Storage:	Storage,
-		Selector:	Selector,
 		addStyle:	addStyle,
 		
 		/**
@@ -219,7 +161,3 @@ var API = (function() {
 		}
 	};
 })();
-
-// wrappers for selector functions
-window.$ = API.Selector.getElementsByIDs;
-window.$$ = API.Selector.getElementsByCSSExpression;

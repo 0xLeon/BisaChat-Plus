@@ -9,11 +9,15 @@ Modules.AddOn.MessagePrefilters = new ClassSystem.Class(Modules.Util.AbstractMod
 		this.callerObj.registerBoolOption('background', 'Wechselnde Hintergrundfarbe der Chatmessages', 'Hintergrund aktivieren', 'h', false);
 	},
 	
+	initializeVariables: function() {
+		this.messageBackgroundContainer = 0;
+	},
+	
 	addListeners: function() {
 		Event.register('messageBeforeNodeSetup', function(event) {
 			if (this.storage.getValue('backgroundStatus', false)) {
-				event.classes.push('container-'+((Registry.getValue('messageBackgroundContainer', 0) % 2) + 1));
-				Registry.setValue('messageBackgroundContainer', (Registry.getValue('messageBackgroundContainer') + 1));
+				event.classes.push('container-'+((this.messageBackgroundContainer % 2) + 1));
+				this.messageBackgroundContainer++;
 			}
 		}, this);
 		Event.register('messageAfterNodeAppending', function(event) {

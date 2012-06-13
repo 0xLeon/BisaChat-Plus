@@ -131,17 +131,25 @@ var Draggable = new ClassSystem.Class({
 		var defaults = {
 			handle: false,
 			reverteffect: function(element, top_offset, left_offset) {
-				var dur = Math.sqrt(Math.abs(top_offset ^ 2) + Math.abs(left_offset ^ 2)) * 0.02;
-				
-				// TODO: add custom animation here animations is moved to protobasic
+				var top = (parseFloat(Element.getStyle(element, 'top')) - top_offset).toString() + 'px';
+				var left = (parseFloat(Element.getStyle(element, 'left')) - left_offset).toString() + 'px';
+ 				
+				new Animations.Morph(element, {
+					properties: ['top', 'left'],
+					values: [top, left]
+				});
 			},
 			endeffect: function(element) {
 				var toOpacity = ((Object.isNumber(element._opacity)) ? (element._opacity) : (1.0));
 				
-				// TODO: add custom animation here animations is moved to protobasic
-				// from 0.7 to toOpacity
-				// duration: 0.s
-				// afterFinish: Draggable._dragging[element] = false;
+				// TODO: 0.2 seconds
+				new Animations.Morph(element, {
+					properties: ['opacity'],
+					values: [toOpacity],
+					onAnimationEnd: function(event) {
+						Draggable._dragging[event.target] = false;
+					}
+				});
 			},
 			zindex: 1000,
 			revert: false,
@@ -159,9 +167,11 @@ var Draggable = new ClassSystem.Class({
 					element._opacity = Element.getStyle(element, 'opacity');
 					Draggable._dragging[element] = true;
 					
-					// TODO: add custom animation when animations is moved to protobasic
-					// from element._opacity to 0.7
-					// duration: 0.2s
+					// TODO: 0.2 seconds
+					new Animations.Morph(element, {
+						properties: ['opacity'],
+						values: [0.7]
+					});
 				}
 			});
 		}

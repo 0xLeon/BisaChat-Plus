@@ -12,17 +12,15 @@ Modules.AddOn.Highlighting = new ClassSystem.Class(Modules.Util.AbstractModule, 
 		var basicHighlightingButton = $$('#chatOptions .smallButtons > ul > li')[2];
 		API.w.chat.enableAnimating = false;
 		
-		// TODO: remove button in a smooth way
-		/*basicHighlightingButton.style.overflow = 'hidden';
-		new API.w.Effect.Morph(basicHighlightingButton, {
-			style: {
-				width: '0px'
-			},
-			afterFinish: function(effect) {
-				effect.element.parentNode.removeChild(effect.element);
+		// TODO: onAnimationEnd now executed right after animation
+		basicHighlightingButton.style.overflow = 'hidden';
+		new Animations.Morph(basicHighlightingButton, {
+			properties: ['width'],
+			values: ['0px'],
+			onAnimationEnd: function(event) {
+				event.target.parentNode.removeChild(event.target);
 			}
-		});*/
-		basicHighlightingButton.parentNode.removeChild(basicHighlightingButton);
+		});
 	},
 	
 	initializeVariables: function() {

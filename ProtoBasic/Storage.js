@@ -161,6 +161,10 @@ var Storage = (function() {
 	function getInterfaceByNamespace(namespaceString) {
 		namespaceString = String.interpret(namespaceString).toLowerCase();
 		
+		if (namespaceString === '') {
+			return namespaces.global;
+		}
+		
 		if (Object.isUndefined(namespaces[namespaceString])) {
 			namespaces[namespaceString] = new StorageInterface(namespaceString);
 		}

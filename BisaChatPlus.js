@@ -498,17 +498,16 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 	 * Saves position and display status of a node
 	 * Useful for draggable objects
 	 * 
-	 * @param	{String}	id			Valid DOMNode ID
+	 * @param	{Object|String}	element			Node or ID string
 	 * @returns	{undefined}				Returns nothing
 	 */
 	function saveBoxStatus(id) {
-		var visible = !($(id).style.display === 'none');
-		var top = $(id).style.top;
-		var left = $(id).style.left;
+		element = $(element);
+		var id = element.getAttribute('id');
 		
-		this.storage.setValue(id+'boxVisible', visible);
-		this.storage.setValue(id+'boxTop', top);
-		this.storage.setValue(id+'boxLeft', left);
+		this.storage.setValue(id+'boxVisible', !(Element.getStyle(element, 'display') === 'none'));
+		this.storage.setValue(id+'boxTop', Element.getStyle(element, 'top'));
+		this.storage.setValue(id+'boxLeft', Element.getStyle(element, 'left'));
 	}
 	
 	/**
@@ -586,7 +585,7 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 					properties: ['top', 'left'],
 					values: ['-160px', '0px'],
 					onAnimationEnd: function(event) {
-						this.saveBoxStatus(event.target.getAttribute('id'));
+						this.saveBoxStatus(event.target);
 					}.bind(this)
 				});
 			}
@@ -594,7 +593,7 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 				if ($(boxID).style.display === 'none') {
 					new Animations.FadeIn(boxID, {
 						onAnimationEnd: function(event) {
-							this.saveBoxStatus(event.target.getAttribute('id'));
+							this.saveBoxStatus(event.target);
 						}.bind(this)
 					});
 					$('chatInput').focus();
@@ -602,7 +601,7 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 				else {
 					new Animations.FadeOut(boxID, {
 						onAnimationEnd: function(event) {
-							this.saveBoxStatus(event.target.getAttribute('id'));
+							this.saveBoxStatus(event.target);
 						}.bind(this)
 					});
 					$('chatInput').focus();
@@ -635,7 +634,7 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 			starteffect: null,
 			endeffect: null,
 			onEnd: function(draggable) {
-				this.saveBoxStatus(draggable.element.getAttribute('id'));
+				this.saveBoxStatus(draggable.element);
 			}.bind(this),
 			revert: function(element) {
 				var dragObjRect = element.getBoundingClientRect();

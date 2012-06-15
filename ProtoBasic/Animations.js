@@ -134,14 +134,6 @@ var Animations = (function() {
 		}
 	});
 	
-	// TODO: multiple code, see API; need to move this to a fitting place
-	function addStyle(CSSString) {
-		var styleNode = new Element('style', { 'type': 'text/css' });
-		
-		styleNode.appendChild(document.createTextNode(CSSString));
-		document.querySelector('head').appendChild(styleNode);
-	}
-	
 	// get config
 	var config = {
 		animation: false,
@@ -194,7 +186,7 @@ var Animations = (function() {
 	});
 	
 	// add style rules
-	addStyle('@' + config.cssVendorPrefix + 'keyframes fadeIn {\n' +
+	Style.addNode('@' + config.cssVendorPrefix + 'keyframes fadeIn {\n' +
 		'from {\n' +
 			'opacity: 0;\n' +
 		'}\n' +
@@ -202,7 +194,7 @@ var Animations = (function() {
 			'opacity: 1;\n' +
 		'}\n' +
 	'}');
-	addStyle('@' + config.cssVendorPrefix + 'keyframes fadeOut {\n' +
+	Style.addNode('@' + config.cssVendorPrefix + 'keyframes fadeOut {\n' +
 		'from {\n' +
 			'opacity: 1;\n' +
 		'}\n' +
@@ -210,7 +202,7 @@ var Animations = (function() {
 			'opacity: 0;\n' +
 		'}\n' +
 	'}');
-	addStyle('@' + config.cssVendorPrefix+'keyframes highlight {\n' +
+	Style.addNode('@' + config.cssVendorPrefix+'keyframes highlight {\n' +
 		'0% {\n' +
 			'background-color: rgba(255, 255, 153, 0);\n' +
 		'}\n' +
@@ -221,8 +213,8 @@ var Animations = (function() {
 			'background-color: transparent;\n' +
 		'}\n' +
 	'}');
-	addStyle('.transitionOpacity { ' + config.cssVendorPrefix + 'transition: opacity 1s ease-in-out; transition: opacity 1s ease-in-out; }');
-	addStyle('.transitionAll { ' + config.cssVendorPrefix + 'transition: all 1s ease-in-out; transition: all 1s ease-in-out; }');
+	Style.addNode('.transitionOpacity { ' + config.cssVendorPrefix + 'transition: opacity 1s ease-in-out; transition: opacity 1s ease-in-out; }');
+	Style.addNode('.transitionAll { ' + config.cssVendorPrefix + 'transition: all 1s ease-in-out; transition: all 1s ease-in-out; }');
 	
 	return {
 		config:		config,

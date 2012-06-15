@@ -9,7 +9,7 @@ Modules.AddOn.SmiliesPlus = new ClassSystem.Class(Modules.Util.AbstractModule, {
 	},
 	
 	addStyleRules: function() {
-		API.addStyle('#smiliesList li { border: none !important; margin-left: 3px; margin-right: 3px; height: 30px; float: left; }');
+		Style.addNode('#smiliesList li { border: none !important; margin-left: 3px; margin-right: 3px; height: 30px; float: left; }');
 	},
 	
 	registerOptions: function() {

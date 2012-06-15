@@ -8,12 +8,12 @@ Modules.AddOn.ScriptingEngine = new ClassSystem.Class(Modules.Util.AbstractModul
 	},
 	
 	addStyleRules: function() {
-		API.addStyle('#scriptingEngine dl dt { clear: both; margin: 3px; }');
-		API.addStyle('#scriptingEngine dl dt span { font-weight: bold; }');
-		API.addStyle('#scriptingEngine dl hr { display: block; width: 100%; }');
-		API.addStyle('#scriptingEngine dl dt input { width: 8% }');
-		API.addStyle('#scriptingEngine dl dd input { width: 11% }');
-		API.addStyle('#scriptingEngine dl div:last-child hr { opacity: 0; }');
+		Style.addNode('#scriptingEngine dl dt { clear: both; margin: 3px; }');
+		Style.addNode('#scriptingEngine dl dt span { font-weight: bold; }');
+		Style.addNode('#scriptingEngine dl hr { display: block; width: 100%; }');
+		Style.addNode('#scriptingEngine dl dt input { width: 8% }');
+		Style.addNode('#scriptingEngine dl dd input { width: 11% }');
+		Style.addNode('#scriptingEngine dl div:last-child hr { opacity: 0; }');
 	},
 	
 	addListeners: function() {

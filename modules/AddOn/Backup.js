@@ -10,7 +10,7 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 	},
 	
 	addStyleRules: function() {
-		API.addStyle('#backupSmallButton, #backupDataList li { overflow: hidden !important; }');
+		Style.addNode('#backupSmallButton, #backupDataList li { overflow: hidden !important; }');
 	},
 	
 	registerOptions: function() {

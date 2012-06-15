@@ -73,37 +73,37 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 	}
 	
 	function addStyleRules() {
-		API.addStyle('body { overflow: hidden; }');
-		API.addStyle('html, body { height: '+API.w.innerHeight+'px !important; }');
-		API.addStyle('*:focus { outline: 0px !important; }');
-		API.addStyle('.hidden { display: none; }');
-		API.addStyle('.column { border: 0px !important; }');
-		API.addStyle('#smileys { display: none; }');
-		API.addStyle('.loading, .error, .overlay, #chatCopyright { border: none !important; ' + Animations.config.cssVendorPrefix + 'border-radius: 0px !important; border-radius: 0px !important; z-index: 9000; }');
-		API.addStyle('.subTabMenu { padding: 0px !important; padding-top: 2px !important; border-top: none !important; border-left: none !important; border-right: none !important; }');
-		API.addStyle('.subTabMenu, .subTabMenu > * { ' + Animations.config.cssVendorPrefix + 'border-radius: 0px !important; border-radius: 0px !important; }');
-		API.addStyle('#chatBox { margin-top: 0px; width: 100%; height: '+API.w.innerHeight+'px; }');
-		API.addStyle('#chatBox > .border { padding: 0px !important; border: none !important; margin: 0px !important; position: relative; }');
-		API.addStyle('#chatBox > .border > .layout-2, #chatBox .columnInner { margin: 0px !important; }');
-		API.addStyle('#chatPrivatelist > li { display: list-item !important; }');
-		API.addStyle('.columnContainer > .column > .columnInner { padding: 0px }');
-		API.addStyle('#chatMessage { height: 85% !important; }');
-		API.addStyle('#chatMessage > div[id^="chatMessage"] { height: 100% !important; padding-left: 25px; }');
-		API.addStyle('#chatFormContainer { margin-left: 25px; margin-right: 25px }');
-		API.addStyle('#chatMembers { margin-left: 8px; }');
-		API.addStyle('.smallButtons > ul > li > a > img { width: 16px; height: 16px; }')
-		API.addStyle('.overlay { position: absolute; width: 100%; height: 100%; margin: 0px !important; clear: both; }');
-		API.addStyle('.overlay > div { padding: 15px 25px; }');
-		API.addStyle('.overlayCloseButton { float: right; }');
-		API.addStyle('.overlayCloseButton img { padding: 15px; }');
-		API.addStyle('.overlayContent { margin: 5px 0px 3px; max-height: '+(API.w.innerHeight-110)+'px; overflow: auto; }');
-		API.addStyle('.boxSmallButton, .overlaySmallButton { position: relative; }');
-		API.addStyle('.bcplusBox { position: absolute; width: 255px; height: 155px !important; top: -160px; left: 0px; padding-left: 1px; padding-top: 1px; }');
-		API.addStyle('.bcplusBox .containerHead { cursor: move; }');
-		API.addStyle('.bcplusBox .containerContent { height: 132px; padding-left: 3px; overflow-y: auto; margin: 0px !important; }')
-		API.addStyle('.textOptionValue { cursor: pointer; }');
-		API.addStyle('.textOptionValue:hover { text-decoration: underline; }');
-		API.addStyle('#options hr { display: block; width: 80%; }')
+		Style.addNode('body { overflow: hidden; }');
+		Style.addNode('html, body { height: '+API.w.innerHeight+'px !important; }');
+		Style.addNode('*:focus { outline: 0px !important; }');
+		Style.addNode('.hidden { display: none; }');
+		Style.addNode('.column { border: 0px !important; }');
+		Style.addNode('#smileys { display: none; }');
+		Style.addNode('.loading, .error, .overlay, #chatCopyright { border: none !important; ' + Animations.config.cssVendorPrefix + 'border-radius: 0px !important; border-radius: 0px !important; z-index: 9000; }');
+		Style.addNode('.subTabMenu { padding: 0px !important; padding-top: 2px !important; border-top: none !important; border-left: none !important; border-right: none !important; }');
+		Style.addNode('.subTabMenu, .subTabMenu > * { ' + Animations.config.cssVendorPrefix + 'border-radius: 0px !important; border-radius: 0px !important; }');
+		Style.addNode('#chatBox { margin-top: 0px; width: 100%; height: '+API.w.innerHeight+'px; }');
+		Style.addNode('#chatBox > .border { padding: 0px !important; border: none !important; margin: 0px !important; position: relative; }');
+		Style.addNode('#chatBox > .border > .layout-2, #chatBox .columnInner { margin: 0px !important; }');
+		Style.addNode('#chatPrivatelist > li { display: list-item !important; }');
+		Style.addNode('.columnContainer > .column > .columnInner { padding: 0px }');
+		Style.addNode('#chatMessage { height: 85% !important; }');
+		Style.addNode('#chatMessage > div[id^="chatMessage"] { height: 100% !important; padding-left: 25px; }');
+		Style.addNode('#chatFormContainer { margin-left: 25px; margin-right: 25px }');
+		Style.addNode('#chatMembers { margin-left: 8px; }');
+		Style.addNode('.smallButtons > ul > li > a > img { width: 16px; height: 16px; }')
+		Style.addNode('.overlay { position: absolute; width: 100%; height: 100%; margin: 0px !important; clear: both; }');
+		Style.addNode('.overlay > div { padding: 15px 25px; }');
+		Style.addNode('.overlayCloseButton { float: right; }');
+		Style.addNode('.overlayCloseButton img { padding: 15px; }');
+		Style.addNode('.overlayContent { margin: 5px 0px 3px; max-height: '+(API.w.innerHeight-110)+'px; overflow: auto; }');
+		Style.addNode('.boxSmallButton, .overlaySmallButton { position: relative; }');
+		Style.addNode('.bcplusBox { position: absolute; width: 255px; height: 155px !important; top: -160px; left: 0px; padding-left: 1px; padding-top: 1px; }');
+		Style.addNode('.bcplusBox .containerHead { cursor: move; }');
+		Style.addNode('.bcplusBox .containerContent { height: 132px; padding-left: 3px; overflow-y: auto; margin: 0px !important; }')
+		Style.addNode('.textOptionValue { cursor: pointer; }');
+		Style.addNode('.textOptionValue:hover { text-decoration: underline; }');
+		Style.addNode('#options hr { display: block; width: 80%; }')
 		
 		$$('#chatBox .columnContainer')[0].style.width = API.w.innerWidth+'px';
 		var boxesHeight = (API.w.innerHeight-(parseInt($$('#chatBox .subTabMenu')[0].offsetHeight)))+'px';

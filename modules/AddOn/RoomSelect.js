@@ -4,7 +4,7 @@
  */
 Modules.AddOn.RoomSelect = new ClassSystem.Class(Modules.Util.AbstractModule, {
 	addStyleRules: function() {
-		API.addStyle('#chatChangeRoom span:after { content: " "; }');
+		Style.addNode('#chatChangeRoom span:after { content: " "; }');
 	},
 	
 	buildUI: function() {

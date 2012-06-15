@@ -23,7 +23,7 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 	 * 
 	 * @type	{StorageInterface}
 	 */
-	var storage = Storage.getInterfaceByNamespace('global');
+	var storage = Storage.getInterface('');
 	
 	/**
 	 * Hash-like object of all access key listeners with access key as key

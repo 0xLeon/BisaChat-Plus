@@ -155,13 +155,18 @@ var Storage = (function() {
 		};
 	})());
 	var namespaces = {
-		global: new StorageInterface('')
+		noNamespace: new StorageInterface(''),
+		global: new StorageInterface('.')
 	};
 	
-	function getInterfaceByNamespace(namespaceString) {
+	function getInterface(namespaceString) {
 		namespaceString = String.interpret(namespaceString).toLowerCase();
 		
 		if (namespaceString === '') {
+			return namespaces.noNamespace;
+		}
+		
+		if (namespaceString === '.') {
 			return namespaces.global;
 		}
 		
@@ -173,6 +178,6 @@ var Storage = (function() {
 	}
 	
 	return {
-		getInterfaceByNamespace:	getInterfaceByNamespace
+		getInterface:	getInterface
 	};
 })();

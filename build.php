@@ -64,8 +64,6 @@ if ($argc === 1) {
 $namespaces = glob('namespaces/*');
 // find ProtoBasic files
 $protoBasicFiles = array('Object', 'Function', 'Class', 'Enumerable', 'Array', 'Hash', 'String', 'RegExp', 'Date', 'Storage', 'Element', 'Event', 'Style', 'Animations', 'Dragging');
-// find tools
-$tools = glob('tools/*');
 // find media resources
 $mediaResources = glob('media/*');
 
@@ -85,12 +83,6 @@ foreach ($namespaces as $namespace) {
 foreach ($protoBasicFiles as $protoBasicFile) {
 	echo "Adding ProtoBasic file: ProtoBasic/".$protoBasicFile.".js\n";
 	$result .= file_get_contents('ProtoBasic/'.$protoBasicFile.'.js')."\n";
-}
-
-// add tools
-foreach ($tools as $tool) {
-	echo "Adding tool: ".$tool."\n";
-	$result .= file_get_contents($tool)."\n";
 }
 
 // add media resources

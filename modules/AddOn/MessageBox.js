@@ -21,7 +21,7 @@ Modules.AddOn.MessageBox = new ClassSystem.Class(Modules.Util.AbstractModule, (f
 	
 	function addListeners() {
 		Event.register('messageAfterNodeSetup', function(event) {
-			if ((this.callerObj.isAway || !document.hasFocus()) && (event.type === 7)) {
+			if ((this.callerObj.isAway || !document.hasFocus()) && (event.type === 7) && (!event.ownMessage)) {
 				this.pushMessage(event);
 			}
 		}, this);

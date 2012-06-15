@@ -842,7 +842,6 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 	}
 	
 	return {
-		API:			API,
 		isAway:			isAway,
 		awayMessage:		awayMessage,
 		storage:		storage,

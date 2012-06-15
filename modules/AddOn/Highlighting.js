@@ -10,7 +10,7 @@ Modules.AddOn.Highlighting = new ClassSystem.Class(Modules.Util.AbstractModule, 
 	
 	removeBasicHighlighting: function() {
 		var basicHighlightingButton = $$('#chatOptions .smallButtons > ul > li')[2];
-		API.w.chat.enableAnimating = false;
+		Window.chat.enableAnimating = false;
 		
 		// TODO: onAnimationEnd now executed right after animation
 		basicHighlightingButton.style.overflow = 'hidden';
@@ -32,7 +32,7 @@ Modules.AddOn.Highlighting = new ClassSystem.Class(Modules.Util.AbstractModule, 
 	
 	registerOptions: function() {
 		this.callerObj.registerBoolOption('blurHR', 'Horizontale Linie beim verlassen des Tabs', 'Horizontale Linie', 'r', false);
-		this.callerObj.registerTextOption('highlightingText', 'Highlighten bei', API.w.settings.username, function(optionValue) {
+		this.callerObj.registerTextOption('highlightingText', 'Highlighten bei', Window.settings.username, function(optionValue) {
 			this.buildRegExp(optionValue);
 		}, this);
 		this.callerObj.registerBoolOption('highlighting', 'Highlighting', 'Highlighting aktivieren', 'l', false);
@@ -42,7 +42,7 @@ Modules.AddOn.Highlighting = new ClassSystem.Class(Modules.Util.AbstractModule, 
 		Event.register('messageAfterNodeSetup', function(event) {
 			if (this.storage.getValue('highlightingStatus', false) && (!document.hasFocus() || this.callerObj.isAway) && (event.usernameSimple.toLowerCase() !== 'chatbot') && !event.text.startsWith('np:')) {
 				if (this.regExp === null) {
-					this.buildRegExp(this.storage.getValue('highlightingTextValue', API.w.settings.username));
+					this.buildRegExp(this.storage.getValue('highlightingTextValue', Window.settings.username));
 				}
 				
 				if (this.regExp.test(event.text)) {
@@ -59,13 +59,13 @@ Modules.AddOn.Highlighting = new ClassSystem.Class(Modules.Util.AbstractModule, 
 		}, this);
 		Event.register('tabBlur', function(event) {
 			if (this.storage.getValue('blurHRStatus', false)) {
-				$$('#chatMessage'+API.w.chat.activeUserID+' ul .blurHr').each(function(item) {
+				$$('#chatMessage'+Window.chat.activeUserID+' ul .blurHr').each(function(item) {
 					item.parentNode.removeChild(item);
 				});
 				var line = (new Element('li', { 'class': 'blurHr' }));
 				
 				line.appendChild(new Element('hr', { style: 'display: block; width: 75%;' }));
-				$$('#chatMessage'+API.w.chat.activeUserID+' ul')[0].appendChild(line);
+				$$('#chatMessage'+Window.chat.activeUserID+' ul')[0].appendChild(line);
 			}
 		}, this);
 	},

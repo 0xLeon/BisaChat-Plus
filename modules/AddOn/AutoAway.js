@@ -39,14 +39,14 @@ Modules.AddOn.AutoAway = new ClassSystem.Class(Modules.Util.AbstractModule, {
 	
 	startTimer: function() {
 		this.stopTimer();
-		this.timerHandle = API.w.setTimeout(function() {
+		this.timerHandle = Window.setTimeout(function() {
 			if (!this.callerObj.isAway) this.callerObj.pushMessage('/away');
 		}.bind(this), this.storage.getValue('autoAwayTimeoutValue', 5)*60000);
 	},
 	
 	stopTimer: function() {
 		if (this.timerHandle !== null) {
-			API.w.clearTimeout(this.timerHandle);
+			Window.clearTimeout(this.timerHandle);
 			this.timerHandle = null;
 		}
 	}

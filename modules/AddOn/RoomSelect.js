@@ -8,7 +8,7 @@ Modules.AddOn.RoomSelect = new ClassSystem.Class(Modules.Util.AbstractModule, {
 	},
 	
 	buildUI: function() {
-		new API.w.Ajax.Request('./index.php?page=ChatRefreshRoomList' + API.w.SID_ARG_2ND, {
+		new Window.Ajax.Request('./index.php?page=ChatRefreshRoomList' + Window.SID_ARG_2ND, {
 			onSuccess: function(response) {
 				var text = response.responseText.trim().split("\n").map(function(line) {
 					return line.trim();

@@ -17,7 +17,7 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 		this.callerObj.registerBoolOption('backupActive', 'Backup', 'Backup aktivieren', 'c', true, function(event, checked) {
 			if (checked) {
 				if ($('backupSmallButton').style.display === 'none') {
-					new API.w.Effect.Morph('backupSmallButton', {
+					new Window.Effect.Morph('backupSmallButton', {
 						style: {
 							width: this.buttonWidth
 						},
@@ -39,12 +39,12 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 				this.stopTimer();
 				
 				if ($('backupSmallButton').style.display !== 'none') {
-					new API.w.Effect.Morph('backupSmallButton', {
+					new Window.Effect.Morph('backupSmallButton', {
 						style: {
 							width: '0px'
 						},
 						beforeSetup: function(effect) {
-							this.buttonWidth = API.w.getComputedStyle(effect.element).getPropertyValue('width');
+							this.buttonWidth = Window.getComputedStyle(effect.element).getPropertyValue('width');
 						}.bind(this),
 						afterFinish: function(effect) {
 							effect.element.style.display = 'none';
@@ -73,12 +73,12 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 		}
 		catch (e) {
 			if (e.message === 'Backup inactive') {
-				new API.w.Effect.Morph('backupSmallButton', {
+				new Window.Effect.Morph('backupSmallButton', {
 					style: {
 						width: '0px'
 					},
 					beforeSetup: function(effect) {
-						this.buttonWidth = API.w.getComputedStyle(effect.element).getPropertyValue('width');
+						this.buttonWidth = Window.getComputedStyle(effect.element).getPropertyValue('width');
 					}.bind(this),
 					afterFinish: function(effect) {
 						effect.element.style.display = 'none';
@@ -156,7 +156,7 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 			if ((this.storage.getValue('backupUsername', '') !== '') && (this.storage.getValue('backupPassword') !== '')) {
 				this.stopTimer();
 				this.backupSettings();
-				this.intervalHandle = API.w.setInterval(function() {
+				this.intervalHandle = Window.setInterval(function() {
 					this.backupSettings();
 				}.bind(this), 60000);
 			}
@@ -171,7 +171,7 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 	
 	stopTimer: function() {
 		if (this.intervalHandle !== null) {
-			API.w.clearInterval(this.intervalHandle);
+			Window.clearInterval(this.intervalHandle);
 			this.intervalHandle = null;
 		}
 	},
@@ -248,7 +248,7 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 													data.backupUsername = this.storage.getValue('backupUsername');
 													data.backupPassword = this.storage.getValue('backupPassword');
 													this.storage.importSettings(data);
-													API.w.location.reload();
+													Window.location.reload();
 												}
 											}
 										}.bind(this)
@@ -268,7 +268,7 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 										onload: function(response) {
 											if (response.readyState === 4) {
 												if (response.status === 200) {
-													new API.w.Effect.Scale(li, 0, {
+													new Window.Effect.Scale(li, 0, {
 														afterFinish: function(effect) {
 															if ($$('#backupDataList li').length === 1) {
 																var info = new Element('p', { style: 'display: none;' });

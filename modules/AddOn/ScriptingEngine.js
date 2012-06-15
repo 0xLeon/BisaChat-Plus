@@ -89,12 +89,12 @@ Modules.AddOn.ScriptingEngine = new ClassSystem.Class(Modules.Util.AbstractModul
 									});
 								}
 								else {
-									API.w.alert('Fehler beim Speichern des Befehls.'+"\n"+'Ein Befehl mit diesem Bezeichner existiert bereits!');
+									Window.alert('Fehler beim Speichern des Befehls.'+"\n"+'Ein Befehl mit diesem Bezeichner existiert bereits!');
 									$$('#scriptingEngine dl input')[0].focus();
 								}
 							}
 							else {
-								API.w.alert('Fehler beim Speichern des Befehls.'+"\n"+'Bitte kontrolliere die Eingabefelder!');
+								Window.alert('Fehler beim Speichern des Befehls.'+"\n"+'Bitte kontrolliere die Eingabefelder!');
 								$$('#scriptingEngine dl input')[0].focus();
 							}
 						}
@@ -120,7 +120,7 @@ Modules.AddOn.ScriptingEngine = new ClassSystem.Class(Modules.Util.AbstractModul
 				});
 			}
 			else {
-				API.w.alert('Bitte benutz die schon vorhandenen Eingabefelder!');
+				Window.alert('Bitte benutz die schon vorhandenen Eingabefelder!');
 				$$('#scriptingEngine dl input')[0].focus();
 			}
 		}.bindAsEventListener(this), true);

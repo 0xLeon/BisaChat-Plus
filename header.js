@@ -35,3 +35,5 @@ const WEBKIT = (function() {
 const OPERA = (function() {
 	return (Object.prototype.toString.call(window.opera) == '[object Opera]');
 })();
+
+var Window = (unsafeWindow || window);

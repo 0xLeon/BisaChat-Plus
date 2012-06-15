@@ -95,14 +95,14 @@ Modules.AddOn.BBCodeParser = new ClassSystem.Class(Modules.Util.AbstractModule, 
 				getParsedTag: function(openingTag, content, closingTag, parser) {
 					var returnValue = '';
 					
-					API.w.chat.loading = true;
-					new API.w.Ajax.Request('./index.php?form=Chat', {
+					Window.chat.loading = true;
+					new Window.Ajax.Request('./index.php?form=Chat', {
 						parameters: {
 							text: '/info '+content,
 							ajax: 1
 						},
 						onSuccess: function() {
-							new API.w.Ajax.Request('index.php?page=ChatMessage&id='+API.w.chat.id+API.w.SID_ARG_2ND, {
+							new Window.Ajax.Request('index.php?page=ChatMessage&id='+Window.chat.id+Window.SID_ARG_2ND, {
 								method: 'get',
 								onSuccess: function(response) {
 									var messages = $A(response.responseJSON.messages);
@@ -126,19 +126,19 @@ Modules.AddOn.BBCodeParser = new ClassSystem.Class(Modules.Util.AbstractModule, 
 											}
 											
 											infoKey = key;
-											API.w.chat.id = item.id;
+											Window.chat.id = item.id;
 											delete div;
 										}
 									});
 									
 									response.responseJSON.messages = messages.without(messages[infoKey]);
-									API.w.chat.loading = false;
+									Window.chat.loading = false;
 									if (!!response.responseJSON.messages.length) {
-										API.w.chat.handleMessageUpdate(response.responseJSON.messages);
+										Window.chat.handleMessageUpdate(response.responseJSON.messages);
 									}
 								},
 								onFailure: function() {
-									API.w.chat.failure();
+									Window.chat.failure();
 								},
 								sanitizeJSON: true,
 								asynchronous: false

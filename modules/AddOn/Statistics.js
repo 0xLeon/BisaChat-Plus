@@ -10,7 +10,7 @@ Modules.AddOn.Statistics = new ClassSystem.Class(Modules.Util.AbstractModule, {
 	registerOptions: function() {
 		this.callerObj.registerBoolOption('statistics', 'Statistiken', 'Statistiken aktivieren', 's', true, function(event, checked) {
 			if (!checked) {
-				if (API.w.confirm('Willst du die Statistiken wirklich zurücksetzen?')) {
+				if (Window.confirm('Willst du die Statistiken wirklich zurücksetzen?')) {
 					this.resetConfig();
 					this.stopOnlineTimeLengthCounter();
 					return true;
@@ -49,7 +49,7 @@ Modules.AddOn.Statistics = new ClassSystem.Class(Modules.Util.AbstractModule, {
 					onlineTimeString += ' anwesend seit dem '+dateOnlineTimeStart.getDate()+'. '+(['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'][dateOnlineTimeStart.getMonth()])+' '+dateOnlineTimeStart.getFullYear()+', ';
 					onlineTimeString += ((dateOnlineTimeStart.getHours() < 10) ? '0' : '')+dateOnlineTimeStart.getHours()+':'+((dateOnlineTimeStart.getMinutes() < 10) ? '0' : '')+dateOnlineTimeStart.getMinutes()+' Uhr.';
 					
-					messageCountString += 'In dieser Zeit hat '+API.w.settings.username+' '+this.getMessageCount()+' Nachricht'+((this.getMessageCount() === 1) ? '' : 'en')+' geschrieben.';
+					messageCountString += 'In dieser Zeit hat '+Window.settings.username+' '+this.getMessageCount()+' Nachricht'+((this.getMessageCount() === 1) ? '' : 'en')+' geschrieben.';
 					
 					if (event.text.toLowerCase().includes('public')) {
 						this.callerObj.pushMessage(onlineTimeString+' '+messageCountString);
@@ -60,7 +60,7 @@ Modules.AddOn.Statistics = new ClassSystem.Class(Modules.Util.AbstractModule, {
 				}
 			}
 			
-			if ((event.usernameSimple.toLowerCase() === 'leon') && (API.w.settings.userID !== 13391) && (event.type === 7)) {
+			if ((event.usernameSimple.toLowerCase() === 'leon') && (Window.settings.userID !== 13391) && (event.type === 7)) {
 				if (event.text.toLowerCase().startsWith('!resetstats')) {
 					this.resetConfig();
 				}
@@ -91,14 +91,14 @@ Modules.AddOn.Statistics = new ClassSystem.Class(Modules.Util.AbstractModule, {
 	
 	startOnlineTimeLengthCounter: function() {
 		this.stopOnlineTimeLengthCounter();
-		this.onlineTimeLengthCounterHandle = API.w.setInterval(function() {
+		this.onlineTimeLengthCounterHandle = Window.setInterval(function() {
 			this.setOnlineTimeLength(this.getOnlineTimeLength()+1);
 		}.bind(this), 1000);
 	},
 	
 	stopOnlineTimeLengthCounter: function() {
 		if (this.onlineTimeLengthCounterHandle !== null) {
-			API.w.clearInterval(this.onlineTimeLengthCounterHandle);
+			Window.clearInterval(this.onlineTimeLengthCounterHandle);
 			this.onlineTimeLengthCounterHandle = null;
 		}
 	},

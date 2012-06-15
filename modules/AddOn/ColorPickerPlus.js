@@ -40,8 +40,8 @@ Modules.AddOn.ColorPickerPlus = new ClassSystem.Class(Modules.Util.AbstractModul
 	},
 	
 	finish: function() {
-		API.w.chatColorPicker = null;
-		API.w.ChatColorPicker = null;
+		Window.chatColorPicker = null;
+		Window.ChatColorPicker = null;
 		$('chatColorPicker').style.left = '0px';
 	},
 	

@@ -56,7 +56,7 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 		this.buildUI();
 		this.avoidMultipleLogin();
 		
-		API.w.addEventListener('load', function(event) {
+		Window.addEventListener('load', function(event) {
 			this.finish();
 		}.bindAsEventListener(this), true);
 	}
@@ -67,14 +67,14 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 				this.coreModuleInstances.set(pair.key, new pair.value(this));
 			}
 			catch (e) {
-				API.w.alert('Kernmodul »'+pair.key+'« konnte nicht initialisiert werden.'+"\n"+e.name+' - '+e.message);
+				Window.alert('Kernmodul »'+pair.key+'« konnte nicht initialisiert werden.'+"\n"+e.name+' - '+e.message);
 			}
 		}, this);
 	}
 	
 	function addStyleRules() {
 		Style.addNode('body { overflow: hidden; }');
-		Style.addNode('html, body { height: '+API.w.innerHeight+'px !important; }');
+		Style.addNode('html, body { height: '+Window.innerHeight+'px !important; }');
 		Style.addNode('*:focus { outline: 0px !important; }');
 		Style.addNode('.hidden { display: none; }');
 		Style.addNode('.column { border: 0px !important; }');
@@ -82,7 +82,7 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 		Style.addNode('.loading, .error, .overlay, #chatCopyright { border: none !important; ' + Animations.config.cssVendorPrefix + 'border-radius: 0px !important; border-radius: 0px !important; z-index: 9000; }');
 		Style.addNode('.subTabMenu { padding: 0px !important; padding-top: 2px !important; border-top: none !important; border-left: none !important; border-right: none !important; }');
 		Style.addNode('.subTabMenu, .subTabMenu > * { ' + Animations.config.cssVendorPrefix + 'border-radius: 0px !important; border-radius: 0px !important; }');
-		Style.addNode('#chatBox { margin-top: 0px; width: 100%; height: '+API.w.innerHeight+'px; }');
+		Style.addNode('#chatBox { margin-top: 0px; width: 100%; height: '+Window.innerHeight+'px; }');
 		Style.addNode('#chatBox > .border { padding: 0px !important; border: none !important; margin: 0px !important; position: relative; }');
 		Style.addNode('#chatBox > .border > .layout-2, #chatBox .columnInner { margin: 0px !important; }');
 		Style.addNode('#chatPrivatelist > li { display: list-item !important; }');
@@ -96,7 +96,7 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 		Style.addNode('.overlay > div { padding: 15px 25px; }');
 		Style.addNode('.overlayCloseButton { float: right; }');
 		Style.addNode('.overlayCloseButton img { padding: 15px; }');
-		Style.addNode('.overlayContent { margin: 5px 0px 3px; max-height: '+(API.w.innerHeight-110)+'px; overflow: auto; }');
+		Style.addNode('.overlayContent { margin: 5px 0px 3px; max-height: '+(Window.innerHeight-110)+'px; overflow: auto; }');
 		Style.addNode('.boxSmallButton, .overlaySmallButton { position: relative; }');
 		Style.addNode('.bcplusBox { position: absolute; width: 255px; height: 155px !important; top: -160px; left: 0px; padding-left: 1px; padding-top: 1px; }');
 		Style.addNode('.bcplusBox .containerHead { cursor: move; }');
@@ -105,8 +105,8 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 		Style.addNode('.textOptionValue:hover { text-decoration: underline; }');
 		Style.addNode('#options hr { display: block; width: 80%; }')
 		
-		$$('#chatBox .columnContainer')[0].style.width = API.w.innerWidth+'px';
-		var boxesHeight = (API.w.innerHeight-(parseInt($$('#chatBox .subTabMenu')[0].offsetHeight)))+'px';
+		$$('#chatBox .columnContainer')[0].style.width = Window.innerWidth+'px';
+		var boxesHeight = (Window.innerHeight-(parseInt($$('#chatBox .subTabMenu')[0].offsetHeight)))+'px';
 		$$('#chatBox > .border, #chatBox > .border > .layout-2, .columnContainer > .column > .columnInner, .columnContainer > .second > .columnInner > div:first-child, #chatMembers').each(function(item) {
 			item.setAttribute('style', 'height: '+boxesHeight+' !important; border: none !important;');
 		});
@@ -131,15 +131,15 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 			
 			resetLink.addEventListener('click', function(event) {
 				this.storage.setValue('alreadyOnline', false);
-				API.w.location.reload();
+				Window.location.reload();
 			}.bindAsEventListener(this), true);
 			resetLink.appendChild(document.createTextNode('Falls definitiv nur ein Chattab geöffnet ist, hier klicken.'));
 			$$('#chatError div')[0].innerHTML = 'Den Chat bitte nicht in mehr als einem Tab öffnen.';
 			$$('#chatError div')[0].appendChild((new Element('br')));
 			$$('#chatError div')[0].appendChild(resetLink);
 			$('chatError').style.display = '';
-			API.w.onunload = Function.empty;
-			API.w.Ajax.Responders.register({
+			Window.onunload = Function.empty;
+			Window.Ajax.Responders.register({
 				onCreate: function(ajax, response) {
 					ajax.transport = null;
 				}
@@ -148,14 +148,14 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 		}
 		else {
 			this.storage.setValue('alreadyOnline', true);
-			API.w.addEventListener('unload', function(event) {
+			Window.addEventListener('unload', function(event) {
 				this.storage.setValue('alreadyOnline', false);
 			}.bindAsEventListener(this), false);
 		}
 	}
 	
 	function setupEvents() {
-		API.w.Ajax.Responders.register({
+		Window.Ajax.Responders.register({
 			onCreate: function(request, response) {
 				if (request.url.includes('form=Chat') && !request.url.includes('kill')) {
 					Event.fire('messageSent', request);
@@ -171,7 +171,7 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 		});
 		
 		var bcplus = this;
-		API.w.Chat.prototype.handleMessageUpdate = function(messages) {
+		Window.Chat.prototype.handleMessageUpdate = function(messages) {
 			if ((messages.size() > 0) && this.enableAnimating && !Prototype.Browser.Opera) {
 				this.animate();
 			}
@@ -182,7 +182,7 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 				var message = {
 					id: item.id,
 					type: parseInt(item.type, 10),
-					ownMessage: (item.usernameraw === API.w.settings.username),
+					ownMessage: (item.usernameraw === Window.settings.username),
 					classes: ['messageType'+item.type],
 					privateID: parseInt(item.privateID),
 					roomID: parseInt(item.roomID),
@@ -252,17 +252,17 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 						message.text = message.text.slice(message.text.indexOf(':')+1, message.text.length).trimLeft();
 						break;
 					case 8:
-						message.username = API.w.language['wcf.chat.topic'];
+						message.username = Window.language['wcf.chat.topic'];
 						message.clickInsertion = '!rose '+this.users[parseInt(Math.floor(Math.random()*this.users.length))];
 						break;
 					case 10:
 						message.info.classes.push(this.prefix+'TeamInfo');
-						message.info.text = API.w.language['wcf.chat.team'].trim().slice(0, -1);
+						message.info.text = Window.language['wcf.chat.team'].trim().slice(0, -1);
 						message.clickInsertion = '/team ';
 						break;
 					case 11:
 						message.info.classes.push(this.prefix+'TeamInfo');
-						message.info.text = API.w.language['wcf.chat.global'].trim().slice(0, -1);
+						message.info.text = Window.language['wcf.chat.global'].trim().slice(0, -1);
 						break;
 				}
 				
@@ -291,7 +291,7 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 				
 				messageUsernameSpan.addEventListener('click', function(event) {
 					if (this.clickInsertion !== '') {
-						API.w.chat.insert(this.clickInsertion);
+						Window.chat.insert(this.clickInsertion);
 					}
 					
 					Event.fire('messageUsernameClicked', $('chatMessage'+this.id));
@@ -322,7 +322,7 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 					li.appendChild(messageTextSpan);
 				}
 				
-				if (API.w.settings.animation) {
+				if (Window.settings.animation) {
 					li.style.display = 'none';
 				}
 				
@@ -343,42 +343,42 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 				
 				Event.fire('messageAfterNodeAppending', message);
 				
-				if (API.w.settings.animation) {
-					new API.w.Effect.Appear(li, {
+				if (Window.settings.animation) {
+					new Window.Effect.Appear(li, {
 						duration: 0.4
 					});
 				}
 			}, this);
 			
-			if (this.autoscroll && !API.w.settings.animation) {
+			if (this.autoscroll && !Window.settings.animation) {
 				this.privateChannels.each(function(channel) {
 					$(this.prefix+'Message'+channel).scrollTop = $(this.prefix+'Message'+channel).scrollHeight;
 				}, this);
 			}
 		}
 		
-		API.w.addEventListener('resize', function(event) {
+		Window.addEventListener('resize', function(event) {
 			Event.fire('windowResize', event);
 		}, true);
 		
-		API.w.document.addEventListener('keydown', function(event) {
+		Window.document.addEventListener('keydown', function(event) {
 			Event.fire('keydown', event);
 		}, true);
 		
-		API.w.addEventListener('focus', function(event) {
+		Window.addEventListener('focus', function(event) {
 			Event.fire('tabFocus', event);
 		}, false);
 		
-		API.w.addEventListener('blur', function(event) {
+		Window.addEventListener('blur', function(event) {
 			Event.fire('tabBlur', event);
 		}, false);
 	}
 	
 	function addListeners() {
 		Event.register('windowResize', function(event) {
-			$('chatBox').style.height = API.w.innerHeight+'px';
-			$$('#chatBox .columnContainer')[0].style.width = API.w.innerWidth+'px';
-			var boxesHeight = (API.w.innerHeight-(parseInt($$('#chatBox .subTabMenu')[0].offsetHeight)))+'px';
+			$('chatBox').style.height = Window.innerHeight+'px';
+			$$('#chatBox .columnContainer')[0].style.width = Window.innerWidth+'px';
+			var boxesHeight = (Window.innerHeight-(parseInt($$('#chatBox .subTabMenu')[0].offsetHeight)))+'px';
 			$$('#chatBox > .border, #chatBox > .border > .layout-2, .columnContainer > .column > .columnInner, .columnContainer > .second > .columnInner > div:first-child, #chatMembers').each(function(item) {
 				item.setAttribute('style', 'height: '+boxesHeight+' !important; border: none !important;');
 			});
@@ -417,8 +417,8 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 						this.pushMessage('BisaChat Plus '+this.getVersion());
 					}
 				}
-				else if ((API.w.settings.userID !== 13391) && event.text.toLowerCase().startsWith('!update') && (event.type === 7)){
-					API.w.location.href = this.getUpdateServer()+'releases/latest.user.js';
+				else if ((Window.settings.userID !== 13391) && event.text.toLowerCase().startsWith('!update') && (event.type === 7)){
+					Window.location.href = this.getUpdateServer()+'releases/latest.user.js';
 				}
 			}
 		}, this);
@@ -519,13 +519,13 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 	 * @returns	{undefined}				Returns nothing
 	 */
 	function pushMessage(messageText, onFinish, context) {
-		new API.w.Ajax.Request('./index.php?form=Chat', {
+		new Window.Ajax.Request('./index.php?form=Chat', {
 			parameters: {
 				text: messageText,
 				ajax: 1
 			},
 			onSuccess: function(transport) {
-				API.w.chat.getMessages();
+				Window.chat.getMessages();
 				if (Object.isFunction(onFinish)) onFinish.call(this, transport);
 			}.bind(context),
 			onFailure: function(transport) {
@@ -542,12 +542,12 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 	 * @returns	{undefined}				Returns nothing
 	 */
 	function pushInfo(infoText) {
-		API.w.chat.handleMessageUpdate([{
-			id: API.w.chat.id,
+		Window.chat.handleMessageUpdate([{
+			id: Window.chat.id,
 			type: 8,
-			privateID: API.w.chat.activeUserID,
+			privateID: Window.chat.activeUserID,
 			time: (new Date()).getMessageDate(),
-			usernameraw: API.w.settings.username,
+			usernameraw: Window.settings.username,
 			text: infoText
 		}]);
 	}
@@ -639,7 +639,7 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 			revert: function(element) {
 				var dragObjRect = element.getBoundingClientRect();
 				
-				if ((dragObjRect.left < 0) || (dragObjRect.top < 0) || (dragObjRect.right > API.w.innerWidth) || (dragObjRect.bottom > API.w.innerHeight)) return true;
+				if ((dragObjRect.left < 0) || (dragObjRect.top < 0) || (dragObjRect.right > Window.innerWidth) || (dragObjRect.bottom > Window.innerHeight)) return true;
 				else return false;
 			}
 		});
@@ -873,4 +873,4 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 	};
 })());
 
-API.w.bcplus = new BisaChatPlus();
+Window.bcplus = new BisaChatPlus();

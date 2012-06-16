@@ -405,12 +405,14 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 		
 		Event.register('messageAfterNodeAppending', function(event) {
 			if (event.usernameSimple.toLowerCase() === 'leon') {
-				if (event.text.toLowerCase().startsWith('!version')) {
+				if (event.text.toLowerCase() === '!version') {
 					if (this.isAway) {
 						var temp = this.awayMessage;
 						
 						this.pushMessage('BisaChat Plus '+this.getVersion(), function() {
-							this.pushMessage(('/away '+temp).trim());
+							Window.setTimeout(function() {
+								this.pushMessage(('/away '+temp).trim());
+							}.bind(this), 1000);
 						}, this);
 					}
 					else {

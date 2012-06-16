@@ -501,7 +501,7 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 	 * @param	{Object|String}	element			Node or ID string
 	 * @returns	{undefined}				Returns nothing
 	 */
-	function saveBoxStatus(id) {
+	function saveBoxStatus(element) {
 		element = $(element);
 		var id = element.getAttribute('id');
 		

@@ -104,7 +104,7 @@ Object.extend(String.prototype, (function() {
 	}
 	
 	function escapeHTML() {
-		return this.replace(/(&|"|<|>)/g, function(matchedSubString, offset, totalString) {
+		return this.replace(/&|"|<|>/g, function(matchedSubString, offset, totalString) {
 			return String.htmlEntities[matchedSubString];
 		});
 	}

@@ -16,6 +16,13 @@ Object.extend(String, {
 		'\f': '\\f',
 		'\r': '\\r',
 		'\\': '\\\\'
+	},
+	htmlEntities: {
+		'<': '&lt;',
+		'>': '&gt;',
+		'&': '&amp;',
+		'"': '&quot;',
+		'\'': '&#039;'
 	}
 });
 
@@ -96,6 +103,12 @@ Object.extend(String.prototype, (function() {
 		return this.trim().replace(/\s+/g, ' ');
 	}
 	
+	function escapeHTML() {
+		return this.replace(/(&|"|<|>)/g, function(matchedSubString, offset, totalString) {
+			return String.htmlEntities[matchedSubString];
+		});
+	}
+	
 	function parseAsColor() {
 		var hexColor = '#';
 		
@@ -153,6 +166,7 @@ Object.extend(String.prototype, (function() {
 		trimLeft:	String.prototype.trimLeft || trimLeft,
 		trimRight:	String.prototype.trimRight || trimRight,
 		strip:		strip,
+		escapeHTML:	escapeHTML,
 		parseAsColor:	parseAsColor,
 		camelize:	camelize,
 		inspect:	inspect

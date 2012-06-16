@@ -548,7 +548,7 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 			privateID: Window.chat.activeUserID,
 			time: (new Date()).getMessageDate(),
 			usernameraw: Window.settings.username,
-			text: infoText
+			text: infoText.escapeHTML()
 		}]);
 	}
 	

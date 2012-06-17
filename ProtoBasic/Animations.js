@@ -4,23 +4,18 @@
  */
 var Animations = (function() {
 	var AbstractAnimation = new ClassSystem.AbstractClass({
-		doAnimation: function(element, config, animationString) {
-			element = $(element);
-			config = config || {};
+		initialize: function(element, config) {
+			this.element = $(element);
+			this.config = config || {};
 			
-			this.addGlobalAnimationListeners(element);
-			
-			if (!element.animating) {
-				if (!Object.isFunction(config.onAnimationStart)) element.onAnimationStart = Function.empty;
-				if (!Object.isFunction(config.onAnimationEnd)) element.onAnimationEnd = Function.empty;
-				
-				element.style[Animations.config.domAnimationString] = animationString;
-			}
+			this.addGlobalAnimationListeners();
+			this.handleConfig();
+			this.doAnimation();
 		},
 		
-		addGlobalAnimationListeners: function(element) {
-			if (!element.animationGlobalListenersAdded) {
-				element.addEventListener(Animations.config.events.animation.start, function(event) {
+		addGlobalAnimationListeners: function() {
+			if (!this.element.animationGlobalListenersAdded) {
+				this.element.addEventListener(Animations.config.events.animation.start, function(event) {
 					event.target.animating = true;
 					
 					switch (event.animationName) {
@@ -31,7 +26,7 @@ var Animations = (function() {
 					
 					this.config.onAnimationStart(event);
 				}.bind(this), false);
-				element.addEventListener(Animations.config.events.animation.end, function(event) {
+				this.element.addEventListener(Animations.config.events.animation.end, function(event) {
 					switch (event.animationName) {
 						case 'fadeOut':
 							event.target.style.display = 'none';
@@ -43,32 +38,52 @@ var Animations = (function() {
 					event.target.animating = false;
 					event.target.style[Animations.config.domAnimationString] = '';
 				}.bind(this), false);
+				this.element.addEventListener(Animations.config.events.transition.end, function(event) {
+					if (Element.hasClassName(event.target, 'transitionAll')) {
+						Element.removeClassName(event.target, 'transitionAll');
+						
+						this.config.onAnimationEnd(event);
+					}
+				}.bind(this), true);
 				
-				element.animationGlobalListenersAdded = true;
+				this.element.animationGlobalListenersAdded = true;
+			}
+		},
+		
+		handleConfig: function() {
+			if (!Object.isFunction(this.config.onAnimationStart)) this.config.onAnimationStart = Function.empty;
+			if (!Object.isFunction(this.config.onAnimationEnd)) this.config.onAnimationEnd = Function.empty;
+		},
+		
+		doAnimation: function() {}
+	});
+	var FadeIn = new ClassSystem.Class(AbstractAnimation, {
+		doAnimation: function($super) {
+			if (!this.element.animating) {
+				$super();
+				this.element.style[Animations.config.domAnimationString] = 'fadeIn 1s ease-in-out forwards';
 			}
 		}
 	});
-	var FadeIn = new ClassSystem.Class(AbstractAnimation, {
-		initialize: function(element, config) {
-			if (Animations.config.domAnimationString === 'WebkitAnimation') $(element).style.display = '';
-			
-			this.doAnimation(element, config, 'fadeIn 1s ease-in-out forwards');
-		} 
-	});
 	var FadeOut = new ClassSystem.Class(AbstractAnimation, {
-		initialize: function(element, config) {
-			this.doAnimation(element, config, 'fadeOut 1s ease-in-out forwards');
+		doAnimation: function($super) {
+			if (!this.element.animating) {
+				$super();
+				this.element.style[Animations.config.domAnimationString] = 'fadeOut 1s ease-in-out forwards';
+			}
 		}
 	});
 	var Highlight = new ClassSystem.Class(AbstractAnimation, {
-		initialize: function(element, config) {
-			this.doAnimation(element, config, 'highlight 1500ms linear forwards');
+		doAnimation: function($super) {
+			if (!this.element.animating) {
+				$super();
+				this.element.style[Animations.config.domAnimationString] = 'highlight 1500ms linear forwards';
+			}
 		}
 	});
-	var Morph = new ClassSystem.Class({
-		initialize: function(element, config) {
-			this.element = $(element);
-			this.config = config || {};
+	var Morph = new ClassSystem.Class(AbstractAnimation, {
+		handleConfig: function($super) {
+			$super();
 			
 			if (!this.config.properties) {
 				throw new Error('No property list given.')
@@ -91,32 +106,15 @@ var Animations = (function() {
 				
 				this.config.values = $A(this.config.values);
 			}
-			
-			this.addListener();
-			this.doAnimation();
 		},
 		
-		addListener: function() {
-			if (!this.element.transitionGlobalListenersAdded) {
-				this.element.addEventListener(Animations.config.events.transition.end, function(event) {
-					if (Element.hasClassName(event.target, 'transitionAll')) {
-						Element.removeClassName(event.target, 'transitionAll');
-						
-						this.config.onAnimationEnd(event);
-					}
-				}.bind(this), true);
-				
-				this.element.transitionGlobalListenersAdded = true;
-			}
-		},
-		
-		doAnimation: function() {
-			if (Object.isFunction(this.config.onAnimationStart)) {
-				this.config.onAnimationStart({
-					target: this.element
-				});
-			}
+		doAnimation: function($super) {
+			$super();
 			
+			this.config.onAnimationStart({
+				target: this.element
+			});
+
 			Element.addClassName(this.element, 'transitionAll');
 			
 			this.config.properties.each(function(item, index) {

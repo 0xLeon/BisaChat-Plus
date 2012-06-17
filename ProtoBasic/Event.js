@@ -12,7 +12,12 @@ var Event = (function() {
 	 * @type	{Hash}
 	 */
 	var events = $H({});
-
+	
+	/**
+	 * Hash for key codes
+	 * 
+	 * @type	{Object}
+	 */
 	var keys = {
 		KEY_BACKSPACE:	8,
 		KEY_TAB:	9,
@@ -33,7 +38,7 @@ var Event = (function() {
 	/**
 	 * Register an event handler for an event
 	 * 
-	 * @param	{String]	name		event name
+	 * @param	{String}	name		event name
 	 * @param	{Function}	handler		event handler function, has to accept one parameter of type Object
 	 * @param	{Object}	[context]	optional object which this will reference to within handler function
 	 * @returns	{Number}			index of event handler, necessary when you want to unregister the listener
@@ -77,6 +82,12 @@ var Event = (function() {
 		}
 	}
 	
+	/**
+	 * Prevent default action and further bubbling in DOM events
+	 * 
+	 * @param	{Object}	event		DOM event object
+	 * @returns	{undefined}			Returns nothing
+	 */
 	function stop(event) {
 		event.preventDefault();
 		event.stopPropagation();
@@ -84,7 +95,12 @@ var Event = (function() {
 		event.stopped = true;
 	}
 	
-	
+	/*
+	 * Get x coordinate on DOM pointing device events
+	 * 
+	 * @param	{Object}	event		DOM event object
+	 * @returns	{Number}			event x coordinate
+	 */
 	function pointerX(event) {
 		var docElement = document.documentElement;
 		var body = document.body || {
@@ -94,7 +110,12 @@ var Event = (function() {
 		return (event.pageX || (event.clientX + (docElement.scrollLeft || body.scrollLeft) - (docElement.clientLeft || 0)));
 	}
 
-	
+	/*
+	 * Get y coordinate on DOM pointing device events
+	 * 
+	 * @param	{Object}	event		DOM event object
+	 * @returns	{Number}			event y coordinate
+	 */
 	function pointerY(event) {
 		var docElement = document.documentElement;
 		var body = document.body || {
@@ -124,15 +145,33 @@ var Event = (function() {
 			return ((event.which) ? (event.which === code + 1) : (event.button === code));
 		}
 	}
-
+	
+	/**
+	 * Returns true if the click event was triggered by primary mouse button
+	 * 
+	 * @param	{Object}	event		DOM event object
+	 * @returns	{Boolean}
+	 */
 	function isLeftClick(event) {
 		return _isButton(event, 0);
 	}
 	
+	/**
+	 * Returns true if the click event was triggered by middle mouse button
+	 * 
+	 * @param	{Object}	event		DOM event object
+	 * @returns	{Boolean}
+	 */
 	function isMiddleClick(event) {
 		return _isButton(event, 1);
 	}
 	
+	/**
+	 * Returns true if the click event was triggered by secondary mouse button
+	 * 
+	 * @param	{Object}	event		DOM event object
+	 * @returns	{Boolean}
+	 */
 	function isRightClick(event) {
 		return _isButton(event, 2);
 	}

@@ -61,6 +61,8 @@ var Animations = (function() {
 		doAnimation: function($super) {
 			if (!this.element.animating) {
 				$super();
+				if (Animations.config.domAnimationString === 'WebkitAnimation') this.element.style.display = '';
+				
 				this.element.style[Animations.config.domAnimationString] = 'fadeIn 1s ease-in-out forwards';
 			}
 		}

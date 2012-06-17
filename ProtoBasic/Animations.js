@@ -11,8 +11,8 @@ var Animations = (function() {
 			this.addGlobalAnimationListeners(element);
 			
 			if (!element.animating) {
-				if (Object.isFunction(config.onAnimationStart)) element.onAnimationStart = config.onAnimationStart;
-				if (Object.isFunction(config.onAnimationEnd)) element.onAnimationEnd = config.onAnimationEnd;
+				if (!Object.isFunction(config.onAnimationStart)) element.onAnimationStart = Function.empty;
+				if (!Object.isFunction(config.onAnimationEnd)) element.onAnimationEnd = Function.empty;
 				
 				element.style[Animations.config.domAnimationString] = animationString;
 			}
@@ -29,10 +29,8 @@ var Animations = (function() {
 							break;
 					}
 					
-					if (Object.isFunction(event.target.onAnimationStart)) {
-						event.target.onAnimationStart(event);
-					}
-				}, false);
+					this.config.onAnimationStart(event);
+				}.bind(this), false);
 				element.addEventListener(Animations.config.events.animation.end, function(event) {
 					switch (event.animationName) {
 						case 'fadeOut':
@@ -40,12 +38,7 @@ var Animations = (function() {
 							break;
 					}
 					
-					if (Object.isFunction(event.target.onAnimationEnd)) {
-						event.target.onAnimationEnd(event);
-					}
-					
-					delete event.target.onAnimationStart;
-					delete event.target.onAnimationEnd;
+					this.config.onAnimationEnd(event);
 					
 					event.target.animating = false;
 					event.target.style[Animations.config.domAnimationString] = '';
@@ -109,9 +102,7 @@ var Animations = (function() {
 					if (Element.hasClassName(event.target, 'transitionAll')) {
 						Element.removeClassName(event.target, 'transitionAll');
 						
-						if (Object.isFunction(this.config.onAnimationEnd)) {
-							this.config.onAnimationEnd(event);
-						}
+						this.config.onAnimationEnd(event);
 					}
 				}.bind(this), true);
 				

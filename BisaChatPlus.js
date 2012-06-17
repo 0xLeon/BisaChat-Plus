@@ -330,14 +330,14 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 					$$('#'+this.prefix+'Message'+message.privateID+' ul')[0].appendChild(li);
 					
 					if (this.activeUserID !== message.privateID) {
-						$$('#'+this.prefix+'Private'+message.privateID+' a')[0].className = ($$('#'+this.prefix+'Private'+message.privateID+' a')[0].className+' importantPrivate').trim();
+						Element.addClassName($$('#' + this.prefix + 'Private' + message.privateID + ' a')[0], 'importantPrivate');
 					}
 				}
 				else {
 					$$('#'+this.prefix+'Message0 ul')[0].appendChild(li);
 					
 					if (this.activeUserID !== 0) {
-						$$('#'+this.prefix+'Private0 a')[0].className = ($$('#'+this.prefix+'Private0 a')[0].className+' importantPrivate').trim();
+						Element.addClassName($$('#' + this.prefix + 'Private0 a')[0], 'importantPrivate')
 					}
 				}
 				

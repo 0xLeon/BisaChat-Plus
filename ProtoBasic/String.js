@@ -136,6 +136,32 @@ Object.extend(String.prototype, (function() {
 		}
 	}
 	
+	function parseAsCommand() {
+		if (this.startsWith('/')) {
+			var command = this.slice(1, ((!this.includes(' ')) ? (this.length) : this.indexOf(' ')));
+			var parameters = ((!this.includes(' ')) ? '' : this.slice(this.indexOf(' ') + 1));
+			
+			if (parameters.includes(',')) {
+				parameters = parameters.split(',').invoke('trim'); 
+			}
+			else {
+				parameters = parameters.split(' ').invoke('trim'); 
+			}
+			
+			if ((parameters.length === 1) && (parameters[0] === '')) {
+				parameters.clear();
+			}
+			
+			return {
+				command:	command,
+				parameters:	parameters
+			};
+		}
+		else {
+			return null;
+		}
+	}
+	
 	function camelize() {
 		return this.replace(/-+(.)?/g, function(match, chr) {
 			return ((chr) ? (chr.toUpperCase()) : (''));
@@ -168,6 +194,7 @@ Object.extend(String.prototype, (function() {
 		strip:		strip,
 		escapeHTML:	escapeHTML,
 		parseAsColor:	parseAsColor,
+		parseAsCommand:	parseAsCommand,
 		camelize:	camelize,
 		inspect:	inspect
 	};

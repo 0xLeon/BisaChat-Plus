@@ -18,13 +18,10 @@ Modules.AddOn.ScriptingEngine = new ClassSystem.Class(Modules.Util.AbstractModul
 	
 	addListeners: function() {
 		Event.register('messageSent', function(event) {
-			if (event.parameters.text.trim().startsWith('/')) {
-				var command = event.parameters.text.trim().slice(1, ((!event.parameters.text.trim().includes(' ')) ? (event.parameters.text.trim().length) : event.parameters.text.trim().indexOf(' ')));
-				var parameter = ((!event.parameters.text.trim().includes(' ')) ? '' : event.parameters.text.trim().slice(event.parameters.text.trim().indexOf(' ')+1));
-				
-				if (!!this.commands.get(command)) {
-					event.options.postBody = 'text='+encodeURIComponent(this.parse(command, parameter))+((!!this.callerObj.moduleInstances.get('SmiliesPlus')) ? ((!!$('enablesmilies')) ? '&enablesmilies=on' : '') : (($('enablesmilies').checked) ? '&enablesmilies=on' : ''))+'&ajax=1'
-				}
+			var parsedCommand = event.parameters.text.parseAsCommand();
+			
+			if (!!parsedCommand && !!this.commands.get(parsedCommand.command)) {
+				event.parameters.text = this.parse(parsedCommand.command, parsedCommand.parameters.join(' '));
 			}
 		}, this);
 	},

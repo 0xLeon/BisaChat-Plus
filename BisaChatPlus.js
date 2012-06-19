@@ -158,7 +158,17 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 		Window.Ajax.Responders.register({
 			onCreate: function(request, response) {
 				if (request.url.includes('form=Chat') && !request.url.includes('kill')) {
+					request.parameters.text = request.parameters.text.trim();
+					
 					Event.fire('messageSent', request);
+					
+					$H(request.parameters).each(function(pair) {
+						request.options.postBody += '&' + encodeURIComponent(pair.key) + '=' + encodeURIComponent(pair.value);
+					});
+					request.options.postBody = request.options.postBody.slice(1);
+					request.options.requestHeaders = {
+						'X-Client': 'BisaChat Plus'
+					};
 				}
 			},
 			onComplete: function(request, response, json) {

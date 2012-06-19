@@ -51,11 +51,16 @@ var Animations = (function() {
 		},
 		
 		handleConfig: function() {
+			if (!Object.isFunction(this.config.onAnimationBeforeStart)) this.config.onAnimationBeforeStart = Function.empty;
 			if (!Object.isFunction(this.config.onAnimationStart)) this.config.onAnimationStart = Function.empty;
 			if (!Object.isFunction(this.config.onAnimationEnd)) this.config.onAnimationEnd = Function.empty;
 		},
 		
-		doAnimation: function() {}
+		doAnimation: function() {
+			this.config.onAnimationBeforeStart({
+				target: this.element
+			});
+		}
 	});
 	var FadeIn = new ClassSystem.Class(AbstractAnimation, {
 		doAnimation: function($super) {
@@ -112,12 +117,12 @@ var Animations = (function() {
 		
 		doAnimation: function($super) {
 			$super();
+
+			Element.addClassName(this.element, 'transitionAll');
 			
 			this.config.onAnimationStart({
 				target: this.element
 			});
-
-			Element.addClassName(this.element, 'transitionAll');
 			
 			this.config.properties.each(function(item, index) {
 				this.element.style[item] = this.config.values[index];

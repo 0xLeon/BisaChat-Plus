@@ -1,42 +1,28 @@
 BisaChat Plus (BC+)
 
-This userscript adds several new features to the chat located at <http://www.bisaboard.de/>. 
-The basis is a full screen GUI which fits the users browser window. Furthermore this script 
-adds a module based add-on functionality. The most significant feature for new modules 
-is the Message Prefilter. This allows you to do whatever you want with any message just before 
-it's shown to the user. So far, there are things like BBCode and smilie hiding.
-Another important module is the last.fm module. With your last.fm username entered, this module 
-shows what you're listening to via one click, provided scrobbling is turned on.
+This userscript adds several new features to the chat located at <http://www.bisaboard.de/>. The basis is a full screen GUI which fits the users browser window. Furthermore this script adds a module based add-on functionality. All Modules follow the same structure guidlines, so it's very easy to add new add-ons for thrid party developers.
+There is also a framework called ProtoBasic which is based on Prototype. This adds several functions to the built-in objects and classes.
 ------------
 Installation Information
 
-Right now, BC+ supports Firefox 4 and higher only. The script works both in Greasemonkey and in 
-Scriptish. Personally I recommed the use of Scriptish. Other userscript-able browsers (Opera and 
-Chrome) will be supportet by BisChat Plus 2.0, which is about to be released at the of the year 
-2011.
+Right now, BC+ supports Firefox 4 and higher and Chrome. Firefox users have to install the add-on Scriptish. There are some known issues with Greasemonkey which can't be corrected by me.
+Chrome users need to install TamperMonkey. Chrome's built-in userscript system can't handle all the needed functions like cross-site ajax requests.
 ------------
 known issues:
- - smiliesbox height shouldn't be fixed (low)
- - BBCode Parser: Problem when large amount of messages need to be parsed within a small time (mid)
+ - smiliesbox height shouldn't be fixed (mid)
+ - Scriptaculous effects need to be removed (high)
+ - Morph transition for smallbuttons doesn't finish (high)
 ------------
 desired features:
- - Priority Levels for modules (mid)
- - add function for registering commands (mid)
+ - style depending highlighting (high)
  - Abstract application class (high)
- - Maybe merge tools, core modules and ProtoBasic into an abstract Userscript Framework (mid)
+ - Swap out ProtoBasic, so we have a re-usable userscript framework (mid)
+ - add function for registering commands (mid)
 ------------
 Copyright (C) 2011-2012 Stefan Hahn
 
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
-(at your option) any later version.
+This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License along
-with this program; if not, write to the Free Software Foundation, Inc.,
-51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.

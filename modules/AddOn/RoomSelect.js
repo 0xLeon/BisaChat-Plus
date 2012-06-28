@@ -14,9 +14,7 @@ Modules.AddOn.RoomSelect = new ClassSystem.Class(Modules.Util.AbstractModule, {
 	buildUI: function() {
 		new Window.Ajax.Request('./index.php?page=ChatRefreshRoomList' + Window.SID_ARG_2ND, {
 			onSuccess: function(response) {
-				var text = response.responseText.trim().split("\n").map(function(line) {
-					return line.trim();
-				}).join('');
+				var text = response.responseText.trim().split("\n").invoke('trim').join('');
 				
 				var activeRoom = text.match(/<a.*?id="chatChangeRoom".*?>(.*?)<\/a>/)[1];
 				var roomList = text.match(/<ul.*?>(.*?)<\/ul>/)[1];

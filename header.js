@@ -7,6 +7,8 @@
 // @license        GNU General Public License, version 2
 // @namespace      http://projects.swallow-all-lies.com/greasemonkey/namsespaces/bisachat.plus
 // @include        http*://www.bisaboard.de/*?page=Chat*
+// @exclude        http*://www.bisaboard.de/*?page=ChatLog*
+// @exclude        http*://www.bisaboard.de/*?page=ChatRefreshRoomList*
 // ==/UserScript==
 /*
  * Copyright (C) 2011-2012 Stefan Hahn

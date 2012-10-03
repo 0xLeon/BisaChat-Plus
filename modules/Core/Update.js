@@ -12,10 +12,10 @@ Modules.Core.Update = new ClassSystem.Class(Modules.Util.AbstractCoreModule, {
 			method: 'GET',
 			url: this.callerObj.getUpdateServer()+'?version='+encodeURIComponent(this.callerObj.getVersion())+'&getNonStableReleases='+((this.storage.getValue('getNonStableReleasesStatus', false)) ? '1' : '0'),
 			headers: {
-				'Accept': 'text/xml'
+				'Accept': 'application/xml'
 			},
 			onload: function(response) {
-				var xml = (new DOMParser()).parseFromString(response.responseText, 'text/xml');
+				var xml = (new DOMParser()).parseFromString(response.responseText, 'application/xml');
 				
 				if (xml.documentElement.getAttribute('newVersion') === 'true') {
 					(this.callerObj.getUpdateCallback())(xml);

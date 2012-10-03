@@ -47,11 +47,11 @@ Modules.AddOn.LastfmConnector = new ClassSystem.Class(Modules.Util.AbstractModul
 			method: 'GET',
 			url: 'http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user='+encodeURIComponent(this.storage.getValue('lastfmUsernameValue'))+'&limit=1&api_key=b02a99b9d7e6402de934c7ab59491171',
 			headers: {
-				'Accept': 'text/xml'
+				'Accept': 'application/xml'
 			},
 			onload: function(response) {
 				try {
-					var xml = (new DOMParser()).parseFromString(response.responseText, 'text/xml')
+					var xml = (new DOMParser()).parseFromString(response.responseText, 'application/xml')
 					
 					if (xml.documentElement.getAttribute('status') === 'ok') {
 						if ((xml.querySelectorAll('track').length > 0) && (xml.querySelector('recenttracks > track:first-child').getAttribute('nowplaying') === 'true')) {

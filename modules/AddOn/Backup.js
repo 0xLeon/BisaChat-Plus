@@ -123,7 +123,7 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 							this.callerObj.pushInfo(transport.status+' - '+transport.statusText);
 							
 							try {
-								var xml = (new DOMParser()).parseFromString(transport.responseText, 'text/xml');
+								var xml = (new DOMParser()).parseFromString(transport.responseText, 'application/xml');
 								
 								if (!!xml.querySelector('error')) {
 									this.callerObj.pushInfo(xml.querySelector('error > message').firstChild.nodeValue);
@@ -212,7 +212,7 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 					node.appendChild(new Element('hr', { style: 'display: block;' }));
 					
 					if ((transport.status >= 200) && (transport.status < 300)) {
-						var xml = (new DOMParser()).parseFromString(transport.responseText, 'text/xml');
+						var xml = (new DOMParser()).parseFromString(transport.responseText, 'application/xml');
 						
 						if (xml.querySelectorAll('entry').length > 0) {
 							var buttonsList = new Element('ul', { id: 'backupDataList', 'class': 'memberList' });
@@ -314,7 +314,7 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 						info.appendChild(document.createTextNode(transport.status+' - '+transport.statusText));
 							
 						try {
-							var xml = (new DOMParser()).parseFromString(transport.responseText, 'text/xml');
+							var xml = (new DOMParser()).parseFromString(transport.responseText, 'application/xml');
 							
 							if (!!xml.querySelector('error')) {
 								info.appendChild(new Element('br'));
@@ -376,7 +376,7 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 				}
 				else {
 					try {
-						var xml = (new DOMParser()).parseFromString(response.responseText, 'text/xml');
+						var xml = (new DOMParser()).parseFromString(response.responseText, 'application/xml');
 						
 						$('backupUserFormInfo').innerHTML = xml.querySelector('message').firstChild.nodeValue;
 					}
@@ -499,7 +499,7 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 						}
 						else {
 							try {
-								var xml = (new DOMParser()).parseFromString(response.responseText, 'text/xml');
+								var xml = (new DOMParser()).parseFromString(response.responseText, 'application/xml');
 								
 								$('backupUserFormInfo').innerHTML = xml.querySelector('message').firstChild.nodeValue;
 							}
@@ -557,7 +557,7 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 							}
 							else {
 								try {
-									var xml = (new DOMParser()).parseFromString(response.responseText, 'text/xml');
+									var xml = (new DOMParser()).parseFromString(response.responseText, 'application/xml');
 									
 									$('backupUserFormInfo').innerHTML = xml.querySelector('message').firstChild.nodeValue;
 								}

@@ -159,7 +159,7 @@ Modules.AddOn.ScriptingEngine = new ClassSystem.Class(Modules.Util.AbstractModul
 		
 		text = text.replace(/%user%/ig, '[user]'+parameter+'[/user]');
 		
-		return '/me '+text;
+		return text;
 	},
 	
 	buildCommandListElements: function(command, text, visible, targetList) {

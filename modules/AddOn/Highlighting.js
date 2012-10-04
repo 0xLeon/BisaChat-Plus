@@ -12,11 +12,10 @@ Modules.AddOn.Highlighting = new ClassSystem.Class(Modules.Util.AbstractModule, 
 		var basicHighlightingButton = $$('#chatOptions .smallButtons > ul > li')[2];
 		Window.chat.enableAnimating = false;
 		
-		// TODO: onAnimationEnd now executed right after animation
 		basicHighlightingButton.style.overflow = 'hidden';
 		new Animations.Morph(basicHighlightingButton, {
-			properties: ['width'],
-			values: ['0px'],
+			properties: ['border-width', 'width'],
+			values: ['0px', '0px'],
 			onAnimationEnd: function(event) {
 				event.target.parentNode.removeChild(event.target);
 			}

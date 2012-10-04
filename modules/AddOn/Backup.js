@@ -2,6 +2,7 @@
  * Backup Module
  * Copyright (C) 2011-2012 Stefan Hahn
  */
+// TODO: button morphing doesn't work because onAnimationEnd is overwritten somewhere
 Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 	initializeVariables: function() {
 		this.transitionendUIFunction = null;
@@ -17,12 +18,11 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 		this.callerObj.registerBoolOption('backupActive', 'Backup', 'Backup aktivieren', 'c', true, function(event, checked) {
 			if (checked) {
 				if ($('backupSmallButton').style.display === 'none') {
-					new Window.Effect.Morph('backupSmallButton', {
-						style: {
-							width: this.buttonWidth
-						},
-						beforeSetup: function(effect) {
-							effect.element.style.display = '';
+					new Animations.Morph('backupSmallButton', {
+						properties: ['width', 'border-width'],
+						values: [this.buttonWidth, '1px'],
+						onAnimationStart: function(event) {
+							event.target.style.display = '';
 						}
 					});
 				}
@@ -39,15 +39,14 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 				this.stopTimer();
 				
 				if ($('backupSmallButton').style.display !== 'none') {
-					new Window.Effect.Morph('backupSmallButton', {
-						style: {
-							width: '0px'
-						},
-						beforeSetup: function(effect) {
-							this.buttonWidth = Window.getComputedStyle(effect.element).getPropertyValue('width');
+					new Animations.Morph('backupSmallButton', {
+						properties: ['border-width', 'width'],
+						values: ['0px', '0px'],
+						onAnimationStart: function(event) {
+							this.buttonWidth = Element.getStyle(event.target, 'width');
 						}.bind(this),
-						afterFinish: function(effect) {
-							effect.element.style.display = 'none';
+						onAnimationEnd: function(event) {
+							event.target.style.display = 'none';
 						}
 					});
 				}
@@ -73,15 +72,14 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 		}
 		catch (e) {
 			if (e.message === 'Backup inactive') {
-				new Window.Effect.Morph('backupSmallButton', {
-					style: {
-						width: '0px'
-					},
-					beforeSetup: function(effect) {
-						this.buttonWidth = Window.getComputedStyle(effect.element).getPropertyValue('width');
+				new Animations.Morph('backupSmallButton', {
+					properties: ['border-width', 'width'],
+					values: ['0px', '0px'],
+					onAnimationStart: function(event) {
+						this.buttonWidth = Element.getStyle(event.target, 'width');
 					}.bind(this),
-					afterFinish: function(effect) {
-						effect.element.style.display = 'none';
+					onAnimationEnd: function(event) {
+						event.target.style.display = 'none';
 					}
 				});
 			}

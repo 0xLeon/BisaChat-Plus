@@ -125,7 +125,7 @@ var Animations = (function() {
 			});
 			
 			this.config.properties.each(function(item, index) {
-				this.element.style[item] = this.config.values[index];
+				this.element.style[item.camelize()] = this.config.values[index];
 			}, this);
 		}
 	});

@@ -2,6 +2,7 @@
  * Message Box Module
  * Copyright (C) 2011-2012 Stefan Hahn
  */
+// TODO: display date in messages
 Modules.AddOn.MessageBox = new ClassSystem.Class(Modules.Util.AbstractModule, (function() {
 	function initializeVariables() {
 		this.unread = 0;

@@ -2,6 +2,7 @@
  * Smilies Plus Module
  * Copyright (C) 2011-2012 Stefan Hahn
  */
+// TODO: adjust smilies box height to actual draggable box height
 Modules.AddOn.SmiliesPlus = new ClassSystem.Class(Modules.Util.AbstractModule, {
 	initialize: function($super, callerObj) {
 		this.setStatus(callerObj.storage.getValue('smiliesActiveStatus', false));

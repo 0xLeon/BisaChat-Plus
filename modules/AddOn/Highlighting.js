@@ -2,6 +2,8 @@
  * Highlighting Module
  * Copyright (C) 2011-2012 Stefan Hahn
  */
+// TODO: chose highlighting animation color depending on user's style
+// TODO: no highlighting animation in some cases
 Modules.AddOn.Highlighting = new ClassSystem.Class(Modules.Util.AbstractModule, {
 	initialize: function($super, callerObj) {
 		this.removeBasicHighlighting();

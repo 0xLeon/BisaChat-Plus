@@ -8,13 +8,7 @@ Installation Information
 Right now, BC+ supports Firefox 4 and higher and Chrome. Firefox users have to install the add-on Scriptish. There are some known issues with Greasemonkey which can't be corrected by me.
 Chrome users need to install TamperMonkey. Chrome's built-in userscript system can't handle all the needed functions like cross-site ajax requests.
 ------------
-known issues:
- - smiliesbox height shouldn't be fixed (mid)
- - Scriptaculous effects need to be removed (high)
- - Morph transition for smallbuttons doesn't finish (high)
-------------
 desired features:
- - style depending highlighting (high)
  - Abstract application class (high)
  - Swap out ProtoBasic, so we have a re-usable userscript framework (mid)
  - add function for registering commands (mid)

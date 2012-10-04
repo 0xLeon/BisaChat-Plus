@@ -2,6 +2,9 @@
  * Scripting Engine Module
  * Copyright (C) 2011-2012 Stefan Hahn
  */
+// TODO: command text containg command doesn't work
+// TODO: saving new command doesn't work as expected: remove form and display new command
+// TODO: add ability to edit commands
 Modules.AddOn.ScriptingEngine = new ClassSystem.Class(Modules.Util.AbstractModule, {
 	initializeVariables: function() {
 		this.commands = $H(this.storage.getValue('scriptingEngineCommands', {}));

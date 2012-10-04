@@ -2,7 +2,6 @@
  * Scripting Engine Module
  * Copyright (C) 2011-2012 Stefan Hahn
  */
-// TODO: command text containg command doesn't work
 // TODO: saving new command doesn't work as expected: remove form and display new command
 // TODO: add ability to edit commands
 Modules.AddOn.ScriptingEngine = new ClassSystem.Class(Modules.Util.AbstractModule, {
@@ -157,7 +156,7 @@ Modules.AddOn.ScriptingEngine = new ClassSystem.Class(Modules.Util.AbstractModul
 		var text = this.commands.get(command);
 		
 		if (text.includes('%mp3%')) {
-			text = '*winamptret*';
+			text = '/me *winamptret*';
 		}
 		
 		text = text.replace(/%user%/ig, '[user]'+parameter+'[/user]');

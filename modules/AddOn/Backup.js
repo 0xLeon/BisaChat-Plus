@@ -15,7 +15,7 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 	},
 	
 	registerOptions: function() {
-		this.callerObj.registerBoolOption('backupActive', 'Backup', 'Backup aktivieren', 'c', true, function(event, checked) {
+		this.callerObj.registerBoolOption('backupActive', 'Backup', 'Backup aktivieren', 'c', false, function(event, checked) {
 			if (checked) {
 				if ($('backupSmallButton').style.display === 'none') {
 					new Animations.Morph('backupSmallButton', {
@@ -28,7 +28,7 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 				}
 				
 				try {
-					this.storage.setValue('backupActiveStatus', true);
+					this.storage.setValue('backupActiveStatus', false);
 					this.startTimer();
 				}
 				catch (e) {
@@ -150,7 +150,7 @@ Modules.AddOn.Backup = new ClassSystem.Class(Modules.Util.AbstractModule, {
 	},
 	
 	startTimer: function() {
-		if (this.storage.getValue('backupActiveStatus', true)) {
+		if (this.storage.getValue('backupActiveStatus', false)) {
 			if ((this.storage.getValue('backupUsername', '') !== '') && (this.storage.getValue('backupPassword') !== '')) {
 				this.stopTimer();
 				this.backupSettings();

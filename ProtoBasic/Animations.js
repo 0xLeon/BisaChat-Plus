@@ -8,46 +8,42 @@ var Animations = (function() {
 			this.element = $(element);
 			this.config = config || {};
 			
-			this.addGlobalAnimationListeners();
+			this.addAnimationListeners();
 			this.handleConfig();
 			this.doAnimation();
 		},
 		
-		addGlobalAnimationListeners: function() {
-			if (!this.element.animationGlobalListenersAdded) {
-				this.element.addEventListener(Animations.config.events.animation.start, function(event) {
-					event.target.animating = true;
-					
-					switch (event.animationName) {
-						case 'fadeIn':
-							event.target.style.display = '';
-							break;
-					}
-					
-					this.config.onAnimationStart(event);
-				}.bind(this), false);
-				this.element.addEventListener(Animations.config.events.animation.end, function(event) {
-					switch (event.animationName) {
-						case 'fadeOut':
-							event.target.style.display = 'none';
-							break;
-					}
-					
-					this.config.onAnimationEnd(event);
-					
-					event.target.animating = false;
-					event.target.style[Animations.config.domAnimationString] = '';
-				}.bind(this), false);
-				this.element.addEventListener(Animations.config.events.transition.end, function(event) {
-					if (Element.hasClassName(event.target, 'transitionAll')) {
-						Element.removeClassName(event.target, 'transitionAll');
-						
-						this.config.onAnimationEnd(event);
-					}
-				}.bind(this), true);
+		addAnimationListeners: function() {
+			this.protobasicAnimationStartListener = function(event) {
+				event.target.animating = true;
 				
-				this.element.animationGlobalListenersAdded = true;
-			}
+				switch (event.animationName) {
+					case 'fadeIn':
+						event.target.style.display = '';
+						break;
+				}
+				
+				this.config.onAnimationStart(event);
+				this.element.removeEventListener(Animations.config.events.animation.start, this.protobasicAnimationStartListener, false);
+				this.protobasicAnimationStartListener = null;
+			}.bind(this);
+			this.element.addEventListener(Animations.config.events.animation.start, this.protobasicAnimationStartListener, false);
+			
+			this.protobasicAnimationEndListener = function(event) {
+				switch (event.animationName) {
+					case 'fadeOut':
+						event.target.style.display = 'none';
+						break;
+				}
+				
+				this.config.onAnimationEnd(event);
+				
+				event.target.animating = false;
+				event.target.style[Animations.config.domAnimationString] = '';
+				this.element.removeEventListener(Animations.config.events.animation.end, this.protobasicAnimationEndListener, false);
+				this.protobasicAnimationEndListener = null;
+			}.bind(this);
+			this.element.addEventListener(Animations.config.events.animation.end, this.protobasicAnimationEndListener, false);
 		},
 		
 		handleConfig: function() {
@@ -89,6 +85,20 @@ var Animations = (function() {
 		}
 	});
 	var Morph = new ClassSystem.Class(AbstractAnimation, {
+		addAnimationListeners: function($super) {
+			this.protobasicMorphAnimationEndListener = function(event) {
+				if (Element.hasClassName(event.target, 'transitionAll')) {
+					Element.removeClassName(event.target, 'transitionAll');
+					
+					this.config.onAnimationEnd(event);
+				}
+				
+				this.element.removeEventListener(Animations.config.events.transition.end, this.protobasicMorphAnimationEndListener, true);
+				this.protobasicMorphAnimationEndListener = null;
+			}.bind(this);
+			this.element.addEventListener(Animations.config.events.transition.end, this.protobasicMorphAnimationEndListener, true);
+		},
+		
 		handleConfig: function($super) {
 			$super();
 			

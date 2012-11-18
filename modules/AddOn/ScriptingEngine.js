@@ -2,7 +2,6 @@
  * Scripting Engine Module
  * Copyright (C) 2011-2012 Stefan Hahn
  */
-// TODO: saving new command doesn't work as expected: remove form and display new command
 // TODO: add ability to edit commands
 Modules.AddOn.ScriptingEngine = new ClassSystem.Class(Modules.Util.AbstractModule, {
 	initializeVariables: function() {

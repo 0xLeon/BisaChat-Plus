@@ -1,17 +1,24 @@
 BisaChat Plus (BC+)
-
+------------
 This userscript adds several new features to the chat located at <http://www.bisaboard.de/>. The basis is a full screen GUI which fits the users browser window. Furthermore this script adds a module based add-on functionality. All Modules follow the same structure guidlines, so it's very easy to add new add-ons for thrid party developers.
 There is also a framework called ProtoBasic which is based on Prototype. This adds several functions to the built-in objects and classes.
-------------
-Installation Information
 
+Installation Information
+------------
 Right now, BC+ supports Firefox 4 and higher and Chrome. Firefox users have to install the add-on Scriptish. There are some known issues with Greasemonkey which can't be corrected by me.
 Chrome users need to install TamperMonkey. Chrome's built-in userscript system can't handle all the needed functions like cross-site ajax requests.
+
+Planned features
 ------------
-desired features:
  - Abstract application class (high)
+ - Variable height for overlay boxes (high)
+ - Clear ProtoBasic from BC+ specific functions (high)
  - Swap out ProtoBasic, so we have a re-usable userscript framework (mid)
- - add function for registering commands (mid)
+ - Sync settings so BC+ is available from various computers with the same config (mid)
+ - New UI for Message Box: Display each conversation separately (mid)
+ - Moderation Log module (mid)
+ 
+License
 ------------
 Copyright (C) 2011-2012 Stefan Hahn
 

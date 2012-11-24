@@ -17,16 +17,6 @@ Modules.AddOn.ScriptingEngine = new ClassSystem.Class(Modules.Util.AbstractModul
 		Style.addNode('#scriptingEngine dl div:last-child hr { opacity: 0; }');
 	},
 	
-	addListeners: function() {
-		Event.register('messageSent', function(event) {
-			var parsedCommand = event.parameters.text.parseAsCommand();
-			
-			if (!!parsedCommand && !!this.commands.get(parsedCommand.command)) {
-				event.parameters.text = this.parse(parsedCommand.command, parsedCommand.parameters.join(' '));
-			}
-		}, this);
-	},
-	
 	buildUI: function() {
 		this.callerObj.buildOverlay('scriptingEngine', './wcf/icon/codeS.png', 'Scripting Engine', function() {
 			return this.overlayContentBuilder();
@@ -72,9 +62,8 @@ Modules.AddOn.ScriptingEngine = new ClassSystem.Class(Modules.Util.AbstractModul
 						
 						if (event.keyCode === 13) {
 							if (inputs.all(function(n) { return (n.value.trim().length > 0); })) {
-								if (!this.commands.get(inputs[0].value.trim())) {
-									this.commands.set(inputs[0].value.trim(), inputs[1].value.trim());
-									this.storage.setValue('scriptingEngineCommands', this.commands._object);
+								try {
+									this.addCommand(inputs[0].value.trim(), inputs[1].value.trim());
 									
 									this.buildCommandListElements(inputs[0].value.trim(), inputs[1].value.trim(), false, $$('#scriptingEngine dl')[0]);
 									
@@ -86,7 +75,7 @@ Modules.AddOn.ScriptingEngine = new ClassSystem.Class(Modules.Util.AbstractModul
 										}
 									});
 								}
-								else {
+								catch (e) {
 									Window.alert('Fehler beim Speichern des Befehls.'+"\n"+'Ein Befehl mit diesem Bezeichner existiert bereits!');
 									$$('#scriptingEngine dl input')[0].focus();
 								}
@@ -136,6 +125,9 @@ Modules.AddOn.ScriptingEngine = new ClassSystem.Class(Modules.Util.AbstractModul
 			var commandsDl = new Element('dl');
 			
 			this.commands.each(function(command) {
+				this.callerObj.coreModuleInstances.get('CommandController').addCommand(command.key, this.parse, {
+					text: command.value
+				});
 				this.buildCommandListElements(command.key, command.value, true, commandsDl);
 			}, this);
 			
@@ -149,18 +141,6 @@ Modules.AddOn.ScriptingEngine = new ClassSystem.Class(Modules.Util.AbstractModul
 		}
 		
 		return node;
-	},
-	
-	parse: function(command, parameter) {
-		var text = this.commands.get(command);
-		
-		if (text.includes('%mp3%')) {
-			text = '/me *winamptret*';
-		}
-		
-		text = text.replace(/%user%/ig, '[user]'+parameter+'[/user]');
-		
-		return text;
 	},
 	
 	buildCommandListElements: function(command, text, visible, targetList) {
@@ -178,13 +158,15 @@ Modules.AddOn.ScriptingEngine = new ClassSystem.Class(Modules.Util.AbstractModul
 			
 			new Animations.FadeOut(wrapper, {
 				onAnimationEnd: function(event) {
-					var commandName = event.target.querySelector('span').firstChild.nodeValue;
-					
-					this.commands.unset(commandName);
-					this.storage.setValue('scriptingEngineCommands', this.commands._object);
-					event.target.parentNode.removeChild(event.target);
-					
-					this.checkListEmpty(targetList);
+					try {
+						var commandName = event.target.querySelector('span').firstChild.nodeValue;
+						
+						this.removeCommand(commandName);
+						event.target.parentNode.removeChild(event.target);
+					}
+					finally {
+						this.checkListEmpty(targetList);
+					}
 				}.bind(this)
 			});
 		}.bindAsEventListener(this), true);
@@ -210,5 +192,31 @@ Modules.AddOn.ScriptingEngine = new ClassSystem.Class(Modules.Util.AbstractModul
 			targetList.parentNode.replaceChild(p, targetList);
 			new Animations.FadeIn(p);
 		}
+	},
+	
+	parse: function(parsedText, additionalData) {
+		var newText = additionalData.text;
+		
+		if (newText.includes('%mp3%')) {
+			newText = '/me *winamptret*';
+		}
+		
+		newText = newText.replace(/%user%/ig, '[user]' + parsedText.parameters.join(' ') + '[/user]');
+		
+		return newText;
+	},
+	
+	addCommand: function(name, text) {
+		this.callerObj.coreModuleInstances.get('CommandController').addCommand(name, this.parse, {
+			text: text
+		});
+		this.commands.set(name, text);
+		this.storage.setValue('scriptingEngineCommands', this.commands._object);
+	},
+	
+	removeCommand: function(name) {
+		this.commands.unset(commandName);
+		this.storage.setValue('scriptingEngineCommands', this.commands._object);
+		this.callerObj.coreModuleInstances.get('CommandController').removeCommand(name);
 	}
 });

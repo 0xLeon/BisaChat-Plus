@@ -18,18 +18,21 @@ Modules.Core.CommandController = new ClassSystem.Class(Modules.Util.AbstractCore
 					event.parameters.text = command.action;
 				}
 				else if (Object.isFunction(command.action)) {
-					event.parameters.text = command.action(parsedText);
+					event.parameters.text = command.action(parsedText, command.additionalData);
 				}
 			}
 		}, this);
 	},
 	
-	addCommand: function(name, action) {
+	addCommand: function(name, action, additionalData) {
 		if (!!this.commands.get(name)) {
 			throw new Error('Command »' + name + '« already exists.')
 		}
 		
-		this.commands.set(name, action);
+		this.commands.set(name, {
+			action: action,
+			additionalData: additionalData
+		});
 	},
 	
 	removeCommand: function(name) {

@@ -16,6 +16,7 @@
 	var BisaChatPlus = (function() {
 		var init = function() {
 			autoFullscreen();
+			hideSmileys();
 		};
 		
 		var autoFullscreen = function() {
@@ -23,6 +24,14 @@
 				$('#timsChatFullscreen').click();
 			}, 100);
 		};
+		
+		//automatically hide smiley box
+		var hideSmileys = function() {
+			var smileyDiv = document.getElementById("smilies");
+			if(div){
+				div.style.display = "none";
+			}
+		}
 		
 		init();
 		

@@ -1,4 +1,0 @@
-/* 
- * Media Namespace
- */
-var Media = { };

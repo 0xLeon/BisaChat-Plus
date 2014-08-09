@@ -55,7 +55,7 @@ var Event = (function() {
 	 * Remove an event listener
 	 * 
 	 * @param	{String}	name		event name
-	 * @param	{Number}	index		index retuern by Event.register
+	 * @param	{Number}	index		index returned by Event.register
 	 * @returns	{undefined}			Returns nothing
 	 */
 	function unregister(name, index) {
@@ -76,7 +76,7 @@ var Event = (function() {
 					item(eventObj);
 				}
 				catch (e) {
-					alert('Event Listener konnte nicht ausgeführt werden!'+"\n"+e.name+' - '+e.message);
+					Window.alert('Event Listener konnte nicht ausgeführt werden!'+"\n"+e.name+' - '+e.message);
 				}
 			});
 		}

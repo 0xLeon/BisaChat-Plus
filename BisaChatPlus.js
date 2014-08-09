@@ -16,7 +16,8 @@
 	var BisaChatPlus = (function() {
 		var init = function() {
 			autoFullscreen();
-			hideSmileys();
+			
+			registerEventListeners();
 		};
 		
 		var autoFullscreen = function() {
@@ -25,12 +26,10 @@
 			}, 100);
 		};
 		
-		//automatically hide smiley box
-		var hideSmileys = function() {
-			var smileyDiv = document.getElementById("smilies");
-			if(div){
-				div.style.display = "none";
-			}
+		var registerEventListeners = function() {
+			$('#button active timsChatToggle jsTooltip').on("click", function(){
+				$('#smilies').hide();
+			});
 		}
 		
 		init();

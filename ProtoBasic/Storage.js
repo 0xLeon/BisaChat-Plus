@@ -135,9 +135,13 @@ var Storage = (function() {
 			var obj = {};
 			var keys = this.keys();
 			
-			for (var i = 0, length = keys.length; i < length; i++) {
-				obj[keys[i]] = this.getValue(keys[i]);
-			}
+			// for (var i = 0, length = keys.length; i < length; i++) {
+			// 	obj[keys[i]] = this.getValue(keys[i]);
+			// }
+			
+			keys.each(function(key) {
+				obj[key] = this.getValue(key);
+			});
 			
 			return obj;
 		}

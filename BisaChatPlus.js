@@ -56,9 +56,16 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 		this.buildUI();
 		this.avoidMultipleLogin();
 		
-		Window.addEventListener('load', function(event) {
-			this.finish();
-		}.bindAsEventListener(this), true);
+		// Window.addEventListener('load', function(event) {
+		// 	this.finish();
+		// }.bindAsEventListener(this), true);
+		
+		// var readyStateChecking = window.setInterval(function() {
+		// 	if (document.readyState == 'interactive') {
+				this.finish();
+		// 		window.clearInterval(readyStateChecking);
+		// 	}
+		// }.bind(this), 10);
 	}
 	
 	function initCoreModules() {
@@ -475,6 +482,11 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 		});
 		$('optionsContentTypeSeparator').style.display = (($('optionsContentTextOptionDiv').style.display !== 'none') && ($('optionsContentBoolOptionDiv').style.display !== 'none')) ? 'block' : 'none';
 		new Animations.FadeIn('optionsContentWrapper');
+		
+		if (($('Initializing').style.display === '') || ($('chatInitializing').style.display === 'block')) {
+			new Animations.FadeOut('chatInitializing');
+		}
+		
 		$('chatInput').focus();
 	}
 	
@@ -884,4 +896,11 @@ var BisaChatPlus = new ClassSystem.Class((function() {
 	};
 })());
 
-Window.bcplus = new BisaChatPlus();
+// Window.bcplus = new BisaChatPlus();
+
+var readyStateChecking = window.setInterval(function() {
+	if (document.readyState === 'interactive') {
+		Window.bcplus = new BisaChatPlus();
+		window.clearInterval(readyStateChecking);
+	}
+}.bind(this), 10);

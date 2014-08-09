@@ -39,8 +39,8 @@ Modules.AddOn.ScriptingEngine = new ClassSystem.Class(Modules.Util.AbstractModul
 				var commandAddWrapper = new Element('div', { style: 'display: none;' });
 				var commandAddDt = new Element('dt');
 				var commandAddDd = new Element('dd');
-				var commandAddInput = new Element('input', { 'class': 'inputText', type: 'text', size: 7, placeholder: 'Befehlsname' });
-				var commandAddTextInput = new Element('input', { 'class': 'inputText', type: 'text', size: 12, placeholder: 'Befehlstext' });
+				var commandAddNameInput = new Element('input', { 'class': 'inputText', type: 'text', size: 7, placeholder: 'Befehlsname' });
+				var commandAddTemplateInput = new Element('input', { 'class': 'inputText', type: 'text', size: 12, placeholder: 'Befehlstext' });
 				
 				var commandAddDeleteButtonLink = new Element('a', { href: 'javascript:;' });
 				var commandAddDeleteButtonImg = new Element('img', { src: './wcf/icon/deleteS.png', style: 'width: 16px; height: 16px;', alt: '' });
@@ -56,7 +56,7 @@ Modules.AddOn.ScriptingEngine = new ClassSystem.Class(Modules.Util.AbstractModul
 					});
 				}.bindAsEventListener(this), true);
 				
-				[commandAddInput, commandAddTextInput].each(function(input) {
+				[commandAddNameInput, commandAddTemplateInput].each(function(input) {
 					input.addEventListener('keydown', function(event) {
 						var inputs = $$('#scriptingEngine dl input');
 						
@@ -90,8 +90,8 @@ Modules.AddOn.ScriptingEngine = new ClassSystem.Class(Modules.Util.AbstractModul
 				
 				commandAddDeleteButtonLink.appendChild(commandAddDeleteButtonImg);
 				commandAddDt.appendChild(commandAddDeleteButtonLink);
-				commandAddDt.appendChild(commandAddInput);
-				commandAddDd.appendChild(commandAddTextInput);
+				commandAddDt.appendChild(commandAddNameInput);
+				commandAddDd.appendChild(commandAddTemplateInput);
 				commandAddWrapper.appendChild(commandAddDt);
 				commandAddWrapper.appendChild(commandAddDd);
 				commandDl.appendChild(commandAddWrapper);
@@ -195,22 +195,20 @@ Modules.AddOn.ScriptingEngine = new ClassSystem.Class(Modules.Util.AbstractModul
 	},
 	
 	parse: function(parsedText, additionalData) {
-		var newText = additionalData.text;
+		var message = additionalData.template;
 		
-		if (newText.includes('%mp3%')) {
-			newText = '/me *winamptret*';
+		if (message.includes('%mp3%')) {
+			return '/me *winamptret*';
 		}
 		
-		newText = newText.replace(/%user%/ig, '[user]' + parsedText.parameters.join(' ') + '[/user]');
-		
-		return newText;
+		return message.replace(/%user%/ig, '[user]' + parsedText.parameters.join(' ') + '[/user]');
 	},
 	
-	addCommand: function(name, text) {
+	addCommand: function(name, template) {
 		this.callerObj.coreModuleInstances.get('CommandController').addCommand(name, this.parse, {
-			text: text
+			template: template
 		});
-		this.commands.set(name, text);
+		this.commands.set(name, template);
 		this.storage.setValue('scriptingEngineCommands', this.commands._object);
 	},
 	

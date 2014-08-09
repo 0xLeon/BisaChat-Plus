@@ -18,7 +18,14 @@ Modules.Core.CommandController = new ClassSystem.Class(Modules.Util.AbstractCore
 					event.parameters.text = command.action;
 				}
 				else if (Object.isFunction(command.action)) {
-					event.parameters.text = command.action(parsedText, command.additionalData);
+					try {
+						event.parameters.text = command.action(parsedText, command.additionalData);
+					}
+					catch (e) {
+						if (e.message.toLowerCase() === 'abort') {
+							event.transport = null;
+						}
+					}
 				}
 			}
 		}, this);

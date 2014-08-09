@@ -26,6 +26,14 @@ Modules.AddOn.LastfmConnector = new ClassSystem.Class(Modules.Util.AbstractModul
 		$$('#chatForm p')[0].insertBefore(input, $('chatLoading'));
 	},
 	
+	finish: function() {
+		this.callerObj.coreModuleInstances.get('CommandController').addCommand('np', function() {
+			this.getTrack();
+			
+			throw new Error('abort');
+		}.bind(this));
+	},
+	
 	getTrackString: function(artist, title, trackURI, username) {
 		return this.storage.getValue('formatString', 'np: $artist – $title').replace('$artist', artist).replace('$title', title).replace('$url', trackURI).replace('$profil', 'http://www.last.fm/user/'+encodeURIComponent(username));
 	},

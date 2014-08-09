@@ -10,7 +10,7 @@
 // @include        https://www.bisaboard.de/chat/index.php/Chat/*/
 // ==/UserScript==
 
-(function(Window, $) {
+(function(Window, $, WCF) {
 	"use strict";
 	
 	var BisaChatPlus = (function() {
@@ -30,4 +30,4 @@
 			
 		};
 	})();
-})(unsafeWindow, unsafeWindow.jQuery);
+})(unsafeWindow, unsafeWindow.jQuery, unsafeWindow.WCF);

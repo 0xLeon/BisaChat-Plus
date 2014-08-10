@@ -16,6 +16,7 @@
 	var BisaChatPlus = (function() {
 		var init = function() {
 			autoFullscreen();
+			autoTraditional();
 			
 			registerEventListeners();
 		};
@@ -26,12 +27,16 @@
 			}, 100);
 		};
 		
+		var autoTraditional = function() {
+			$('timsChatAltLayout').click();
+		};
+		
 		var registerEventListeners = function() {
 			$('#timsChatSmilies').on("click", function(){
 				$('#smilies').toggle();
 				$(window).resize();
 			});
-		}
+		};
 		
 		init();
 		

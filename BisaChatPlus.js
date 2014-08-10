@@ -28,7 +28,8 @@
 		
 		var registerEventListeners = function() {
 			$('#timsChatSmilies').on("click", function(){
-				$('#smilies').toggle("slow");
+				$('#smilies').toggle();
+				$(window).resize();
 			});
 		}
 		

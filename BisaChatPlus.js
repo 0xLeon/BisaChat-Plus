@@ -18,6 +18,8 @@
 			autoFullscreen();
 			autoTraditional();
 			
+			addRemoveFishButton();
+			
 			registerEventListeners();
 		};
 		
@@ -28,13 +30,25 @@
 		};
 		
 		var autoTraditional = function() {
-			$('timsChatAltLayout').click();
+			Window.setTimeout(function() {
+				$('#timsChatAltLayout').click();
+			}, 100);
 		};
 		
+		var addRemoveFishButton = function() {
+			$('.buttonGroup').append('<li><a id="removeFishButton" class="button jsTooltip" title="Fisch entfernen"> <span>NoFish</span></a></li>');
+		}
+		
 		var registerEventListeners = function() {
-			$('#timsChatSmilies').on("click", function(){
+			$('#timsChatSmilies').on("click", function() {
 				$('#smilies').toggle();
 				$(window).resize();
+			});
+			
+			$('#removeFishButton').on("click", function() {
+				if($('#fish')){
+					$('#fish').remove();
+				}
 			});
 		};
 		

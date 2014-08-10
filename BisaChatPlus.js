@@ -27,7 +27,7 @@
 		};
 		
 		var registerEventListeners = function() {
-			$('#button active timsChatToggle jsTooltip').on("click", function(){
+			$('#timsChatSmilies').on("click", function(){
 				$('#smilies').toggle("slow");
 			});
 		}

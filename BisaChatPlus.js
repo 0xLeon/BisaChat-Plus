@@ -1,11 +1,10 @@
 // ==UserScript==
 // @name           BisaChat Plus
-// @description    Add's a few more comfortable functions to BisaChat
+// @description    Add's a few more comfortable functions to BisaChat.
 // @version        3.0.0dev
-// @author         Stefan Hahn
+// @author         Stefan Hahn, Marvin Altemeier
 // @copyright      2011-2014, Stefan Hahn
 // @license        GNU General Public License, version 2
-// @namespace      http://projects.swallow-all-lies.com/greasemonkey/namsespaces/bisachat.plus
 // @include        http://www.bisaboard.de/chat/index.php/Chat/*/
 // @include        https://www.bisaboard.de/chat/index.php/Chat/*/
 // ==/UserScript==
@@ -37,11 +36,11 @@
 		};
 		
 		var addRemoveFishButton = function() {
-			$('.buttonGroup').append('<li><a id="removeFishButton" class="button jsTooltip" title="Fisch entfernen"> <span>NoFish</span></a></li>');
+			$('.buttonGroup').append('<li><a id="removeFishButton" class="button jsTooltip" title="Fisch entfernen"> <span class="icon icon16 icon-lock"> <span class="invisible">Fisch einsperren</span></a></li>');
 		}
 		
 		var addRemoveSidebarButton = function() {
-			$('.buttonGroup').append('<li><a id="removeSidebarButton" class="button timsChatToggle jsTooltip" title="Sidebar entfernen"> <span>Sidebar</span></a></li>');
+			$('.buttonGroup').append('<li><a id="removeSidebarButton" class="button active timsChatToggle jsTooltip" title="Sidebar entfernen"> <span class="icon icon16 icon-chevron-left"> <span class="invisible">Sidebar entfernen</span></a></li>');
 		}
 		
 		var registerEventListeners = function() {

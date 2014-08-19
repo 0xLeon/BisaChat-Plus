@@ -36,7 +36,7 @@
 		};
 		
 		var addRemoveFishButton = function() {
-			$('.buttonGroup').append('<li><a id="removeFishButton" class="button jsTooltip" title="Fisch entfernen"> <span class="icon icon16 icon-lock"> <span class="invisible">Fisch einsperren</span></a></li>');
+			$('.buttonGroup').append('<li><a id="removeFishButton" class="button jsTooltip" title="Fisch einsperren"> <span class="icon icon16 icon-lock"> <span class="invisible">Fisch einsperren</span></a></li>');
 		}
 		
 		var addRemoveSidebarButton = function() {

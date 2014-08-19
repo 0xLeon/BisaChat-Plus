@@ -19,6 +19,7 @@
 			autoTraditional();
 			
 			addRemoveFishButton();
+			addRemoveSidebarButton();
 			
 			registerEventListeners();
 		};
@@ -39,6 +40,10 @@
 			$('.buttonGroup').append('<li><a id="removeFishButton" class="button jsTooltip" title="Fisch entfernen"> <span>NoFish</span></a></li>');
 		}
 		
+		var addRemoveSidebarButton = function() {
+			$('.buttonGroup').append('<li><a id="removeSidebarButton" class="button timsChatToggle jsTooltip" title="Sidebar entfernen"> <span>Sidebar</span></a></li>');
+		}
+		
 		var registerEventListeners = function() {
 			$('#timsChatSmilies').on("click", function() {
 				$('#smilies').toggle();
@@ -49,6 +54,11 @@
 				if($('#fish')){
 					$('#fish').remove();
 				}
+			});
+			
+			$('#removeSidebarButton').on("click", function() {
+				$('.sidebar').toggle();
+				$(window).resize();
 			});
 		};
 		

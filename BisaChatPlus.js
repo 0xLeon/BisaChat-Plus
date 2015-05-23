@@ -2,6 +2,11 @@
 	"use strict";
 	
 	var BisaChatPlus = (function() {
+		var event = {
+			messageAdded: $.Callbacks(),
+			messageSubmit: $.Callbacks()
+		};
+		
 		var init = function() {
 			var messageObserver = new MutationObserver(function(mutations) {
 				mutations.forEach(function(mutation) {
@@ -28,6 +33,14 @@
 			var messageObserverTarget = $('#timsChatMessageContainer0 > ul');
 			
 			messageObserver.observe(messageObserverTarget[0], messageObserverConfig);
+		};
+		
+		var addEventListener = function(eventName, callback) {
+			if (event[eventName] === null) {
+				throw new Error('Unknown event »' + eventName + '«.');
+			}
+			
+			event[eventName].add(callback);
 		};
 		
 		init();

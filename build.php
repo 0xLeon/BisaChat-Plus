@@ -133,9 +133,9 @@ if ($options['minify']) {
 	$result = StringStack::reinsertStrings($result, 'header');
 }
 
-echo "Writing file builds/BisaChat Plus ".$options['version'].'-'.$options['build'].".user.js\n";
+echo "Writing file builds/BisaChat Plus ".$options['version'].".user.js\n";
 // Write file
-file_put_contents('builds/BisaChat Plus '.$options['version'].'-'.$options['build'].'.user.js', $result);
+file_put_contents('builds/BisaChat Plus '.$options['version'].'.user.js', $result);
 // save version
 file_put_contents('builds/.lastversion', $options['version']);
 // save build

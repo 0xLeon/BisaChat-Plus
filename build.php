@@ -62,8 +62,6 @@ if ($argc === 1) {
 // build
 // find namespaces
 $namespaces = glob('namespaces/*');
-// find ProtoBasic files
-$protoBasicFiles = array('Object', 'Function', 'Class', 'Enumerable', 'Array', 'Hash', 'String', 'RegExp', 'Date', 'Storage', 'Element', 'Event', 'Style', 'Animations', 'Dragging');
 // find media resources
 $mediaResources = glob('media/*');
 
@@ -77,12 +75,6 @@ $result = file_get_contents('header.js')."\n";
 foreach ($namespaces as $namespace) {
 	echo "Adding namespace: ".$namespace."\n";
 	$result .= file_get_contents($namespace)."\n";
-}
-
-// add ProtoBasic files
-foreach ($protoBasicFiles as $protoBasicFile) {
-	echo "Adding ProtoBasic file: ProtoBasic/".$protoBasicFile.".js\n";
-	$result .= file_get_contents('ProtoBasic/'.$protoBasicFile.'.js')."\n";
 }
 
 // add media resources

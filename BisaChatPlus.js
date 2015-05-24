@@ -14,13 +14,7 @@
 						var messageNode = $(mutation.addedNodes[i]);
 						
 						if (messageNode.hasClass('timsChatMessage')) {
-							var messageText = $.trim(messageNode.find('.timsChatText').text());
-							
-							if (messageText.startsWith('>')) {
-								messageNode.find('.timsChatText').css({
-									color: '#792'
-								});
-							}
+							event.messageAdded.fire(messageNode);
 						}
 					}
 				});

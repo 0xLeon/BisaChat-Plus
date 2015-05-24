@@ -55,7 +55,7 @@
 		init();
 		
 		return {
-			
+			addEventListener:	addEventListener
 		};
 	})();
 })(unsafeWindow, unsafeWindow.jQuery, unsafeWindow.WCF);

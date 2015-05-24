@@ -9,6 +9,7 @@
 		};
 		
 		var init = function() {
+			console.log('BisachatPlus.init()');
 			bcplus = {
 				addEventListener:	addEventListener
 			};
@@ -45,6 +46,7 @@
 		};
 		
 		var addEventListener = function(eventName, callback) {
+			console.log('BisachatPlus.addEventListener()');
 			if (event[eventName] === null) {
 				throw new Error('Unknown event »' + eventName + '«.');
 			}

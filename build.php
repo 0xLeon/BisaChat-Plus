@@ -71,11 +71,8 @@ $finfo = new finfo(FILEINFO_MIME_TYPE);
 // read in header
 $result = file_get_contents('header.js')."\n";
 
-// add namespaces
-foreach ($namespaces as $namespace) {
-	echo "Adding namespace: ".$namespace."\n";
-	$result .= file_get_contents($namespace)."\n";
-}
+// read in namespaces
+$result .= file_get_contents('namespaces.js')."\n";
 
 // add media resources
 foreach ($mediaResources as $mediaResource) {

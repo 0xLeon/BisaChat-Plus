@@ -5,8 +5,21 @@
 		var bcplus = null;
 		var event = {
 			messageAdded: $.Callbacks(),
-			messageSubmit: $.Callbacks()
+			messageSubmit: $.Callbacks(),
+			optionsOpend: $.Callbacks(),
+			optionsClosed: $.Callbacks()
 		};
+		var optionsDialog = $('<div id="bcplusOptionsDialogContent" class="container containerPadding"></div>').appendTo('body').wcfDialog({
+			autoOpen: false,
+			title: 'Optionen',
+			
+			onOpen: function() {
+				event.optionsOpend.fire();
+			},
+			onClose: function() {
+				event.optionsClosed.fire();
+			}
+		});
 		
 		var init = function() {
 			console.log('BisachatPlus.init()');
@@ -36,6 +49,14 @@
 			
 			initModules();
 		};
+		
+		var buildUI = function() {
+			var $optionsButton = $('<li><a id="bcplusOptions" class="button"><span class="icon icon16 icon-cog"></span><span class="invisible">BisaChat Plus Optionen</span></a></li>');
+			$optionsButton.find('a').on('click', function() {
+				optionsDialog.wcfDialog('open');
+			});
+			$optionsButton.appendTo('#timsChatOptions .buttonGroup');
+		}
 		
 		var initModules = function() {
 			console.log('BisachatPlus.initModules()');

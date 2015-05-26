@@ -16,12 +16,14 @@ Modules.MessageFilters = (function(Window, $, WCF) {
 	var addEventListeners = function() {
 		console.log('Modules.MessageFilters.addEventListeners()');
 		bcplus.addEventListener('messageAdded', function(messageNode) {
-			var messageText = $.trim(messageNode.find('.timsChatText').text());
-			
-			if (messageText.startsWith('>')) {
-				messageNode.find('.timsChatText').css({
-					color: '#792'
-				});
+			if (bcplus.getStorage().getValue('bcplusGreentextOption', true)) {
+				var messageText = $.trim(messageNode.find('.timsChatText').text());
+				
+				if (messageText.startsWith('>')) {
+					messageNode.find('.timsChatText').css({
+						color: '#792'
+					});
+				}
 			}
 		});
 	};

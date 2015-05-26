@@ -92,8 +92,11 @@
 			var $category = $('<fieldset id="' + categoryID + '"><legend>' + categoryName + '</legend><dl></dl></fieldset>');
 			var $option = $('<dt></dt><dd><label><input type="checkbox" id="' + optionID + '"/> ' + optionText + '</label></dd>');
 			
+			storage.setValue(optionID + 'Option', !!defaultValue);
 			$option.find('input').prop({
 				checked: !!defaultValue
+			}).on('change', function(event) {
+				storage.setValue(optionID + 'Option', $(this).prop('checked'));
 			});
 			$category.appendTo('#bcplusOptionsDialogContent').find('dl').append($option);
 		};

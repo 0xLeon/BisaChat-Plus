@@ -25,6 +25,7 @@
 		var init = function() {
 			console.log('BisachatPlus.init()');
 			bcplus = {
+				getStorage:		getStorage,
 				addEventListener:	addEventListener,
 				addBoolOption:		addBoolOption
 			};
@@ -70,6 +71,10 @@
 				console.log(moduleName);
 				moduleObject.initialize(bcplus);
 			});
+		};
+		
+		var getStorage = function() {
+			return storage;
 		};
 		
 		var addEventListener = function(eventName, callback) {

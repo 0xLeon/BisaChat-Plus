@@ -43,7 +43,7 @@
 				attributes: false,
 				characterData: false
 			};
-			var messageObserverTarget = $('#timsChatMessageContainer0 > ul');
+			var messageObserverTarget = $('#timsChatMessageContainer0').find('ul');
 			
 			messageObserver.observe(messageObserverTarget[0], messageObserverConfig);
 			

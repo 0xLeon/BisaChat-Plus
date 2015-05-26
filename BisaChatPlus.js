@@ -86,8 +86,11 @@
 		};
 		
 		var addBoolOption = function(optionID, optionText, categoryID, categoryName, defaultValue, onChange) {
-			// TODO: check if ID is already used
 			// TODO: get existing category
+			if (!!$('#' + optionID)[0]) {
+				throw new Error('Option »' + optionID + '« already exists!');
+			}
+			
 			var $category = $('<fieldset id="' + categoryID + '"><legend>' + categoryName + '</legend><dl></dl></fieldset>');
 			var $option = $('<dt></dt><dd><label><input type="checkbox" id="' + optionID + '"/> ' + optionText + '</label></dd>');
 			

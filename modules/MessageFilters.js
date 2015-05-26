@@ -10,7 +10,7 @@ Modules.MessageFilters = (function(Window, $, WCF) {
 	};
 	
 	var buildUI = function() {
-		bcplus.addBoolOption('bcplus-greentext', 'Greentext aktivieren', 'bcplus-prefilters', 'Prefilter', true);
+		bcplus.addBoolOption('bcplusGreentext', 'Greentext aktivieren', 'bcplusPrefilters', 'Prefilter', true);
 	};
 	
 	var addEventListeners = function() {

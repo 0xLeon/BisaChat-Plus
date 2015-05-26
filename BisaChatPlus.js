@@ -86,12 +86,11 @@
 		};
 		
 		var addBoolOption = function(optionID, optionText, categoryID, categoryName, defaultValue, onChange) {
-			// TODO: get existing category
 			if (!!$('#' + optionID)[0]) {
 				throw new Error('Option »' + optionID + '« already exists!');
 			}
 			
-			var $category = $('<fieldset id="' + categoryID + '"><legend>' + categoryName + '</legend><dl></dl></fieldset>');
+			var $category = $($('#' + categoryID)[0] || $('<fieldset id="' + categoryID + '"><legend>' + categoryName + '</legend><dl></dl></fieldset>').appendTo('#bcplusOptionsDialogContent'));
 			var $option = $('<dt></dt><dd><label><input type="checkbox" id="' + optionID + '"/> ' + optionText + '</label></dd>');
 			
 			storage.setValue(optionID + 'Option', !!defaultValue);
@@ -104,7 +103,7 @@
 					onChange.call($(event.target), event);
 				}
 			});
-			$category.appendTo('#bcplusOptionsDialogContent').find('dl').append($option);
+			$category.find('dl').append($option);
 		};
 		
 		init();

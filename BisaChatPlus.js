@@ -97,6 +97,10 @@
 				checked: !!defaultValue
 			}).on('change', function(event) {
 				storage.setValue(optionID + 'Option', $(this).prop('checked'));
+				
+				if ($.isFunction(onChange)) {
+					onChange.call($(event.target), event);
+				}
 			});
 			$category.appendTo('#bcplusOptionsDialogContent').find('dl').append($option);
 		};

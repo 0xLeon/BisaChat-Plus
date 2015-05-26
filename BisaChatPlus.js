@@ -3,6 +3,7 @@
 	
 	var BisaChatPlus = (function() {
 		var bcplus = null;
+		var storage = Storage.getInterface('bcplus');
 		var event = {
 			messageAdded: $.Callbacks(),
 			messageSubmit: $.Callbacks(),

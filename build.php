@@ -62,6 +62,8 @@ if ($argc === 1) {
 // build
 // find namespaces
 $namespaces = glob('namespaces/*');
+// find tools
+$tools = glob('tools/*.js');
 // find media resources
 $mediaResources = glob('media/*');
 
@@ -73,6 +75,13 @@ $result = file_get_contents('header.js')."\n";
 
 // read in namespaces
 $result .= file_get_contents('namespaces.js')."\n";
+
+// read in tools
+foreach ($tools as $tool) {
+	echo "Adding tool: ".basename($tool, '.js')."\n";
+	
+	$result .= file_get_contents($tool);
+}
 
 // add media resources
 foreach ($mediaResources as $mediaResource) {

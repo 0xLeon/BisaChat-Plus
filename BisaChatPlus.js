@@ -28,6 +28,13 @@
 				addEventListener:	addEventListener,
 				addBoolOption:		addBoolOption
 			};
+			
+			initEvents();
+			buildUI();
+			initModules();
+		};
+		
+		var initEvents = function() {
 			var messageObserver = new MutationObserver(function(mutations) {
 				mutations.forEach(function(mutation) {
 					for (var i = 0, l = mutation.addedNodes.length; i < l; i++) {
@@ -47,9 +54,6 @@
 			var messageObserverTarget = $('#timsChatMessageContainer0').find('ul');
 			
 			messageObserver.observe(messageObserverTarget[0], messageObserverConfig);
-			
-			buildUI();
-			initModules();
 		};
 		
 		var buildUI = function() {

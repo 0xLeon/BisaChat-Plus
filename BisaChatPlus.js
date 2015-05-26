@@ -47,7 +47,7 @@
 			
 			messageObserver.observe(messageObserverTarget[0], messageObserverConfig);
 			
-			
+			buildUI();
 			initModules();
 		};
 		

@@ -68,7 +68,6 @@
 		var initModules = function() {
 			console.log('BisachatPlus.initModules()');
 			$.each(Modules, function(moduleName, moduleObject) {
-				console.log(moduleName);
 				moduleObject.initialize(bcplus);
 			});
 		};

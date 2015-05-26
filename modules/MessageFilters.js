@@ -5,7 +5,12 @@ Modules.MessageFilters = (function(Window, $, WCF) {
 		console.log('Modules.MessageFilters.initialize()');
 		bcplus = _bcplus;
 		
+		buildUI();
 		addEventListeners();
+	};
+	
+	var buildUI = function() {
+		bcplus.addBoolOption('bcplus-greentext', 'Greentext aktivieren', 'bcplus-prefilters', 'Prefilter', true);
 	};
 	
 	var addEventListeners = function() {

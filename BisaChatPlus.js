@@ -7,7 +7,7 @@
 		var event = {
 			messageAdded: $.Callbacks(),
 			messageSubmit: $.Callbacks(),
-			optionsOpend: $.Callbacks(),
+			optionsOpened: $.Callbacks(),
 			optionsClosed: $.Callbacks()
 		};
 		var optionsDialog = $('<div id="bcplusOptionsDialogContent" class="container containerPadding"></div>').appendTo('body').wcfDialog({
@@ -15,7 +15,7 @@
 			title: 'Optionen',
 			
 			onOpen: function() {
-				event.optionsOpend.fire();
+				event.optionsOpened.fire();
 			},
 			onClose: function() {
 				event.optionsClosed.fire();

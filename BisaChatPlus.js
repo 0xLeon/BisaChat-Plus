@@ -24,7 +24,8 @@
 		var init = function() {
 			console.log('BisachatPlus.init()');
 			bcplus = {
-				addEventListener:	addEventListener
+				addEventListener:	addEventListener,
+				addBoolOption:		addBoolOption
 			};
 			var messageObserver = new MutationObserver(function(mutations) {
 				mutations.forEach(function(mutation) {
@@ -75,10 +76,23 @@
 			event[eventName].add(callback);
 		};
 		
+		var addBoolOption = function(optionID, optionText, categoryID, categoryName, defaultValue, onChange) {
+			// TODO: check if ID is already used
+			// TODO: get existing category
+			var $category = $('<fieldset id="' + categoryID + '"><legend>' + categoryName + '</legend><dl></dl></fieldset>');
+			var $option = $('<dt></dt><dd><label><input type="checkbox" id="' + optionID + '"/> ' + optionText + '</label></dd>');
+			
+			$option.find('input').prop({
+				checked: !!defaultValue
+			});
+			$category.appendTo('#bcplusOptionsDialogContent').find('dl').append($option);
+		};
+		
 		init();
 		
 		return {
-			addEventListener:	addEventListener
+			addEventListener:	addEventListener,
+			addBoolOption:		addBoolOption
 		};
 	})();
 })(unsafeWindow, unsafeWindow.jQuery, unsafeWindow.WCF);

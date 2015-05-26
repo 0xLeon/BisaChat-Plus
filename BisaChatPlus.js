@@ -19,6 +19,8 @@
 			},
 			onClose: function() {
 				event.optionsClosed.fire();
+				
+				$('#timsChatInput').focus();
 			}
 		});
 		

@@ -71,10 +71,10 @@ $mediaResources = glob('media/*');
 $finfo = new finfo(FILEINFO_MIME_TYPE);
 
 // read in header
-$result = file_get_contents('header.js')."\n";
+$header = file_get_contents('header.js')."\n";
 
 // read in namespaces
-$result .= file_get_contents('namespaces.js')."\n";
+$result = file_get_contents('namespaces.js')."\n";
 
 // read in tools
 foreach ($tools as $tool) {
@@ -116,6 +116,8 @@ foreach ($options['modules'] as $module) {
 
 $result .= file_get_contents('BisaChatPlus.js');
 $result = str_replace('{version}', $options['version'].'-'.$options['build'], $result);
+$result = str_replace("\n", "\n\t\t", $result);
+$result = str_replace("/*{content}*/", $result, $header);
 
 if ($options['minify']) {
 	echo "Minifying\n";
@@ -137,6 +139,9 @@ file_put_contents('builds/.lastversion', $options['version']);
 // save build
 file_put_contents('builds/.lastbuild', $options['build']);
 echo "Finished\n";
+
+// direct gm output
+file_put_contents('C:\\Users\\Stefan\\AppData\\Roaming\\Mozilla\\Firefox\\Profiles\\8ugjllnm.default\\gm_scripts\\BisaChat_Plus\\BisaChat_Plus_3.0.0dev.user.js', $result);
 
 if ($argc == 1) {
 	echo "Press Enter to exit...";

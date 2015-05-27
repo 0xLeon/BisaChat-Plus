@@ -10,3 +10,14 @@
 // @include        https://chat.bisaboard.de/index.php/Chat/*/
 // @run-at         document-end
 // ==/UserScript==
+
+(function(Window, $, WCF) {
+	
+	
+	try {
+		/*{content}*/
+	}
+	catch (e) {
+		console.log(e);
+	}
+})(unsafeWindow, unsafeWindow.jQuery, unsafeWindow.WCF);

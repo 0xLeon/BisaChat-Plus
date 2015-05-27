@@ -1,6 +1,3 @@
-(function(Window, $, WCF) {
-	"use strict";
-	
 	var BisaChatPlus = (function() {
 		var bcplus = null;
 		var storage = Storage.getInterface('bcplus');
@@ -137,4 +134,3 @@
 			addTextOption:		addTextOption
 		};
 	})();
-})(unsafeWindow, unsafeWindow.jQuery, unsafeWindow.WCF);

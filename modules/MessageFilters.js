@@ -1,4 +1,4 @@
-Modules.MessageFilters = (function(Window, $, WCF) {
+Modules.MessageFilters = (function() {
 	var bcplus = null;
 	
 	var initialize = function(_bcplus) {
@@ -38,4 +38,4 @@ Modules.MessageFilters = (function(Window, $, WCF) {
 	return {
 		initialize:	initialize
 	};
-})(unsafeWindow, unsafeWindow.jQuery, unsafeWindow.WCF);
+})();

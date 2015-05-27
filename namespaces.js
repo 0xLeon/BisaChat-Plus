@@ -1,2 +1,2 @@
-Modules = {};
-Media = {};
+var Modules = {};
+var Media = {};

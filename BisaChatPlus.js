@@ -42,7 +42,12 @@
 						var messageNode = $(mutation.addedNodes[i]);
 						
 						if (messageNode.hasClass('timsChatMessage')) {
-							event.messageAdded.fire(messageNode);
+							try {
+								event.messageAdded.fire(messageNode);
+							}
+							catch (e) {
+								console.log(e);
+							}
 						}
 					}
 				});

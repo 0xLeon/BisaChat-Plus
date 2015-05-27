@@ -131,6 +131,7 @@
 		init();
 		
 		return {
+			getStorage:		getStorage,
 			addEventListener:	addEventListener,
 			addBoolOption:		addBoolOption,
 			addTextOption:		addTextOption

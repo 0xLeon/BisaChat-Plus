@@ -29,7 +29,8 @@
 			bcplus = {
 				getStorage:		getStorage,
 				addEventListener:	addEventListener,
-				addBoolOption:		addBoolOption
+				addBoolOption:		addBoolOption,
+				addTextOption:		addTextOption
 			};
 			
 			initEvents();
@@ -108,11 +109,31 @@
 			$category.find('dl').append($option);
 		};
 		
+		var addTextOption = function(optionID, optionText, optionType, categoryID, categoryName, defaultValue) {
+			if (!!$('#' + optionID)[0]) {
+				throw new Error('Option »' + optionID + '« already exists!');
+			}
+			
+			if (['text', 'email', 'url', 'date', 'month', 'week', 'time', 'datetime', 'datetime-local', 'number', 'range', 'color', 'password'].indexOf(optionType.toLowerCase()) < 0) {
+				throw new Error('Invalid option type »' + optionType.toLowerCase() + '« given!');
+			}
+			
+			var $category = $($('#' + categoryID)[0] || $('<fieldset id="' + categoryID + '"><legend>' + categoryName + '</legend><dl></dl></fieldset>').appendTo('#bcplusOptionsDialogContent'));
+			var $option = $('<dt><label for="' + optionID + '">' + optionText + '</label></dt><dd><input type="' + optionType.toLowerCase() + '" id="' + optionID + '"/></dd>');
+			
+			storage.setValue(optionID + 'Option', defaultValue);
+			$option.find('input').val(defaultValue);
+			$category.find('dl').append($option);
+			
+			// TODO: when to save?
+		};
+		
 		init();
 		
 		return {
 			addEventListener:	addEventListener,
-			addBoolOption:		addBoolOption
+			addBoolOption:		addBoolOption,
+			addTextOption:		addTextOption
 		};
 	})();
 })(unsafeWindow, unsafeWindow.jQuery, unsafeWindow.WCF);

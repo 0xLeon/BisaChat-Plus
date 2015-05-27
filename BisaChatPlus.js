@@ -4,6 +4,7 @@ var BisaChatPlus = (function() {
 	var event = {
 		messageAdded: $.Callbacks(),
 		messageSubmit: $.Callbacks(),
+		awayStatusChanged: $.Callbacks(),
 		optionsOpened: $.Callbacks(),
 		optionsClosed: $.Callbacks()
 	};
@@ -21,10 +22,16 @@ var BisaChatPlus = (function() {
 		}
 	});
 	
+	var awayStatus = {
+		isAway: false,
+		message: ''
+	}
+	
 	var init = function() {
 		console.log('BisachatPlus.init()');
 		bcplus = {
 			getStorage:		getStorage,
+			getAwayStatus:		getAwayStatus,
 			addEventListener:	addEventListener,
 			addBoolOption:		addBoolOption,
 			addTextOption:		addTextOption
@@ -60,6 +67,29 @@ var BisaChatPlus = (function() {
 		var messageObserverTarget = $('#timsChatMessageContainer0').find('ul');
 		
 		messageObserver.observe(messageObserverTarget[0], messageObserverConfig);
+		
+		
+		Window.be.bastelstu.Chat.listener.add('newMessage', function(message) {
+			switch (message.type) {
+				case 3:
+				case 4:
+					if (message.sender === WCF.User.userID) {
+						if (message.type === 3) {
+							awayStatus.isAway = true;
+							// TODO: get away status message
+							awayStatus.message = '';
+						}
+						else {
+							awayStatus.isAway = false;
+							awayStatus.message = '';
+						}
+						
+						event.awayStatusChanged.fire(awayStatus);
+					}
+					
+					break;
+			}
+		});
 	};
 	
 	var buildUI = function() {
@@ -79,6 +109,10 @@ var BisaChatPlus = (function() {
 	
 	var getStorage = function() {
 		return storage;
+	};
+	
+	var getAwayStatus = function() {
+		return awayStatus;
 	};
 	
 	var addEventListener = function(eventName, callback) {
@@ -134,6 +168,7 @@ var BisaChatPlus = (function() {
 	
 	return {
 		getStorage:		getStorage,
+		getAwayStatus:		getAwayStatus,
 		addEventListener:	addEventListener,
 		addBoolOption:		addBoolOption,
 		addTextOption:		addTextOption

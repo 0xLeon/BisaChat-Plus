@@ -11,6 +11,7 @@ Modules.MessageFilters = (function(Window, $, WCF) {
 	
 	var buildUI = function() {
 		bcplus.addBoolOption('bcplusGreentext', 'Greentext aktivieren', 'bcplusPrefilters', 'Prefilter', true);
+		bcplus.addBoolOption('bcplusHideAvatar', 'Avatare ausblenden', 'bcplusPrefilters', null, false);
 	};
 	
 	var addEventListeners = function() {
@@ -24,6 +25,12 @@ Modules.MessageFilters = (function(Window, $, WCF) {
 						color: '#792'
 					});
 				}
+			}
+			
+			if (bcplus.getStorage().getValue('bcplusHideAvatarOption', false)) {
+				messageNode.find('.userAvatar').css({
+					opacity: 0
+				});
 			}
 		});
 	};

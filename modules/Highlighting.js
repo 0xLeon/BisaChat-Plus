@@ -1,9 +1,14 @@
 Modules.Highlighting = (function() {
 	var bcplus = null;
+	var messages = null;
+	var docTitle = null;
+	var listenerFunction = null;
 	
 	var initialize = function(_bcplus) {
 		console.log('Modules.Highlighting.initialize()');
 		bcplus = _bcplus;
+		messages = [];
+		docTitle = Window.document.title;
 		
 		// removeExisting();
 		buildUI();
@@ -18,11 +23,47 @@ Modules.Highlighting = (function() {
 	var addEventListeners = function() {
 		bcplus.addEventListener('messageAdded', function(message) {
 			var messageText = $.trim(message.find('.timsChatText').text());
-			console.log(message);
-			if (messageText.indexOf('Leon') > -1) {
-				
+			
+			// TODO: dynamic, comma separated value
+			if (!Window.document.hasFocus() || bcplus.getAwayStatus().isAway) {
+				if (messageText.indexOf('Leon') > -1) {
+					highlight(message);
+				}
 			}
 		});
+	};
+	
+	var highlight = function(message) {
+		new Audio(Media.bing.dataURI).play();
+		messages.push(message);
+		updateDocTitle();
+		
+		if (listenerFunction === null) {
+			if (bcplus.getAwayStatus().isAway) {
+				listenerFunction = function(awayStatus) {
+					if (!awayStatus.isAway) {
+						$($.map(messages, function(e) {
+							return e.get();
+						})).effect('highlight');
+						
+						message.length = 0;
+						
+						bcplus.removeEventListener('awayStatusChanged', listenerFunction);
+						listenerFunction = null;
+					}
+				};
+				bcplus.addEventListener('awayStatusChanged', listenerFunction);
+			}
+		}
+	};
+	
+	var updateDocTitle = function() {
+		if (messages.length > 0) {
+			Window.document.title = '(' + messages.length.toString() + ') ' + docTitle;
+		}
+		else {
+			Window.document.title = docTitle;
+		}
 	};
 	
 	return {

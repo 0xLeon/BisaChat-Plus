@@ -12,7 +12,7 @@
 // ==/UserScript==
 
 (function(Window, $, WCF) {
-	
+	// TODO: use strict again
 	
 	try {
 		/*{content}*/

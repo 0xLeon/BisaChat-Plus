@@ -168,7 +168,11 @@ var BisaChatPlus = (function() {
 		var $option = $('<dt><label for="' + optionID + '">' + optionText + '</label></dt><dd><input type="' + optionType.toLowerCase() + '" id="' + optionID + '"/></dd>');
 		
 		storage.setValue(optionID + 'Option', defaultValue);
-		$option.find('input').val(defaultValue);
+		$option.find('input').val(defaultValue).on('blur', function(event) {
+			storage.setValue(optionID + 'Option', $(this).val());
+			
+			// TODO: error checking?
+		});
 		$category.find('dl').append($option);
 		
 		// TODO: when to save?

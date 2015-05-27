@@ -33,6 +33,7 @@ var BisaChatPlus = (function() {
 			getStorage:		getStorage,
 			getAwayStatus:		getAwayStatus,
 			addEventListener:	addEventListener,
+			removeEventListener:	removeEventListener,
 			addBoolOption:		addBoolOption,
 			addTextOption:		addTextOption
 		};
@@ -124,6 +125,15 @@ var BisaChatPlus = (function() {
 		event[eventName].add(callback);
 	};
 	
+	var removeEventListener = function(eventName, callback) {
+		console.log('BisachatPlus.removeEventListener()');
+		if (event[eventName] === null) {
+			throw new Error('Unknown event »' + eventName + '«.');
+		}
+		
+		event[eventName].remove(callback);
+	}
+	
 	var addBoolOption = function(optionID, optionText, categoryID, categoryName, defaultValue, onChange) {
 		if (!!$('#' + optionID)[0]) {
 			throw new Error('Option »' + optionID + '« already exists!');
@@ -170,6 +180,7 @@ var BisaChatPlus = (function() {
 		getStorage:		getStorage,
 		getAwayStatus:		getAwayStatus,
 		addEventListener:	addEventListener,
+		removeEventListener:	removeEventListener,
 		addBoolOption:		addBoolOption,
 		addTextOption:		addTextOption
 	};

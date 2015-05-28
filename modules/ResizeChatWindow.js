@@ -18,6 +18,8 @@ Modules.ResizeChatWindow = (function () {
         $('#timsChatSmilies').on("click", function() {
             console.log('Klick');
             setTimeout(function() {
+                $(window).resize();
+            }, 300);
         });
     };
 

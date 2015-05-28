@@ -68,7 +68,7 @@ Modules.Highlighting = (function() {
 						return e.get();
 					})).effect('highlight');
 					
-					message.length = 0;
+					messages.length = 0;
 					updateDocTitle();
 					
 					bcplus.removeEventListener(eventName, listenerFunction);

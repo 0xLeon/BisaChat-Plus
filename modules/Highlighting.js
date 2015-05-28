@@ -3,6 +3,7 @@ Modules.Highlighting = (function() {
 	var messages = null;
 	var docTitle = null;
 	var listenerFunction = null;
+	var eventName = null;
 	
 	var initialize = function(_bcplus) {
 		console.log('Modules.Highlighting.initialize()');
@@ -40,20 +41,27 @@ Modules.Highlighting = (function() {
 		
 		if (listenerFunction === null) {
 			if (bcplus.getAwayStatus().isAway) {
-				listenerFunction = function(awayStatus) {
-					if (!awayStatus.isAway) {
-						$($.map(messages, function(e) {
-							return e.get();
-						})).effect('highlight');
-						
-						message.length = 0;
-						
-						bcplus.removeEventListener('awayStatusChanged', listenerFunction);
-						listenerFunction = null;
-					}
-				};
-				bcplus.addEventListener('awayStatusChanged', listenerFunction);
+				eventName = 'awayStatusChanged';
 			}
+			else if (!document.hasFocus()) {
+				eventName = 'chatFocus';
+			}
+			
+			listenerFunction = function(awayStatus) {
+				if (!awayStatus.isAway) {
+					$($.map(messages, function(e) {
+						return e.get();
+					})).effect('highlight');
+					
+					message.length = 0;
+					updateDocTitle();
+					
+					bcplus.removeEventListener(eventName, listenerFunction);
+					listenerFunction = null;
+					eventName = null;
+				}
+			};
+			bcplus.addEventListener(eventName, listenerFunction);
 		}
 	};
 	

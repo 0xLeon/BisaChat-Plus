@@ -63,6 +63,7 @@ Modules.Highlighting = (function() {
 	
 	var highlight = function(message) {
 		new Audio(Media.bing.dataURI).play();
+		showNotification(message);
 		messages.push(message.messageID);
 		updateDocTitle();
 		

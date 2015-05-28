@@ -62,9 +62,10 @@ Modules.Highlighting = (function() {
 	};
 	
 	var highlight = function(message) {
+		messages.push(message.messageID);
+		
 		new Audio(Media.bing.dataURI).play();
 		showNotification(message);
-		messages.push(message.messageID);
 		updateDocTitle();
 		
 		if (listenerFunction === null) {

@@ -73,6 +73,10 @@ Modules.Highlighting = (function() {
 			else if (!document.hasFocus()) {
 				eventName = 'chatFocus';
 			}
+			else {
+				// TODO: throw error?
+				return;
+			}
 			
 			listenerFunction = function(awayStatus) {
 				if (!awayStatus.isAway) {

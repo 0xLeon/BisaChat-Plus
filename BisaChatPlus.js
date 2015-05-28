@@ -4,6 +4,7 @@ var BisaChatPlus = (function() {
 	var event = {
 		chatBlur: $.Callbacks(),
 		chatFocus: $.Callbacks(),
+		messageReceived: $.Callbacks(),
 		messageAdded: $.Callbacks(),
 		messageSubmit: $.Callbacks(),
 		awayStatusChanged: $.Callbacks(),
@@ -73,6 +74,8 @@ var BisaChatPlus = (function() {
 		
 		
 		Window.be.bastelstu.Chat.listener.add('newMessage', function(message) {
+			event.messageReceived.fire(message);
+			
 			switch (message.type) {
 				case 3:
 				case 4:

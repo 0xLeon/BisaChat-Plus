@@ -107,7 +107,7 @@ Modules.Highlighting = (function() {
 	
 	var showNotification = function(message) {
 		if (Window.Notification.permission === 'granted') {
-			var notification = new Window.Notification('(' + $(message.formattedTime).text() + ') ' + message.username, {
+			var notification = new Window.Notification('(' + $('<div>' + message.formattedTime + '</div>').text() + ') ' + message.username, {
 				body: (message.message.length > 50 ? message.message.slice(0, 51) + '\u2026' : message.message),
 				icon: $(message.avatar['48']).attr('src'),
 				onclick: function() {

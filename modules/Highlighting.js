@@ -22,12 +22,10 @@ Modules.Highlighting = (function() {
 	};
 	
 	var addEventListeners = function() {
-		bcplus.addEventListener('messageAdded', function(message) {
-			var messageText = $.trim(message.find('.timsChatText').text());
-			
+		bcplus.addEventListener('messageReceived', function(message) {
 			// TODO: dynamic, comma separated value
 			if (!Window.document.hasFocus() || bcplus.getAwayStatus().isAway) {
-				if (messageText.indexOf('Leon') > -1) {
+				if (message.message.indexOf('Leon') > -1) {
 					highlight(message);
 				}
 			}

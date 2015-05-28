@@ -79,18 +79,16 @@ Modules.Highlighting = (function() {
 			}
 			
 			listenerFunction = function(awayStatus) {
-				if (!awayStatus.isAway) {
-					$($.map(messages, function(e) {
-						return $('#' + e).closest('.timsChatMessage').get();
-					})).effect('highlight');
-					
-					messages.length = 0;
-					updateDocTitle();
-					
-					bcplus.removeEventListener(eventName, listenerFunction);
-					listenerFunction = null;
-					eventName = null;
-				}
+				$($.map(messages, function(e) {
+					return $('#' + e).closest('.timsChatMessage').get();
+				})).effect('highlight');
+				
+				messages.length = 0;
+				updateDocTitle()
+				
+				bcplus.removeEventListener(eventName, listenerFunction);
+				listenerFunction = null;
+				eventName = null;
 			};
 			bcplus.addEventListener(eventName, listenerFunction);
 		}

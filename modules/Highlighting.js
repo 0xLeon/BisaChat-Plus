@@ -51,7 +51,7 @@ Modules.Highlighting = (function() {
 	
 	var highlight = function(message) {
 		new Audio(Media.bing.dataURI).play();
-		messages.push(message);
+		messages.push(message.messageID);
 		updateDocTitle();
 		
 		if (listenerFunction === null) {
@@ -65,7 +65,7 @@ Modules.Highlighting = (function() {
 			listenerFunction = function(awayStatus) {
 				if (!awayStatus.isAway) {
 					$($.map(messages, function(e) {
-						return e.get();
+						return $('#' + e).closest('.timsChatMessage').get();
 					})).effect('highlight');
 					
 					messages.length = 0;

@@ -29,12 +29,22 @@ Modules.Highlighting = (function() {
 		docTitle = Window.document.title;
 		
 		// removeExisting();
+		getNotificationPermission();
 		buildUI();
 		addEventListeners();
 	};
 	
+	var getNotificationPermission = function() {
+		if (bcplus.getStorage().getValue('bcplusHighlightingActiveOption', true) && (Window.Notification.permission !== 'granted')) {
+			return Window.Notification.requestPermission(function(permission) {
+				var n;
+				return (((n = Window.Notification).permission != null) ? n.permission : (n.permission = permission));
+			});
+		}
+	};
+	
 	var buildUI = function() {
-		bcplus.addBoolOption('bcplusHighlightingActive', 'Highlighting aktivieren', 'bcplusHighlighting', 'Highlighting', true);
+		bcplus.addBoolOption('bcplusHighlightingActive', 'Highlighting aktivieren', 'bcplusHighlighting', 'Highlighting', true, getNotificationPermission);
 		bcplus.addTextOption('bcplusHighlightingText', 'Highlighting bei', 'text', 'bcplusHighlighting', null, '');
 		bcplus.addBoolOption('bcplusHighlightingChatbot', 'Chatbot-Nachrichten ausschließen', 'bcplusHighlighting', null, true);
 		bcplus.addBoolOption('bcplusHighlightingNp', 'NP-Nachrichten ausschließen', 'bcplusHighlighting', null, true);
@@ -88,6 +98,23 @@ Modules.Highlighting = (function() {
 		}
 		else {
 			Window.document.title = docTitle;
+		}
+	};
+	
+	var showNotification = function(message) {
+		if (Window.Notification.permission === 'granted') {
+			var notification = new Window.Notification('(' + $(message.formattedTime).text() + ') ' + message.username, {
+				body: (message.message.length > 50 ? message.message.slice(0, 51) + '\u2026' : message.message),
+				icon: $(message.avatar['48']).attr('src'),
+				onclick: function() {
+					console.log(this);
+					notification.close();
+				}
+			});
+			
+			Window.setTimeout(function() {
+				notification.close();
+			});
 		}
 	};
 	

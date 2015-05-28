@@ -2,6 +2,8 @@ var BisaChatPlus = (function() {
 	var bcplus = null;
 	var storage = Storage.getInterface('bcplus');
 	var event = {
+		chatBlur: $.Callbacks(),
+		chatFocus: $.Callbacks(),
 		messageAdded: $.Callbacks(),
 		messageSubmit: $.Callbacks(),
 		awayStatusChanged: $.Callbacks(),
@@ -90,6 +92,15 @@ var BisaChatPlus = (function() {
 					
 					break;
 			}
+		});
+		
+		
+		Window.document.addEventListener('blur', function(e) {
+			event.chatBlur.fire(e);
+		});
+		
+		Window.document.addEventListener('focus', function(e) {
+			event.chatFocus.fire(e);
 		});
 	};
 	

@@ -4,6 +4,23 @@ Modules.Highlighting = (function() {
 	var docTitle = null;
 	var listenerFunction = null;
 	var eventName = null;
+	var highlightingConditions = [
+		function(message, bcplus) {
+			return bcplus.getStorage().getValue('bcplusHighlightingActiveOption', true);
+		},
+		function(message, bcplus) {
+			return (!Window.document.hasFocus() || bcplus.getAwayStatus().isAway);
+		},
+		function(message, bcplus) {
+			return (message.sender !== WCF.User.userID);
+		},
+		function(message, bcplus) {
+			return (bcplus.getStorage().getValue('bcplusHighlightingChatbotOption', true) && (message.sender !== 55518));
+		},
+		function(message, bcplus) {
+			return true || (bcplus.getStorage().getValue('bcplusHighlightingNpOption', true) && !message.message.startsWith('np:'));
+		}
+	];
 	
 	var initialize = function(_bcplus) {
 		console.log('Modules.Highlighting.initialize()');
@@ -24,7 +41,7 @@ Modules.Highlighting = (function() {
 	var addEventListeners = function() {
 		bcplus.addEventListener('messageReceived', function(message) {
 			// TODO: dynamic, comma separated value
-			if (!Window.document.hasFocus() || bcplus.getAwayStatus().isAway) {
+			if (highlightingConditions.every(function(cond) { return cond(message, bcplus); })) {
 				if (message.message.indexOf('Leon') > -1) {
 					highlight(message);
 				}

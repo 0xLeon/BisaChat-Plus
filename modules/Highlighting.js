@@ -1,6 +1,6 @@
 Modules.Highlighting = (function() {
 	var bcplus = null;
-	var messages = null;
+	var messageIDs = null;
 	var regExp = null;
 	var docTitle = null;
 	var listenerFunction = null;
@@ -26,7 +26,7 @@ Modules.Highlighting = (function() {
 	var initialize = function(_bcplus) {
 		console.log('Modules.Highlighting.initialize()');
 		bcplus = _bcplus;
-		messages = [];
+		messageIDs = [];
 		docTitle = Window.document.title;
 		
 		// removeExisting();
@@ -91,7 +91,7 @@ Modules.Highlighting = (function() {
 	};
 	
 	var highlight = function(message) {
-		messages.push(message.messageID);
+		messageIDs.push(message.messageID);
 		
 		new Audio(Media.bing.dataURI).play();
 		showNotification(message);
@@ -110,11 +110,11 @@ Modules.Highlighting = (function() {
 			}
 			
 			listenerFunction = function(awayStatus) {
-				$(messages.map(function(e) {
+				$(messageIDs.map(function(e) {
 					return $('span[data-message-id="' + e.toString() + '"]').closest('.timsChatMessage').get();
 				})).effect('highlight', {}, 1e3);
 				
-				messages.length = 0;
+				messageIDs.length = 0;
 				updateDocTitle()
 				
 				bcplus.removeEventListener(eventName, listenerFunction);
@@ -126,8 +126,8 @@ Modules.Highlighting = (function() {
 	};
 	
 	var updateDocTitle = function() {
-		if (messages.length > 0) {
-			Window.document.title = '(' + messages.length.toString() + ') ' + docTitle;
+		if (messageIDs.length > 0) {
+			Window.document.title = '(' + messageIDs.length.toString() + ') ' + docTitle;
 		}
 		else {
 			Window.document.title = docTitle;

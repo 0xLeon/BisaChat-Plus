@@ -75,7 +75,7 @@ var BisaChatPlus = (function() {
 		
 		Window.be.bastelstu.Chat.listener.add('newMessage', function(message) {
 			event.messageReceived.fire(message);
-			
+			console.log(message);
 			switch (message.type) {
 				case 3:
 				case 4:

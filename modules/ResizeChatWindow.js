@@ -1,28 +1,28 @@
 Modules.ResizeChatWindow = (function () {
-    var bcplus = null;
+	var bcplus = null;
 
-    var initialize = function(_bcplus) {
-        console.log('Modules.ResizeChatWindow.initialize()');
-        bcplus = _bcplus;
+	var initialize = function(_bcplus) {
+		console.log('Modules.ResizeChatWindow.initialize()');
+		bcplus = _bcplus;
 
-        buildUI();
-        addEventListeners();
-    };
+		buildUI();
+		addEventListeners();
+	};
 
-    var buildUI = function() {
-        bcplus.addBoolOption('bcplusResizeChatWindow', 'Chatfenster anpassen', 'bcplusResizeChatWindow', 'Chatfenster', true);
-    };
+	var buildUI = function() {
+		bcplus.addBoolOption('bcplusResizeChatWindow', 'Chatfenster anpassen', 'bcplusResizeChatWindow', 'Chatfenster', true);
+	};
 
-    var addEventListeners = function() {
-        console.log('Modules.ResizeChatWindow.addEventListeners()');
-        $('#timsChatSmilies').on("click", function() {
-            setTimeout(function() {
-                $(window).resize();
-            }, 300);
-        });
-    };
+	var addEventListeners = function() {
+		console.log('Modules.ResizeChatWindow.addEventListeners()');
+		$('#timsChatSmilies').on("click", function() {
+			setTimeout(function() {
+				$(window).resize();
+			}, 300);
+		});
+	};
 
-    return {
-        initialize: initialize
-    }
+	return {
+		initialize: initialize
+	}
 })();

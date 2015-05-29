@@ -34,6 +34,28 @@ Modules.Highlighting = (function() {
 		addEventListeners();
 	};
 	
+	var addHighlightingCondition = function(condition) {
+		if (!$.isFunction(condition)) {
+			throw new Error('Condition must be a function.');
+		}
+		
+		return highlightingConditions.push(condition);
+	}
+	
+	var removeHighlightingCondition = function(condition) {
+		if (!$.isFunction(condition)) {
+			throw new Error('Invalid parameter!');
+		}
+		
+		var index = highlightingConditions.indexOf(condition);
+		
+		if (index < 0) {
+			throw new Error('Condition not found!');
+		}
+		
+		highlightingConditions.splice(index, 1);
+	}
+	
 	var getNotificationPermission = function() {
 		if (bcplus.getStorage().getValue('bcplusHighlightingActiveOption', true) && (Window.Notification.permission !== 'granted')) {
 			return Window.Notification.requestPermission(function(permission) {
@@ -123,6 +145,8 @@ Modules.Highlighting = (function() {
 	};
 	
 	return {
-		initialize:	initialize
+		initialize:			initialize,
+		addHighlightingCondition:	addHighlightingCondition,
+		removeHighlightingCondition:	removeHighlightingCondition
 	}
 })();

@@ -1,6 +1,7 @@
 Modules.Highlighting = (function() {
 	var bcplus = null;
 	var messages = null;
+	var regExp = null;
 	var docTitle = null;
 	var listenerFunction = null;
 	var eventName = null;
@@ -67,7 +68,7 @@ Modules.Highlighting = (function() {
 	
 	var buildUI = function() {
 		bcplus.addBoolOption('bcplusHighlightingActive', 'Highlighting aktivieren', 'bcplusHighlighting', 'Highlighting', true, getNotificationPermission);
-		bcplus.addTextOption('bcplusHighlightingText', 'Highlighting bei', 'text', 'bcplusHighlighting', null, '');
+		bcplus.addTextOption('bcplusHighlightingText', 'Highlighting bei', 'text', 'bcplusHighlighting', null, WCF.User.username, builRegExp);
 		bcplus.addBoolOption('bcplusHighlightingChatbot', 'Chatbot-Nachrichten ausschließen', 'bcplusHighlighting', null, true);
 		bcplus.addBoolOption('bcplusHighlightingNp', 'NP-Nachrichten ausschließen', 'bcplusHighlighting', null, true);
 	};
@@ -76,9 +77,15 @@ Modules.Highlighting = (function() {
 		bcplus.addEventListener('messageReceived', function(message) {
 			// TODO: dynamic, comma separated value
 			if (highlightingConditions.every(function(cond) { return cond(message, bcplus); })) {
-				if (message.message.indexOf('Leon') > -1) {
+				if (regExp === null) {
+					builRegExp();
+				}
+				
+				if (regExp.test(message)) {
 					highlight(message);
 				}
+				
+				// TODO: always highlight private messages
 			}
 		});
 	};
@@ -142,6 +149,17 @@ Modules.Highlighting = (function() {
 				notification.close();
 			});
 		}
+	};
+	
+	var builRegExp = function() {
+		var highlightingString = bcplus.getStorage().getValue('bcplusHighlightingTextOption', WCF.User.username);
+		var regExpString = highlightingString.split(',').map(function(item) {
+			// TODO: move to RegExp.escape()
+			return item.trim().replace(/[.?*+^$[\]\\(){}|-]/g, '\\$&');
+		}).join('|');
+		
+		regExp = null;
+		regExp = new RegExp('\\b(' + regExpString + ')\\b', 'i');
 	};
 	
 	return {

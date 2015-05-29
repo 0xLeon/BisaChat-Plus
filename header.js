@@ -8,6 +8,7 @@
 // @namespace      http://projects.swallow-all-lies.com/greasemonkey/namsespaces/bisachat.plus
 // @match          http://chat.bisaboard.de/index.php/Chat/*/
 // @match          https://chat.bisaboard.de/index.php/Chat/*/
+// @grant          none
 // @run-at         document-end
 // ==/UserScript==
 

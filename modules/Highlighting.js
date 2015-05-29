@@ -110,7 +110,7 @@ Modules.Highlighting = (function() {
 			}
 			
 			listenerFunction = function(awayStatus) {
-				$($.map(messages, function(e) {
+				$(messages.map(function(e) {
 					return $('span[data-message-id="' + e.toString() + '"]').closest('.timsChatMessage').get();
 				})).effect('highlight');
 				

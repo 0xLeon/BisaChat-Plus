@@ -112,7 +112,7 @@ Modules.Highlighting = (function() {
 			listenerFunction = function(awayStatus) {
 				$(messages.map(function(e) {
 					return $('span[data-message-id="' + e.toString() + '"]').closest('.timsChatMessage').get();
-				})).effect('highlight');
+				})).effect('highlight', {}, 1e3);
 				
 				messages.length = 0;
 				updateDocTitle()

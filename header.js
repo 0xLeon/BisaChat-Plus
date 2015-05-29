@@ -6,8 +6,8 @@
 // @copyright      2011-2015, Stefan Hahn
 // @license        GNU General Public License, version 2
 // @namespace      http://projects.swallow-all-lies.com/greasemonkey/namsespaces/bisachat.plus
-// @include        http://chat.bisaboard.de/index.php/Chat/*/
-// @include        https://chat.bisaboard.de/index.php/Chat/*/
+// @match          http://chat.bisaboard.de/index.php/Chat/*/
+// @match          https://chat.bisaboard.de/index.php/Chat/*/
 // @run-at         document-end
 // ==/UserScript==
 

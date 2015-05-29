@@ -81,7 +81,7 @@ Modules.Highlighting = (function() {
 					builRegExp();
 				}
 				
-				if (regExp.test(message)) {
+				if (regExp.test(message.message)) {
 					highlight(message);
 				}
 				

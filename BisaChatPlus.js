@@ -169,7 +169,7 @@ var BisaChatPlus = (function() {
 		$category.find('dl').append($option);
 	};
 	
-	var addTextOption = function(optionID, optionText, optionType, categoryID, categoryName, defaultValue) {
+	var addTextOption = function(optionID, optionText, optionType, categoryID, categoryName, defaultValue, onChange) {
 		if (!!$('#' + optionID)[0]) {
 			throw new Error('Option »' + optionID + '« already exists!');
 		}
@@ -186,6 +186,10 @@ var BisaChatPlus = (function() {
 			storage.setValue(optionID + 'Option', $(this).val());
 			
 			// TODO: error checking?
+			
+			if ($.isFunction(onChange)) {
+				onChange.call($(event.target), event);
+			}
 		});
 		$category.find('dl').append($option);
 		

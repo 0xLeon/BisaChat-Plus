@@ -18,7 +18,7 @@ Modules.MessageFilters = (function() {
 		console.log('Modules.MessageFilters.addEventListeners()');
 		bcplus.addEventListener('messageAdded', function(messageNode) {
 			if (bcplus.getStorage().getValue('bcplusGreentextOption', true)) {
-				var messageText = $.trim(messageNode.find('.timsChatText').text());
+				var messageText = messageNode.find('.timsChatText').text().trim();
 				
 				if (messageText.startsWith('>')) {
 					messageNode.find('.timsChatText').css({

@@ -18,6 +18,6 @@ Modules.ResizeChatWindow = (function () {
 	};
 
 	return {
-		initialize: initialize
+		initialize:	initialize
 	}
 })();

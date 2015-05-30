@@ -100,8 +100,6 @@ Modules.Highlighting = (function() {
 				if ((message.type === bcplus.messageType.WHISPER) || regExp.test(message.plainText)) {
 					highlight(message);
 				}
-				
-				// TODO: always highlight private messages
 			}
 		});
 	};

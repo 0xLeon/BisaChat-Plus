@@ -11,8 +11,8 @@ Modules.ResizeChatWindow = (function () {
 	var addEventListeners = function() {
 		console.log('Modules.ResizeChatWindow.addEventListeners()');
 		$('#timsChatSmilies').on("click", function() {
-			setTimeout(function() {
-				$(window).resize();
+			Window.setTimeout(function() {
+				$(Window).resize();
 			}, 300);
 		});
 	};

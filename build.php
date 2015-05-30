@@ -115,7 +115,7 @@ foreach ($options['modules'] as $module) {
 }
 
 $result .= file_get_contents('BisaChatPlus.js');
-$result = str_replace('{version}', $options['version'].'-'.$options['build'], $result);
+$header = str_replace('{version}', $options['version'].'-'.$options['build'], $header);
 $result = str_replace("\n", "\n\t\t", $result);
 $result = str_replace("/*{content}*/", $result, $header);
 

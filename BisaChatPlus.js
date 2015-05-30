@@ -110,7 +110,7 @@ var BisaChatPlus = (function() {
 			message.plainText = $('<div>' + message.formattedMessage + '</div>').text().trim();
 			
 			event.messageReceived.fire(message);
-			console.log(message);
+			
 			switch (message.type) {
 				case 3:
 				case 4:

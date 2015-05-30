@@ -75,7 +75,6 @@ Modules.Highlighting = (function() {
 	
 	var addEventListeners = function() {
 		bcplus.addEventListener('messageReceived', function(message) {
-			// TODO: dynamic, comma separated value
 			if (highlightingConditions.every(function(cond) { return cond(message, bcplus); })) {
 				if (regExp === null) {
 					builRegExp();

@@ -11,6 +11,7 @@ var BisaChatPlus = (function() {
 		optionsOpened: $.Callbacks(),
 		optionsClosed: $.Callbacks()
 	};
+	var privateRoomObservers = { };
 	var optionsDialog = $('<div id="bcplusOptionsDialogContent" class="container containerPadding"></div>').appendTo('body').wcfDialog({
 		autoOpen: false,
 		title: 'Optionen',
@@ -24,7 +25,6 @@ var BisaChatPlus = (function() {
 			$('#timsChatInput').focus();
 		}
 	});
-	
 	var awayStatus = {
 		isAway: false,
 		message: ''
@@ -48,6 +48,43 @@ var BisaChatPlus = (function() {
 	
 	var initEvents = function() {
 		addStreamObserver($('#timsChatMessageContainer0').find('ul'));
+		
+		var privateRoomObserver = new MutationObserver(function(mutations) {
+			mutations.forEach(function(mutation) {
+				if (mutation.addedNodes.length > 0) {
+					for (var i = 0, l = mutation.addedNodes.length; i < l; i++) {
+						var $addedNode = $(mutation.addedNodes[i]);
+						
+						if ($addedNode.hasClass('timsChatMessageContainer')) {
+							var uuid = String.generateUUID()
+							
+							$addedNode.get(0).setAttribute('data-uuid', uuid);
+							privateRoomObservers[uuid] = addStreamObserver($addedNode.find('ul'));
+						}
+					}
+				}
+				
+				if (mutation.removedNodes.length > 0) {
+					for (var i = 0, l = mutation.removedNodes.length; i < l; i++) {
+						var $removedNode = $(mutation.removedNodes[i]);
+						
+						if ($removedNode.hasClass('timsChatMessageContainer')) {
+							var uuid = $removedNode.data('uuid');
+							
+							privateRoomObservers[uuid].disconnect();
+							delete privateRoomObservers[uuid];
+						}
+					}
+				}
+			});
+		});
+		var privateRoomObserverConfig = {
+			childList: true,
+			attributes: false,
+			characterData: false,
+			subtree: false
+		};
+		privateRoomObserver.observe($('#timsChatMessageTabMenu').get(0), privateRoomObserverConfig);
 		
 		Window.be.bastelstu.Chat.listener.add('newMessage', function(message) {
 			message.plainText = $('<div>' + message.formattedMessage + '</div>').text().trim();

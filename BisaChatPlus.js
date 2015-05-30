@@ -281,3 +281,13 @@ var BisaChatPlus = (function() {
 		}
 	};
 })();
+
+if (Window.com === undefined) {
+	Window.com = { };
+}
+
+if (Window.com.leon === undefined) {
+	Window.com.leon = { };
+}
+
+Window.com.leon.BCPlus = BisaChatPlus;

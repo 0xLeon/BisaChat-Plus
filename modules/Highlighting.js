@@ -93,7 +93,7 @@ Modules.Highlighting = (function() {
 					builRegExp();
 				}
 				
-				if (regExp.test(message.plainText)) {
+				if ((message.type === bcplus.messageType.WHISPER) || regExp.test(message.plainText)) {
 					highlight(message);
 				}
 				

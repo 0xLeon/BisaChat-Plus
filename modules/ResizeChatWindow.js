@@ -1,10 +1,10 @@
 Modules.ResizeChatWindow = (function () {
 	var bcplus = null;
-
+	
 	var initialize = function(_bcplus) {
 		console.log('Modules.ResizeChatWindow.initialize()');
 		bcplus = _bcplus;
-
+		
 		addEventListeners();
 	};
 
@@ -16,7 +16,7 @@ Modules.ResizeChatWindow = (function () {
 			}, 300);
 		});
 	};
-
+	
 	return {
 		initialize:	initialize
 	}

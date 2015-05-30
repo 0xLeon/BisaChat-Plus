@@ -109,6 +109,7 @@ var BisaChatPlus = (function() {
 		
 		Window.be.bastelstu.Chat.listener.add('newMessage', function(message) {
 			message.plainText = $('<div>' + message.formattedMessage + '</div>').text().trim();
+			message.ownMessage = (message.sender === WCF.User.userID);
 			
 			event.messageReceived.fire(message);
 			

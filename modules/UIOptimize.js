@@ -13,7 +13,7 @@ Modules.UIOptimize = (function() {
 		$('#timsChatSmilies').on('click', function() {
 			Window.setTimeout(function() {
 				$(Window).resize();
-			}, 300);
+			}, 1);
 		});
 	};
 	

@@ -28,7 +28,7 @@ var BisaChatPlus = (function() {
 	var awayStatus = {
 		isAway: false,
 		message: ''
-	}
+	};
 	
 	var init = function() {
 		console.log('BisachatPlus.init()');
@@ -128,7 +128,7 @@ var BisaChatPlus = (function() {
 			optionsDialog.wcfDialog('open');
 		});
 		$optionsButton.appendTo('#timsChatOptions .buttonGroup');
-	}
+	};
 	
 	var initModules = function() {
 		console.log('BisachatPlus.initModules()');
@@ -168,7 +168,7 @@ var BisaChatPlus = (function() {
 		messageObserver.observe(stream, messageObserverConfig);
 		
 		return messageObserver;
-	}
+	};
 	
 	var getStorage = function() {
 		return storage;
@@ -194,7 +194,7 @@ var BisaChatPlus = (function() {
 		}
 		
 		event[eventName].remove(callback);
-	}
+	};
 	
 	var addBoolOption = function(optionID, optionText, categoryID, categoryName, defaultValue, onChange) {
 		if (!!$('#' + optionID)[0]) {

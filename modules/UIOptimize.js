@@ -14,7 +14,7 @@ Modules.UIOptimize = (function() {
 		
 		// TODO: re-display if there is content in chat topic
 		$('<style type="text/css">#timsChatTopic { display: none !important; }</style>').appendTo('head');
-	}
+	};
 
 	var addEventListeners = function() {
 		console.log('Modules.UIOptimize.addEventListeners()');

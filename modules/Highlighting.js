@@ -178,7 +178,7 @@ Modules.Highlighting = (function() {
 		var highlightingString = bcplus.getStorage().getValue('bcplusHighlightingTextOption', WCF.User.username);
 		var regExpString = highlightingString.split(',').map(function(item) {
 			// TODO: move to RegExp.escape()
-			return item.trim().replace(/[.?*+^$[\]\\(){}|-]/g, '\\$&');
+			return RegExp.escape(item.trim());
 		}).join('|');
 		
 		regExp = null;

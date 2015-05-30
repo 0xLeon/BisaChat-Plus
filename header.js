@@ -32,6 +32,12 @@
 		});
 	};
 	
+	RegExp.escapeRegExp = /[.?*+^$[\]\\(){}|-]/g;
+	
+	RegExp.escape = function(str) {
+		return str.replace(RegExp.escapeRegExp, '\\$&');
+	}
+	
 	try {
 		/*{content}*/
 	}

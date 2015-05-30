@@ -47,31 +47,7 @@ var BisaChatPlus = (function() {
 	};
 	
 	var initEvents = function() {
-		var messageObserver = new MutationObserver(function(mutations) {
-			mutations.forEach(function(mutation) {
-				for (var i = 0, l = mutation.addedNodes.length; i < l; i++) {
-					var messageNode = $(mutation.addedNodes[i]);
-					
-					if (messageNode.hasClass('timsChatMessage')) {
-						try {
-							event.messageAdded.fire(messageNode);
-						}
-						catch (e) {
-							console.log(e);
-						}
-					}
-				}
-			});
-		});
-		var messageObserverConfig = {
-			childList: true,
-			attributes: false,
-			characterData: false
-		};
-		var messageObserverTarget = $('#timsChatMessageContainer0').find('ul');
-		
-		messageObserver.observe(messageObserverTarget[0], messageObserverConfig);
-		
+		addStreamObserver($('#timsChatMessageContainer0').find('ul'));
 		
 		Window.be.bastelstu.Chat.listener.add('newMessage', function(message) {
 			message.plainText = $('<div>' + message.formattedMessage + '</div>').text().trim();
@@ -123,6 +99,39 @@ var BisaChatPlus = (function() {
 			moduleObject.initialize(bcplus);
 		});
 	};
+	
+	var addStreamObserver = function(stream) {
+		stream = $(stream).get(0);
+		
+		if (stream.nodeName.toLowerCase() !== 'ul') {
+			throw new Error('Can\'t observe stream of node type »' + stream.nodeName.toLowerCase() + '«.');
+		}
+		
+		var messageObserver = new MutationObserver(function(mutations) {
+			mutations.forEach(function(mutation) {
+				for (var i = 0, l = mutation.addedNodes.length; i < l; i++) {
+					var messageNode = $(mutation.addedNodes[i]);
+					
+					if (messageNode.hasClass('timsChatMessage')) {
+						try {
+							event.messageAdded.fire(messageNode);
+						}
+						catch (e) {
+							console.log(e);
+						}
+					}
+				}
+			});
+		});
+		var messageObserverConfig = {
+			childList: true,
+			attributes: false,
+			characterData: false
+		};
+		messageObserver.observe(stream, messageObserverConfig);
+		
+		return messageObserver;
+	}
 	
 	var getStorage = function() {
 		return storage;

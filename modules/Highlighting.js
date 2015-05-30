@@ -66,8 +66,6 @@ Modules.Highlighting = (function() {
 		if ($notifyButton.data('status') === 1) {
 			$notifyButton.click();
 		}
-		
-		console.log($notifyButton.data('status'));
 	};
 	
 	var getNotificationPermission = function() {

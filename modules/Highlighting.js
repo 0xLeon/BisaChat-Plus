@@ -79,9 +79,9 @@ Modules.Highlighting = (function() {
 	
 	var buildUI = function() {
 		bcplus.addBoolOption('bcplusHighlightingActive', 'Highlighting aktivieren', 'bcplusHighlighting', 'Highlighting', true, getNotificationPermission);
+		bcplus.addTextOption('bcplusHighlightingText', 'Highlighting bei', 'text', 'bcplusHighlighting', null, WCF.User.username, builRegExp);
 		bcplus.addBoolOption('bcplusHighlightingSound', 'Sound aktivieren', 'bcplusHighlighting', null, true);
 		bcplus.addBoolOption('bcplusHighlightingNotification', 'Desktop Notification anzeigen', 'bcplusHighlighting', null, true);
-		bcplus.addTextOption('bcplusHighlightingText', 'Highlighting bei', 'text', 'bcplusHighlighting', null, WCF.User.username, builRegExp);
 		bcplus.addBoolOption('bcplusHighlightingChatbot', 'Chatbot-Nachrichten ausschließen', 'bcplusHighlighting', null, true);
 		bcplus.addBoolOption('bcplusHighlightingNp', 'NP-Nachrichten ausschließen', 'bcplusHighlighting', null, true);
 	};

@@ -41,7 +41,7 @@ Modules.Highlighting = (function() {
 		}
 		
 		return highlightingConditions.push(condition);
-	}
+	};
 	
 	var removeHighlightingCondition = function(condition) {
 		if (!$.isFunction(condition)) {
@@ -55,7 +55,7 @@ Modules.Highlighting = (function() {
 		}
 		
 		highlightingConditions.splice(index, 1);
-	}
+	};
 	
 	var getNotificationPermission = function() {
 		if (bcplus.getStorage().getValue('bcplusHighlightingActiveOption', true) && (Window.Notification.permission !== 'granted')) {
@@ -166,5 +166,5 @@ Modules.Highlighting = (function() {
 		initialize:			initialize,
 		addHighlightingCondition:	addHighlightingCondition,
 		removeHighlightingCondition:	removeHighlightingCondition
-	}
+	};
 })();

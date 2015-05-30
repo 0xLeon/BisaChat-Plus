@@ -10,6 +10,7 @@ Modules.MessageFilters = (function() {
 	};
 	
 	var buildUI = function() {
+		console.log('Modules.MessageFilters.buildUI()');
 		bcplus.addBoolOption('bcplusGreentext', 'Greentext aktivieren', 'bcplusPrefilters', 'Prefilter', true);
 		bcplus.addBoolOption('bcplusHideAvatar', 'Avatare ausblenden', 'bcplusPrefilters', null, false);
 	};

@@ -67,6 +67,7 @@ var BisaChatPlus = (function() {
 	};
 	
 	var initEvents = function() {
+		console.log('BisachatPlus.initEvents()');
 		addStreamObserver($('#timsChatMessageContainer0').find('ul'));
 		
 		var privateRoomObserver = new MutationObserver(function(mutations) {
@@ -143,6 +144,7 @@ var BisaChatPlus = (function() {
 	};
 	
 	var buildUI = function() {
+		console.log('BisachatPlus.buildUI()');
 		var $optionsButton = $('<li><a id="bcplusOptions" class="button"><span class="icon icon16 icon-cog"></span><span class="invisible">BisaChat Plus Optionen</span></a></li>');
 		$optionsButton.find('a').on('click', function() {
 			optionsDialog.wcfDialog('open');
@@ -158,6 +160,7 @@ var BisaChatPlus = (function() {
 	};
 	
 	var addStreamObserver = function(stream) {
+		console.log('BisachatPlus.addStreamObserver()');
 		stream = $(stream).get(0);
 		
 		if (stream.nodeName.toLowerCase() !== 'ul') {
@@ -217,6 +220,7 @@ var BisaChatPlus = (function() {
 	};
 	
 	var addBoolOption = function(optionID, optionText, categoryID, categoryName, defaultValue, onChange) {
+		console.log('BisachatPlus.addBoolOption()');
 		if (!!$('#' + optionID)[0]) {
 			throw new Error('Option »' + optionID + '« already exists!');
 		}
@@ -238,6 +242,7 @@ var BisaChatPlus = (function() {
 	};
 	
 	var addTextOption = function(optionID, optionText, optionType, categoryID, categoryName, defaultValue, onChange) {
+		console.log('BisachatPlus.addTextOption()');
 		if (!!$('#' + optionID)[0]) {
 			throw new Error('Option »' + optionID + '« already exists!');
 		}

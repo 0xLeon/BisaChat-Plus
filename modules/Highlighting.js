@@ -19,7 +19,7 @@ Modules.Highlighting = (function() {
 			return (bcplus.getStorage().getValue('bcplusHighlightingChatbotOption', true) && (message.sender !== 55518));
 		},
 		function(message, bcplus) {
-			return (bcplus.getStorage().getValue('bcplusHighlightingNpOption', true) && !message.message.startsWith('np:'));
+			return (bcplus.getStorage().getValue('bcplusHighlightingNpOption', true) && !message.plainText.startsWith('np:'));
 		}
 	];
 	
@@ -81,7 +81,7 @@ Modules.Highlighting = (function() {
 					builRegExp();
 				}
 				
-				if (regExp.test(message.message)) {
+				if (regExp.test(message.plainText)) {
 					highlight(message);
 				}
 				

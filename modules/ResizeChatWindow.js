@@ -5,12 +5,7 @@ Modules.ResizeChatWindow = (function () {
 		console.log('Modules.ResizeChatWindow.initialize()');
 		bcplus = _bcplus;
 
-		buildUI();
 		addEventListeners();
-	};
-
-	var buildUI = function() {
-		bcplus.addBoolOption('bcplusResizeChatWindow', 'Chatfenster anpassen', 'bcplusResizeChatWindow', 'Chatfenster', true);
 	};
 
 	var addEventListeners = function() {

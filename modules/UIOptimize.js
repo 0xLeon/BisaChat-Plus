@@ -1,15 +1,15 @@
-Modules.ResizeChatWindow = (function () {
+Modules.UIOptimize = (function() {
 	var bcplus = null;
 	
 	var initialize = function(_bcplus) {
-		console.log('Modules.ResizeChatWindow.initialize()');
+		console.log('Modules.UIOptimize.initialize()');
 		bcplus = _bcplus;
 		
 		addEventListeners();
 	};
 
 	var addEventListeners = function() {
-		console.log('Modules.ResizeChatWindow.addEventListeners()');
+		console.log('Modules.UIOptimize.addEventListeners()');
 		$('#timsChatSmilies').on('click', function() {
 			Window.setTimeout(function() {
 				$(Window).resize();
@@ -19,5 +19,5 @@ Modules.ResizeChatWindow = (function () {
 	
 	return {
 		initialize:	initialize
-	}
+	};
 })();

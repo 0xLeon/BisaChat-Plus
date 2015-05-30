@@ -30,6 +30,22 @@ var BisaChatPlus = (function() {
 		message: ''
 	};
 	
+	var messageType = {
+		get NORMAL()	{ return  0; },
+		get JOIN()	{ return  1; },
+		get LEAVE()	{ return  2; },
+		get AWAY()	{ return  3; },
+		get BACK()	{ return  4; },
+		get MODERATE()	{ return  5; },
+		get ME()	{ return  6; },
+		get WHISPER()	{ return  7; },
+		get INFO()	{ return  8; },
+		get CLEAR()	{ return  9; },
+		get TEAM()	{ return 10; },
+		get GLOBAL()	{ return 11; },
+		get ATTACH()	{ return 12; }
+	};
+	
 	var init = function() {
 		console.log('BisachatPlus.init()');
 		bcplus = {
@@ -38,7 +54,11 @@ var BisaChatPlus = (function() {
 			addEventListener:	addEventListener,
 			removeEventListener:	removeEventListener,
 			addBoolOption:		addBoolOption,
-			addTextOption:		addTextOption
+			addTextOption:		addTextOption,
+			
+			get messageType() {
+				return messageType;
+			}
 		};
 		
 		initEvents();
@@ -252,6 +272,10 @@ var BisaChatPlus = (function() {
 		addEventListener:	addEventListener,
 		removeEventListener:	removeEventListener,
 		addBoolOption:		addBoolOption,
-		addTextOption:		addTextOption
+		addTextOption:		addTextOption,
+		
+		get messageType() {
+			return messageType;
+		}
 	};
 })();

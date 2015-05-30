@@ -165,7 +165,7 @@ Modules.Highlighting = (function() {
 			
 			Window.setTimeout(function() {
 				notification.close();
-			});
+			}, 5e3);
 		}
 	};
 	

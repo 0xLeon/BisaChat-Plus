@@ -29,7 +29,7 @@ Modules.Highlighting = (function() {
 		messageIDs = [];
 		docTitle = Window.document.title;
 		
-		// removeExisting();
+		removeExisting();
 		getNotificationPermission();
 		buildUI();
 		addEventListeners();
@@ -55,6 +55,19 @@ Modules.Highlighting = (function() {
 		}
 		
 		highlightingConditions.splice(index, 1);
+	};
+	
+	var removeExisting = function() {
+		console.log('Modules.Highlighting.removeExisting()');
+		var $notifyButton = $('#timsChatNotify').css({
+			display: 'none'
+		});
+		
+		if ($notifyButton.data('status') === 1) {
+			$notifyButton.click();
+		}
+		
+		console.log($notifyButton.data('status'));
 	};
 	
 	var getNotificationPermission = function() {

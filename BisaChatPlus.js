@@ -113,24 +113,20 @@ var BisaChatPlus = (function() {
 			
 			event.messageReceived.fire(message);
 			
-			switch (message.type) {
-				case 3:
-				case 4:
-					if (message.sender === WCF.User.userID) {
-						if (message.type === 3) {
-							awayStatus.isAway = true;
-							// TODO: get away status message
-							awayStatus.message = '';
-						}
-						else {
-							awayStatus.isAway = false;
-							awayStatus.message = '';
-						}
-						
-						event.awayStatusChanged.fire(awayStatus);
-					}
+			if (message.ownMessage) {
+				if (message.type === messageType.AWAY) {
+					awayStatus.isAway = true;
+					// TODO: get away status message
+					awayStatus.message = '';
 					
-					break;
+					event.awayStatusChanged.fire(awayStatus);
+				}
+				else if (awayStatus.isAway) {
+					awayStatus.isAway = false;
+					awayStatus.message = '';
+					
+					event.awayStatusChanged.fire(awayStatus);
+				}
 			}
 		});
 		

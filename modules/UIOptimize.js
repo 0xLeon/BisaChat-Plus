@@ -31,6 +31,7 @@ Modules.UIOptimize = (function() {
 		});
 		
 		bcplus.addEventListener('messageAdded', function($messageNode) {
+			// TODO: bubble layout support
 			var $timeNode = $messageNode.find('.timsChatInnerMessage time').detach();
 			
 			if (!bcplus.getStorage().getValue('bcplusUIOptimizeShowSecondsOption', false)) {

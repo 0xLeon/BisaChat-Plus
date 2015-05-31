@@ -19,6 +19,7 @@ Modules.MessageFilters = (function() {
 		console.log('Modules.MessageFilters.addEventListeners()');
 		bcplus.addEventListener('messageAdded', function(messageNode) {
 			if (bcplus.getStorage().getValue('bcplusGreentextOption', true)) {
+				// TODO: bubble layout support
 				var messageText = messageNode.find('.timsChatText').text().trim();
 				
 				if (messageText.startsWith('>')) {

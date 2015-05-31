@@ -131,6 +131,7 @@ Modules.Highlighting = (function() {
 			
 			listenerFunction = function(awayStatus) {
 				$(messageIDs.map(function(e) {
+					// TODO: bubble layout support
 					return $('span[data-message-id="' + e.toString() + '"]').closest('.timsChatMessage').get();
 				})).effect('highlight', {}, 1e3);
 				

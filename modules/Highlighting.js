@@ -13,7 +13,7 @@ Modules.Highlighting = (function() {
 			return (!Window.document.hasFocus() || bcplus.getAwayStatus().isAway);
 		},
 		function(message, bcplus) {
-			return (message.ownMessage);
+			return (!message.ownMessage);
 		},
 		function(message, bcplus) {
 			return (bcplus.getStorage().getValue('bcplusHighlightingChatbotOption', true) && (message.sender !== 55518));

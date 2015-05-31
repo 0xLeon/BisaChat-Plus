@@ -23,6 +23,12 @@ Modules.UIOptimize = (function() {
 				$(Window).resize();
 			}, 1);
 		});
+		
+		bcplus.addEventListener('messageAdded', function($messageNode) {
+			var $timeNode = $messageNode.find('.timsChatInnerMessage time').detach();
+			
+			$timeNode.prependTo($messageNode.find('.timsChatInnerMessage'));
+		});
 	};
 	
 	return {

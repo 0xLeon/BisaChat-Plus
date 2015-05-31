@@ -4,6 +4,8 @@ var BisaChatPlus = (function() {
 	var event = {
 		chatBlur: $.Callbacks(),
 		chatFocus: $.Callbacks(),
+		privateRoomAdded: $.Callbacks(),
+		privateRoomRemoved: $.Callbacks(),
 		messageReceived: $.Callbacks(),
 		messageAdded: $.Callbacks(),
 		messageSubmit: $.Callbacks(),
@@ -81,6 +83,8 @@ var BisaChatPlus = (function() {
 							
 							$addedNode.get(0).setAttribute('data-uuid', uuid);
 							privateRoomObservers[uuid] = addStreamObserver($addedNode.find('ul'));
+							
+							event.privateRoomAdded.fire($addedNode);
 						}
 					}
 				}
@@ -94,6 +98,8 @@ var BisaChatPlus = (function() {
 							
 							privateRoomObservers[uuid].disconnect();
 							delete privateRoomObservers[uuid];
+							
+							event.privateRoomRemoved.fire($removedNode);
 						}
 					}
 				}

@@ -166,7 +166,13 @@ Modules.Highlighting = (function() {
 			});
 			
 			notification.onclick = function() {
-				// TODO: if message in private channel, open the channel
+				if (messageIsPrivate && ($('#timsChatMessageTabMenuAnchor' + message.sender).length === 1)) {
+					$('#timsChatMessageTabMenuAnchor' + message.sender).click();
+				}
+				else {
+					$('#timsChatMessageTabMenuAnchor0').click();
+				}
+				
 				this.close();
 			};
 			

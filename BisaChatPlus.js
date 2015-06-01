@@ -175,6 +175,8 @@ var BisaChatPlus = (function() {
 				for (var i = 0, l = mutation.addedNodes.length; i < l; i++) {
 					var messageNode = $(mutation.addedNodes[i]);
 					
+					console.log(messageNode);
+					
 					if (messageNode.hasClass('timsChatMessage')) {
 						try {
 							event.messageAdded.fire(messageNode);

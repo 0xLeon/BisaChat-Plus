@@ -10,7 +10,7 @@
 // @match          https://chat.bisaboard.de/index.php/Chat/*/
 // @require        http://projects.0xleon.de/userscripts/bcplus/resources/scripts/waypoints.noframework.min.js
 // @require        http://projects.0xleon.de/userscripts/bcplus/resources/scripts/waypoints.inview.min.js
-// @grant          none
+// @grant          unsafeWindow
 // @run-at         document-end
 // ==/UserScript==
 

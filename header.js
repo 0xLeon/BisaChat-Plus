@@ -5,7 +5,7 @@
 // @author         Stefan Hahn
 // @copyright      2011-2015, Stefan Hahn
 // @license        GNU General Public License, version 2
-// @namespace      http://projects.swallow-all-lies.com/greasemonkey/namsespaces/bisachat.plus
+// @namespace      http://projects.0xleon.com/userscripts/bcplus
 // @match          http://chat.bisaboard.de/index.php/Chat/*/
 // @match          https://chat.bisaboard.de/index.php/Chat/*/
 // @require        http://projects.0xleon.de/userscripts/bcplus/resources/scripts/waypoints.noframework.min.js

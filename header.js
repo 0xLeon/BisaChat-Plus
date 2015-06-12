@@ -10,9 +10,18 @@
 // @match          https://chat.bisaboard.de/index.php/Chat/*/
 // @require        http://projects.0xleon.de/userscripts/bcplus/resources/scripts/waypoints.noframework.min.js
 // @require        http://projects.0xleon.de/userscripts/bcplus/resources/scripts/waypoints.inview.min.js
-// @grant          unsafeWindow
+// @grant          none
 // @run-at         document-end
 // ==/UserScript==
+
+var browserWindow = undefined;
+
+try {
+	browserWindow = unsafeWindow;
+}
+catch (e) {
+	browserWindow = window;
+}
 
 (function(Window, $, WCF) {
 	// TODO: use strict again
@@ -44,4 +53,4 @@
 	catch (e) {
 		console.log(e);
 	}
-})(unsafeWindow, unsafeWindow.jQuery, unsafeWindow.WCF);
+})(browserWindow, browserWindow.jQuery, browserWindow.WCF);

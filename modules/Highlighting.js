@@ -183,7 +183,7 @@ Modules.Highlighting = (function() {
 	};
 	
 	var builRegExp = function() {
-		var highlightingString = bcplus.getStorage().getValue('bcplusHighlightingTextOption', WCF.User.username);
+		var highlightingString = bcplus.getStorage().getValue('highlightingTextOption', WCF.User.username);
 		var regExpString = highlightingString.split(',').map(function(item) {
 			return RegExp.escape(item.trim());
 		}).join('|');

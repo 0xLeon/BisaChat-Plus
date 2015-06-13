@@ -232,10 +232,10 @@ var BisaChatPlus = (function() {
 		
 		var $category = $($('#' + categoryID)[0] || $('<fieldset id="' + categoryID + '"><legend>' + categoryName + '</legend><dl></dl></fieldset>').appendTo('#bcplusOptionsDialogContent'));
 		var $option = $('<dt></dt><dd><label><input type="checkbox" id="' + optionID + '"/> ' + optionText + '</label></dd>');
+		var optionValue = storage.getValue(optionID + 'Option', !!defaultValue);
 		
-		storage.setValue(optionID + 'Option', !!defaultValue);
 		$option.find('input').prop({
-			checked: !!defaultValue
+			checked: optionValue
 		}).on('change', function(event) {
 			storage.setValue(optionID + 'Option', $(this).prop('checked'));
 			
@@ -258,9 +258,9 @@ var BisaChatPlus = (function() {
 		
 		var $category = $($('#' + categoryID)[0] || $('<fieldset id="' + categoryID + '"><legend>' + categoryName + '</legend><dl></dl></fieldset>').appendTo('#bcplusOptionsDialogContent'));
 		var $option = $('<dt><label for="' + optionID + '">' + optionText + '</label></dt><dd><input type="' + optionType.toLowerCase() + '" id="' + optionID + '"/></dd>');
+		var optionValue = storage.getValue(optionID + 'Option', defaultValue);
 		
-		storage.setValue(optionID + 'Option', defaultValue);
-		$option.find('input').val(defaultValue).on('blur', function(event) {
+		$option.find('input').val(optionValue).on('blur', function(event) {
 			storage.setValue(optionID + 'Option', $(this).val());
 			
 			// TODO: error checking?

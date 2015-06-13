@@ -226,13 +226,13 @@ var BisaChatPlus = (function() {
 	
 	var addBoolOption = function(optionID, optionText, categoryID, categoryName, defaultValue, onChange) {
 		console.log('BisachatPlus.addBoolOption()');
-		if (!!$('#' + optionID)[0]) {
+		if (!!$('#bcplus-' + optionID)[0]) {
 			throw new Error('Option »' + optionID + '« already exists!');
 		}
 		
-		var $category = $($('#' + categoryID)[0] || $('<fieldset id="' + categoryID + '"><legend>' + categoryName + '</legend><dl></dl></fieldset>').appendTo('#bcplusOptionsDialogContent'));
-		var $option = $('<dt></dt><dd><label><input type="checkbox" id="' + optionID + '"/> ' + optionText + '</label></dd>');
-		var optionValue = storage.getValue(optionID + 'Option', !!defaultValue);
+		var $category = $($('#bcplus-' + categoryID)[0] || $('<fieldset id="bcplus-' + categoryID + '"><legend>' + categoryName + '</legend><dl></dl></fieldset>').appendTo('#bcplusOptionsDialogContent'));
+		var $option = $('<dt></dt><dd><label><input type="checkbox" id="bcplus-' + optionID + '"/> ' + optionText + '</label></dd>');
+		var optionValue = storage.getValue('bcplus-' + optionID + 'Option', !!defaultValue);
 		
 		$option.find('input').prop({
 			checked: optionValue
@@ -248,7 +248,7 @@ var BisaChatPlus = (function() {
 	
 	var addTextOption = function(optionID, optionText, optionType, categoryID, categoryName, defaultValue, onChange) {
 		console.log('BisachatPlus.addTextOption()');
-		if (!!$('#' + optionID)[0]) {
+		if (!!$('#bcplus-' + optionID)[0]) {
 			throw new Error('Option »' + optionID + '« already exists!');
 		}
 		
@@ -256,8 +256,8 @@ var BisaChatPlus = (function() {
 			throw new Error('Invalid option type »' + optionType.toLowerCase() + '« given!');
 		}
 		
-		var $category = $($('#' + categoryID)[0] || $('<fieldset id="' + categoryID + '"><legend>' + categoryName + '</legend><dl></dl></fieldset>').appendTo('#bcplusOptionsDialogContent'));
-		var $option = $('<dt><label for="' + optionID + '">' + optionText + '</label></dt><dd><input type="' + optionType.toLowerCase() + '" id="' + optionID + '"/></dd>');
+		var $category = $($('#bcplus-' + categoryID)[0] || $('<fieldset id="bcplus-' + categoryID + '"><legend>' + categoryName + '</legend><dl></dl></fieldset>').appendTo('#bcplusOptionsDialogContent'));
+		var $option = $('<dt><label for="bcplus-' + optionID + '">' + optionText + '</label></dt><dd><input type="' + optionType.toLowerCase() + '" id="' + optionID + '"/></dd>');
 		var optionValue = storage.getValue(optionID + 'Option', defaultValue);
 		
 		$option.find('input').val(optionValue).on('blur', function(event) {

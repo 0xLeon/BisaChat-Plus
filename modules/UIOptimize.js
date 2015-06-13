@@ -19,7 +19,7 @@ Modules.UIOptimize = (function() {
 	
 	var buildUI = function() {
 		console.log('Modules.UIOptimize.buildUI()');
-		bcplus.addBoolOption('bcplusUIOptimizeShowSeconds', 'Zeitstempel mit Sekundenangabe', 'bcplusUIOptimize', 'User Interface', false);
+		bcplus.addBoolOption('UIOptimizeShowSeconds', 'Zeitstempel mit Sekundenangabe', 'UIOptimize', 'User Interface', false);
 	};
 
 	var addEventListeners = function() {
@@ -34,7 +34,7 @@ Modules.UIOptimize = (function() {
 			// TODO: bubble layout support
 			var $timeNode = $messageNode.find('.timsChatInnerMessage time').detach();
 			
-			if (!bcplus.getStorage().getValue('bcplusUIOptimizeShowSecondsOption', false)) {
+			if (!bcplus.getStorage().getValue('UIOptimizeShowSecondsOption', false)) {
 				$timeNode.text($timeNode.text().trim().slice(0, -3));
 			}
 			

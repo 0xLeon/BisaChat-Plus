@@ -11,14 +11,14 @@ Modules.MessageFilters = (function() {
 	
 	var buildUI = function() {
 		console.log('Modules.MessageFilters.buildUI()');
-		bcplus.addBoolOption('bcplusGreentext', 'Greentext aktivieren', 'bcplusPrefilters', 'Prefilter', true);
-		bcplus.addBoolOption('bcplusHideAvatar', 'Avatare ausblenden', 'bcplusPrefilters', null, false);
+		bcplus.addBoolOption('greentext', 'Greentext aktivieren', 'prefilters', 'Prefilter', true);
+		bcplus.addBoolOption('hideAvatar', 'Avatare ausblenden', 'prefilters', null, false);
 	};
 	
 	var addEventListeners = function() {
 		console.log('Modules.MessageFilters.addEventListeners()');
 		bcplus.addEventListener('messageAdded', function(messageNode) {
-			if (bcplus.getStorage().getValue('bcplusGreentextOption', true)) {
+			if (bcplus.getStorage().getValue('greentextOption', true)) {
 				// TODO: bubble layout support
 				var messageText = messageNode.find('.timsChatText').text().trim();
 				
@@ -29,7 +29,7 @@ Modules.MessageFilters = (function() {
 				}
 			}
 			
-			if (bcplus.getStorage().getValue('bcplusHideAvatarOption', false)) {
+			if (bcplus.getStorage().getValue('hideAvatarOption', false)) {
 				messageNode.find('.userAvatar').css({
 					opacity: 0
 				});

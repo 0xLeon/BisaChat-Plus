@@ -7,7 +7,7 @@ Modules.Highlighting = (function() {
 	var eventName = null;
 	var highlightingConditions = [
 		function(message, bcplus) {
-			return bcplus.getStorage().getValue('bcplusHighlightingActiveOption', true);
+			return bcplus.getStorage().getValue('highlightingActiveOption', true);
 		},
 		function(message, bcplus) {
 			return (!Window.document.hasFocus() || bcplus.getAwayStatus().isAway);
@@ -16,10 +16,10 @@ Modules.Highlighting = (function() {
 			return (!message.ownMessage);
 		},
 		function(message, bcplus) {
-			return (bcplus.getStorage().getValue('bcplusHighlightingChatbotOption', true) && (message.sender !== 55518));
+			return (bcplus.getStorage().getValue('highlightingChatbotOption', true) && (message.sender !== 55518));
 		},
 		function(message, bcplus) {
-			return (bcplus.getStorage().getValue('bcplusHighlightingNpOption', true) && !message.plainText.startsWith('np:'));
+			return (bcplus.getStorage().getValue('highlightingNpOption', true) && !message.plainText.startsWith('np:'));
 		}
 	];
 	
@@ -71,7 +71,7 @@ Modules.Highlighting = (function() {
 	};
 	
 	var getNotificationPermission = function() {
-		if (bcplus.getStorage().getValue('bcplusHighlightingActiveOption', true) && (Window.Notification.permission !== 'granted')) {
+		if (bcplus.getStorage().getValue('highlightingActiveOption', true) && (Window.Notification.permission !== 'granted')) {
 			return Window.Notification.requestPermission(function(permission) {
 				var n;
 				return (((n = Window.Notification).permission != null) ? n.permission : (n.permission = permission));
@@ -81,12 +81,12 @@ Modules.Highlighting = (function() {
 	
 	var buildUI = function() {
 		console.log('Modules.Highlighting.buildUI()');
-		bcplus.addBoolOption('bcplusHighlightingActive', 'Highlighting aktivieren', 'bcplusHighlighting', 'Highlighting', true, getNotificationPermission);
-		bcplus.addTextOption('bcplusHighlightingText', 'Highlighting bei', 'text', 'bcplusHighlighting', null, WCF.User.username, builRegExp);
-		bcplus.addBoolOption('bcplusHighlightingSound', 'Sound aktivieren', 'bcplusHighlighting', null, true);
-		bcplus.addBoolOption('bcplusHighlightingNotification', 'Desktop Notification anzeigen', 'bcplusHighlighting', null, true);
-		bcplus.addBoolOption('bcplusHighlightingChatbot', 'Chatbot-Nachrichten ausschließen', 'bcplusHighlighting', null, true);
-		bcplus.addBoolOption('bcplusHighlightingNp', 'NP-Nachrichten ausschließen', 'bcplusHighlighting', null, true);
+		bcplus.addBoolOption('highlightingActive', 'Highlighting aktivieren', 'highlighting', 'Highlighting', true, getNotificationPermission);
+		bcplus.addTextOption('highlightingText', 'Highlighting bei', 'text', 'highlighting', null, WCF.User.username, builRegExp);
+		bcplus.addBoolOption('highlightingSound', 'Sound aktivieren', 'highlighting', null, true);
+		bcplus.addBoolOption('highlightingNotification', 'Desktop Notification anzeigen', 'highlighting', null, true);
+		bcplus.addBoolOption('highlightingChatbot', 'Chatbot-Nachrichten ausschließen', 'highlighting', null, true);
+		bcplus.addBoolOption('highlightingNp', 'NP-Nachrichten ausschließen', 'highlighting', null, true);
 	};
 	
 	var addEventListeners = function() {
@@ -107,11 +107,11 @@ Modules.Highlighting = (function() {
 	var highlight = function(message) {
 		messageIDs.push(message.messageID);
 		
-		if (bcplus.getStorage().getValue('bcplusHighlightingSoundOption', true)) {
+		if (bcplus.getStorage().getValue('highlightingSoundOption', true)) {
 			new Audio(Media.bing.dataURI).play();
 		}
 		
-		if (bcplus.getStorage().getValue('bcplusHighlightingNotificationOption', true)) {
+		if (bcplus.getStorage().getValue('highlightingNotificationOption', true)) {
 			showNotification(message);
 		}
 		

@@ -4,10 +4,10 @@
  */
 var Storage = (function() {
 	// TODO: make storageinterface a real class again
-	var StorageInterface = ((function(namespace) {
-		function initialize(namespace) {
-			this.namespace = namespace;
-		}
+	var StorageInterface = ((function(initNamespace) {
+		var namespace = initNamespace;
+		
+		function initialize() { }
 		
 		/**
 		 * Gets saved value from persistent storage
@@ -17,12 +17,12 @@ var Storage = (function() {
 		 * @returns	{mixed}
 		 */
 		function getValue(key, defaultValue) {
-			if (localStorage.getItem(this.namespace + key) === null) {
+			if (localStorage.getItem(namespace + key) === null) {
 				if (typeof(defaultValue) !== 'undefined') this.setValue(key, defaultValue);
 				return defaultValue;
 			}
 			
-			return JSON.parse(localStorage.getItem(this.namespace + key));
+			return JSON.parse(localStorage.getItem(namespace + key));
 		}
 		
 		/**
@@ -33,7 +33,7 @@ var Storage = (function() {
 		 * @returns	{undefined}
 		 */
 		function setValue(key, value) {
-			return localStorage.setItem(this.namespace + key, JSON.stringify(value));
+			return localStorage.setItem(namespace + key, JSON.stringify(value));
 		}
 		
 		/**
@@ -43,7 +43,7 @@ var Storage = (function() {
 		 * @returns	{undefined}
 		 */
 		function unsetValue(key) {
-			localStorage.removeItem(this.namespace + key);
+			localStorage.removeItem(namespace + key);
 		}
 		
 		/**
@@ -56,8 +56,8 @@ var Storage = (function() {
 			var keysArray = [];
 			
 			while (length--) {
-				if (localStorage.key(length).startsWith(this.namespace)) {
-					keysArray.push(localStorage.key(length).replace(this.namespace, ''));
+				if (localStorage.key(length).startsWith(namespace)) {
+					keysArray.push(localStorage.key(length).replace(namespace, ''));
 				}
 			}
 			
@@ -74,7 +74,7 @@ var Storage = (function() {
 			var i = 0;
 			
 			while (length--) {
-				if (localStorage.key(length).startsWith(this.namespace)) {
+				if (localStorage.key(length).startsWith(namespace)) {
 					i++;
 				}
 			}
@@ -152,7 +152,7 @@ var Storage = (function() {
 		
 		var namespace = '';
 		
-		$.each(arguments, function(namespaceItem) {
+		$.each(arguments, function(index, namespaceItem) {
 			// TODO: validate namespace elements
 			namespace += '.' + namespaceItem;
 		});

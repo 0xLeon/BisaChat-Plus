@@ -232,7 +232,7 @@ var BisaChatPlus = (function() {
 		
 		var $category = $($('#bcplus-' + categoryID)[0] || $('<fieldset id="bcplus-' + categoryID + '"><legend>' + categoryName + '</legend><dl></dl></fieldset>').appendTo('#bcplusOptionsDialogContent'));
 		var $option = $('<dt></dt><dd><label><input type="checkbox" id="bcplus-' + optionID + '"/> ' + optionText + '</label></dd>');
-		var optionValue = storage.getValue('bcplus-' + optionID + 'Option', !!defaultValue);
+		var optionValue = storage.getValue(optionID + 'Option', !!defaultValue);
 		
 		$option.find('input').prop({
 			checked: optionValue

@@ -40,6 +40,46 @@ Modules.UIOptimize = (function() {
 			
 			$timeNode.prependTo($messageNode.find('.timsChatInnerMessage'));
 		});
+		
+		$('#timsChatMessageContainer0').get(0).addEventListener('copy', streamCopyListener, false);
+		Window.document.addEventListener('keypress', streamSelectAllListener, false);
+		
+		bcplus.addEventListener('privateRoomAdded', function($privateRoom) {
+			$privateRoom.get(0).addEventListener('copy', streamCopyListener, false);
+		});
+		
+		bcplus.addEventListener('privateRoomRemoved', function($privateRoom) {
+			$privateRoom.get(0).removeEventListener('copy', streamCopyListener, false);
+		});
+	};
+	
+	var streamCopyListener = function(event) {
+		console.log('Modules.UIOptimize.streamCopyListener()');
+		event.preventDefault();
+		
+		var selection = Window.getSelection();
+		var selectedText = selection.toString();
+		
+		event.clipboardData.setData('text/plain', selectedText);
+		
+		console.log(selectedText);
+	};
+	
+	var streamSelectAllListener = function(event) {
+		console.log('Modules.UIOptimize.streamSelectAllListener()');
+		if (event.ctrlKey && (event.key === 'a') && !(event.altKey || event.shiftKey || event.metaKey) && (Window.document.activeElement.nodeName.toLowerCase() === 'body')) {
+			event.preventDefault();
+			
+			// workaround for firefox bug: add list instead of actual node
+			// because otherwise copy event wouldn't fire
+			var $roomNode = $('.timsChatMessageContainer.active ul');
+			var selection = Window.getSelection();
+			var selectionRange = Window.document.createRange();
+			
+			selectionRange.selectNode($roomNode.get(0));
+			selection.removeAllRanges();
+			selection.addRange(selectionRange);
+		}
 	};
 	
 	return {

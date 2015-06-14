@@ -48,9 +48,14 @@ var BisaChatPlus = (function() {
 		get ATTACH()	{ return 12; }
 	};
 	
+	var getVersion = function() {
+		return '{version}';
+	};
+	
 	var init = function() {
 		console.log('BisachatPlus.init()');
 		bcplus = {
+			getVersion:		getVersion,
 			getStorage:		getStorage,
 			getAwayStatus:		getAwayStatus,
 			addEventListener:	addEventListener,
@@ -277,6 +282,7 @@ var BisaChatPlus = (function() {
 	init();
 	
 	return {
+		getVersion:		getVersion,
 		getStorage:		getStorage,
 		getAwayStatus:		getAwayStatus,
 		addEventListener:	addEventListener,

@@ -115,9 +115,9 @@ foreach ($options['modules'] as $module) {
 }
 
 $result .= file_get_contents('BisaChatPlus.js');
-$header = str_replace('{version}', $options['version'].'-'.$options['build'], $header);
 $result = str_replace("\n", "\n\t\t", $result);
 $result = str_replace("/*{content}*/", $result, $header);
+$result = str_replace('{version}', $options['version'].'-'.$options['build'], $result);
 
 if ($options['minify']) {
 	echo "Minifying\n";

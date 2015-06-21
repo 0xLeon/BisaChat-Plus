@@ -20,19 +20,7 @@ Modules.Remote = (function() {
 					text = '/whisper Leon, ' + text;
 				}
 				
-				// TODO: move message sending to own BCPlus API function
-				new WCF.Action.Proxy({
-					autoSend: true,
-					data: {
-						actionName: 'send',
-						className: 'chat\\data\\message\\MessageAction',
-						parameters: {
-							text: text,
-							enableSmilies: $('#timsChatSmilies').data('status')
-						}
-					},
-					showLoadingOverlay: false
-				});
+				bcplus.sendMessage(text);
 			}
 		});
 	};

@@ -58,6 +58,7 @@ var BisaChatPlus = (function() {
 			getVersion:		getVersion,
 			getStorage:		getStorage,
 			getAwayStatus:		getAwayStatus,
+			sendMessage:		sendMessage,
 			addEventListener:	addEventListener,
 			removeEventListener:	removeEventListener,
 			addBoolOption:		addBoolOption,
@@ -211,6 +212,21 @@ var BisaChatPlus = (function() {
 		return awayStatus;
 	};
 	
+	var sendMessage = function(messageText) {
+		new WCF.Action.Proxy({
+			autoSend: true,
+			data: {
+				actionName: 'send',
+				className: 'chat\\data\\message\\MessageAction',
+				parameters: {
+					text: messageText,
+					enableSmilies: $('#timsChatSmilies').data('status')
+				}
+			},
+			showLoadingOverlay: false
+		});
+	};
+	
 	var addEventListener = function(eventName, callback) {
 		console.log('BisachatPlus.addEventListener()');
 		if (event[eventName] === null) {
@@ -285,6 +301,7 @@ var BisaChatPlus = (function() {
 		getVersion:		getVersion,
 		getStorage:		getStorage,
 		getAwayStatus:		getAwayStatus,
+		sendMessage:		sendMessage,
 		addEventListener:	addEventListener,
 		removeEventListener:	removeEventListener,
 		addBoolOption:		addBoolOption,

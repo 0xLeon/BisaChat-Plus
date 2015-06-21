@@ -55,6 +55,9 @@ Modules.LastfmConnect = (function() {
 					}
 				});
 			}
+			else {
+				bcplus.showInfoMessage('Last.fm Connect: Gib zuerst deinen last.fm-Benutzernamen ein.');
+			}
 		});
 	};
 	

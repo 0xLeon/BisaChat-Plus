@@ -72,41 +72,6 @@ Modules.LastfmConnect = (function() {
 				return false;
 			}
 		}, true);
-		/*Window.be.bastelstu.Chat.listener.add('submit', function(message) {
-			var lastfmUsername = bcplus.getStorage().getValue('lastfmUsernameOption', '');
-			
-			if ((message.text === 'np') && (lastfmUsername !== '')) {
-				$.ajax({
-					url: 'https://ws.audioscrobbler.com/2.0/',
-					dataType: 'json',
-					data: {
-						api_key: 'b02a99b9d7e6402de934c7ab59491171',
-						format: 'json',
-						method: 'user.getRecentTracks',
-						user: lastfmUsername,
-						limit: 1
-					},
-					success: function (data, textStatus, xqXHR) {
-						if (data && data.recenttracks && data.recenttracks.track && data.recenttracks.track[0] && data.recenttracks.track[0]['@attr'] && data.recenttracks.track[0]['@attr'].nowplaying && data.recenttracks.track[0]['@attr'].nowplaying == 'true') {
-							title = data.recenttracks.track[0].name;
-							album = data.recenttracks.track[0].album['#text'];
-							artist = data.recenttracks.track[0].artist['#text'];
-							
-							// TODO: dynamic string getting
-							message = 'np: ' + artist + ' – ' + title/* + ' (' + album + ')'*//*;
-							
-							$('#timsChatInput').val('');
-							be.bastelstu.Chat.insertText(message, { submit: true });
-						}
-					},
-					error: function (xqXHR, textStatus, errorThrown) {
-						console.error(textStatus, errorThrown);
-					}
-				});
-				
-				throw new Error('Abort message');
-			}
-		});*/
 	};
 	
 	return {

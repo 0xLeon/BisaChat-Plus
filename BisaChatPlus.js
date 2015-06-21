@@ -32,6 +32,8 @@ var BisaChatPlus = (function() {
 		message: ''
 	};
 	
+	var infoMessageTemplate = new WCF.Template('<li class="timsChatMessage timsChatMessage8 user{$userID} ownMessage">	\n	<div class="timsChatInnerMessageContainer altLayout">\n		<div class="timsChatAvatarContainer">\n			<div class="userAvatar framed">\n				<span class="icon icon16 icon-info-sign"></span>\n			</div>\n		</div>\n		<div class="timsChatInnerMessage">\n			<time>{$time}</time>\n			<span class="timsChatUsernameContainer">Information:</span>\n			<div class="timsChatTextContainer">\n				<span class="timsChatText">\n					{$text}\n				</span>\n			</div>\n		</div>\n	</div>\n</li>');
+	
 	var messageType = {
 		get NORMAL()	{ return  0; },
 		get JOIN()	{ return  1; },
@@ -59,6 +61,7 @@ var BisaChatPlus = (function() {
 			getStorage:		getStorage,
 			getAwayStatus:		getAwayStatus,
 			sendMessage:		sendMessage,
+			showInfoMessage:	showInfoMessage,
 			addEventListener:	addEventListener,
 			removeEventListener:	removeEventListener,
 			addBoolOption:		addBoolOption,
@@ -227,6 +230,18 @@ var BisaChatPlus = (function() {
 		});
 	};
 	
+	var showInfoMessage = function(messageText) {
+		messageText = $('<div />').text(messageText).html();
+		var time = new Date();
+		var $infoMessage = $(infoMessageTemplate.fetch({
+			userID:		WCF.User.userID,
+			time:		((time.getHours() < 10) ? '0' + time.getHours().toString() : time.getHours().toString()) + ':' + ((time.getMinutes() < 10) ? '0' + time.getMinutes().toString() : time.getMinutes().toString()) + ':' + ((time.getSeconds() < 10) ? '0' + time.getSeconds().toString() : time.getSeconds().toString()),
+			text:		messageText
+		}));
+		
+		$('.timsChatMessageContainer.active > ul').append($infoMessage);
+	};
+	
 	var addEventListener = function(eventName, callback) {
 		console.log('BisachatPlus.addEventListener()');
 		if (event[eventName] === null) {
@@ -302,6 +317,7 @@ var BisaChatPlus = (function() {
 		getStorage:		getStorage,
 		getAwayStatus:		getAwayStatus,
 		sendMessage:		sendMessage,
+		showInfoMessage:	showInfoMessage,
 		addEventListener:	addEventListener,
 		removeEventListener:	removeEventListener,
 		addBoolOption:		addBoolOption,

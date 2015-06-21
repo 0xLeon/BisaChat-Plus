@@ -25,7 +25,7 @@ Modules.LastfmConnect = (function() {
 			var message = $('#timsChatInput').val();
 			var lastfmUsername = bcplus.getStorage().getValue('lastfmUsernameOption', '');
 			
-			if ((message === 'np') && (lastfmUsername !== '')) {
+			if ((message === '/np') && (lastfmUsername !== '')) {
 				event.preventDefault();
 				event.stopPropagation();
 				

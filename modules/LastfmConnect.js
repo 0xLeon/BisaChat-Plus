@@ -16,20 +16,10 @@ Modules.LastfmConnect = (function() {
 	
 	var addEventListeners = function() {
 		console.log('Modules.LastfmConnect.addEventListeners()');
-		// TODO: add generic command handler
-		document.getElementById('timsChatInput').addEventListener('keydown', function(event) {
-			if (event.keyCode !== 13) {
-				return true;
-			}
-			
-			var message = $('#timsChatInput').val();
+		bcplus.addCommand('np', function(commandName, commandParameter) {
 			var lastfmUsername = bcplus.getStorage().getValue('lastfmUsernameOption', '');
 			
-			if ((message === '/np') && (lastfmUsername !== '')) {
-				event.preventDefault();
-				event.stopPropagation();
-				
-				$('#timsChatInput').val('');
+			if (lastfmUsername !== '') {
 				$.ajax({
 					url: 'https://ws.audioscrobbler.com/2.0/',
 					dataType: 'json',
@@ -68,10 +58,8 @@ Modules.LastfmConnect = (function() {
 						console.error(textStatus, errorThrown);
 					}
 				});
-				
-				return false;
 			}
-		}, true);
+		});
 	};
 	
 	return {

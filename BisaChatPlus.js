@@ -32,6 +32,9 @@ var BisaChatPlus = (function() {
 		message: ''
 	};
 	
+	var commandRegex = /^(?:\/)(.*?)(?:\s(.*)|$)/;
+	var commands = { };
+	
 	var infoMessageTemplate = new WCF.Template('<li class="timsChatMessage timsChatMessage8 user{$userID} ownMessage">	\n	<div class="timsChatInnerMessageContainer altLayout">\n		<div class="timsChatAvatarContainer">\n			<div class="userAvatar framed">\n				<span class="icon icon16 icon-info-sign"></span>\n			</div>\n		</div>\n		<div class="timsChatInnerMessage">\n			<time>{$time}</time>\n			<span class="timsChatUsernameContainer">Information:</span>\n			<div class="timsChatTextContainer">\n				<span class="timsChatText">\n					{$text}\n				</span>\n			</div>\n		</div>\n	</div>\n</li>');
 	
 	var messageType = {
@@ -66,6 +69,7 @@ var BisaChatPlus = (function() {
 			removeEventListener:	removeEventListener,
 			addBoolOption:		addBoolOption,
 			addTextOption:		addTextOption,
+			addCommand:		addCommand,
 			
 			get messageType() {
 				return messageType;
@@ -75,6 +79,8 @@ var BisaChatPlus = (function() {
 		initEvents();
 		buildUI();
 		initModules();
+		
+		addCommand('mp3', '/me *winamptret*');
 	};
 	
 	var initEvents = function() {
@@ -145,6 +151,35 @@ var BisaChatPlus = (function() {
 			}
 		});
 		
+		Window.document.getElementById('timsChatInput').addEventListener('keydown', function(event) {
+			if (event.keyCode !== 13) {
+				return true;
+			}
+			
+			var messageText = $('#timsChatInput').val().trim();
+			
+			if (messageText.startsWith('/')) {
+				var matchResult = messageText.match(commandRegex)
+				var commandName = matchResult[1];
+				var commandParameter = matchResult[2];
+				
+				if (commands.hasOwnProperty(commandName)) {
+					event.preventDefault();
+					event.stopPropagation();
+					$('#timsChatInput').val('');
+					
+					var returnValue = commands[commandName](commandName, commandParameter);
+					
+					if ($.type(returnValue) === 'string') {
+						sendMessage(returnValue);
+					}
+					
+					return false;
+				}
+				
+				return true;
+			}
+		}, true);
 		
 		Window.document.addEventListener('blur', function(e) {
 			event.chatBlur.fire(e);
@@ -310,6 +345,31 @@ var BisaChatPlus = (function() {
 		// TODO: when to save?
 	};
 	
+	var addCommand = function(commandName, commandAction) {
+		if (!commandName) {
+			throw new Error('Invalid command name!');
+		}
+		
+		if (!commandAction || !($.isFunction(commandAction) || ($.type(commandAction) === 'string'))) {
+			throw new Error('Invalid command action!');
+		}
+		
+		if (commands.hasOwnProperty(commandName)) {
+			throw new Error('Command with name »' + commandName + '« already exists!');
+		}
+		
+		if ($.type(commandAction) === 'string') {
+			commands[commandName] = (function(commandString) {
+				return (function() {
+					return commandString;
+				});
+			})(commandAction);
+		}
+		else {
+			commands[commandName] = commandAction;
+		}
+	};
+	
 	init();
 	
 	return {
@@ -322,6 +382,7 @@ var BisaChatPlus = (function() {
 		removeEventListener:	removeEventListener,
 		addBoolOption:		addBoolOption,
 		addTextOption:		addTextOption,
+		addCommand:		addCommand,
 		
 		get messageType() {
 			return messageType;

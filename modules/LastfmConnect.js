@@ -39,19 +39,7 @@ Modules.LastfmConnect = (function() {
 							// TODO: dynamic string getting
 							var message = 'np: ' + artist + ' – ' + title/* + ' (' + album + ')'*/;
 							
-							// TODO: move message sending to own BCPlus API function
-							new WCF.Action.Proxy({
-								autoSend: true,
-								data: {
-									actionName: 'send',
-									className: 'chat\\data\\message\\MessageAction',
-									parameters: {
-										text: message,
-										enableSmilies: $('#timsChatSmilies').data('status')
-									}
-								},
-								showLoadingOverlay: false
-							});
+							bcplus.sendMessage(message);
 						}
 					},
 					error: function (xqXHR, textStatus, errorThrown) {

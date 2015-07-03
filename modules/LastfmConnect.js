@@ -31,8 +31,9 @@ Modules.LastfmConnect = (function() {
 						limit: 1
 					},
 					success: function (data, textStatus, xqXHR) {
-						if (data && data.recenttracks && data.recenttracks.track && data.recenttracks.track[0]) {
-							if (data.recenttracks.track[0]['@attr'] && data.recenttracks.track[0]['@attr'].nowplaying && data.recenttracks.track[0]['@attr'].nowplaying == 'true') {
+						console.log(data);
+						if (data && data.recenttracks && data.recenttracks.track) {
+							if (data.recenttracks.track[0] && data.recenttracks.track[0]['@attr'] && data.recenttracks.track[0]['@attr'].nowplaying && data.recenttracks.track[0]['@attr'].nowplaying == 'true') {
 								var title = data.recenttracks.track[0].name;
 								var album = data.recenttracks.track[0].album['#text'];
 								var artist = data.recenttracks.track[0].artist['#text'];
@@ -45,6 +46,9 @@ Modules.LastfmConnect = (function() {
 							else {
 								bcplus.showInfoMessage('Last.fm Connect: No track playing!');
 							}
+						}
+						else if (data && data.error) {
+							bcplus.showInfoMessage('Last.fm Connect: Error ' + data.error.toString() + ' - ' + data.message);
 						}
 						else {
 							bcplus.showInfoMessage('Last.fm Connect: Invalid data received!');

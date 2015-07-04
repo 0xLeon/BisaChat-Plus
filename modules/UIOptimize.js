@@ -15,11 +15,14 @@ Modules.UIOptimize = (function() {
 		
 		// TODO: re-display if there is content in chat topic
 		$('<style type="text/css">#timsChatTopic { display: none !important; }</style>').appendTo('head');
+		$('<style type="text/css">.timsChatMessage time { font-weight: normal !important; }</style>').appendTo('head');
+		$('<style type="text/css">.timsChatMessage .altLayout time.timeLeft { float: none !important; }</style>').appendTo('head');
 	};
 	
 	var buildUI = function() {
 		console.log('Modules.UIOptimize.buildUI()');
-		bcplus.addBoolOption('UIOptimizeShowSeconds', 'Zeitstempel mit Sekundenangabe', 'UIOptimize', 'User Interface', false);
+		bcplus.addBoolOption('UIOptimizeTimeBeforeName', 'Zeitstempel vor dem Benutzername', 'UIOptimize', 'User Interface', false);
+		bcplus.addBoolOption('UIOptimizeShowSeconds', 'Zeitstempel mit Sekundenangabe', 'UIOptimize', null, false);
 	};
 
 	var addEventListeners = function() {
@@ -42,12 +45,20 @@ Modules.UIOptimize = (function() {
 			else {
 				$timeNode = $messageNode.find('.timsChatInnerMessage time');
 				$timeTargetNode = $messageNode.find('.timsChatInnerMessage');
+				
+				if (bcplus.getStorage().getValue('UIOptimizeTimeBeforeNameOption', false) && (messageNodeEvent.messageNodeType === bcplus.messageNodeType.ALTERNATIVE)) {
+					$timeNode.addClass('timeLeft');
+				}
 			}
 			
 			$timeNode.detach();
 			
 			if (!bcplus.getStorage().getValue('UIOptimizeShowSecondsOption', false)) {
 				$timeNode.text($timeNode.text().trim().slice(0, -3));
+			}
+			
+			if ($timeNode.hasClass('timeLeft')) {
+				$timeNode.text('[' + $timeNode.text().trim() + ']');
 			}
 			
 			$timeNode.prependTo($timeTargetNode);

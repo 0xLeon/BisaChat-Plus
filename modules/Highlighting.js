@@ -130,10 +130,9 @@ Modules.Highlighting = (function() {
 			}
 			
 			listenerFunction = function(awayStatus) {
-				$(messageIDs.map(function(e) {
-					// TODO: bubble layout support
-					return $('span[data-message-id="' + e.toString() + '"]').closest('.timsChatMessage').get();
-				})).effect('highlight', {}, 1e3);
+				$.unique($(messageIDs.map(function(e) {
+					return $('*[data-message-id="' + e.toString() + '"]').closest('.timsChatInnerMessage').get(0);
+				}))).effect('highlight', {}, 1e3);
 				
 				messageIDs.length = 0;
 				updateDocTitle()

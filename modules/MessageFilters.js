@@ -17,20 +17,39 @@ Modules.MessageFilters = (function() {
 	
 	var addEventListeners = function() {
 		console.log('Modules.MessageFilters.addEventListeners()');
-		bcplus.addEventListener('messageAdded', function(messageNode) {
+		bcplus.addEventListener('messageAdded', function(messageNodeEvent) {
+			var $messageNode = messageNodeEvent.messageNode;
+			
 			if (bcplus.getStorage().getValue('greentextOption', true)) {
-				// TODO: bubble layout support
-				var messageText = messageNode.find('.timsChatText').text().trim();
+				var $targetNode = null;
+				var messageText = '';
+				
+				if (messageNodeEvent.messageNodeType === bcplus.messageNodeType.BUBBLEFOLLOWUP) {
+					$targetNode = $messageNode;
+					
+					$targetNode.contents().each(function() {
+						if (this.nodeType === 3) {
+							messageText += this.nodeValue;
+						}
+					});
+					messageText = messageText.trim();
+					
+					console.log('TEST: ' + messageText);
+				}
+				else {
+					$targetNode = $messageNode.find('.timsChatText');
+					messageText = $targetNode.text().trim();
+				}
 				
 				if (messageText.startsWith('>')) {
-					messageNode.find('.timsChatText').css({
+					$targetNode.css({
 						color: '#792'
 					});
 				}
 			}
 			
-			if (bcplus.getStorage().getValue('hideAvatarOption', false)) {
-				messageNode.find('.userAvatar').css({
+			if (bcplus.getStorage().getValue('hideAvatarOption', false) && (messageNodeEvent.messageNodeType !== bcplus.messageNodeType.BUBBLEFOLLOWUP)) {
+				$messageNode.find('.userAvatar').css({
 					opacity: 0
 				});
 			}

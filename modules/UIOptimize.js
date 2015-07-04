@@ -30,15 +30,27 @@ Modules.UIOptimize = (function() {
 			}, 1);
 		});
 		
-		bcplus.addEventListener('messageAdded', function($messageNode) {
-			// TODO: bubble layout support
-			var $timeNode = $messageNode.find('.timsChatInnerMessage time').detach();
+		bcplus.addEventListener('messageAdded', function(messageNodeEvent) {
+			var $messageNode = messageNodeEvent.messageNode;
+			var $timeNode = null;
+			var $timeTargetNode = null;
+			
+			if (messageNodeEvent.messageNodeType === bcplus.messageNodeType.BUBBLEFOLLOWUP) {
+				$timeNode = $messageNode.find('time');
+				$timeTargetNode = $messageNode;
+			}
+			else {
+				$timeNode = $messageNode.find('.timsChatInnerMessage time');
+				$timeTargetNode = $messageNode.find('.timsChatInnerMessage');
+			}
+			
+			$timeNode.detach();
 			
 			if (!bcplus.getStorage().getValue('UIOptimizeShowSecondsOption', false)) {
 				$timeNode.text($timeNode.text().trim().slice(0, -3));
 			}
 			
-			$timeNode.prependTo($messageNode.find('.timsChatInnerMessage'));
+			$timeNode.prependTo($timeTargetNode);
 		});
 		
 		$('#timsChatMessageContainer0').get(0).addEventListener('copy', streamCopyListener, false);

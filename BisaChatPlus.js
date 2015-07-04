@@ -53,6 +53,12 @@ var BisaChatPlus = (function() {
 		get ATTACH()	{ return 12; }
 	};
 	
+	var messageNodeType = {
+		get ALTERNATIVE()	{ return 0; },
+		get BUBBLE()		{ return 1; },
+		get BUBBLEFOLLOWUP()	{ return 2; }
+	};
+	
 	var getVersion = function() {
 		return '{version}';
 	};
@@ -73,6 +79,10 @@ var BisaChatPlus = (function() {
 			
 			get messageType() {
 				return messageType;
+			},
+			
+			get messageNodeType() {
+				return messageNodeType;
 			}
 		};
 		
@@ -219,11 +229,29 @@ var BisaChatPlus = (function() {
 				for (var i = 0, l = mutation.addedNodes.length; i < l; i++) {
 					var messageNode = $(mutation.addedNodes[i]);
 					
-					console.log(messageNode);
-					
-					if (messageNode.hasClass('timsChatMessage')) {
+					if ((messageNode.get(0).nodeType === 1) && (messageNode.hasClass('timsChatMessage') || messageNode.hasClass('timsChatText'))) {
 						try {
-							event.messageAdded.fire(messageNode);
+							var messageNodeEvent = {
+								messageNode:		messageNode,
+								messageNodeType:	null
+							};
+							
+							if (messageNode.hasClass('timsChatMessage')) {
+								if (messageNode.find('.bubble').length > 0) {
+									messageNodeEvent.messageNodeType = messageNodeType.BUBBLE;
+								}
+								else {
+									messageNodeEvent.messageNodeType = messageNodeType.ALTERNATIVE;
+								}
+							}
+							else if (messageNode.hasClass('timsChatText')) {
+								messageNodeEvent.messageNodeType = messageNodeType.BUBBLEFOLLOWUP;
+							}
+							else {
+								throw new Error('Unrecognized message node type added.');
+							}
+							
+							event.messageAdded.fire(messageNodeEvent);
 						}
 						catch (e) {
 							console.log(e);
@@ -234,6 +262,7 @@ var BisaChatPlus = (function() {
 		});
 		var messageObserverConfig = {
 			childList: true,
+			subtree: true,
 			attributes: false,
 			characterData: false
 		};
@@ -386,6 +415,10 @@ var BisaChatPlus = (function() {
 		
 		get messageType() {
 			return messageType;
+		},
+		
+		get messageNodeType() {
+			return messageNodeType;
 		}
 	};
 })();

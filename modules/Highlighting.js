@@ -131,7 +131,7 @@ Modules.Highlighting = (function() {
 			
 			listenerFunction = function(awayStatus) {
 				$.unique($(messageIDs.map(function(e) {
-					return $('*[data-message-id="' + e.toString() + '"]').closest('.timsChatInnerMessage').get(0);
+					return $('.timsChatText[data-message-id="' + e.toString() + '"]').closest('.timsChatInnerMessage').get(0);
 				}))).effect('highlight', {}, 1e3);
 				
 				messageIDs.length = 0;

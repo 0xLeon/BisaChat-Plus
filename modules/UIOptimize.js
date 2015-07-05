@@ -13,6 +13,7 @@ Modules.UIOptimize = (function() {
 	var addStyles = function() {
 		console.log('Modules.UIOptimize.addStyles()')
 		
+		$('<style type="text/css">.timsChatMessageContainer { padding-left: 15px !important; padding-right: 15px !important; }</style>').appendTo('head');
 		// TODO: re-display if there is content in chat topic
 		$('<style type="text/css">#timsChatTopic { display: none !important; }</style>').appendTo('head');
 		$('<style type="text/css">.timsChatMessage time { font-weight: normal !important; }</style>').appendTo('head');

@@ -5,8 +5,16 @@ Modules.MessageFilters = (function() {
 		console.log('Modules.MessageFilters.initialize()');
 		bcplus = _bcplus;
 		
+		addStyles();
 		buildUI();
 		addEventListeners();
+	};
+	
+	var addStyles = function() {
+		console.log('Modules.MessageFilters.addStyles()');
+		$('<style type="text/css">.timsChatMessage.noAvatar .timsChatAvatarContainer { display: none !important; width: 0px !important; }</style>').appendTo('head');
+		$('<style type="text/css">.timsChatMessage.noAvatar .timsChatInnerMessage { margin-left: 18px !important; }</style>').appendTo('head');
+		$('<style type="text/css">.timsChatMessage.noAvatar .bubble .timsChatInnerMessage::before, .timsChatMessage.noAvatar .bubble .timsChatInnerMessage::after { border-style: none !important; }</style>').appendTo('head');
 	};
 	
 	var buildUI = function() {
@@ -49,9 +57,7 @@ Modules.MessageFilters = (function() {
 			}
 			
 			if (bcplus.getStorage().getValue('hideAvatarOption', false) && (messageNodeEvent.messageNodeType !== bcplus.messageNodeType.BUBBLEFOLLOWUP)) {
-				$messageNode.find('.userAvatar').css({
-					opacity: 0
-				});
+				$messageNode.addClass('noAvatar');
 			}
 		});
 	};

@@ -31,7 +31,6 @@ Modules.LastfmConnect = (function() {
 						limit: 1
 					},
 					success: function (data, textStatus, xqXHR) {
-						console.log(data);
 						if (data && data.recenttracks && data.recenttracks.track) {
 							if (data.recenttracks.track[0] && data.recenttracks.track[0]['@attr'] && data.recenttracks.track[0]['@attr'].nowplaying && data.recenttracks.track[0]['@attr'].nowplaying == 'true') {
 								var title = data.recenttracks.track[0].name;

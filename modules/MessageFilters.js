@@ -41,8 +41,6 @@ Modules.MessageFilters = (function() {
 						}
 					});
 					messageText = messageText.trim();
-					
-					console.log('TEST: ' + messageText);
 				}
 				else {
 					$targetNode = $messageNode.find('.timsChatText');

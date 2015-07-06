@@ -21,7 +21,7 @@ Modules.LastfmConnect = (function() {
 					url: 'https://ws.audioscrobbler.com/2.0/',
 					dataType: 'json',
 					data: {
-						api_key: Window.atob('YjAyYTk5YjlkN2U2NDAyZGU5MzRjN2FiNTk0OTExNzE='),
+						api_key: Window.atob('NDk0Mjk2MzMxNzJlNzRkZWU2OGM3YTNlN2E2Zjc5N2U='),
 						format: 'json',
 						method: 'user.getRecentTracks',
 						user: lastfmUsername,

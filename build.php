@@ -73,6 +73,9 @@ $finfo = new finfo(FILEINFO_MIME_TYPE);
 // read in header
 $header = file_get_contents('header.js')."\n";
 
+// read in util
+$util = file_get_contents('util.js')."\n";
+
 // read in namespaces
 $result = file_get_contents('namespaces.js')."\n";
 
@@ -117,6 +120,7 @@ foreach ($options['modules'] as $module) {
 $result .= file_get_contents('BisaChatPlus.js');
 $result = str_replace("\n", "\n\t\t", $result);
 $result = str_replace("/*{content}*/", $result, $header);
+$result = str_replace("/*{util}*/", str_replace("\n", "\n\t", $util), $result);
 $result = str_replace('{version}', $options['version'].'-'.$options['build'], $result);
 
 if ($options['minify']) {

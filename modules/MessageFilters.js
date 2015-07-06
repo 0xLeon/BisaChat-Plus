@@ -13,11 +13,13 @@ Modules.MessageFilters = (function() {
 		$('<style type="text/css">.timsChatMessage.noAvatar .timsChatAvatarContainer { display: none !important; width: 0px !important; }</style>').appendTo('head');
 		$('<style type="text/css">.timsChatMessage.noAvatar .timsChatInnerMessage { margin-left: 18px !important; }</style>').appendTo('head');
 		$('<style type="text/css">.timsChatMessage.noAvatar .bubble .timsChatInnerMessage::before, .timsChatMessage.noAvatar .bubble .timsChatInnerMessage::after { border-style: none !important; }</style>').appendTo('head');
+		$('<style type="text/css">.timsChatMessage.colorlessNickname .timsChatUsernameContainer span { color: inherit !important; }</style>').appendTo('head');
 	};
 	
 	var buildUI = function() {
 		bcplus.addBoolOption('greentext', 'Greentext aktivieren', 'prefilters', 'Prefilter', true);
 		bcplus.addBoolOption('hideAvatar', 'Avatare ausblenden', 'prefilters', null, false);
+		bcplus.addBoolOption('colorlessNickname', 'Benutzernamen farblos anzeigen', 'prefilters', null, false);
 	};
 	
 	var addEventListeners = function() {
@@ -52,6 +54,10 @@ Modules.MessageFilters = (function() {
 			
 			if (bcplus.getStorage().getValue('hideAvatarOption', false) && (messageNodeEvent.messageNodeType !== bcplus.messageNodeType.BUBBLEFOLLOWUP)) {
 				$messageNode.addClass('noAvatar');
+			}
+			
+			if (bcplus.getStorage().getValue('colorlessNicknameOption', false) && (messageNodeEvent.messageNodeType !== bcplus.messageNodeType.BUBBLEFOLLOWUP)) {
+				$messageNode.addClass('colorlessNickname');
 			}
 		});
 	};

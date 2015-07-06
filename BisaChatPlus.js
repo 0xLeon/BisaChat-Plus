@@ -16,7 +16,7 @@ var BisaChatPlus = (function() {
 	var privateRoomObservers = { };
 	var optionsDialog = $('<div id="bcplusOptionsDialogContent" class="container containerPadding"></div>').appendTo('body').wcfDialog({
 		autoOpen: false,
-		title: 'Optionen',
+		title: 'BisaChat Plus – Optionen',
 		
 		onOpen: function() {
 			event.optionsOpened.fire();
@@ -199,7 +199,7 @@ var BisaChatPlus = (function() {
 	};
 	
 	var buildUI = function() {
-		var $optionsButton = $('<li><a id="bcplusOptions" class="button jsTooltip" title="BisaChat Plus Optionen"><span class="icon icon16 icon-cog"></span><span class="invisible">BisaChat Plus Optionen</span></a></li>');
+		var $optionsButton = $('<li><a id="bcplusOptions" class="button jsTooltip" title="BisaChat Plus – Optionen"><span class="icon icon16 icon-cog"></span><span class="invisible">BisaChat Plus – Optionen</span></a></li>');
 		$optionsButton.find('a').on('click', function() {
 			optionsDialog.wcfDialog('open');
 		});

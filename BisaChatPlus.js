@@ -64,7 +64,6 @@ var BisaChatPlus = (function() {
 	};
 	
 	var init = function() {
-		console.log('BisachatPlus.init()');
 		bcplus = {
 			getVersion:		getVersion,
 			getStorage:		getStorage,
@@ -94,7 +93,6 @@ var BisaChatPlus = (function() {
 	};
 	
 	var initEvents = function() {
-		console.log('BisachatPlus.initEvents()');
 		addStreamObserver($('#timsChatMessageContainer0').find('ul'));
 		
 		var privateRoomObserver = new MutationObserver(function(mutations) {
@@ -201,7 +199,6 @@ var BisaChatPlus = (function() {
 	};
 	
 	var buildUI = function() {
-		console.log('BisachatPlus.buildUI()');
 		var $optionsButton = $('<li><a id="bcplusOptions" class="button jsTooltip" title="BisaChat Plus Optionen"><span class="icon icon16 icon-cog"></span><span class="invisible">BisaChat Plus Optionen</span></a></li>');
 		$optionsButton.find('a').on('click', function() {
 			optionsDialog.wcfDialog('open');
@@ -210,14 +207,12 @@ var BisaChatPlus = (function() {
 	};
 	
 	var initModules = function() {
-		console.log('BisachatPlus.initModules()');
 		$.each(Modules, function(moduleName, moduleObject) {
 			moduleObject.initialize(bcplus);
 		});
 	};
 	
 	var addStreamObserver = function(stream) {
-		console.log('BisachatPlus.addStreamObserver()');
 		stream = $(stream).get(0);
 		
 		if (stream.nodeName.toLowerCase() !== 'ul') {
@@ -307,7 +302,6 @@ var BisaChatPlus = (function() {
 	};
 	
 	var addEventListener = function(eventName, callback) {
-		console.log('BisachatPlus.addEventListener()');
 		if (event[eventName] === null) {
 			throw new Error('Unknown event »' + eventName + '«.');
 		}
@@ -316,7 +310,6 @@ var BisaChatPlus = (function() {
 	};
 	
 	var removeEventListener = function(eventName, callback) {
-		console.log('BisachatPlus.removeEventListener()');
 		if (event[eventName] === null) {
 			throw new Error('Unknown event »' + eventName + '«.');
 		}
@@ -325,7 +318,6 @@ var BisaChatPlus = (function() {
 	};
 	
 	var addBoolOption = function(optionID, optionText, categoryID, categoryName, defaultValue, onChange) {
-		console.log('BisachatPlus.addBoolOption()');
 		if (!!$('#bcplus-' + optionID)[0]) {
 			throw new Error('Option »' + optionID + '« already exists!');
 		}
@@ -347,7 +339,6 @@ var BisaChatPlus = (function() {
 	};
 	
 	var addTextOption = function(optionID, optionText, optionType, categoryID, categoryName, defaultValue, onChange) {
-		console.log('BisachatPlus.addTextOption()');
 		if (!!$('#bcplus-' + optionID)[0]) {
 			throw new Error('Option »' + optionID + '« already exists!');
 		}

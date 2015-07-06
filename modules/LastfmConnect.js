@@ -2,7 +2,6 @@ Modules.LastfmConnect = (function() {
 	var bcplus = null;
 	
 	var initialize = function(_bcplus) {
-		console.log('Modules.LastfmConnect.initialize()');
 		bcplus = _bcplus;
 		
 		buildUI();
@@ -10,12 +9,10 @@ Modules.LastfmConnect = (function() {
 	};
 	
 	var buildUI = function() {
-		console.log('Modules.LastfmConnect.buildUI()');
 		bcplus.addTextOption('lastfmUsername', 'last.fm Username', 'text', 'lastfmConnect', 'last.fm Connect', '');
 	};
 	
 	var addEventListeners = function() {
-		console.log('Modules.LastfmConnect.addEventListeners()');
 		bcplus.addCommand('np', function(commandName, commandParameter) {
 			var lastfmUsername = bcplus.getStorage().getValue('lastfmUsernameOption', '');
 			

@@ -24,7 +24,6 @@ Modules.Highlighting = (function() {
 	];
 	
 	var initialize = function(_bcplus) {
-		console.log('Modules.Highlighting.initialize()');
 		bcplus = _bcplus;
 		messageIDs = [];
 		docTitle = Window.document.title;
@@ -36,7 +35,6 @@ Modules.Highlighting = (function() {
 	};
 	
 	var addHighlightingCondition = function(condition) {
-		console.log('Modules.Highlighting.addHighlightingCondition()');
 		if (!$.isFunction(condition)) {
 			throw new Error('Condition must be a function.');
 		}
@@ -45,7 +43,6 @@ Modules.Highlighting = (function() {
 	};
 	
 	var removeHighlightingCondition = function(condition) {
-		console.log('Modules.Highlighting.removeHighlightingCondition()');
 		if (!$.isFunction(condition)) {
 			throw new Error('Invalid parameter!');
 		}
@@ -60,7 +57,6 @@ Modules.Highlighting = (function() {
 	};
 	
 	var removeExisting = function() {
-		console.log('Modules.Highlighting.removeExisting()');
 		var $notifyButton = $('#timsChatNotify').css({
 			display: 'none'
 		});
@@ -80,7 +76,6 @@ Modules.Highlighting = (function() {
 	};
 	
 	var buildUI = function() {
-		console.log('Modules.Highlighting.buildUI()');
 		bcplus.addBoolOption('highlightingActive', 'Highlighting aktivieren', 'highlighting', 'Highlighting', true, getNotificationPermission);
 		bcplus.addTextOption('highlightingText', 'Highlighting bei', 'text', 'highlighting', null, WCF.User.username, builRegExp);
 		bcplus.addBoolOption('highlightingSound', 'Sound aktivieren', 'highlighting', null, true);
@@ -90,7 +85,6 @@ Modules.Highlighting = (function() {
 	};
 	
 	var addEventListeners = function() {
-		console.log('Modules.Highlighting.addEventListeners()');
 		bcplus.addEventListener('messageReceived', function(message) {
 			if (highlightingConditions.every(function(cond) { return cond(message, bcplus); })) {
 				if (regExp === null) {

@@ -2,7 +2,6 @@ Modules.UIOptimize = (function() {
 	var bcplus = null;
 	
 	var initialize = function(_bcplus) {
-		console.log('Modules.UIOptimize.initialize()');
 		bcplus = _bcplus;
 		
 		buildUI();
@@ -11,8 +10,6 @@ Modules.UIOptimize = (function() {
 	};
 	
 	var addStyles = function() {
-		console.log('Modules.UIOptimize.addStyles()')
-		
 		$('<style type="text/css">.timsChatMessageContainer { padding-left: 15px !important; padding-right: 15px !important; }</style>').appendTo('head');
 		// TODO: re-display if there is content in chat topic
 		$('<style type="text/css">#timsChatTopic { display: none !important; }</style>').appendTo('head');
@@ -21,13 +18,11 @@ Modules.UIOptimize = (function() {
 	};
 	
 	var buildUI = function() {
-		console.log('Modules.UIOptimize.buildUI()');
 		bcplus.addBoolOption('UIOptimizeTimeBeforeName', 'Zeitstempel vor dem Benutzername', 'UIOptimize', 'User Interface', false);
 		bcplus.addBoolOption('UIOptimizeShowSeconds', 'Zeitstempel mit Sekundenangabe', 'UIOptimize', null, false);
 	};
 
 	var addEventListeners = function() {
-		console.log('Modules.UIOptimize.addEventListeners()');
 		$('#timsChatSmilies').on('click', function() {
 			Window.setTimeout(function() {
 				$(Window).resize();
@@ -78,7 +73,6 @@ Modules.UIOptimize = (function() {
 	};
 	
 	var streamCopyListener = function(event) {
-		console.log('Modules.UIOptimize.streamCopyListener()');
 		event.preventDefault();
 		
 		var selection = Window.getSelection();
@@ -90,7 +84,6 @@ Modules.UIOptimize = (function() {
 	};
 	
 	var streamSelectAllListener = function(event) {
-		console.log('Modules.UIOptimize.streamSelectAllListener()');
 		if (event.ctrlKey && (event.key === 'a') && !(event.altKey || event.shiftKey || event.metaKey) && (Window.document.activeElement.nodeName.toLowerCase() === 'body')) {
 			event.preventDefault();
 			

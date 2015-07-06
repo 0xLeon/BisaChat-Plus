@@ -24,7 +24,7 @@ catch (e) {
 }
 
 (function(Window, $, WCF) {
-	// TODO: use strict again
+	'use strict';
 	
 	/*{util}*/
 	

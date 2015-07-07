@@ -18,11 +18,33 @@ Modules.MessageFilters = (function() {
 	
 	var buildUI = function() {
 		bcplus.addBoolOption('greentext', 'Greentext aktivieren', 'prefilters', 'Prefilter', true);
+		bcplus.addBoolOption('smilies', 'Grafische Smileys aktivieren', 'prefilters', null, true);
 		bcplus.addBoolOption('hideAvatar', 'Avatare ausblenden', 'prefilters', null, false);
 		bcplus.addBoolOption('colorlessNickname', 'Benutzernamen farblos anzeigen', 'prefilters', null, false);
 	};
 	
 	var addEventListeners = function() {
+		bcplus.addEventListener('messageReceived', function(message) {
+			if (!bcplus.getStorage().getValue('smiliesOption', true)) {
+				var $messageNodeObj = $('<div>' + message.formattedMessage + '</div>');
+				
+				if ($messageNodeObj.find('img').length > 0) {
+					var formattedMessage = '';
+					
+					$messageNodeObj.contents().each(function() {
+						if (this.nodeType === 3) {
+							formattedMessage += this.nodeValue;
+						}
+						else if ((this.nodeType === 1) && (this.nodeName.toLowerCase() === 'img')) {
+							formattedMessage += $(this).attr('alt');
+						}
+					});
+					
+					message.plainText = $('<div>' + formattedMessage + '</div>').text().trim();
+					message.formattedMessage = formattedMessage;
+				}
+			}
+		});
 		bcplus.addEventListener('messageAdded', function(messageNodeEvent) {
 			var $messageNode = messageNodeEvent.messageNode;
 			

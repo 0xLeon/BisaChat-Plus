@@ -53,24 +53,15 @@ Modules.MessageFilters = (function() {
 			
 			if (bcplus.getStorage().getValue('greentextOption', true)) {
 				var $targetNode = null;
-				var messageText = '';
 				
 				if (messageNodeEvent.messageNodeType === bcplus.messageNodeType.BUBBLEFOLLOWUP) {
 					$targetNode = $messageNode;
-					
-					$targetNode.contents().each(function() {
-						if (this.nodeType === 3) {
-							messageText += this.nodeValue;
-						}
-					});
-					messageText = messageText.trim();
 				}
 				else {
 					$targetNode = $messageNode.find('.timsChatText');
-					messageText = $targetNode.text().trim();
 				}
 				
-				if (messageText.startsWith('>')) {
+				if (messageNodeEvent.messageText.startsWith('>')) {
 					$targetNode.css({
 						color: '#792'
 					});

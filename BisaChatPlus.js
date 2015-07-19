@@ -233,6 +233,7 @@ var BisaChatPlus = (function() {
 								messageNode:		messageNode,
 								messageType:		parseInt(messageNode.attr('class').match(messageTypeRegex)[1], 10),
 								sender:			parseInt(messageNode.attr('class').match(messageUserIdRegex)[1], 10),
+								messageText:		null,
 								messageNodeType:	null
 							};
 							
@@ -243,9 +244,18 @@ var BisaChatPlus = (function() {
 								else {
 									messageNodeEvent.messageNodeType = messageNodeType.ALTERNATIVE;
 								}
+								
+								messageNodeEvent.messageText = messageNode.find('.timsChatText').text().trim();
 							}
 							else if (messageNode.hasClass('timsChatText')) {
 								messageNodeEvent.messageNodeType = messageNodeType.BUBBLEFOLLOWUP;
+								
+								messageNode.contents().each(function() {
+									if (this.nodeType === 3) {
+										messageNodeEvent.messageText += this.nodeValue;
+									}
+								});
+								messageNodeEvent.messageText = messageNodeEvent.messageText.trim();
 							}
 							else {
 								throw new Error('Unrecognized message node type added.');

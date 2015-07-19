@@ -37,7 +37,7 @@ var BisaChatPlus = (function() {
 	
 	var infoMessageTemplate = new WCF.Template('<li class="timsChatMessage timsChatMessage8 user{$userID} ownMessage">	\n	<div class="timsChatInnerMessageContainer altLayout">\n		<div class="timsChatAvatarContainer">\n			<div class="userAvatar framed">\n				<span class="icon icon16 icon-info-sign"></span>\n			</div>\n		</div>\n		<div class="timsChatInnerMessage">\n			<time>{$time}</time>\n			<span class="timsChatUsernameContainer">Information:</span>\n			<div class="timsChatTextContainer">\n				<span class="timsChatText">\n					{$text}\n				</span>\n			</div>\n		</div>\n	</div>\n</li>');
 	
-	var messageTypeRegex = /timsChatMessage(\d)+/;
+	var messageTypeRegex = /\btimsChatMessage(\d+)\b/;
 	var messageType = {
 		get NORMAL()	{ return  0; },
 		get JOIN()	{ return  1; },

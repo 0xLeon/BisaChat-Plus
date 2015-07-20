@@ -14,7 +14,7 @@ var BisaChatPlus = (function() {
 		optionsClosed: $.Callbacks()
 	};
 	var privateRoomObservers = { };
-	var optionsDialog = $('<div id="bcplusOptionsDialogContent" class="container containerPadding"></div>').appendTo('body').wcfDialog({
+	var $optionsDialog = $('<div id="bcplusOptionsDialogContent" class="container containerPadding"></div>').appendTo('body').wcfDialog({
 		autoOpen: false,
 		title: 'BisaChat Plus – Optionen',
 		
@@ -204,7 +204,7 @@ var BisaChatPlus = (function() {
 	var buildUI = function() {
 		var $optionsButton = $('<li><a id="bcplusOptions" class="button jsTooltip" title="BisaChat Plus – Optionen"><span class="icon icon16 icon-cog"></span><span class="invisible">BisaChat Plus – Optionen</span></a></li>');
 		$optionsButton.find('a').on('click', function() {
-			optionsDialog.wcfDialog('open');
+			$optionsDialog.wcfDialog('open');
 		});
 		$optionsButton.appendTo('#timsChatOptions .buttonGroup');
 	};
@@ -215,8 +215,8 @@ var BisaChatPlus = (function() {
 		});
 	};
 	
-	var addStreamObserver = function(stream) {
-		stream = $(stream).get(0);
+	var addStreamObserver = function($stream) {
+		var stream = $($stream).get(0);
 		
 		if (stream.nodeName.toLowerCase() !== 'ul') {
 			throw new Error('Can\'t observe stream of node type »' + stream.nodeName.toLowerCase() + '«.');
@@ -225,32 +225,32 @@ var BisaChatPlus = (function() {
 		var messageObserver = new MutationObserver(function(mutations) {
 			mutations.forEach(function(mutation) {
 				for (var i = 0, l = mutation.addedNodes.length; i < l; i++) {
-					var messageNode = $(mutation.addedNodes[i]);
+					var $messageNode = $(mutation.addedNodes[i]);
 					
-					if ((messageNode.get(0).nodeType === 1) && (messageNode.hasClass('timsChatMessage') || messageNode.hasClass('timsChatText'))) {
+					if (($messageNode.get(0).nodeType === 1) && ($messageNode.hasClass('timsChatMessage') || $messageNode.hasClass('timsChatText'))) {
 						try {
 							var messageNodeEvent = {
-								messageNode:		messageNode,
-								messageType:		parseInt(messageNode.attr('class').match(messageTypeRegex)[1], 10),
-								sender:			parseInt(messageNode.attr('class').match(messageUserIdRegex)[1], 10),
+								messageNode:		$messageNode,
+								messageType:		parseInt($messageNode.attr('class').match(messageTypeRegex)[1], 10),
+								sender:			parseInt($messageNode.attr('class').match(messageUserIdRegex)[1], 10),
 								messageText:		null,
 								messageNodeType:	null
 							};
 							
-							if (messageNode.hasClass('timsChatMessage')) {
-								if (messageNode.find('.bubble').length > 0) {
+							if ($messageNode.hasClass('timsChatMessage')) {
+								if ($messageNode.find('.bubble').length > 0) {
 									messageNodeEvent.messageNodeType = messageNodeType.BUBBLE;
 								}
 								else {
 									messageNodeEvent.messageNodeType = messageNodeType.ALTERNATIVE;
 								}
 								
-								messageNodeEvent.messageText = messageNode.find('.timsChatText').text().trim();
+								messageNodeEvent.messageText = $messageNode.find('.timsChatText').text().trim();
 							}
-							else if (messageNode.hasClass('timsChatText')) {
+							else if ($messageNode.hasClass('timsChatText')) {
 								messageNodeEvent.messageNodeType = messageNodeType.BUBBLEFOLLOWUP;
 								
-								messageNode.contents().each(function() {
+								$messageNode.contents().each(function() {
 									if (this.nodeType === 3) {
 										messageNodeEvent.messageText += this.nodeValue;
 									}

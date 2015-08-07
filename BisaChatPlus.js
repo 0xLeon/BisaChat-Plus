@@ -148,8 +148,7 @@ var BisaChatPlus = (function() {
 			if (message.ownMessage) {
 				if (message.type === messageType.AWAY) {
 					awayStatus.isAway = true;
-					// TODO: get away status message
-					awayStatus.message = '';
+					awayStatus.message = (message.plainText.contains(':') ? message.plainText.substring(message.plainText.indexOf(':') + 1).trim() : '');
 					
 					event.awayStatusChanged.fire(awayStatus);
 				}

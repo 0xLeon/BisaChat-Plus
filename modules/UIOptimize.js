@@ -20,6 +20,8 @@ Modules.UIOptimize = (function() {
 	var buildUI = function() {
 		bcplus.addBoolOption('UIOptimizeTimeBeforeName', 'Zeitstempel vor dem Benutzername', 'UIOptimize', 'User Interface', false);
 		bcplus.addBoolOption('UIOptimizeShowSeconds', 'Zeitstempel mit Sekundenangabe', 'UIOptimize', null, false);
+		
+		$('#timsChatAltLayout').closest('li').detach().insertAfter($('#timsChatSmilies').closest('li'));
 	};
 
 	var addEventListeners = function() {

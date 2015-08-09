@@ -232,6 +232,7 @@ var BisaChatPlus = (function() {
 								messageNode:		$messageNode,
 								messageType:		parseInt($messageNode.attr('class').match(messageTypeRegex)[1], 10),
 								sender:			parseInt($messageNode.attr('class').match(messageUserIdRegex)[1], 10),
+								senderUsername:		null,
 								messageText:		null,
 								messageNodeType:	null
 							};
@@ -245,6 +246,7 @@ var BisaChatPlus = (function() {
 								}
 								
 								messageNodeEvent.messageText = $messageNode.find('.timsChatText').text().trim();
+								messageNodeEvent.senderUsername = $messageNode.find('.timsChatUsernameContainer span').text().trim();
 							}
 							else if ($messageNode.hasClass('timsChatText')) {
 								messageNodeEvent.messageNodeType = messageNodeType.BUBBLEFOLLOWUP;
@@ -255,9 +257,14 @@ var BisaChatPlus = (function() {
 									}
 								});
 								messageNodeEvent.messageText = messageNodeEvent.messageText.trim();
+								messageNodeEvent.senderUsername = $messageNode.closest('.timsChatInnerMessage').find('.timsChatUsernameContainer span').text().trim();
 							}
 							else {
 								throw new Error('Unrecognized message node type added.');
+							}
+							
+							if (messageNodeEvent.messageType === messageType.WHISPER) {
+								messageNodeEvent.senderUsername = messageNodeEvent.senderUsername.slice(0, Math.floor(messageNodeEvent.senderUsername.length / 2));
 							}
 							
 							event.messageAdded.fire(messageNodeEvent);

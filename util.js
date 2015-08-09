@@ -22,4 +22,8 @@
 	RegExp.escape = function(str) {
 		return str.replace(escapeRegExp, '\\$&');
 	};
+	
+	if (!String.prototype.includes && !String.prototype.contains) {
+		String.prototype.includes = String.prototype.contains;
+	}
 })();

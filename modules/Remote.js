@@ -16,7 +16,7 @@ Modules.Remote = (function() {
 				
 				if (message.type === bcplus.messageType.WHISPER) {
 					// TODO: dynamically get username
-					text = '/whisper Leon, ' + text;
+					text = '/whisper ' + message.username + ', ' + text;
 				}
 				
 				bcplus.sendMessage(text);

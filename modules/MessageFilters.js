@@ -72,6 +72,7 @@ Modules.MessageFilters = (function() {
 				$messageNode.addClass('noAvatar');
 			}
 			
+			// TODO: rather set class defaultColor
 			if (bcplus.getStorage().getValue('colorlessNicknameOption', false) && (messageNodeEvent.messageNodeType !== bcplus.messageNodeType.BUBBLEFOLLOWUP)) {
 				$messageNode.addClass('colorlessNickname');
 			}

@@ -58,6 +58,18 @@ Modules.UIOptimize = (function() {
 			}
 			
 			$timeNode.prependTo($timeTargetNode);
+			
+			if ((messageNodeEvent.messageNodeType !== bcplus.messageNodeType.BUBBLEFOLLOWUP) && ((messageNodeEvent.messageType < bcplus.messageType.MODERATE) || (messageNodeEvent.messageType === bcplus.messageType.WHISPER))) {
+				$messageNode.find('.timsChatUsernameContainer').find('.icon.pointer').off('click').prop('onclick', null);
+				$messageNode.find('.timsChatUsernameContainer').data('username', messageNodeEvent.senderUsername);
+				$messageNode.find('.timsChatUsernameContainer').toggleClass('pointer').on('click', function() {
+					Window.be.bastelstu.Chat.insertText('/whisper ' + $(this).data('username') + ', ', {
+						prepend: false,
+						append: false,
+						submit: false
+					});
+				});
+			}
 		});
 		
 		$('#timsChatMessageContainer0').get(0).addEventListener('copy', streamCopyListener, false);

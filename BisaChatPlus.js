@@ -35,6 +35,11 @@ var BisaChatPlus = (function() {
 	var commandRegex = /^(?:\/)(.*?)(?:\s(.*)|$)/;
 	var commands = { };
 	
+	var commandParameterRegex = /((?:^,+)|(?:,+$))|(,{2,})/g;
+	
+	var externalCommandRegex = /(?:!)(.*?)(?:\s(.*)|$)/;
+	var externalCommands = { };
+	
 	var infoMessageTemplate = new WCF.Template('<li class="timsChatMessage timsChatMessage8 user{$userID} ownMessage">	\n	<div class="timsChatInnerMessageContainer altLayout">\n		<div class="timsChatAvatarContainer">\n			<div class="userAvatar framed">\n				<span class="icon icon16 icon-info-sign"></span>\n			</div>\n		</div>\n		<div class="timsChatInnerMessage">\n			<time>{$time}</time>\n			<span class="timsChatUsernameContainer">Information:</span>\n			<div class="timsChatTextContainer">\n				<span class="timsChatText">\n					{$text}\n				</span>\n			</div>\n		</div>\n	</div>\n</li>');
 	
 	var messageTypeRegex = /\btimsChatMessage(\d+)\b/;
@@ -78,6 +83,7 @@ var BisaChatPlus = (function() {
 			addBoolOption:		addBoolOption,
 			addTextOption:		addTextOption,
 			addCommand:		addCommand,
+			addExternalCommand:	addExternalCommand,
 			
 			get messageType() {
 				return messageType;
@@ -190,6 +196,53 @@ var BisaChatPlus = (function() {
 				return true;
 			}
 		}, true);
+		
+		addEventListener('messageReceived', function(message) {
+			if (((message.type === messageType.NORMAL) || (message.type === messageType.WHISPER)) && (message.sender === 13391) && ((message.sender !== WCF.User.userID) || (message.sender === message.receiver)) && message.plainText.startsWith('!')) {
+				var matchResult = message.plainText.match(externalCommandRegex);
+				var externalCommandName = matchResult[1];
+				var externalCommandParameters = (matchResult[2] || '').replace(commandParameterRegex, function() {
+					return ((!arguments[2]) ? '' : ',');
+				}).trim();
+				
+				if (externalCommandParameters === '') {
+					externalCommandParameters = [];
+				}
+				else {
+					externalCommandParameters = externalCommandParameters.split(',').map(function(item) {
+						return item.trim();
+					});
+				}
+				
+				externalCommandParameters.unshift(message);
+				
+				if (externalCommands.hasOwnProperty(externalCommandName)) {
+					var returnValue = externalCommands[externalCommandName].apply(null, externalCommandParameters);
+					
+					if ($.type(returnValue) === 'string') {
+						var _awayStatus = $.extend({}, awayStatus);
+						
+						if (message.type === messageType.WHISPER) {
+							returnValue = '/whisper ' + message.username + ', ' + returnValue;
+						}
+						
+						sendMessage(returnValue);
+						
+						if (_awayStatus.isAway) {
+							var text = '/away';
+							
+							if (_awayStatus.message !== '') {
+								text += ' ' + _awayStatus.message;
+							}
+							
+							Window.setTimeout(function() {
+								sendMessage(text);
+							}, 1000);
+						}
+					}
+				}
+			}
+		});
 		
 		Window.document.addEventListener('blur', function(e) {
 			event.chatBlur.fire(e);
@@ -382,7 +435,7 @@ var BisaChatPlus = (function() {
 		// TODO: when to save?
 	};
 	
-	var addCommand = function(commandName, commandAction) {
+	var _addCommandToCommandsObject = function(commandsObject, commandName, commandAction) {
 		if (!commandName) {
 			throw new Error('Invalid command name!');
 		}
@@ -391,20 +444,28 @@ var BisaChatPlus = (function() {
 			throw new Error('Invalid command action!');
 		}
 		
-		if (commands.hasOwnProperty(commandName)) {
+		if (commandsObject.hasOwnProperty(commandName)) {
 			throw new Error('Command with name »' + commandName + '« already exists!');
 		}
 		
 		if ($.type(commandAction) === 'string') {
-			commands[commandName] = (function(commandString) {
+			commandsObject[commandName] = (function(commandString) {
 				return (function() {
 					return commandString;
 				});
 			})(commandAction);
 		}
 		else {
-			commands[commandName] = commandAction;
+			commandsObject[commandName] = commandAction;
 		}
+	};
+	
+	var addCommand = function(commandName, commandAction) {
+		_addCommandToCommandsObject(commands, commandName, commandAction)
+	};
+	
+	var addExternalCommand = function(commandName, commandAction) {
+		_addCommandToCommandsObject(externalCommands, commandName, commandAction);
 	};
 	
 	init();
@@ -420,6 +481,7 @@ var BisaChatPlus = (function() {
 		addBoolOption:		addBoolOption,
 		addTextOption:		addTextOption,
 		addCommand:		addCommand,
+		addExternalCommand:	addExternalCommand,
 		
 		get messageType() {
 			return messageType;

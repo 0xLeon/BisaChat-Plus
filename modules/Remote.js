@@ -8,47 +8,18 @@ Modules.Remote = (function() {
 	};
 	
 	var addEventListeners = function() {
-		bcplus.addEventListener('messageReceived', function(message) {
-			// TODO: add generic command handler
-			if ((message.sender === 13391) && ((message.type === bcplus.messageType.NORMAL) || (message.type === bcplus.messageType.WHISPER))) {
-				var awayStatus = $.extend({}, bcplus.getAwayStatus());
-				var handledCommand = false;
-				
-				if (message.plainText.startsWith('!version')) {
-					var text = 'BCPlus ' + bcplus.getVersion();
-					
-					if (message.type === bcplus.messageType.WHISPER) {
-						text = '/whisper ' + message.username + ', ' + text;
-					}
-					
-					bcplus.sendMessage(text);
-				}
-				else if (message.plainText.startsWith('!browser')) {
-					var text = ' ' + $.browser.version;
-					
-					if ($.browser.mozilla) {
-						text = 'Mozilla Firefox' + text;
-					}
-					else if ($.browser.chrome) {
-						text = 'Google Chrome' + text;
-					}
-					
-					bcplus.sendMessage(text);
-				}
-				
-				if (handledCommand && awayStatus.isAway) {
-					var text = '/away';
-					
-					if (awayStatus.message !== '') {
-						text += ' ' + awayStatus.message;
-					}
-					
-					Window.setTimeout(function() {
-						bcplus.sendMessage(text);
-					}, 1000);
-				}
+		bcplus.addExternalCommand('version', 'BCPlus ' + bcplus.getVersion());
+		bcplus.addExternalCommand('browser', (function() {
+			if ($.browser.mozilla) {
+				return 'Mozilla Firefox ' + $.browser.version;
 			}
-		});
+			else if ($.browser.chrome) {
+				return 'Google Chrome ' + $.browser.version;
+			}
+			else {
+				return 'Unknown Browser';
+			}
+		})());
 	};
 	
 	return {

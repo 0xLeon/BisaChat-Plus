@@ -177,14 +177,25 @@ var BisaChatPlus = (function() {
 			if (messageText.startsWith('/')) {
 				var matchResult = messageText.match(commandRegex)
 				var commandName = matchResult[1];
-				var commandParameter = matchResult[2];
+				var commandParameters = (matchResult[2] || '').replace(commandParameterRegex, function() {
+					return ((!arguments[2]) ? '' : ',');
+				}).trim();
+				
+				if (commandParameters === '') {
+					commandParameters = [];
+				}
+				else {
+					commandParameters = commandParameters.split(',').map(function(item) {
+						return item.trim();
+					});
+				}
 				
 				if (commands.hasOwnProperty(commandName)) {
 					event.preventDefault();
 					event.stopPropagation();
 					$('#timsChatInput').val('');
 					
-					var returnValue = commands[commandName](commandName, commandParameter);
+					var returnValue = commands[commandName].apply(null, commandParameters);
 					
 					if ($.type(returnValue) === 'string') {
 						sendMessage(returnValue);

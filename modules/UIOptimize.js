@@ -1,5 +1,6 @@
 Modules.UIOptimize = (function() {
 	var bcplus = null;
+	var hideAwayUsersStyle = null;
 	
 	var initialize = function(_bcplus) {
 		bcplus = _bcplus;
@@ -15,11 +16,24 @@ Modules.UIOptimize = (function() {
 		$('<style type="text/css">#timsChatTopic { display: none !important; }</style>').appendTo('head');
 		$('<style type="text/css">.timsChatMessage time { font-weight: normal !important; }</style>').appendTo('head');
 		$('<style type="text/css">.timsChatMessage .altLayout time.timeLeft { float: none !important; }</style>').appendTo('head');
+		hideAwayUsersStyle = $('<style type="text/css">#timsChatUserList .away:not(.you) { display: none !important; visibility: hidden !important; }</style>');
+		
+		if (bcplus.getStorage().getValue('UIOptimizeHideAwayUsersOption', false)) {
+			hideAwayUsersStyle.appendTo('head');
+		}
 	};
 	
 	var buildUI = function() {
 		bcplus.addBoolOption('UIOptimizeTimeBeforeName', 'Zeitstempel vor dem Benutzername', 'UIOptimize', 'User Interface', false);
 		bcplus.addBoolOption('UIOptimizeShowSeconds', 'Zeitstempel mit Sekundenangabe', 'UIOptimize', null, false);
+		bcplus.addBoolOption('UIOptimizeHideAwayUsers', 'Abwesende Benutzer ausblenden', 'UIOptimize', null, false, function(event) {
+			if (bcplus.getStorage().getValue('UIOptimizeHideAwayUsersOption', false)) {
+				hideAwayUsersStyle.detach().appendTo('head');
+			}
+			else {
+				hideAwayUsersStyle.detach();
+			}
+		});
 		
 		$('#timsChatAltLayout').closest('li').detach().insertAfter($('#timsChatSmilies').closest('li'));
 	};

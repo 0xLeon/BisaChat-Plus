@@ -174,7 +174,7 @@ var BisaChatPlus = (function() {
 			
 			var messageText = $('#timsChatInput').val().trim();
 			
-			if (messageText.startsWith('/')) {
+			if (messageText.startsWith('/') && (messageText[1] !== '/')) {
 				var matchResult = messageText.match(commandRegex)
 				var commandName = matchResult[1];
 				var commandParameters = (matchResult[2] || '').replace(commandParameterRegex, function() {

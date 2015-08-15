@@ -34,7 +34,7 @@ Modules.CommandLine = (function() {
 			}
 		});
 		bcplus.addCommand('leave', function() {
-			$('#mainMenu li[data-menu-item="wbb.header.menu.board"] > a').click();
+			Window.location.href = $('#mainMenu li[data-menu-item="wbb.header.menu.board"] > a').attr('href');
 		});
 		bcplus.addCommand('catch', function() {
 			$('#fish').remove();

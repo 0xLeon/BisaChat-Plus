@@ -71,10 +71,10 @@ $mediaResources = glob('media/*');
 $finfo = new finfo(FILEINFO_MIME_TYPE);
 
 // read in header
-$header = file_get_contents('header.js')."\n";
+$header = file_get_contents('header.js');
 
 // read in util
-$util = file_get_contents('util.js')."\n";
+$util = trim(file_get_contents('util.js'));
 
 // read in namespaces
 $result = file_get_contents('namespaces.js')."\n";
@@ -83,7 +83,7 @@ $result = file_get_contents('namespaces.js')."\n";
 foreach ($tools as $tool) {
 	echo "Adding tool: ".basename($tool, '.js')."\n";
 	
-	$result .= file_get_contents($tool);
+	$result .= file_get_contents($tool)."\n";
 }
 
 // add media resources
@@ -118,6 +118,7 @@ foreach ($options['modules'] as $module) {
 }
 
 $result .= file_get_contents('BisaChatPlus.js');
+$result = trim($result);
 $result = str_replace("\n", "\n\t\t", $result);
 $result = str_replace("/*{content}*/", $result, $header);
 $result = str_replace("/*{util}*/", str_replace("\n", "\n\t", $util), $result);

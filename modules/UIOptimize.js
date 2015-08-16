@@ -26,6 +26,7 @@ Modules.UIOptimize = (function() {
 	var buildUI = function() {
 		bcplus.addBoolOption('UIOptimizeTimeBeforeName', 'Zeitstempel vor dem Benutzername', 'UIOptimize', 'User Interface', false);
 		bcplus.addBoolOption('UIOptimizeShowSeconds', 'Zeitstempel mit Sekundenangabe', 'UIOptimize', null, false);
+		bcplus.addBoolOption('UIOptimizeHideExternalLinkConfirm', 'Bestätigungs-Dialog bei externen Links überspringen', 'UIOptimize', null, false);
 		bcplus.addBoolOption('UIOptimizeHideAwayUsers', 'Abwesende Benutzer ausblenden', 'UIOptimize', null, false, function(event) {
 			if (bcplus.getStorage().getValue('UIOptimizeHideAwayUsersOption', false)) {
 				hideAwayUsersStyle.detach().appendTo('head');
@@ -85,6 +86,10 @@ Modules.UIOptimize = (function() {
 						submit: false
 					});
 				});
+			}
+			
+			if (bcplus.getStorage().getValue('UIOptimizeHideExternalLinkConfirmOption', false)) {
+				$messageNode.find('a.externalURL[onclick]').prop('onclick', null);
 			}
 		});
 		

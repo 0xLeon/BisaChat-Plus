@@ -14,7 +14,6 @@ Modules.MessageFilters = (function() {
 		$('<style type="text/css">.timsChatMessage.noAvatar .timsChatInnerMessage { margin-left: 18px !important; }</style>').appendTo('head');
 		$('<style type="text/css">.timsChatMessage.noAvatar .bubble .timsChatInnerMessage::before, .timsChatMessage.noAvatar .bubble .timsChatInnerMessage::after { border-style: none !important; }</style>').appendTo('head');
 		$('<style type="text/css">.timsChatMessage.colorlessNickname .timsChatUsernameContainer span { color: inherit !important; }</style>').appendTo('head');
-		$('<style type="text/css">.timsChatMessage.messageHidden { display: none !important; visibility: hidden !important; }</style>').appendTo('head');
 	};
 	
 	var buildUI = function() {
@@ -78,11 +77,11 @@ Modules.MessageFilters = (function() {
 			}
 			
 			if (bcplus.getStorage().getValue('hideLoginOption', false) && ((messageNodeEvent.messageType === bcplus.messageType.JOIN) || (messageNodeEvent.messageType === bcplus.messageType.LEAVE))) {
-				$messageNode.addClass('messageHidden');
+				$messageNode.addClass('invisible');
 			}
 			
 			if (bcplus.getStorage().getValue('hideStatusOption', false) && ((messageNodeEvent.messageType === bcplus.messageType.AWAY) || (messageNodeEvent.messageType === bcplus.messageType.BACK))) {
-				$messageNode.addClass('messageHidden');
+				$messageNode.addClass('invisible');
 			}
 		});
 	};

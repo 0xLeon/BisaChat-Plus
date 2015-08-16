@@ -33,6 +33,9 @@ Modules.CommandLine = (function() {
 				bcplus.showInfoMessage(e.message);
 			}
 		});
+		bcplus.addCommand('reload', function() {
+			Window.location.reload();
+		});
 		bcplus.addCommand('leave', function() {
 			Window.location.href = $('#mainMenu li[data-menu-item="wbb.header.menu.board"] > a').attr('href');
 		});

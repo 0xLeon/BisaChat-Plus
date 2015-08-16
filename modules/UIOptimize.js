@@ -1,5 +1,6 @@
 Modules.UIOptimize = (function() {
 	var bcplus = null;
+	var hideTopicStyle = null;
 	var hideAwayUsersStyle = null;
 	
 	var initialize = function(_bcplus) {
@@ -12,10 +13,9 @@ Modules.UIOptimize = (function() {
 	
 	var addStyles = function() {
 		$('<style type="text/css">.timsChatMessageContainer { padding-left: 15px !important; padding-right: 15px !important; }</style>').appendTo('head');
-		// TODO: re-display if there is content in chat topic
-		$('<style type="text/css">#timsChatTopic { display: none !important; }</style>').appendTo('head');
 		$('<style type="text/css">.timsChatMessage time { font-weight: normal !important; }</style>').appendTo('head');
 		$('<style type="text/css">.timsChatMessage .altLayout time.timeLeft { float: none !important; }</style>').appendTo('head');
+		hideTopicStyle = $('<style type="text/css">#timsChatTopic { display: none !important; }</style>').appendTo('head');
 		hideAwayUsersStyle = $('<style type="text/css">#timsChatUserList .away:not(.you) { display: none !important; visibility: hidden !important; }</style>');
 		
 		if (bcplus.getStorage().getValue('UIOptimizeHideAwayUsersOption', false)) {
@@ -42,6 +42,13 @@ Modules.UIOptimize = (function() {
 	var addEventListeners = function() {
 		$('#timsChatSmilies').on('click', function() {
 			Window.setTimeout(function() {
+				if ($('#timsChatTopic').find('.topic').text().trim() === '') {
+					$('#timsChatTopic').addClass('invisible');
+				}
+				
+				hideTopicStyle.remove();
+				hideTopicStyle = null;
+				
 				$(Window).resize();
 			}, 1);
 		});

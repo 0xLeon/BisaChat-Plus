@@ -96,6 +96,24 @@ Modules.Highlighting = (function() {
 				}
 			}
 		});
+		
+		// bcplus.addEventListener('messageAdded', function(messageNodeEvent) {
+		// 	// if message should be highlighted AND waypoint not attached
+		// 	if ((messageIDs.indexOf(messageNodeEvent.messageID) > -1) && !messageNodeEvent.messageNode.closest('.timsChatMessage').data('highlightingWaypointAttached')) {
+		// 		messageNodeEvent.messageNode.closest('.timsChatMessage').data('highlightingWaypointAttached', true);
+		// 		
+		// 		new Waypoint.Inview({
+		// 			context: messageNodeEvent.messageNode.closest('.timsChatMessageContainer').get(0),
+		// 			element: messageNodeEvent.messageNode.closest('.timsChatMessage').find('.timsChatInnerMessage').get(0),
+		// 			entered: function() {
+		// 				if (document.hasFocus() && !bcplus.getAwayStatus().isAway) {
+		// 					$(this.element).effect('highlight', {}, 1e3);
+		// 					this.destroy();
+		// 				}
+		// 			}
+		// 		});
+		// 	}
+		// });
 	};
 	
 	var highlight = function(message) {

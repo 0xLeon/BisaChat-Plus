@@ -40,17 +40,6 @@ if ($argc === 1) {
 		}
 	} while ($input !== 'Y' && $input !== 'N');
 	
-	do {
-		echo "Do you want a minified version? (Y/N)\n";
-		echo "> ";
-		$input = strtoupper(trim(fread(STDIN, 1024)));
-		
-		if ($input == 'Y') {
-			$options['minify'] = true;
-			echo "I will minify the script\n";
-		}
-	} while ($input !== 'Y' && $input !== 'N');
-	
 	echo "I have everything i need, starting build";
 	for ($i = 0; $i < 3; $i++) {
 		echo ".";
@@ -124,17 +113,6 @@ $result = str_replace("/*{content}*/", $result, $header);
 $result = str_replace("/*{util}*/", str_replace("\n", "\n\t", $util), $result);
 $result = str_replace('{version}', $options['version'].'-'.$options['build'], $result);
 
-if ($options['minify']) {
-	echo "Minifying\n";
-	$result = preg_replace_callback("~('.*?')~", 'removeStrings', $result);
-	$result = preg_replace_callback("~(// ==UserScript==.*// ==/UserScript==)~s", 'removeHeader', $result);
-	$result = preg_replace('~/\\*.*\\*/~Us', '', $result);
-	$result = preg_replace('~//.*~', '', $result);
-	$result = str_replace(array("\t","\r"), '', $result);
-	$result = str_replace("\n\n", "\n", $result);
-	$result = StringStack::reinsertStrings($result, 'string');
-	$result = StringStack::reinsertStrings($result, 'header');
-}
 
 echo "Writing file builds/BisaChat Plus ".$options['version'].".user.js\n";
 // Write file
@@ -156,7 +134,6 @@ function parseParams($argv) {
 	$options = array(
 		'version' => '',
 		'build' => 0,
-		'minify' => false,
 		'modules' => array()
 	);
 	
@@ -171,9 +148,6 @@ function parseParams($argv) {
 			case 'version':
 				$options['version'] = substr($argv[$i], strrpos($argv[$i], '-')+1);
 				break;
-			case 'minify':
-				$options['minify'] = true;
-				break;
 			case 'with-module':
 				$options['modules'][] = substr($argv[$i], strrpos($argv[$i], '-')+1);
 				break;
@@ -186,78 +160,4 @@ function parseParams($argv) {
 	$options['modules'] = array_unique($options['modules']);
 	
 	return $options;
-}
-
-function removeStrings($matches) {
-	return StringStack::pushToStringStack($matches[1], 'string');
-}
-function removeHeader($matches) {
-	return StringStack::pushToStringStack($matches[1]."\n", 'header');
-}
-
-/**
- * Replaces quoted strings in a text.
- * 
- * @author	Marcel Werk
- * @copyright	2001-2009 WoltLab GmbH
- * @license	GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
- * @package	com.woltlab.wcf
- * @subpackage	util
- * @category	Community Framework
- */
-class StringStack {
-	protected static $stringStack = array();
-	
-	/**
-	 * Replaces a string with an unique hash value.
-	 *
-	 * @param 	string 		$string
-	 * @param 	string	 	$type
-	 * @return	string		$hash
-	 */
-	public static function pushToStringStack($string, $type = 'default') {
-		$hash = '@@'.sha1(uniqid(microtime()).$string).'@@';
-		
-		if (!isset(self::$stringStack[$type])) {
-			self::$stringStack[$type] = array();
-		}
-		
-		self::$stringStack[$type][$hash] = $string;
-		
-		return $hash;
-	}
-	
-	/**
-	 * Reinserts Strings that have been replaced by unique hash values.
-	 *
-	 * @param 	string 		$string
-	 * @param 	string	 	$type
-	 * @return 	string 		$string
-	 */
-	public static function reinsertStrings($string, $type = 'default') {
-		if (isset(self::$stringStack[$type])) {
-			foreach (self::$stringStack[$type] as $hash => $value) {
-				if (strpos($string, $hash) !== false) {
-					$string = str_replace($hash, $value, $string);
-					unset(self::$stringStack[$type][$hash]);
-				}
-			}
-		}
-		
-		return $string;
-	}
-	
-	/**
-	 * Returns the stack.
-	 *
-	 * @param 	string		$type
-	 * @return	array
-	 */
-	public static function getStack($type = 'default') {
-		if (isset(self::$stringStack[$type])) {
-			return self::$stringStack[$type];
-		}
-		
-		return array();
-	}
 }

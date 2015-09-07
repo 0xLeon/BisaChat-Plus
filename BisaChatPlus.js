@@ -295,12 +295,14 @@ var BisaChatPlus = (function() {
 							var messageNodeEvent = {
 								messageNode:		$messageNode,
 								messageType:		parseInt($messageNode.attr('class').match(messageTypeRegex)[1], 10),
+								messageID:		null,
 								sender:			parseInt($messageNode.attr('class').match(messageUserIdRegex)[1], 10),
 								senderUsername:		null,
 								messageText:		null,
 								messageNodeType:	null
 							};
 							
+							// TODO: what if one bubble contains several messages of one user?
 							if ($messageNode.hasClass('timsChatMessage')) {
 								if ($messageNode.find('.bubble').length > 0) {
 									messageNodeEvent.messageNodeType = messageNodeType.BUBBLE;
@@ -309,11 +311,13 @@ var BisaChatPlus = (function() {
 									messageNodeEvent.messageNodeType = messageNodeType.ALTERNATIVE;
 								}
 								
+								messageNodeEvent.messageID = $messageNode.find('.timsChatText').data('messageID');
 								messageNodeEvent.messageText = $messageNode.find('.timsChatText').text().trim();
 								messageNodeEvent.senderUsername = $messageNode.find('.timsChatUsernameContainer span:not(.icon, .receiver)').text().trim();
 							}
 							else if ($messageNode.hasClass('timsChatText')) {
 								messageNodeEvent.messageNodeType = messageNodeType.BUBBLEFOLLOWUP;
+								messageNodeEvent.messageID = $messageNode.data('messageID');
 								
 								$messageNode.contents().each(function() {
 									if (this.nodeType === 3) {

@@ -141,8 +141,6 @@ echo "Writing file builds/BisaChat Plus ".$options['version'].".user.js\n";
 file_put_contents('builds/BisaChat Plus '.$options['version'].'.user.js', $result);
 // save version
 file_put_contents('builds/.lastversion', $options['version']);
-// save build
-file_put_contents('builds/.lastbuild', $options['build']);
 echo "Finished\n";
 
 // direct gm output
@@ -157,7 +155,7 @@ if ($argc == 1) {
 function parseParams($argv) {
 	$options = array(
 		'version' => '',
-		'build' => 1,
+		'build' => 0,
 		'minify' => false,
 		'modules' => array()
 	);
@@ -182,9 +180,8 @@ function parseParams($argv) {
 		}
 	}
 	
-	if (file_exists('builds/.lastbuild')) {
-		$options['build'] = (string)(intval(file_get_contents('builds/.lastbuild')) + 1);
-	}
+	$time = explode(' ', microtime());
+	$options['build'] = bcadd(($time[0] * 1000), bcmul($time[1], 1000));
 	
 	$options['modules'] = array_unique($options['modules']);
 	

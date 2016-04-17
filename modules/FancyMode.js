@@ -14,7 +14,7 @@ Modules.FancyMode = (function() {
 			}
 		});
 		bcplus.addEventListener('messageAdded', function(messageNodeEvent) {
-			if ((messageNodeEvent.messageType === bcplus.messageType.INFO) && messageNodeEvent.messageText.startsWith('Die Farbe')) {
+			if (bcplus.getStorage().getValue('fancyMode', false) && (messageNodeEvent.messageType === bcplus.messageType.INFO) && messageNodeEvent.messageText.startsWith('Die Farbe')) {
 				messageNodeEvent.messageNode.addClass('invisible');
 			}
 		});

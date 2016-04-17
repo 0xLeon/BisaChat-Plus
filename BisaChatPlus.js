@@ -1,7 +1,7 @@
 var BisaChatPlus = (function() {
 	var bcplus = null;
 	var storage = Storage.getInterface('bcplus');
-	var event = {
+	var bcplusEvents = {
 		chatBlur: $.Callbacks(),
 		chatFocus: $.Callbacks(),
 		privateRoomAdded: $.Callbacks(),
@@ -19,10 +19,10 @@ var BisaChatPlus = (function() {
 		title: 'BisaChat Plus – Optionen',
 		
 		onOpen: function() {
-			event.optionsOpened.fire();
+			bcplusEvents.optionsOpened.fire();
 		},
 		onClose: function() {
-			event.optionsClosed.fire();
+			bcplusEvents.optionsClosed.fire();
 			
 			$('#timsChatInput').focus();
 		}
@@ -116,7 +116,7 @@ var BisaChatPlus = (function() {
 							$addedNode.get(0).setAttribute('data-uuid', uuid);
 							privateRoomObservers[uuid] = addStreamObserver($addedNode.find('ul'));
 							
-							event.privateRoomAdded.fire($addedNode);
+							bcplusEvents.privateRoomAdded.fire($addedNode);
 						}
 					}
 				}
@@ -131,7 +131,7 @@ var BisaChatPlus = (function() {
 							privateRoomObservers[uuid].disconnect();
 							delete privateRoomObservers[uuid];
 							
-							event.privateRoomRemoved.fire($removedNode);
+							bcplusEvents.privateRoomRemoved.fire($removedNode);
 						}
 					}
 				}
@@ -149,20 +149,20 @@ var BisaChatPlus = (function() {
 			message.plainText = $('<div>' + message.formattedMessage + '</div>').text().trim();
 			message.ownMessage = (message.sender === WCF.User.userID);
 			
-			event.messageReceived.fire(message);
+			bcplusEvents.messageReceived.fire(message);
 			
 			if (message.ownMessage) {
 				if (message.type === messageType.AWAY) {
 					awayStatus.isAway = true;
 					awayStatus.message = (message.plainText.includes(':') ? message.plainText.substring(message.plainText.indexOf(':') + 1).trim() : '');
 					
-					event.awayStatusChanged.fire(awayStatus);
+					bcplusEvents.awayStatusChanged.fire(awayStatus);
 				}
 				else if (awayStatus.isAway) {
 					awayStatus.isAway = false;
 					awayStatus.message = '';
 					
-					event.awayStatusChanged.fire(awayStatus);
+					bcplusEvents.awayStatusChanged.fire(awayStatus);
 				}
 			}
 		});
@@ -256,11 +256,11 @@ var BisaChatPlus = (function() {
 		});
 		
 		Window.document.addEventListener('blur', function(e) {
-			event.chatBlur.fire(e);
+			bcplusEvents.chatBlur.fire(e);
 		});
 		
 		Window.document.addEventListener('focus', function(e) {
-			event.chatFocus.fire(e);
+			bcplusEvents.chatFocus.fire(e);
 		});
 	};
 	
@@ -331,7 +331,7 @@ var BisaChatPlus = (function() {
 								throw new Error('Unrecognized message node type added.');
 							}
 							
-							event.messageAdded.fire(messageNodeEvent);
+							bcplusEvents.messageAdded.fire(messageNodeEvent);
 						}
 						catch (e) {
 							console.log(e);
@@ -387,19 +387,19 @@ var BisaChatPlus = (function() {
 	};
 	
 	var addEventListener = function(eventName, callback) {
-		if (event[eventName] === null) {
+		if (bcplusEvents[eventName] === null) {
 			throw new Error('Unknown event »' + eventName + '«.');
 		}
 		
-		event[eventName].add(callback);
+		bcplusEvents[eventName].add(callback);
 	};
 	
 	var removeEventListener = function(eventName, callback) {
-		if (event[eventName] === null) {
+		if (bcplusEvents[eventName] === null) {
 			throw new Error('Unknown event »' + eventName + '«.');
 		}
 		
-		event[eventName].remove(callback);
+		bcplusEvents[eventName].remove(callback);
 	};
 	
 	var addBoolOption = function(optionID, optionText, categoryID, categoryName, defaultValue, onChange) {

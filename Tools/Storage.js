@@ -123,7 +123,7 @@ var Storage = (function() {
 			
 			keys.forEach(function(key) {
 				obj[key] = this.getValue(key);
-			});
+			}, this);
 			
 			return obj;
 		}

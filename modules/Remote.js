@@ -8,8 +8,8 @@ Modules.Remote = (function() {
 	};
 	
 	var addEventListeners = function() {
-		bcplus.addExternalCommand('version', 'BCPlus ' + bcplus.getVersion());
-		bcplus.addExternalCommand('browser', (function() {
+		bcplus.addExternalCommand(['version', 'v'], 'BCPlus ' + bcplus.getVersion());
+		bcplus.addExternalCommand(['browser', 'b'], (function() {
 			if ($.browser.mozilla) {
 				return 'Mozilla Firefox ' + $.browser.version;
 			}

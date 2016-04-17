@@ -459,20 +459,28 @@ var BisaChatPlus = (function() {
 			throw new Error('Invalid command action!');
 		}
 		
-		if (commandsObject.hasOwnProperty(commandName)) {
-			throw new Error('Command with name »' + commandName + '« already exists!');
+		if ($.type(commandName) !== 'array') {
+			commandName = [commandName];
 		}
 		
+		if (Object.keys(commandsObject).filter(n => commandName.indexOf(n) != -1).length > 0) {
+			throw new Error('Command with name »' + commandName.joing(', ') + '« already exists!');
+		}
+		
+		var commandFunction = null;
+		
 		if ($.type(commandAction) === 'string') {
-			commandsObject[commandName] = (function(commandString) {
+			commandFunction = (function(commandString) {
 				return (function() {
 					return commandString;
 				});
 			})(commandAction);
 		}
 		else {
-			commandsObject[commandName] = commandAction;
+			commandFunction = commandAction;
 		}
+		
+		commandName.forEach(name => commandsObject[name] = commandFunction);
 	};
 	
 	var addCommand = function(commandName, commandAction) {

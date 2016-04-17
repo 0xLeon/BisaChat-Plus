@@ -8,10 +8,10 @@ Modules.CommandLine = (function() {
 	};
 	
 	var addCommands = function() {
-		bcplus.addCommand('clear', function() {
+		bcplus.addCommand(['clear', 'c'], function() {
 			$('#timsChatClear').click();
 		});
-		bcplus.addCommand('join', function(roomID) {
+		bcplus.addCommand(['join', 'j'], function(roomID) {
 			roomID = parseInt(roomID, 10);
 			
 			try {
@@ -33,10 +33,10 @@ Modules.CommandLine = (function() {
 				bcplus.showInfoMessage(e.message);
 			}
 		});
-		bcplus.addCommand('reload', function() {
+		bcplus.addCommand(['reload', 'r'], function() {
 			Window.location.reload();
 		});
-		bcplus.addCommand('leave', function() {
+		bcplus.addCommand(['leave', 'exit', 'l', 'e'], function() {
 			Window.location.href = $('#mainMenu li[data-menu-item="wbb.header.menu.board"] > a').attr('href');
 		});
 		bcplus.addCommand('catch', function() {

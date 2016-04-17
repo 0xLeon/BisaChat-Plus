@@ -203,9 +203,13 @@ var BisaChatPlus = (function() {
 					
 					return false;
 				}
-				
-				return true;
 			}
+			
+			bcplusEvents.messageSubmit.fire({
+				messageText:	messageText
+			});
+			
+			return true;
 		}, true);
 		
 		addEventListener('messageReceived', function(message) {
@@ -359,7 +363,13 @@ var BisaChatPlus = (function() {
 		return awayStatus;
 	};
 	
-	var sendMessage = function(messageText) {
+	var sendMessage = function(messageText, fireEvent) {
+		if ((fireEvent === undefined) || !!fireEvent) {
+			bcplusEvents.messageSubmit.fire({
+				messageText:	messageText
+			});
+		}
+		
 		new WCF.Action.Proxy({
 			autoSend: true,
 			data: {

@@ -57,6 +57,10 @@ templatepatch/
 requirements/*.tar
 requirements/*.tar.gz
 
+# Deployment
+deploy.cmd
+deploy
+
 # Stuff
 screenshots/
 project.diff

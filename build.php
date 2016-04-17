@@ -119,10 +119,13 @@ echo "Writing file builds/BisaChat Plus ".$options['version'].".user.js\n";
 file_put_contents('builds/BisaChat Plus '.$options['version'].'.user.js', $result);
 // save version
 file_put_contents('builds/.lastversion', $options['version']);
-echo "Finished\n";
 
-// direct gm output
-file_put_contents('C:\\Users\\Stefan\\AppData\\Roaming\\Mozilla\\Firefox\\Profiles\\8ugjllnm.default\\gm_scripts\\BisaChat_Plus\\BisaChat_Plus_3.0.0dev.user.js', $result);
+if (file_exists('./deploy.cmd')) {
+	echo "Deploying build result\n";
+	exec('deploy.cmd');
+}
+
+echo "Finished\n";
 
 if ($argc == 1) {
 	echo "Press Enter to exit...";

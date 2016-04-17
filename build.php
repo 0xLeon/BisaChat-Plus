@@ -87,7 +87,7 @@ Media.$name = {
 	mimeType: '$mimeType',
 	content: '$base64Content',
 	get dataURI() {
-		return 'data:'+this.mimeType+';base64,'+this.content;
+		return 'data:' + this.mimeType + ';base64,' + this.content;
 	}
 };
 

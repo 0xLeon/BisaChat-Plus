@@ -325,7 +325,7 @@ var BisaChatPlus = (function() {
 								messageNodeEvent.messageNodeType = messageNodeType.BUBBLEFOLLOWUP;
 								messageNodeEvent.messageID = $messageNode.data('messageID');
 								
-								$messageNode.contents().toArray().forEach(node => {
+								$messageNode.contents().toArray().forEach((node) => {
 									if (node.nodeType === 3) {
 										messageNodeEvent.messageText += node.nodeValue;
 									}
@@ -476,7 +476,7 @@ var BisaChatPlus = (function() {
 			commandName = [commandName];
 		}
 		
-		if (Object.keys(commandsObject).filter(n => commandName.indexOf(n) != -1).length > 0) {
+		if (Object.keys(commandsObject).filter((n) => commandName.indexOf(n) != -1).length > 0) {
 			throw new Error('Command with name »' + commandName.joing(', ') + '« already exists!');
 		}
 		
@@ -493,7 +493,7 @@ var BisaChatPlus = (function() {
 			commandFunction = commandAction;
 		}
 		
-		commandName.forEach(name => commandsObject[name] = commandFunction);
+		commandName.forEach((name) => commandsObject[name] = commandFunction);
 	};
 	
 	var addCommand = function(commandName, commandAction) {

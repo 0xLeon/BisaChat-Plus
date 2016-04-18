@@ -19,9 +19,7 @@ Modules.CommandLine = (function() {
 					throw new Error('Ungültige Raum-ID.');
 				}
 				
-				var roomLink = $('.timsChatRoom a').filter(function() {
-					return ($(this).data('roomID') === roomID);
-				});
+				var roomLink = $('.timsChatRoom a').filter((index, element) => $(element).data('roomID') === roomID);
 				
 				if (roomLink.length === 0) {
 					throw new Error('Raum-ID »' + roomID + '« existiert nicht.');

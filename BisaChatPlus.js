@@ -106,12 +106,14 @@ var BisaChatPlus = (function() {
 		
 		var privateRoomObserver = new MutationObserver(function(mutations) {
 			mutations.forEach(function(mutation) {
+				var uuid = null;
+				
 				if (mutation.addedNodes.length > 0) {
 					for (var i = 0, l = mutation.addedNodes.length; i < l; i++) {
 						var $addedNode = $(mutation.addedNodes[i]);
 						
 						if ($addedNode.hasClass('timsChatMessageContainer')) {
-							var uuid = String.generateUUID()
+							uuid = String.generateUUID();
 							
 							$addedNode.get(0).setAttribute('data-uuid', uuid);
 							privateRoomObservers[uuid] = addStreamObserver($addedNode.find('ul'));
@@ -122,11 +124,11 @@ var BisaChatPlus = (function() {
 				}
 				
 				if (mutation.removedNodes.length > 0) {
-					for (var i = 0, l = mutation.removedNodes.length; i < l; i++) {
-						var $removedNode = $(mutation.removedNodes[i]);
+					for (var j = 0, m = mutation.removedNodes.length; j < m; j++) {
+						var $removedNode = $(mutation.removedNodes[j]);
 						
 						if ($removedNode.hasClass('timsChatMessageContainer')) {
-							var uuid = $removedNode.data('uuid');
+							uuid = $removedNode.data('uuid');
 							
 							privateRoomObservers[uuid].disconnect();
 							delete privateRoomObservers[uuid];
@@ -175,7 +177,7 @@ var BisaChatPlus = (function() {
 			var messageText = $('#timsChatInput').val().trim();
 			
 			if (messageText.startsWith('/') && (messageText[1] !== '/')) {
-				var matchResult = messageText.match(commandRegex)
+				var matchResult = messageText.match(commandRegex);
 				var commandName = matchResult[1];
 				var commandParameters = (matchResult[2] || '').replace(commandParameterRegex, function() {
 					return ((!arguments[2]) ? '' : ',');
@@ -323,11 +325,12 @@ var BisaChatPlus = (function() {
 								messageNodeEvent.messageNodeType = messageNodeType.BUBBLEFOLLOWUP;
 								messageNodeEvent.messageID = $messageNode.data('messageID');
 								
-								$messageNode.contents().each(function() {
-									if (this.nodeType === 3) {
-										messageNodeEvent.messageText += this.nodeValue;
+								$messageNode.contents().toArray().forEach(node => {
+									if (node.nodeType === 3) {
+										messageNodeEvent.messageText += node.nodeValue;
 									}
 								});
+								
 								messageNodeEvent.messageText = messageNodeEvent.messageText.trim();
 								messageNodeEvent.senderUsername = $messageNode.closest('.timsChatInnerMessage').find('.timsChatUsernameContainer span:not(.icon, .receiver)').text().trim();
 							}
@@ -494,7 +497,7 @@ var BisaChatPlus = (function() {
 	};
 	
 	var addCommand = function(commandName, commandAction) {
-		_addCommandToCommandsObject(commands, commandName, commandAction)
+		_addCommandToCommandsObject(commands, commandName, commandAction);
 	};
 	
 	var addExternalCommand = function(commandName, commandAction) {

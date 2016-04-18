@@ -70,7 +70,7 @@ Modules.Highlighting = (function() {
 		if (bcplus.getStorage().getValue('highlightingActiveOption', true) && (Window.Notification.permission !== 'granted')) {
 			return Window.Notification.requestPermission(function(permission) {
 				var n;
-				return (((n = Window.Notification).permission != null) ? n.permission : (n.permission = permission));
+				return (((n = Window.Notification).permission !== null) ? n.permission : (n.permission = permission));
 			});
 		}
 	};
@@ -147,7 +147,7 @@ Modules.Highlighting = (function() {
 				}))).effect('highlight', {}, 1e3);
 				
 				messageIDs.length = 0;
-				updateDocTitle()
+				updateDocTitle();
 				
 				bcplus.removeEventListener(eventName, listenerFunction);
 				listenerFunction = null;
@@ -170,7 +170,7 @@ Modules.Highlighting = (function() {
 		if (Window.Notification.permission === 'granted') {
 			var messageIsPrivate = (message.type === bcplus.messageType.WHISPER);
 			var notificationTitle = '(' + $('<div>' + message.formattedTime + '</div>').text() + ') ' + message.username + (messageIsPrivate ? ' flüstert' : '');
-			var notificationBody = (message.plainText.length > 50 ? message.plainText.slice(0, 51) + '\u2026' : message.plainText)
+			var notificationBody = (message.plainText.length > 50 ? message.plainText.slice(0, 51) + '\u2026' : message.plainText);
 			var notification = new Window.Notification(notificationTitle, {
 				body: notificationBody,
 				icon: $(message.avatar['48']).attr('src')

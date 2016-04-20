@@ -118,7 +118,7 @@ Modules.Ignore = (function() {
 			}
 			
 			// TODO: make users unignorable
-			var $userIcon = $('<li><a class="framed jsTooltip" href="#"><img class="userAvatarImage" src="#" srcset="" style="width: 48px; height: 48px;" alt="" /></a></li>');
+			var $userIcon = $('<li><a class="framed jsTooltip" href="#" target="_blank"><img class="userAvatarImage" src="#" srcset="" style="width: 48px; height: 48px;" alt="" /></a></li>');
 			
 			$userIcon.children('a').attr({
 				href: $userData.children('a').attr('href'),

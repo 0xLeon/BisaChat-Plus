@@ -59,7 +59,7 @@ Modules.Ignore = (function() {
 	};
 	
 	var updateStyleRule = function() {
-		var styleRule = '';
+		var ignoredUserClasses = [];
 		
 		if (ignoredUserIDs.length < 1) {
 			$ignoreStyleNode.text('');
@@ -67,12 +67,10 @@ Modules.Ignore = (function() {
 		}
 		
 		ignoredUserIDs.forEach(function(userID) {
-			styleRule += '.user' + userID.toString(10) + ', ';
+			ignoredUserClasses.push('.user' + userID.toString(10));
 		});
-		styleRule = styleRule.slice(0, -2);
-		styleRule += ' { display: none !important; visibility: hidden !important; }';
 		
-		$ignoreStyleNode.text(styleRule);
+		$ignoreStyleNode.text(ignoredUserClasses.join(', ') + ' { display: none !important; visibility: hidden !important; }');
 	};
 	
 	return {

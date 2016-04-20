@@ -25,7 +25,7 @@ Modules.Ignore = (function() {
 			autoOpen: false,
 			title: 'Benutzer ignorieren',
 			
-			onOpen: function() {
+			onShow: function() {
 				// event.optionsOpened.fire();
 			},
 			

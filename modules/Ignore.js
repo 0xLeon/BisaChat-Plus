@@ -37,7 +37,6 @@ Modules.Ignore = (function() {
 		});
 		
 		new WCF.Search.User('#bcplusIgnoreDialogUsernameInput', function(user) {
-			console.log(user);
 			this._searchInput.val('');
 			
 			if (ignoredUserIDs.indexOf(user.objectID) === -1) {

@@ -1,6 +1,8 @@
 Modules.Ignore = (function() {
 	var bcplus = null;
 	var ignoredUserIDs = null;
+	var cachedUserProfiles = null;
+	
 	var $ignoreButton = null;
 	var $ignoreDialog = null;
 	var $ignoreStyleNode = null;
@@ -8,6 +10,7 @@ Modules.Ignore = (function() {
 	var initialize = function(_bcplus) {
 		bcplus = _bcplus;
 		ignoredUserIDs = bcplus.getStorage().getValue('ignoredUserIDs', []);
+		cachedUserProfiles = [];
 		
 		addStyles();
 		buildUI();
@@ -27,6 +30,12 @@ Modules.Ignore = (function() {
 			
 			onShow: function() {
 				// event.optionsOpened.fire();
+				
+				WCF.LoadingOverlayHandler.show();
+				
+				buildUserList();
+			
+				WCF.LoadingOverlayHandler.hide();
 			},
 			
 			onClose: function() {
@@ -45,8 +54,12 @@ Modules.Ignore = (function() {
 					return (a - b);
 				});
 				
-				updateStyleRule();
 				bcplus.getStorage().setValue('ignoredUserIDs', ignoredUserIDs);
+				
+				WCF.LoadingOverlayHandler.show();
+				updateStyleRule();
+				buildUserList();
+				WCF.LoadingOverlayHandler.hide();
 			}
 		}, false, [WCF.User.username], false);
 		
@@ -70,6 +83,57 @@ Modules.Ignore = (function() {
 		});
 		
 		$ignoreStyleNode.text(ignoredUserClasses.join(', ') + ' { display: none !important; visibility: hidden !important; }');
+	};
+	
+	var buildUserList = function() {
+		var $userList = $ignoreDialog.find('#bcplusIgnoreDialogUserList');
+		var $iconList = $('<ul class="framedIconList" />');
+		
+		if ($userList.children().length > 0) {
+			$userList.empty();
+		}
+		
+		ignoredUserIDs.forEach(function(userID) {
+			console.log(userID);
+			
+			var $userData = null;
+			
+			if (!!cachedUserProfiles[userID]) {
+				$userData = $(cachedUserProfiles[userID]);
+			}
+			else {
+				(new WCF.Action.Proxy({
+					showLoadingOverlay: false,
+					async: false,
+					data: {
+						actionName: 'getUserProfile',
+						className: 'wcf\\data\\user\\UserProfileAction',
+						objectIDs: [userID]
+					},
+					success: function(data, textStatus, jqXHR) {
+						cachedUserProfiles[userID] = data.returnValues.template;
+						$userData = $(cachedUserProfiles[userID]);
+					}
+				})).sendRequest();
+			}
+			
+			// TODO: make users unignorable
+			var $userIcon = $('<li><a class="framed jsTooltip" href="#"><img class="userAvatarImage" src="#" srcset="" style="width: 48px; height: 48px;" alt="" /></a></li>');
+			
+			$userIcon.children('a').attr({
+				href: $userData.children('a').attr('href'),
+				title: $userData.children('a').attr('title')
+			});
+			// TODO: sometimes we have a scaled avatar here already, check for given size
+			$userIcon.find('img').attr({
+				src: $userData.find('.userAvatarImage').attr('src').slice(0, -4) + '-96' + $userData.find('.userAvatarImage').attr('src').slice(-4),
+				srcset: $userData.find('.userAvatarImage').attr('src').slice(0, -4) + '-96' + $userData.find('.userAvatarImage').attr('src').slice(-4) + ' 2x'
+			});
+			
+			$userIcon.appendTo($iconList);
+		});
+		
+		$iconList.appendTo($userList);
 	};
 	
 	return {

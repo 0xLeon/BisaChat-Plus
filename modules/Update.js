@@ -25,7 +25,7 @@ Modules.Update = (function() {
 			dataType: 'json',
 			data: {
 				version: bcplus.getVersion(),
-				unstable: bcplus.getStorage().getValue()
+				unstable: bcplus.getStorage().getValue('useUnstableOption', false)
 			},
 			success: function(data, textStatus, jqXHR) {
 				console.log(data);

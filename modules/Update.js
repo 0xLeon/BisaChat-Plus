@@ -16,6 +16,10 @@ Modules.Update = (function() {
 	};
 	
 	var checkVersion = function() {
+		if (!bcplus.getStorage().getValue('checkForUpdatesOption', true)) {
+			return;
+		}
+		
 		$.ajax({
 			url: 'http://projects.0xleon.com/userscripts/bcplus/update.php',
 			dataType: 'json',

@@ -5,6 +5,7 @@ Modules.Update = (function() {
 		bcplus =  _bcplus;
 		
 		buildUI();
+		addCommands();
 		checkVersion();
 	};
 	
@@ -13,6 +14,12 @@ Modules.Update = (function() {
 		bcplus.addBoolOption('useUnstable', 'Vorabversionen einbeziehen', 'update', null, false);
 		
 		$('<dt></dt><dd><span>BisaChat Plus ' + bcplus.getVersion() + '</span></dd>').insertBefore($('#bcplus-update dl dt').first());
+	};
+	
+	var addCommands = function() {
+		bcplus.addCommand(['update', 'u'], function() {
+			checkVersion();
+		});
 	};
 	
 	var checkVersion = function() {

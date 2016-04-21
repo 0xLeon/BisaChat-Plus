@@ -1,6 +1,5 @@
 Modules.UIOptimize = (function() {
 	var bcplus = null;
-	var hideTopicStyle = null;
 	var hideAwayUsersStyle = null;
 	
 	var initialize = function(_bcplus) {
@@ -15,7 +14,6 @@ Modules.UIOptimize = (function() {
 		$('<style type="text/css">.timsChatMessageContainer { padding-left: 15px !important; padding-right: 15px !important; }</style>').appendTo('head');
 		$('<style type="text/css">.timsChatMessage time { font-weight: normal !important; }</style>').appendTo('head');
 		$('<style type="text/css">.timsChatMessage .altLayout time.timeLeft { float: none !important; }</style>').appendTo('head');
-		hideTopicStyle = $('<style type="text/css">#timsChatTopic { display: none !important; }</style>').appendTo('head');
 		hideAwayUsersStyle = $('<style type="text/css">#timsChatUserList .away:not(.you) { display: none !important; visibility: hidden !important; }</style>');
 		
 		if (bcplus.getStorage().getValue('UIOptimizeHideAwayUsersOption', false)) {
@@ -37,20 +35,25 @@ Modules.UIOptimize = (function() {
 		});
 		
 		$('#timsChatAltLayout').closest('li').detach().insertAfter($('#timsChatSmilies').closest('li'));
+		
+		$(Window).resize();
 	};
 
 	var addEventListeners = function() {
 		$('#timsChatSmilies').on('click', function() {
 			Window.setTimeout(function() {
-				if ($('#timsChatTopic').find('.topic').text().trim() === '') {
-					$('#timsChatTopic').addClass('invisible');
-				}
-				
-				hideTopicStyle.remove();
-				hideTopicStyle = null;
-				
 				$(Window).resize();
 			}, 1);
+		});
+		
+		(new MutationObserver(function(mutations) {
+			$(Window).resize();
+		})).observe($('#timsChatTopic').get(0), {
+			attributes: true,
+			childList: true,
+			characterData: true,
+			subtree: true,
+			attributeFilter: ['class']
 		});
 		
 		bcplus.addEventListener('messageAdded', function(messageNodeEvent) {

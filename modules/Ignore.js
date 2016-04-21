@@ -98,6 +98,11 @@ Modules.Ignore = (function() {
 			$userList.empty();
 		}
 		
+		if (ignoredUserIDs.length === 0) {
+			$('<p>Keine ignorierten Benutzer</p>').appendTo($userList);
+			return;
+		}
+		
 		ignoredUserIDs.forEach(function(userID) {
 			console.log(userID);
 			

@@ -119,15 +119,15 @@ Modules.Ignore = (function() {
 			
 			// TODO: make users unignorable
 			var $userIcon = $('<li><a class="framed jsTooltip" href="#" target="_blank"><img class="userAvatarImage" src="#" srcset="" style="width: 48px; height: 48px;" alt="" /></a></li>');
+			var avatarPath = $userData.find('.userAvatarImage').attr('src').replace(/(^.*\/\d+-.*?)(?:-\d+)?(\..*$)/, '$1-96$2');
 			
 			$userIcon.children('a').attr({
 				href: $userData.children('a').attr('href'),
 				title: $userData.children('a').attr('title')
 			});
-			// TODO: sometimes we have a scaled avatar here already, check for given size
 			$userIcon.find('img').attr({
-				src: $userData.find('.userAvatarImage').attr('src').slice(0, -4) + '-96' + $userData.find('.userAvatarImage').attr('src').slice(-4),
-				srcset: $userData.find('.userAvatarImage').attr('src').slice(0, -4) + '-96' + $userData.find('.userAvatarImage').attr('src').slice(-4) + ' 2x'
+				src: avatarPath,
+				srcset: avatarPath + ' 2x'
 			});
 			
 			$userIcon.appendTo($iconList);

@@ -5,8 +5,8 @@ Modules.UIOptimize = (function() {
 	var initialize = function(_bcplus) {
 		bcplus = _bcplus;
 		
-		buildUI();
 		addStyles();
+		buildUI();
 		addEventListeners();
 	};
 	

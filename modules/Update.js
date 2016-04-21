@@ -1,12 +1,21 @@
 Modules.Update = (function() {
 	var bcplus = null;
 	
+	var $updateInfoBox = null;
+	
 	var initialize = function(_bcplus) {
 		bcplus =  _bcplus;
 		
+		addStyles();
 		buildUI();
+		addEventListeners();
 		addCommands();
 		checkVersion();
+	};
+	
+	var addStyles = function() {
+		$('<style type="text/css">#bcplus-updateInfo { position: relative; }</style>').appendTo('head');
+		$('<style type="text/css">#bcplus-updateInfoCloser { position: absolute; top: 7px; right: 7px; cursor: pointer; }</style>').appendTo('head');
 	};
 	
 	var buildUI = function() {
@@ -14,6 +23,14 @@ Modules.Update = (function() {
 		bcplus.addBoolOption('useUnstable', 'Vorabversionen einbeziehen', 'update', null, false);
 		
 		$('<dt></dt><dd><span>BisaChat Plus ' + bcplus.getVersion() + '</span></dd>').insertBefore($('#bcplus-update dl dt').first());
+		$updateInfoBox = $('<p id="bcplus-updateInfo" class="info invisible"><span id="bcplus-updateInfoCloser" class="icon icon16 icon-remove jsTooltip" title="Update-Information ausblenden"></span><span>BisaChat Plus <span id="bcplus-newVersion"></span> ist verfügbar.<br /><a href="#" title="">Update starten</a></span></p>').insertAfter($('#timsChatTopic'));
+	};
+	
+	var addEventListeners = function() {
+		$updateInfoBox.find('#bcplus-updateInfoCloser').on('click', function() {
+			$updateInfoBox.addClass('invisible');
+			$(Window).resize();
+		});
 	};
 	
 	var addCommands = function() {
@@ -35,7 +52,17 @@ Modules.Update = (function() {
 				unstable: bcplus.getStorage().getValue('useUnstableOption', false)
 			},
 			success: function(data, textStatus, jqXHR) {
-				console.log(data);
+				if (!!data.updateAvailable) {
+					$updateInfoBox.find('#bcplus-newVersion').text(data.version);
+					$updateInfoBox.find('a').attr({
+						href: data.url
+					});
+					$updateInfoBox.removeClass('invisible');
+					$(Window).resize();
+				}
+				else {
+					$updateInfoBox.addClass('invisible');
+				}
 			}
 		});
 	};

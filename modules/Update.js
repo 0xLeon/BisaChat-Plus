@@ -34,6 +34,7 @@ Modules.Update = (function() {
 	};
 	
 	return {
-		initialize:	initialize
+		initialize:	initialize,
+		checkVersion:	checkVersion
 	};
 })();

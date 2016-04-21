@@ -7,10 +7,15 @@ Modules.Ignore = (function() {
 	var $ignoreDialog = null;
 	var $ignoreStyleNode = null;
 	
+	var tooltip = null;
+	
 	var initialize = function(_bcplus) {
 		bcplus = _bcplus;
 		ignoredUserIDs = bcplus.getStorage().getValue('ignoredUserIDs', []);
 		cachedUserProfiles = [];
+		
+		tooltip = new WCF.Effect.BalloonTooltip();
+		tooltip.init();
 		
 		addStyles();
 		buildUI();
@@ -118,7 +123,7 @@ Modules.Ignore = (function() {
 			}
 			
 			// TODO: make users unignorable
-			var $userIcon = $('<li><a class="framed jsTooltip" href="#" target="_blank"><img class="userAvatarImage" src="#" srcset="" style="width: 48px; height: 48px;" alt="" /></a></li>');
+			var $userIcon = $('<li><a class="framed jsTooltip" href="#" title="" target="_blank"><img class="userAvatarImage" src="#" srcset="" style="width: 48px; height: 48px;" alt="" /></a></li>');
 			var avatarPath = $userData.find('.userAvatarImage').attr('src').replace(/(^.*\/\d+-.*?)(?:-\d+)?(\..*$)/, '$1$2');
 			
 			$userIcon.children('a').attr({
@@ -131,6 +136,7 @@ Modules.Ignore = (function() {
 			});
 			
 			$userIcon.appendTo($iconList);
+			tooltip._initTooltip(0, $userIcon.children('a'));
 		});
 		
 		$iconList.appendTo($userList);

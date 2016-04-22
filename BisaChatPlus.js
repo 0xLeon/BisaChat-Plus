@@ -281,7 +281,12 @@ var BisaChatPlus = (function() {
 	
 	var initModules = function() {
 		$.each(Modules, function(moduleName, moduleObject) {
-			moduleObject.initialize(bcplus);
+			try {
+				moduleObject.initialize(bcplus);
+			}
+			catch (e) {
+				console.error(e);
+			}
 		});
 	};
 	

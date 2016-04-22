@@ -23,6 +23,11 @@ Modules.Ignore = (function() {
 	};
 	
 	var addStyles = function() {
+		$('<style type="text/css">#bcplusIgnoreDialogUserList .framedIconList li { display: inline-block; position: relative; }</style>').appendTo('head');
+		$('<style type="text/css">#bcplusIgnoreDialogUserList .framedIconList a { display: inline-block; }</style>').appendTo('head');
+		$('<style type="text/css">#bcplusIgnoreDialogUserList .framedIconList .bcplus-userUnignoreButton { display: none; position: absolute; z-index: 400; top: 8px; left: 8px; cursor: pointer; opacity: 0.75; transition: opacity 0.2s; }</style>').appendTo('head');
+		$('<style type="text/css">#bcplusIgnoreDialogUserList .framedIconList a:hover + .bcplus-userUnignoreButton { display: inline-block; }</style>').appendTo('head');
+		$('<style type="text/css">#bcplusIgnoreDialogUserList .framedIconList .bcplus-userUnignoreButton:hover { display: inline-block; opacity: 1.0; }</style>').appendTo('head');
 		$ignoreStyleNode = $('<style type="text/css"></style>').appendTo('head');
 		
 		updateStyleRule();
@@ -127,8 +132,7 @@ Modules.Ignore = (function() {
 				})).sendRequest();
 			}
 			
-			// TODO: make users unignorable
-			var $userIcon = $('<li><a class="framed jsTooltip" href="#" title="" target="_blank"><img class="userAvatarImage" src="#" srcset="" style="width: 48px; height: 48px;" alt="" /></a></li>');
+			var $userIcon = $('<li><a class="framed jsTooltip" href="#" title="" target="_blank"><img class="userAvatarImage" src="#" srcset="" style="width: 48px; height: 48px;" alt="" /></a><span class="bcplus-userUnignoreButton icon icon32 icon-remove jsTooltip" title="Benutzer nicht mehr ignorieren"></span></li>');
 			var avatarPath = $userData.find('.userAvatarImage').attr('src').replace(/(^.*\/\d+-.*?)(?:-\d+)?(\..*$)/, '$1$2');
 			
 			$userIcon.children('a').attr({
@@ -139,9 +143,32 @@ Modules.Ignore = (function() {
 				src: avatarPath,
 				srcset: avatarPath + ' 2x'
 			});
+			$userIcon.children('.bcplus-userUnignoreButton').on('click', function(event) {
+				event.preventDefault();
+				event.stopPropagation();
+				
+				var i = ignoredUserIDs.indexOf($(this).data('userID'));
+				
+				if (i > -1) {
+					ignoredUserIDs.splice(i, 1);
+					bcplus.getStorage().setValue('ignoredUserIDs', ignoredUserIDs);
+					
+					if (ignoredUserIDs.length === 0) {
+						$('<p>Keine ignorierten Benutzer</p>').appendTo($userList);
+					}
+					
+					updateStyleRule();
+				}
+				
+				$(this).closest('li').remove();
+			});
+			$userIcon.children('.bcplus-userUnignoreButton').data({
+				userID: userID
+			});
 			
 			$userIcon.appendTo($iconList);
 			tooltip._initTooltip(0, $userIcon.children('a'));
+			tooltip._initTooltip(0, $userIcon.children('.bcplus-userUnignoreButton'));
 		});
 		
 		$iconList.appendTo($userList);

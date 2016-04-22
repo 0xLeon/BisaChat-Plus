@@ -84,6 +84,7 @@ var BisaChatPlus = (function() {
 			addTextOption:		addTextOption,
 			addCommand:		addCommand,
 			addExternalCommand:	addExternalCommand,
+			addStyle:		addStyle,
 			
 			get messageType() {
 				return messageType;
@@ -516,6 +517,10 @@ var BisaChatPlus = (function() {
 		_addCommandToCommandsObject(externalCommands, commandName, commandAction);
 	};
 	
+	var addStyle = function(cssRules) {
+		return $('<style type="text/css" />').text(cssRules).appendTo('head');
+	};
+	
 	init();
 	
 	return {
@@ -530,6 +535,7 @@ var BisaChatPlus = (function() {
 		addTextOption:		addTextOption,
 		addCommand:		addCommand,
 		addExternalCommand:	addExternalCommand,
+		addStyle:		addStyle,
 		
 		get messageType() {
 			return messageType;

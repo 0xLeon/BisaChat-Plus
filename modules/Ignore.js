@@ -23,13 +23,13 @@ Modules.Ignore = (function() {
 	};
 	
 	var addStyles = function() {
-		$('<style type="text/css">#bcplusIgnoreDialogUserList .framedIconList li { display: inline-block; position: relative; }</style>').appendTo('head');
-		$('<style type="text/css">#bcplusIgnoreDialogUserList .framedIconList a { display: inline-block; }</style>').appendTo('head');
-		$('<style type="text/css">#bcplusIgnoreDialogUserList .framedIconList .bcplus-userUnignoreButton { display: none; position: absolute; z-index: 400; top: 8px; left: 8px; cursor: pointer; opacity: 0.75; transition: opacity 0.2s; }</style>').appendTo('head');
-		$('<style type="text/css">#bcplusIgnoreDialogUserList .framedIconList a:hover + .bcplus-userUnignoreButton { display: inline-block; }</style>').appendTo('head');
-		$('<style type="text/css">#bcplusIgnoreDialogUserList .framedIconList .bcplus-userUnignoreButton:hover { display: inline-block; opacity: 1.0; }</style>').appendTo('head');
-		$('<style type="text/css">#bcplusIgnoreDialogUserList .framedIconList .userAvatarImage { width: 48px; height: 48px; }</style>').appendTo('head');
-		$ignoreStyleNode = $('<style type="text/css"></style>').appendTo('head');
+		bcplus.addStyle('#bcplusIgnoreDialogUserList .framedIconList li { display: inline-block; position: relative; }');
+		bcplus.addStyle('#bcplusIgnoreDialogUserList .framedIconList a { display: inline-block; }');
+		bcplus.addStyle('#bcplusIgnoreDialogUserList .framedIconList .bcplus-userUnignoreButton { display: none; position: absolute; z-index: 400; top: 8px; left: 8px; cursor: pointer; opacity: 0.75; transition: opacity 0.2s; }');
+		bcplus.addStyle('#bcplusIgnoreDialogUserList .framedIconList a:hover + .bcplus-userUnignoreButton { display: inline-block; }');
+		bcplus.addStyle('#bcplusIgnoreDialogUserList .framedIconList .bcplus-userUnignoreButton:hover { display: inline-block; opacity: 1.0; }');
+		bcplus.addStyle('#bcplusIgnoreDialogUserList .framedIconList .userAvatarImage { width: 48px; height: 48px; }');
+		$ignoreStyleNode = bcplus.addStyle('');
 		
 		updateStyleRule();
 	};

@@ -10,10 +10,10 @@ Modules.MessageFilters = (function() {
 	};
 	
 	var addStyles = function() {
-		$('<style type="text/css">.timsChatMessage.noAvatar .timsChatAvatarContainer { display: none !important; width: 0px !important; }</style>').appendTo('head');
-		$('<style type="text/css">.timsChatMessage.noAvatar .timsChatInnerMessage { margin-left: 18px !important; }</style>').appendTo('head');
-		$('<style type="text/css">.timsChatMessage.noAvatar .bubble .timsChatInnerMessage::before, .timsChatMessage.noAvatar .bubble .timsChatInnerMessage::after { border-style: none !important; }</style>').appendTo('head');
-		$('<style type="text/css">.timsChatMessage.colorlessNickname .timsChatUsernameContainer span { color: inherit !important; }</style>').appendTo('head');
+		bcplus.addStyle('.timsChatMessage.noAvatar .timsChatAvatarContainer { display: none !important; width: 0px !important; }');
+		bcplus.addStyle('.timsChatMessage.noAvatar .timsChatInnerMessage { margin-left: 18px !important; }');
+		bcplus.addStyle('.timsChatMessage.noAvatar .bubble .timsChatInnerMessage::before, .timsChatMessage.noAvatar .bubble .timsChatInnerMessage::after { border-style: none !important; }');
+		bcplus.addStyle('.timsChatMessage.colorlessNickname .timsChatUsernameContainer span { color: inherit !important; }');
 	};
 	
 	var buildUI = function() {

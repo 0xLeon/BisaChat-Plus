@@ -14,8 +14,8 @@ Modules.Update = (function() {
 	};
 	
 	var addStyles = function() {
-		$('<style type="text/css">#bcplus-updateInfo { position: relative; }</style>').appendTo('head');
-		$('<style type="text/css">#bcplus-updateInfoCloser { position: absolute; top: 7px; right: 7px; cursor: pointer; }</style>').appendTo('head');
+		bcplus.addStyle('#bcplus-updateInfo { position: relative; }');
+		bcplus.addStyle('#bcplus-updateInfoCloser { position: absolute; top: 7px; right: 7px; cursor: pointer; }');
 	};
 	
 	var buildUI = function() {

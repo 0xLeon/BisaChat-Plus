@@ -11,13 +11,13 @@ Modules.UIOptimize = (function() {
 	};
 	
 	var addStyles = function() {
-		$('<style type="text/css">.timsChatMessageContainer { padding-left: 15px !important; padding-right: 15px !important; }</style>').appendTo('head');
-		$('<style type="text/css">.timsChatMessage time { font-weight: normal !important; }</style>').appendTo('head');
-		$('<style type="text/css">.timsChatMessage .altLayout time.timeLeft { float: none !important; }</style>').appendTo('head');
-		hideAwayUsersStyle = $('<style type="text/css">#timsChatUserList .away:not(.you) { display: none !important; visibility: hidden !important; }</style>');
+		bcplus.addStyle('.timsChatMessageContainer { padding-left: 15px !important; padding-right: 15px !important; }');
+		bcplus.addStyle('.timsChatMessage time { font-weight: normal !important; }');
+		bcplus.addStyle('.timsChatMessage .altLayout time.timeLeft { float: none !important; }');
+		hideAwayUsersStyle = bcplus.addStyle('#timsChatUserList .away:not(.you) { display: none !important; visibility: hidden !important; }');
 		
-		if (bcplus.getStorage().getValue('UIOptimizeHideAwayUsersOption', false)) {
-			hideAwayUsersStyle.appendTo('head');
+		if (!bcplus.getStorage().getValue('UIOptimizeHideAwayUsersOption', false)) {
+			hideAwayUsersStyle.detach();
 		}
 	};
 	

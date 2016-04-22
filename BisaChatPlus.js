@@ -302,11 +302,15 @@ var BisaChatPlus = (function() {
 								messageNode:		$messageNode,
 								messageType:		parseInt($messageNode.attr('class').match(messageTypeRegex)[1], 10),
 								messageID:		null,
+								ownMessage:		false,
 								sender:			parseInt($messageNode.attr('class').match(messageUserIdRegex)[1], 10),
 								senderUsername:		null,
+								receiverUsername:	null,
 								messageText:		null,
 								messageNodeType:	null
 							};
+							
+							messageNodeEvent.ownMessage = (messageNodeEvent.sender === WCF.User.userID);
 							
 							// TODO: what if one bubble contains several messages of one user?
 							if ($messageNode.hasClass('timsChatMessage')) {
@@ -320,6 +324,10 @@ var BisaChatPlus = (function() {
 								messageNodeEvent.messageID = $messageNode.find('.timsChatText').data('messageID');
 								messageNodeEvent.messageText = $messageNode.find('.timsChatText').text().trim();
 								messageNodeEvent.senderUsername = $messageNode.find('.timsChatUsernameContainer span:not(.icon, .receiver)').text().trim();
+								
+								if (messageNodeEvent.messageType === messageType.WHISPER) {
+									messageNodeEvent.receiverUsername = $messageNode.find('.timsChatUsernameContainer .receiver').text().trim();
+								}
 							}
 							else if ($messageNode.hasClass('timsChatText')) {
 								messageNodeEvent.messageNodeType = messageNodeType.BUBBLEFOLLOWUP;
@@ -333,6 +341,10 @@ var BisaChatPlus = (function() {
 								
 								messageNodeEvent.messageText = messageNodeEvent.messageText.trim();
 								messageNodeEvent.senderUsername = $messageNode.closest('.timsChatInnerMessage').find('.timsChatUsernameContainer span:not(.icon, .receiver)').text().trim();
+								
+								if (messageNodeEvent.messageType === messageType.WHISPER) {
+									messageNodeEvent.receiverUsername = $messageNode.closest('.timsChatInnerMessage').find('.timsChatUsernameContainer .receiver').text().trim();;
+								}
 							}
 							else {
 								throw new Error('Unrecognized message node type added.');

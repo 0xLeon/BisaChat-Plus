@@ -153,14 +153,16 @@ Modules.Ignore = (function() {
 					ignoredUserIDs.splice(i, 1);
 					bcplus.getStorage().setValue('ignoredUserIDs', ignoredUserIDs);
 					
-					if (ignoredUserIDs.length === 0) {
-						$('<p>Keine ignorierten Benutzer</p>').appendTo($userList);
-					}
-					
 					updateStyleRule();
 				}
 				
-				$(this).closest('li').remove();
+				if (ignoredUserIDs.length > 0) {
+					$(this).closest('li').remove();
+				}
+				else {
+					$(this).closest('ul').remove();
+					$('<p>Keine ignorierten Benutzer</p>').appendTo($ignoreDialog.find('#bcplusIgnoreDialogUserList'));
+				}
 			});
 			$userIcon.children('.bcplus-userUnignoreButton').data({
 				userID: userID

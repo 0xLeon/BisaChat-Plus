@@ -344,7 +344,7 @@ var BisaChatPlus = (function() {
 								messageNodeEvent.senderUsername = $messageNode.closest('.timsChatInnerMessage').find('.timsChatUsernameContainer span:not(.icon, .receiver)').text().trim();
 								
 								if (messageNodeEvent.messageType === messageType.WHISPER) {
-									messageNodeEvent.receiverUsername = $messageNode.closest('.timsChatInnerMessage').find('.timsChatUsernameContainer .receiver').text().trim();;
+									messageNodeEvent.receiverUsername = $messageNode.closest('.timsChatInnerMessage').find('.timsChatUsernameContainer .receiver').text().trim();
 								}
 							}
 							else {

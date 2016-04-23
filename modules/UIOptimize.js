@@ -122,8 +122,6 @@ Modules.UIOptimize = (function() {
 		var selectedText = selection.toString();
 		
 		event.clipboardData.setData('text/plain', selectedText);
-		
-		console.log(selectedText);
 	};
 	
 	var streamSelectAllListener = function(event) {

@@ -121,6 +121,12 @@ Modules.UIOptimize = (function() {
 		var selection = Window.getSelection();
 		var selectedText = selection.toString();
 		
+		// TODO: check with timestamps with date (0:00 pm rollover)
+		selectedText = selectedText.trim()
+			.replace(/^\s+|\s+$/gm, "\n")				// white space on start and end of lines
+			.replace(/\n{2,}/g, "\n")				// multiple sequential line feeds
+			.replace(/^(\d{2})(\:\d{2})(\:\d{2})?/gm, '[$1$2$3]');	// enclose timestamp in brackets
+		
 		event.clipboardData.setData('text/plain', selectedText);
 	};
 	

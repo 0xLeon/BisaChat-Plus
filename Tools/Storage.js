@@ -131,7 +131,6 @@ var Storage = (function() {
 		initialize(namespace);
 		
 		return {
-			initialize:	initialize,
 			getValue:	getValue,
 			setValue:	setValue,
 			unsetValue:	unsetValue,

@@ -45,7 +45,7 @@ Modules.Update = (function() {
 		}
 		
 		$.ajax({
-			url: 'http://projects.0xleon.com/userscripts/bcplus/update.php',
+			url: 'https://projects.0xleon.com/userscripts/bcplus/update.php',
 			dataType: 'json',
 			data: {
 				version: bcplus.getVersion(),

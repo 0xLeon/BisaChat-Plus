@@ -58,11 +58,12 @@ Modules.Update = (function() {
 						href: data.url
 					});
 					$updateInfoBox.removeClass('invisible');
-					$(Window).resize();
 				}
 				else {
 					$updateInfoBox.addClass('invisible');
 				}
+				
+				$(Window).resize();
 			}
 		});
 	};

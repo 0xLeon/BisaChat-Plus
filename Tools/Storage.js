@@ -150,9 +150,13 @@ var Storage = (function() {
 		}
 		
 		var namespace = '';
+		var namespaceValidationPattern = /^[a-zA-Z_$][a-zA-Z\d_$]*$/;
 		
 		$.each(arguments, function(index, namespaceItem) {
-			// TODO: validate namespace elements
+			if (!namespaceItem.match(namespaceValidationPattern)) {
+				throw new Error('Invalid namespace identifier »' + namespaceItem + '«');
+			}
+			
 			namespace += '.' + namespaceItem;
 		});
 		

@@ -262,11 +262,11 @@ var BisaChatPlus = (function() {
 			}
 		});
 		
-		Window.document.addEventListener('blur', function(e) {
+		Window.addEventListener('blur', function(e) {
 			bcplusEvents.chatBlur.fire(e);
 		});
 		
-		Window.document.addEventListener('focus', function(e) {
+		Window.addEventListener('focus', function(e) {
 			bcplusEvents.chatFocus.fire(e);
 		});
 	};

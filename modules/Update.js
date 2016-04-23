@@ -40,7 +40,7 @@ Modules.Update = (function() {
 	};
 	
 	var checkVersion = function() {
-		if (!bcplus.getStorage().getValue('checkForUpdatesOption', true)) {
+		if (!bcplus.getOptionValue('checkForUpdates', true)) {
 			return;
 		}
 		
@@ -49,7 +49,7 @@ Modules.Update = (function() {
 			dataType: 'json',
 			data: {
 				version: bcplus.getVersion(),
-				unstable: bcplus.getStorage().getValue('useUnstableOption', false)
+				unstable: bcplus.getOptionValue('useUnstable', false)
 			},
 			success: function(data, textStatus, jqXHR) {
 				if (!!data.updateAvailable) {

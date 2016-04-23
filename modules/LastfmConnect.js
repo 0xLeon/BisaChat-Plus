@@ -14,7 +14,7 @@ Modules.LastfmConnect = (function() {
 	
 	var addEventListeners = function() {
 		bcplus.addCommand('np', function() {
-			var lastfmUsername = bcplus.getStorage().getValue('lastfmUsernameOption', '');
+			var lastfmUsername = bcplus.getOptionValue('lastfmUsername', '');
 			
 			if (lastfmUsername !== '') {
 				$.ajax({

@@ -9,12 +9,12 @@ Modules.FancyMode = (function() {
 	
 	var addEventListeners = function() {
 		bcplus.addEventListener('messageSubmit', function() {
-			if (bcplus.getStorage().getValue('fancyMode', false)) {
+			if (bcplus.getOptionValue('fancyMode', false)) {
 				bcplus.sendMessage('/color ' + getRandomColor() + ' ' + getRandomColor(), false);
 			}
 		});
 		bcplus.addEventListener('messageAdded', function(messageNodeEvent) {
-			if (bcplus.getStorage().getValue('fancyMode', false) && (messageNodeEvent.messageType === bcplus.messageType.INFO) && messageNodeEvent.messageText.startsWith('Die Farbe')) {
+			if (bcplus.getOptionValue('fancyMode', false) && (messageNodeEvent.messageType === bcplus.messageType.INFO) && messageNodeEvent.messageText.startsWith('Die Farbe')) {
 				messageNodeEvent.messageNode.addClass('invisible');
 			}
 		});

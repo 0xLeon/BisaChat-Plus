@@ -82,6 +82,8 @@ var BisaChatPlus = (function() {
 			removeEventListener:	removeEventListener,
 			addBoolOption:		addBoolOption,
 			addTextOption:		addTextOption,
+			getOptionValue:		getOptionValue,
+			setOptionValue:		setOptionValue,
 			addCommand:		addCommand,
 			addExternalCommand:	addExternalCommand,
 			addStyle:		addStyle,
@@ -481,6 +483,14 @@ var BisaChatPlus = (function() {
 		// TODO: when to save?
 	};
 	
+	var getOptionValue = function(optionName, defaultValue) {
+		return storage.getValue(optionName + 'Option', defaultValue);
+	};
+	
+	var setOptionValue = function(optionName, optionValue) {
+		storage.setValue(optionName + 'Option', optionValue);
+	};
+	
 	var _addCommandToCommandsObject = function(commandsObject, commandName, commandAction) {
 		if (!commandName) {
 			throw new Error('Invalid command name!');
@@ -538,6 +548,8 @@ var BisaChatPlus = (function() {
 		removeEventListener:	removeEventListener,
 		addBoolOption:		addBoolOption,
 		addTextOption:		addTextOption,
+		getOptionValue:		getOptionValue,
+		setOptionValue:		setOptionValue,
 		addCommand:		addCommand,
 		addExternalCommand:	addExternalCommand,
 		addStyle:		addStyle,

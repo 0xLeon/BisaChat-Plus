@@ -27,7 +27,7 @@ Modules.MessageFilters = (function() {
 	
 	var addEventListeners = function() {
 		bcplus.addEventListener('messageReceived', function(message) {
-			if (!bcplus.getStorage().getValue('smiliesOption', true)) {
+			if (!bcplus.getOptionValue('smilies', true)) {
 				var $messageNodeObj = $('<div>' + message.formattedMessage + '</div>');
 				
 				if ($messageNodeObj.find('img').length > 0) {
@@ -50,7 +50,7 @@ Modules.MessageFilters = (function() {
 		bcplus.addEventListener('messageAdded', function(messageNodeEvent) {
 			var $messageNode = messageNodeEvent.messageNode;
 			
-			if (bcplus.getStorage().getValue('greentextOption', true)) {
+			if (bcplus.getOptionValue('greentext', true)) {
 				var $targetNode = null;
 				
 				if (messageNodeEvent.messageNodeType === bcplus.messageNodeType.BUBBLEFOLLOWUP) {
@@ -67,20 +67,20 @@ Modules.MessageFilters = (function() {
 				}
 			}
 			
-			if (bcplus.getStorage().getValue('hideAvatarOption', false) && (messageNodeEvent.messageNodeType !== bcplus.messageNodeType.BUBBLEFOLLOWUP)) {
+			if (bcplus.getOptionValue('hideAvatar', false) && (messageNodeEvent.messageNodeType !== bcplus.messageNodeType.BUBBLEFOLLOWUP)) {
 				$messageNode.addClass('noAvatar');
 			}
 			
 			// TODO: rather set class defaultColor
-			if (bcplus.getStorage().getValue('colorlessNicknameOption', false) && (messageNodeEvent.messageNodeType !== bcplus.messageNodeType.BUBBLEFOLLOWUP)) {
+			if (bcplus.getOptionValue('colorlessNickname', false) && (messageNodeEvent.messageNodeType !== bcplus.messageNodeType.BUBBLEFOLLOWUP)) {
 				$messageNode.addClass('colorlessNickname');
 			}
 			
-			if (bcplus.getStorage().getValue('hideLoginOption', false) && ((messageNodeEvent.messageType === bcplus.messageType.JOIN) || (messageNodeEvent.messageType === bcplus.messageType.LEAVE))) {
+			if (bcplus.getOptionValue('hideLogin', false) && ((messageNodeEvent.messageType === bcplus.messageType.JOIN) || (messageNodeEvent.messageType === bcplus.messageType.LEAVE))) {
 				$messageNode.addClass('invisible');
 			}
 			
-			if (bcplus.getStorage().getValue('hideStatusOption', false) && ((messageNodeEvent.messageType === bcplus.messageType.AWAY) || (messageNodeEvent.messageType === bcplus.messageType.BACK))) {
+			if (bcplus.getOptionValue('hideStatus', false) && ((messageNodeEvent.messageType === bcplus.messageType.AWAY) || (messageNodeEvent.messageType === bcplus.messageType.BACK))) {
 				$messageNode.addClass('invisible');
 			}
 		});

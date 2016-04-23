@@ -7,7 +7,7 @@ Modules.Highlighting = (function() {
 	var eventName = null;
 	var highlightingConditions = [
 		function(message, bcplus) {
-			return bcplus.getStorage().getValue('highlightingActiveOption', true);
+			return bcplus.getOptionValue('highlightingActive', true);
 		},
 		function(message, bcplus) {
 			return (!Window.document.hasFocus() || bcplus.getAwayStatus().isAway);
@@ -16,10 +16,10 @@ Modules.Highlighting = (function() {
 			return (!message.ownMessage);
 		},
 		function(message, bcplus) {
-			return (bcplus.getStorage().getValue('highlightingChatbotOption', true) && (message.sender !== 55518));
+			return (bcplus.getOptionValue('highlightingChatbot', true) && (message.sender !== 55518));
 		},
 		function(message, bcplus) {
-			return (bcplus.getStorage().getValue('highlightingNpOption', true) && !message.plainText.startsWith('np:'));
+			return (bcplus.getOptionValue('highlightingNp', true) && !message.plainText.startsWith('np:'));
 		}
 	];
 	
@@ -67,7 +67,7 @@ Modules.Highlighting = (function() {
 	};
 	
 	var getNotificationPermission = function() {
-		if (bcplus.getStorage().getValue('highlightingActiveOption', true) && (Window.Notification.permission !== 'granted')) {
+		if (bcplus.getOptionValue('highlightingActive', true) && (Window.Notification.permission !== 'granted')) {
 			return Window.Notification.requestPermission(function(permission) {
 				var n;
 				return (((n = Window.Notification).permission !== null) ? n.permission : (n.permission = permission));
@@ -119,11 +119,11 @@ Modules.Highlighting = (function() {
 	var highlight = function(message) {
 		messageIDs.push(message.messageID);
 		
-		if (bcplus.getStorage().getValue('highlightingSoundOption', true)) {
+		if (bcplus.getOptionValue('highlightingSound', true)) {
 			new Audio(Media.bing.dataURI).play();
 		}
 		
-		if (bcplus.getStorage().getValue('highlightingNotificationOption', true)) {
+		if (bcplus.getOptionValue('highlightingNotification', true)) {
 			showNotification(message);
 		}
 		
@@ -194,7 +194,7 @@ Modules.Highlighting = (function() {
 	};
 	
 	var builRegExp = function() {
-		var highlightingString = bcplus.getStorage().getValue('highlightingTextOption', WCF.User.username);
+		var highlightingString = bcplus.getOptionValue('highlightingText', WCF.User.username);
 		var regExpString = highlightingString.split(',').map((item) => RegExp.escape(item.trim())).join('|');
 		
 		regExp = null;

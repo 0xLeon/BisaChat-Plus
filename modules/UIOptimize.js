@@ -16,7 +16,7 @@ Modules.UIOptimize = (function() {
 		bcplus.addStyle('.timsChatMessage .altLayout time.timeLeft { float: none !important; }');
 		hideAwayUsersStyle = bcplus.addStyle('#timsChatUserList .away:not(.you) { display: none !important; visibility: hidden !important; }');
 		
-		if (!bcplus.getStorage().getValue('UIOptimizeHideAwayUsersOption', false)) {
+		if (!bcplus.getOptionValue('UIOptimizeHideAwayUsers', false)) {
 			hideAwayUsersStyle.detach();
 		}
 	};
@@ -26,7 +26,7 @@ Modules.UIOptimize = (function() {
 		bcplus.addBoolOption('UIOptimizeShowSeconds', 'Zeitstempel mit Sekundenangabe', 'UIOptimize', null, false);
 		bcplus.addBoolOption('UIOptimizeHideExternalLinkConfirm', 'Bestätigungs-Dialog bei externen Links überspringen', 'UIOptimize', null, false);
 		bcplus.addBoolOption('UIOptimizeHideAwayUsers', 'Abwesende Benutzer ausblenden', 'UIOptimize', null, false, function(event) {
-			if (bcplus.getStorage().getValue('UIOptimizeHideAwayUsersOption', false)) {
+			if (bcplus.getOptionValue('UIOptimizeHideAwayUsers', false)) {
 				hideAwayUsersStyle.detach().appendTo('head');
 			}
 			else {
@@ -69,14 +69,14 @@ Modules.UIOptimize = (function() {
 				$timeNode = $messageNode.find('.timsChatInnerMessage time');
 				$timeTargetNode = $messageNode.find('.timsChatInnerMessage');
 				
-				if (bcplus.getStorage().getValue('UIOptimizeTimeBeforeNameOption', false) && (messageNodeEvent.messageNodeType === bcplus.messageNodeType.ALTERNATIVE)) {
+				if (bcplus.getOptionValue('UIOptimizeTimeBeforeName', false) && (messageNodeEvent.messageNodeType === bcplus.messageNodeType.ALTERNATIVE)) {
 					$timeNode.addClass('timeLeft');
 				}
 			}
 			
 			$timeNode.detach();
 			
-			if (!bcplus.getStorage().getValue('UIOptimizeShowSecondsOption', false)) {
+			if (!bcplus.getOptionValue('UIOptimizeShowSeconds', false)) {
 				$timeNode.text($timeNode.text().trim().slice(0, -3));
 			}
 			
@@ -98,7 +98,7 @@ Modules.UIOptimize = (function() {
 				});
 			}
 			
-			if (bcplus.getStorage().getValue('UIOptimizeHideExternalLinkConfirmOption', false)) {
+			if (bcplus.getOptionValue('UIOptimizeHideExternalLinkConfirm', false)) {
 				$messageNode.find('a.externalURL[onclick]').prop('onclick', null);
 			}
 		});

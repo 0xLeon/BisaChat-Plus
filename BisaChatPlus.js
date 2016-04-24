@@ -412,7 +412,7 @@ var BisaChatPlus = (function() {
 		var time = new Date();
 		var $infoMessage = $(infoMessageTemplate.fetch({
 			userID:		WCF.User.userID,
-			time:		((time.getHours() < 10) ? '0' + time.getHours().toString() : time.getHours().toString()) + ':' + ((time.getMinutes() < 10) ? '0' + time.getMinutes().toString() : time.getMinutes().toString()) + ':' + ((time.getSeconds() < 10) ? '0' + time.getSeconds().toString() : time.getSeconds().toString()),
+			time:		('00' + time.getHours().toString()).slice(-2) + ':' + ('00' + time.getMinutes().toString()).slice(-2) + ':' + ('00' + time.getSeconds().toString()).slice(-2),
 			text:		messageText
 		}));
 		

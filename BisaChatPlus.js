@@ -420,7 +420,7 @@ var BisaChatPlus = (function() {
 	};
 	
 	var addEventListener = function(eventName, callback) {
-		if (bcplusEvents[eventName] === null) {
+		if (!bcplusEvents.hasOwnProperty(eventName)) {
 			throw new Error('Unknown event »' + eventName + '«.');
 		}
 		
@@ -428,7 +428,7 @@ var BisaChatPlus = (function() {
 	};
 	
 	var removeEventListener = function(eventName, callback) {
-		if (bcplusEvents[eventName] === null) {
+		if (!bcplusEvents.hasOwnProperty(eventName)) {
 			throw new Error('Unknown event »' + eventName + '«.');
 		}
 		

@@ -16,6 +16,9 @@ Modules.Highlighting = (function() {
 			return (!message.ownMessage);
 		},
 		function(message, bcplus) {
+			return (bcplus.getStorage().getValue('ignoredUserIDs', []).indexOf(message.sender) === -1);
+		},
+		function(message, bcplus) {
 			return (bcplus.getOptionValue('highlightingChatbot', true) && (message.sender !== 55518));
 		},
 		function(message, bcplus) {

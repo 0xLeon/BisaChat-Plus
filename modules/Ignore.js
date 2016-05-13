@@ -7,15 +7,10 @@ Modules.Ignore = (function() {
 	var $ignoreDialog = null;
 	var $ignoreStyleNode = null;
 	
-	var tooltip = null;
-	
 	var initialize = function(_bcplus) {
 		bcplus = _bcplus;
 		ignoredUserIDs = bcplus.getStorage().getValue('ignoredUserIDs', []);
 		cachedUserProfiles = [];
-		
-		tooltip = new WCF.Effect.BalloonTooltip();
-		tooltip.init();
 		
 		addStyles();
 		buildUI();
@@ -170,8 +165,7 @@ Modules.Ignore = (function() {
 			});
 			
 			$userIcon.appendTo($iconList);
-			tooltip._initTooltip(0, $userIcon.children('a'));
-			tooltip._initTooltip(0, $userIcon.children('.bcplus-userUnignoreButton'));
+			WCF.DOMNodeInsertedHandler.execute();
 		});
 		
 		$iconList.appendTo($userList);

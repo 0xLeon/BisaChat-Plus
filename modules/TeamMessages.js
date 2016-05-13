@@ -48,13 +48,16 @@ Modules.TeamMessages = (function() {
 						
 						messageNodeEvent.messageText = messageNodeEvent.messageText.slice(15);
 						messageNodeEvent.receiverUsername = 'Team';
+						messageNodeEvent.messageType = bcplus.messageType.TEAM;
 						
 						if (messageNodeEvent.messageNodeType === bcplus.messageNodeType.BUBBLEFOLLOWUP) {
-							// TODO: remove team message indicator
-							messageNodeEvent.messageNode.addClass('teamMessage');
+							messageNodeEvent.messageNode.removeClass('timsChatMessage' + bcplus.messageType.WHISPER.toString(10));
+							messageNodeEvent.messageNode.addClass('timsChatMessage' + bcplus.messageType.TEAM.toString(10));
+							messageNodeEvent.messageNode.html(messageNodeEvent.messageNode.html().trim().slice(15));
 						}
 						else {
-							messageNodeEvent.messageNode.addClass('teamMessage');
+							messageNodeEvent.messageNode.removeClass('timsChatMessage' + bcplus.messageType.WHISPER.toString(10));
+							messageNodeEvent.messageNode.addClass('timsChatMessage' + bcplus.messageType.TEAM.toString(10));
 							messageNodeEvent.messageNode.find('.timsChatText').html(messageNodeEvent.messageNode.find('.timsChatText').html().trim().slice(15));
 							messageNodeEvent.messageNode.find('.receiver').text(messageNodeEvent.receiverUsername);
 						}

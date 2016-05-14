@@ -60,6 +60,13 @@ Modules.TeamMessages = (function() {
 							messageNodeEvent.messageNode.addClass('timsChatMessage' + bcplus.messageType.TEAM.toString(10));
 							messageNodeEvent.messageNode.find('.timsChatText').html(messageNodeEvent.messageNode.find('.timsChatText').html().trim().slice(15));
 							messageNodeEvent.messageNode.find('.receiver').text(messageNodeEvent.receiverUsername);
+							messageNodeEvent.messageNode.find('.timsChatUsernameContainer').off('click').on('click', function() {
+								Window.be.bastelstu.Chat.insertText('/team ', {
+									prepend: false,
+									append: false,
+									submit: false
+								});
+							});
 						}
 					}
 				}

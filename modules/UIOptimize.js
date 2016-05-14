@@ -34,7 +34,8 @@ Modules.UIOptimize = (function() {
 			}
 		});
 		
-		$('#timsChatAltLayout').closest('li').detach().insertAfter($('#timsChatSmilies').closest('li'));
+		$('#timsChatAltLayout').addClass('invisible');
+		$('#timsChatAltLayout').data('status', 1);
 		
 		$(Window).resize();
 	};
@@ -54,6 +55,10 @@ Modules.UIOptimize = (function() {
 			characterData: true,
 			subtree: true,
 			attributeFilter: ['class']
+		});
+		
+		bcplus.addEventListener('messageReceived', function(message) {
+			message.altLayout = true;
 		});
 		
 		bcplus.addEventListener('messageAdded', function(messageNodeEvent) {

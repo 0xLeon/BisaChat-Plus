@@ -5,6 +5,7 @@ Modules.TeamMessages = (function() {
 	
 	var teamMessageRegex = /^#team#(.*?)#(.*)$/;
 	var receivedTeamMessages = [];
+	var receivedTeamMessagesClearer = null;
 	
 	var initialize = function(_bcplus) {
 		bcplus = _bcplus;
@@ -38,13 +39,13 @@ Modules.TeamMessages = (function() {
 				var match = messageNodeEvent.messageText.match(teamMessageRegex);
 				
 				if (null !== match) {
-					if (receivedTeamMessages.hasOwnProperty(match[1])) {
+					if (receivedTeamMessages.indexOf(match[1]) > -1) {
 						messageNodeEvent.messageNode.remove();
 						
 						return false;
 					}
 					else {
-						receivedTeamMessages[match[1]] = true;
+						receivedTeamMessages.push(match[1]);
 						
 						messageNodeEvent.messageText = messageNodeEvent.messageText.slice(15);
 						messageNodeEvent.receiverUsername = 'Team';
@@ -72,6 +73,14 @@ Modules.TeamMessages = (function() {
 				}
 			}
 		});
+		
+		receivedTeamMessagesClearer = new WCF.PeriodicalExecuter(function() {
+			if (receivedTeamMessages.length > 10) {
+				for (var i = receivedTeamMessages.length, m = Math.floor(receivedTeamMessages.length / 2); i > m; i--) {
+					receivedTeamMessages.shift();
+				}
+			}
+		}, 6000000);
 		
 		// bcplus.addExternalCommand();
 	};

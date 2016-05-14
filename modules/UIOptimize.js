@@ -104,7 +104,7 @@ Modules.UIOptimize = (function() {
 			}
 			
 			if (bcplus.getOptionValue('UIOptimizeHideExternalLinkConfirm', false)) {
-				$messageNode.find('a.externalURL[onclick]').prop('onclick', null);
+				$messageNode.find('a.externalURL[onclick]').off('click').prop('onclick', null);
 			}
 		});
 		

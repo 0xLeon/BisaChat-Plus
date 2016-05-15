@@ -38,6 +38,13 @@ Modules.TeamMessages = (function() {
 			return null;
 		});
 		
+		bcplus.addEventListener('messageReceived', function(message) {
+			if ((message.type === bcplus.messageType.WHISPER) && teamMembers.hasOwnProperty(message.sender) && message.plainText.startsWith('#team#')) {
+				message.teamMessage = true;
+				message.additionalData.receiverUsername = 'Team';
+			}
+		});
+		
 		bcplus.addEventListener('messageAdded', function(messageNodeEvent) {
 			if ((messageNodeEvent.messageType === bcplus.messageType.WHISPER) && teamMembers.hasOwnProperty(messageNodeEvent.sender)) {
 				var match = messageNodeEvent.messageText.match(teamMessageRegex);
@@ -52,7 +59,6 @@ Modules.TeamMessages = (function() {
 						receivedTeamMessages.push(match[1]);
 						
 						messageNodeEvent.messageText = messageNodeEvent.messageText.slice(15);
-						messageNodeEvent.receiverUsername = 'Team';
 						messageNodeEvent.messageType = bcplus.messageType.TEAM;
 						
 						if (messageNodeEvent.messageNodeType === bcplus.messageNodeType.BUBBLEFOLLOWUP) {
@@ -64,7 +70,6 @@ Modules.TeamMessages = (function() {
 							messageNodeEvent.messageNode.removeClass('timsChatMessage' + bcplus.messageType.WHISPER.toString(10));
 							messageNodeEvent.messageNode.addClass('timsChatMessage' + bcplus.messageType.TEAM.toString(10));
 							messageNodeEvent.messageNode.find('.timsChatText').html(messageNodeEvent.messageNode.find('.timsChatText').html().trim().slice(15));
-							messageNodeEvent.messageNode.find('.receiver').text(messageNodeEvent.receiverUsername);
 							messageNodeEvent.messageNode.find('.timsChatUsernameContainer').off('click').on('click', function() {
 								Window.be.bastelstu.Chat.insertText('/team ', {
 									prepend: false,

@@ -16,7 +16,7 @@ Modules.TeamMessages = (function() {
 	};
 	
 	var addStyles = function() {
-		bcplus.addStyle('.teamMessage .receiver { color: #0000ff !important; }');
+		bcplus.addStyle('.timsChatMessage' + bcplus.messageType.TEAM.toString(10) + ' .timsChatUsernameContainer { font-weight: bold; }');
 	};
 	
 	var addEventListeners = function() {

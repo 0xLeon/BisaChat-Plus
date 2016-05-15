@@ -31,6 +31,10 @@ Modules.TeamMessages = (function() {
 				}
 			});
 			
+			if (Modules.hasOwnProperty('CommandHistory')) {
+				Modules.CommandHistory.pushCommand('/team');
+			}
+			
 			return null;
 		});
 		

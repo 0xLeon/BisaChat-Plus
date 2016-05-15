@@ -1,6 +1,6 @@
-Modules.WhisperTools = (function() {
+Modules.CommandHistory = (function() {
 	var bcplus = null;
-	var lastPrivateUser = null;
+	var lastCommand = null;
 	
 	var initialize = function(_bcplus) {
 		bcplus = _bcplus;
@@ -10,8 +10,8 @@ Modules.WhisperTools = (function() {
 	
 	var addEventListener = function() {
 		$('#timsChatInput').on('keydown', function(event) {
-			if ((null !== lastPrivateUser) && (38 == event.which) && !event.ctrlKey && !event.altKey && !event.shiftKey && !event.metaKey) {
-				Window.be.bastelstu.Chat.insertText('/f ' + lastPrivateUser + ', ', {
+			if ((null !== lastCommand) && (38 == event.which) && !event.ctrlKey && !event.altKey && !event.shiftKey && !event.metaKey) {
+				Window.be.bastelstu.Chat.insertText(lastCommand + ' ', {
 					prepend: false,
 					append: false,
 					submit: false
@@ -23,14 +23,19 @@ Modules.WhisperTools = (function() {
 		
 		bcplus.addCommand(['f', 'whispher'], function(username) {
 			if (arguments.length > 1) {
-				lastPrivateUser = username;
+				pushCommand('/f ' + username + ',');
 			}
 			
 			return '/f ' + $.makeArray(arguments).join(', ');
 		});
 	};
 	
+	var pushCommand = function(entry) {
+		lastCommand = entry;
+	};
+	
 	return {
-		initialize:	initialize
+		initialize:	initialize,
+		pushCommand:	pushCommand
 	};
 })();

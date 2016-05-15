@@ -68,6 +68,7 @@ Modules.TeamMessages = (function() {
 									submit: false
 								});
 							});
+							messageNodeEvent.messageNode.find('.timsChatUsernameContainer .icon-double-angle-right').data('tooltip', 'Schreibt');
 						}
 					}
 				}

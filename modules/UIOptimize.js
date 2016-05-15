@@ -96,7 +96,7 @@ Modules.UIOptimize = (function() {
 			if ((messageNodeEvent.messageNodeType !== bcplus.messageNodeType.BUBBLEFOLLOWUP) && ((messageNodeEvent.messageType < bcplus.messageType.MODERATE) || (messageNodeEvent.messageType === bcplus.messageType.WHISPER))) {
 				$messageNode.find('.timsChatUsernameContainer').find('.icon.pointer').off('click').prop('onclick', null);
 				$messageNode.find('.timsChatUsernameContainer').data('username', ((messageNodeEvent.messageType === bcplus.messageType.WHISPER) && messageNodeEvent.ownMessage) ? messageNodeEvent.receiverUsername : messageNodeEvent.senderUsername);
-				$messageNode.find('.timsChatUsernameContainer').toggleClass('pointer').on('click', function() {
+				$messageNode.find('.timsChatUsernameContainer').addClass('pointer').on('click', function() {
 					Window.be.bastelstu.Chat.insertText('/whisper ' + $(this).data('username') + ', ', {
 						prepend: false,
 						append: false,

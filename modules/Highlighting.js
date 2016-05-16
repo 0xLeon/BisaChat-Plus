@@ -19,10 +19,10 @@ Modules.Highlighting = (function() {
 			return (bcplus.getStorage().getValue('ignoredUserIDs', []).indexOf(message.sender) === -1);
 		},
 		function(message, bcplus) {
-			return (bcplus.getOptionValue('highlightingChatbot', true) && (message.sender !== 55518));
+			return ((message.sender === 55518) ? !bcplus.getOptionValue('highlightingChatbot', true) : true);
 		},
 		function(message, bcplus) {
-			return (bcplus.getOptionValue('highlightingNp', true) && !message.plainText.startsWith('np:'));
+			return (message.plainText.startsWith('np:') ? !bcplus.getOptionValue('highlightingNp', true) : true);
 		}
 	];
 	

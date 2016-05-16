@@ -62,6 +62,10 @@ Modules.UIOptimize = (function() {
 		bcplus.addEventListener('messageReceived', function(message) {
 			message.altLayout = true;
 			message.isFollowUp = false;
+			
+			if (!bcplus.getOptionValue('UIOptimizeShowSeconds', false)) {
+				message.formattedTime = message.formattedTime.trim().slice(0, -3);
+			}
 		});
 		
 		bcplus.addEventListener('messageAdded', function(messageNodeEvent) {
@@ -73,10 +77,6 @@ Modules.UIOptimize = (function() {
 			}
 			
 			$timeNode.detach();
-			
-			if (!bcplus.getOptionValue('UIOptimizeShowSeconds', false)) {
-				$timeNode.text($timeNode.text().trim().slice(0, -3));
-			}
 			
 			if ($timeNode.hasClass('timeLeft')) {
 				$timeNode.text('[' + $timeNode.text().trim() + ']');

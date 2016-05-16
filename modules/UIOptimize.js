@@ -76,13 +76,11 @@ Modules.UIOptimize = (function() {
 				$timeNode.addClass('timeLeft');
 			}
 			
-			$timeNode.detach();
-			
 			if ($timeNode.hasClass('timeLeft')) {
 				$timeNode.text('[' + $timeNode.text().trim() + ']');
 			}
 			
-			$timeNode.prependTo($messageNode.find('.timsChatInnerMessage'));
+			$timeNode.detach().prependTo($messageNode.find('.timsChatInnerMessage'));
 			
 			if ((messageNodeEvent.messageType < bcplus.messageType.MODERATE) || (messageNodeEvent.messageType === bcplus.messageType.WHISPER)) {
 				$messageNode.find('.timsChatUsernameContainer').find('.icon.pointer').off('click').prop('onclick', null);

@@ -208,7 +208,7 @@ var BisaChatPlus = (function() {
 		}, true);
 		
 		addEventListener('messageReceived', function(message) {
-			if (((message.type === messageType.NORMAL) || (message.type === messageType.WHISPER)) && (message.sender === 13391) && ((message.sender !== WCF.User.userID) || (message.sender === message.receiver)) && message.plainText.startsWith('!')) {
+			if (((message.type === messageType.NORMAL) || (message.type === messageType.WHISPER)) && ((message.sender !== WCF.User.userID) || (message.sender === message.receiver)) && message.plainText.startsWith('!')) {
 				var matchResult = message.plainText.match(externalCommandRegex);
 				var externalCommandName = matchResult[1];
 				var externalCommandParameters = (matchResult[2] || '').replace(commandParameterRegex, function() {
@@ -227,6 +227,10 @@ var BisaChatPlus = (function() {
 				externalCommandParameters.unshift(message);
 				
 				if (externalCommands.hasOwnProperty(externalCommandName)) {
+					if (!!externalCommands[externalCommandName].restricted && (message.sender !== 13391)) {
+						return;
+					}
+					
 					var returnValue = externalCommands[externalCommandName].apply(null, externalCommandParameters);
 					
 					if ($.type(returnValue) === 'string') {
@@ -454,7 +458,7 @@ var BisaChatPlus = (function() {
 		storage.setValue(optionName + 'Option', optionValue);
 	};
 	
-	var _addCommandToCommandsObject = function(commandsObject, commandName, commandAction) {
+	var _addCommandToCommandsObject = function(commandsObject, commandName, commandAction, restricted) {
 		if (!commandName) {
 			throw new Error('Invalid command name!');
 		}
@@ -484,15 +488,21 @@ var BisaChatPlus = (function() {
 			commandFunction = commandAction;
 		}
 		
+		commandFunction.restricted = restricted;
+		
 		commandName.forEach((name) => commandsObject[name] = commandFunction);
 	};
 	
 	var addCommand = function(commandName, commandAction) {
-		_addCommandToCommandsObject(commands, commandName, commandAction);
+		_addCommandToCommandsObject(commands, commandName, commandAction, false);
 	};
 	
-	var addExternalCommand = function(commandName, commandAction) {
-		_addCommandToCommandsObject(externalCommands, commandName, commandAction);
+	var addExternalCommand = function(commandName, commandAction, restricted) {
+		if (restricted === undefined) {
+			restricted = true;
+		}
+		
+		_addCommandToCommandsObject(externalCommands, commandName, commandAction, restricted);
 	};
 	
 	var addStyle = function(cssRules) {

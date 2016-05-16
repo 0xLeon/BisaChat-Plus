@@ -85,6 +85,7 @@ Modules.Highlighting = (function() {
 		bcplus.addBoolOption('highlightingNotification', 'Desktop Notification anzeigen', 'highlighting', null, true);
 		bcplus.addBoolOption('highlightingChatbot', 'Chatbot-Nachrichten ausschließen', 'highlighting', null, true);
 		bcplus.addBoolOption('highlightingNp', 'NP-Nachrichten ausschließen', 'highlighting', null, true);
+		bcplus.addBoolOption('highlightingWhisperAlways', 'Bei privaten Nachrichten immer benachrichtigen', 'highlighting', null, true);
 	};
 	
 	var addEventListeners = function() {
@@ -94,7 +95,7 @@ Modules.Highlighting = (function() {
 					builRegExp();
 				}
 				
-				if ((message.type === bcplus.messageType.WHISPER) || regExp.test(message.plainText)) {
+				if ((bcplus.getOptionValue('highlightingWhisperAlways', true) && (message.type === bcplus.messageType.WHISPER)) || regExp.test(message.plainText)) {
 					highlight(message);
 				}
 			}

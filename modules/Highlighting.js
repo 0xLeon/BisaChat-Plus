@@ -19,6 +19,9 @@ Modules.Highlighting = (function() {
 			return (bcplus.getStorage().getValue('ignoredUserIDs', []).indexOf(message.sender) === -1);
 		},
 		function(message, bcplus) {
+			return (!!message.teamMessage ? !bcplus.getOptionValue('teamIgnore', false) : true);
+		},
+		function(message, bcplus) {
 			return ((message.sender === 55518) ? !bcplus.getOptionValue('highlightingChatbot', true) : true);
 		},
 		function(message, bcplus) {
@@ -86,6 +89,10 @@ Modules.Highlighting = (function() {
 		bcplus.addBoolOption('highlightingChatbot', 'Chatbot-Nachrichten ausschließen', 'highlighting', null, true);
 		bcplus.addBoolOption('highlightingNp', 'NP-Nachrichten ausschließen', 'highlighting', null, true);
 		bcplus.addBoolOption('highlightingWhisperAlways', 'Bei privaten Nachrichten immer benachrichtigen', 'highlighting', null, true);
+		
+		if (Modules.hasOwnProperty('TeamMessages') && Modules.TeamMessages.getTeamMembers().hasOwnProperty(WCF.User.userID)) {
+			bcplus.addBoolOption('highlightingTeamAlways', 'Beai Team-Nachrichten immer benachrichtigen', 'highlighting', null, false);
+		}
 	};
 	
 	var addEventListeners = function() {
@@ -95,7 +102,7 @@ Modules.Highlighting = (function() {
 					builRegExp();
 				}
 				
-				if ((bcplus.getOptionValue('highlightingWhisperAlways', true) && (message.type === bcplus.messageType.WHISPER)) || regExp.test(message.plainText)) {
+				if ((bcplus.getOptionValue('highlightingWhisperAlways', true) && (message.type === bcplus.messageType.WHISPER) && !message.teamMessage) || (bcplus.getOptionValue('highlightingTeamAlways', false) && !!message.teamMessage) || regExp.test(message.plainText)) {
 					highlight(message);
 				}
 			}
@@ -173,7 +180,7 @@ Modules.Highlighting = (function() {
 	var showNotification = function(message) {
 		if (Window.Notification.permission === 'granted') {
 			var messageIsPrivate = (message.type === bcplus.messageType.WHISPER);
-			var notificationTitle = '(' + $('<div>' + message.formattedTime + '</div>').text() + ') ' + message.username + (messageIsPrivate ? ' flüstert' : '');
+			var notificationTitle = '[' + $('<div>' + message.formattedTime + '</div>').text() + '] ' + message.username + ' ' + (messageIsPrivate ? !!message.teamMessage ? '» Team' : 'flüstert' : 'schreibt') + message.separator;
 			var notificationBody = (message.plainText.length > 50 ? message.plainText.slice(0, 51) + '\u2026' : message.plainText);
 			var notification = new Window.Notification(notificationTitle, {
 				body: notificationBody,

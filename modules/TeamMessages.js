@@ -10,8 +10,8 @@ Modules.TeamMessages = (function() {
 	var initialize = function(_bcplus) {
 		bcplus = _bcplus;
 		
-		addStyles();
 		findTeamMembers();
+		addStyles();
 		buildUI();
 		addEventListeners();
 	};
@@ -21,6 +21,10 @@ Modules.TeamMessages = (function() {
 	};
 	
 	var buildUI = function() {
+		if (!teamMembers.hasOwnProperty(WCF.User.userID)) {
+			return;
+		}
+		
 		bcplus.addBoolOption('teamIgnore', 'Team-Nachrichten ignorieren', 'teamMessages', 'Team-Nachrichten', false, null);
 	};
 	
@@ -28,6 +32,12 @@ Modules.TeamMessages = (function() {
 		bcplus.addEventListener('messageAdded', findTeamMembers);
 		
 		bcplus.addCommand(['team', 't'], function() {
+			if (!teamMembers.hasOwnProperty(WCF.User.userID)) {
+				bcplus.showInfoMessage('Du hast nicht die Berechtigung den team-Befehl zu verwenden!');
+				
+				return null;
+			}
+			
 			var message = '#team#' + String.generateUUID().slice(0, 8) + '#' + $.makeArray(arguments).join(', ');
 			
 			Object.keys(teamMembers).forEach(function(userID) {

@@ -12,11 +12,16 @@ Modules.TeamMessages = (function() {
 		
 		addStyles();
 		findTeamMembers();
+		buildUI();
 		addEventListeners();
 	};
 	
 	var addStyles = function() {
 		bcplus.addStyle('.timsChatMessage' + bcplus.messageType.TEAM.toString(10) + ' .timsChatUsernameContainer { font-weight: bold; }');
+	};
+	
+	var buildUI = function() {
+		bcplus.addBoolOption('teamIgnore', 'Team-Nachrichten ignorieren', 'teamMessages', 'Team-Nachrichten', false, null);
 	};
 	
 	var addEventListeners = function() {
@@ -50,7 +55,7 @@ Modules.TeamMessages = (function() {
 				var match = messageNodeEvent.messageText.match(teamMessageRegex);
 				
 				if (null !== match) {
-					if (receivedTeamMessages.indexOf(match[1]) > -1) {
+					if (bcplus.getOptionValue('teamIgnore', false) || (receivedTeamMessages.indexOf(match[1]) > -1)) {
 						messageNodeEvent.messageNode.remove();
 						
 						return false;

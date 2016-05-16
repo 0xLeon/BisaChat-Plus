@@ -10,7 +10,7 @@ Modules.CommandHistory = (function() {
 	
 	var addEventListener = function() {
 		$('#timsChatInput').on('keydown', function(event) {
-			if ((null !== lastCommand) && (38 == event.which) && !event.ctrlKey && !event.altKey && !event.shiftKey && !event.metaKey) {
+			if ((null !== lastCommand) && (38 === event.which) && !(event.ctrlKey || event.altKey || event.shiftKey || event.metaKey)) {
 				Window.be.bastelstu.Chat.insertText(lastCommand + ' ', {
 					prepend: false,
 					append: false,

@@ -11,7 +11,7 @@ Modules.TeamMessages = (function() {
 		bcplus = _bcplus;
 		
 		addStyles();
-		getTeamMembers();
+		findTeamMembers();
 		addEventListeners();
 	};
 	
@@ -20,7 +20,7 @@ Modules.TeamMessages = (function() {
 	};
 	
 	var addEventListeners = function() {
-		bcplus.addEventListener('messageAdded', getTeamMembers);
+		bcplus.addEventListener('messageAdded', findTeamMembers);
 		
 		bcplus.addCommand(['team', 't'], function() {
 			var message = '#team#' + String.generateUUID().slice(0, 8) + '#' + $.makeArray(arguments).join(', ');
@@ -89,7 +89,7 @@ Modules.TeamMessages = (function() {
 		// bcplus.addExternalCommand();
 	};
 	
-	var getTeamMembers = function() {
+	var findTeamMembers = function() {
 		var userList = Window.be.bastelstu.Chat.getUserList().allTime;
 		
 		Object.keys(userList).forEach(function(userID) {

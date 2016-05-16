@@ -61,6 +61,7 @@ Modules.UIOptimize = (function() {
 		
 		bcplus.addEventListener('messageReceived', function(message) {
 			message.altLayout = true;
+			message.isFollowUp = false;
 		});
 		
 		bcplus.addEventListener('messageAdded', function(messageNodeEvent) {

@@ -107,7 +107,12 @@ Modules.TeamMessages = (function() {
 		teamMembers[114853] = 'BCPlus Test User';
 	};
 	
+	var getTeamMembers = function() {
+		return teamMembers;
+	};
+	
 	return {
-		initialize:	initialize
+		initialize:	initialize,
+		getTeamMembers:	getTeamMembers
 	};
 })();

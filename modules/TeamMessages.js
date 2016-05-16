@@ -57,6 +57,7 @@ Modules.TeamMessages = (function() {
 			if ((message.type === bcplus.messageType.WHISPER) && teamMembers.hasOwnProperty(message.sender) && message.plainText.startsWith('#team#')) {
 				message.teamMessage = true;
 				message.isInPrivateChannel = false;
+				message.plainText = message.plainText.slice(15);
 				message.additionalData.receiverUsername = 'Team';
 			}
 		});

@@ -51,28 +51,19 @@ Modules.MessageFilters = (function() {
 			var $messageNode = messageNodeEvent.messageNode;
 			
 			if (bcplus.getOptionValue('greentext', true)) {
-				var $targetNode = null;
-				
-				if (messageNodeEvent.messageNodeType === bcplus.messageNodeType.BUBBLEFOLLOWUP) {
-					$targetNode = $messageNode;
-				}
-				else {
-					$targetNode = $messageNode.find('.timsChatText');
-				}
-				
 				if (messageNodeEvent.messageText.startsWith('>')) {
-					$targetNode.css({
+					$messageNode.find('.timsChatText').css({
 						color: '#792'
 					});
 				}
 			}
 			
-			if (bcplus.getOptionValue('hideAvatar', false) && (messageNodeEvent.messageNodeType !== bcplus.messageNodeType.BUBBLEFOLLOWUP)) {
+			if (bcplus.getOptionValue('hideAvatar', false)) {
 				$messageNode.addClass('noAvatar');
 			}
 			
 			// TODO: rather set class defaultColor
-			if (bcplus.getOptionValue('colorlessNickname', false) && (messageNodeEvent.messageNodeType !== bcplus.messageNodeType.BUBBLEFOLLOWUP)) {
+			if (bcplus.getOptionValue('colorlessNickname', false)) {
 				$messageNode.addClass('colorlessNickname');
 			}
 			

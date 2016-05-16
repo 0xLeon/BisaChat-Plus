@@ -61,25 +61,18 @@ Modules.TeamMessages = (function() {
 						messageNodeEvent.messageText = messageNodeEvent.messageText.slice(15);
 						messageNodeEvent.messageType = bcplus.messageType.TEAM;
 						
-						if (messageNodeEvent.messageNodeType === bcplus.messageNodeType.BUBBLEFOLLOWUP) {
-							messageNodeEvent.messageNode.removeClass('timsChatMessage' + bcplus.messageType.WHISPER.toString(10));
-							messageNodeEvent.messageNode.addClass('timsChatMessage' + bcplus.messageType.TEAM.toString(10));
-							messageNodeEvent.messageNode.html(messageNodeEvent.messageNode.html().trim().slice(15));
-						}
-						else {
-							messageNodeEvent.messageNode.removeClass('timsChatMessage' + bcplus.messageType.WHISPER.toString(10));
-							messageNodeEvent.messageNode.addClass('timsChatMessage' + bcplus.messageType.TEAM.toString(10));
-							messageNodeEvent.messageNode.find('.timsChatText').html(messageNodeEvent.messageNode.find('.timsChatText').html().trim().slice(15));
-							messageNodeEvent.messageNode.find('.timsChatUsernameContainer').off('click').on('click', function() {
-								Window.be.bastelstu.Chat.insertText('/team ', {
-									prepend: false,
-									append: false,
-									submit: false
-								});
+						messageNodeEvent.messageNode.removeClass('timsChatMessage' + bcplus.messageType.WHISPER.toString(10));
+						messageNodeEvent.messageNode.addClass('timsChatMessage' + bcplus.messageType.TEAM.toString(10));
+						messageNodeEvent.messageNode.find('.timsChatText').html(messageNodeEvent.messageNode.find('.timsChatText').html().trim().slice(15));
+						messageNodeEvent.messageNode.find('.timsChatUsernameContainer').off('click').on('click', function() {
+							Window.be.bastelstu.Chat.insertText('/team ', {
+								prepend: false,
+								append: false,
+								submit: false
 							});
-							messageNodeEvent.messageNode.find('.timsChatUsernameContainer .icon-double-angle-right').data('tooltip', 'Schreibt');
-							$('<div class="timsChatMessageIcon"><span class="icon icon16 icon-user icon-users" /></div>').insertBefore(messageNodeEvent.messageNode.find('.timsChatInnerMessageContainer'));
-						}
+						});
+						messageNodeEvent.messageNode.find('.timsChatUsernameContainer .icon-double-angle-right').data('tooltip', 'Schreibt');
+						$('<div class="timsChatMessageIcon"><span class="icon icon16 icon-user icon-users" /></div>').insertBefore(messageNodeEvent.messageNode.find('.timsChatInnerMessageContainer'));
 					}
 				}
 			}

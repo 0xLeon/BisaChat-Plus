@@ -65,20 +65,10 @@ Modules.UIOptimize = (function() {
 		
 		bcplus.addEventListener('messageAdded', function(messageNodeEvent) {
 			var $messageNode = messageNodeEvent.messageNode;
-			var $timeNode = null;
-			var $timeTargetNode = null;
+			var $timeNode = $messageNode.find('.timsChatInnerMessage time');
 			
-			if (messageNodeEvent.messageNodeType === bcplus.messageNodeType.BUBBLEFOLLOWUP) {
-				$timeNode = $messageNode.find('time');
-				$timeTargetNode = $messageNode;
-			}
-			else {
-				$timeNode = $messageNode.find('.timsChatInnerMessage time');
-				$timeTargetNode = $messageNode.find('.timsChatInnerMessage');
-				
-				if (bcplus.getOptionValue('UIOptimizeTimeBeforeName', false) && (messageNodeEvent.messageNodeType === bcplus.messageNodeType.ALTERNATIVE)) {
-					$timeNode.addClass('timeLeft');
-				}
+			if (bcplus.getOptionValue('UIOptimizeTimeBeforeName', false)) {
+				$timeNode.addClass('timeLeft');
 			}
 			
 			$timeNode.detach();
@@ -91,9 +81,9 @@ Modules.UIOptimize = (function() {
 				$timeNode.text('[' + $timeNode.text().trim() + ']');
 			}
 			
-			$timeNode.prependTo($timeTargetNode);
+			$timeNode.prependTo($messageNode.find('.timsChatInnerMessage'));
 			
-			if ((messageNodeEvent.messageNodeType !== bcplus.messageNodeType.BUBBLEFOLLOWUP) && ((messageNodeEvent.messageType < bcplus.messageType.MODERATE) || (messageNodeEvent.messageType === bcplus.messageType.WHISPER))) {
+			if ((messageNodeEvent.messageType < bcplus.messageType.MODERATE) || (messageNodeEvent.messageType === bcplus.messageType.WHISPER)) {
 				$messageNode.find('.timsChatUsernameContainer').find('.icon.pointer').off('click').prop('onclick', null);
 				$messageNode.find('.timsChatUsernameContainer').data('username', ((messageNodeEvent.messageType === bcplus.messageType.WHISPER) && messageNodeEvent.ownMessage) ? messageNodeEvent.receiverUsername : messageNodeEvent.senderUsername);
 				$messageNode.find('.timsChatUsernameContainer').addClass('pointer').on('click', function() {

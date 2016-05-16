@@ -61,12 +61,6 @@ var BisaChatPlus = (function() {
 		get ATTACH()	{ return 12; }
 	};
 	
-	var messageNodeType = {
-		get ALTERNATIVE()	{ return 0; },
-		get BUBBLE()		{ return 1; },
-		get BUBBLEFOLLOWUP()	{ return 2; }
-	};
-	
 	var getVersion = function() {
 		return '{version}';
 	};
@@ -90,10 +84,6 @@ var BisaChatPlus = (function() {
 			
 			get messageType() {
 				return messageType;
-			},
-			
-			get messageNodeType() {
-				return messageNodeType;
 			}
 		};
 		
@@ -304,58 +294,23 @@ var BisaChatPlus = (function() {
 				for (var i = 0, l = mutation.addedNodes.length; i < l; i++) {
 					var $messageNode = $(mutation.addedNodes[i]);
 					
-					if (($messageNode.get(0).nodeType === 1) && ($messageNode.hasClass('timsChatMessage') || $messageNode.hasClass('timsChatText'))) {
+					if (($messageNode.get(0).nodeType === 1) && $messageNode.hasClass('timsChatMessage')) {
 						try {
 							var messageNodeEvent = {
 								messageNode:		$messageNode,
 								messageType:		parseInt($messageNode.attr('class').match(messageTypeRegex)[1], 10),
-								messageID:		null,
+								messageID:		$messageNode.find('.timsChatText').data('messageID'),
 								ownMessage:		false,
 								sender:			parseInt($messageNode.attr('class').match(messageUserIdRegex)[1], 10),
-								senderUsername:		null,
+								senderUsername:		$messageNode.find('.timsChatUsernameContainer span:not(.icon, .receiver)').text().trim(),
 								receiverUsername:	null,
-								messageText:		null,
-								messageNodeType:	null
+								messageText:		$messageNode.find('.timsChatText').text().trim()
 							};
 							
 							messageNodeEvent.ownMessage = (messageNodeEvent.sender === WCF.User.userID);
 							
-							// TODO: what if one bubble contains several messages of one user?
-							if ($messageNode.hasClass('timsChatMessage')) {
-								if ($messageNode.find('.bubble').length > 0) {
-									messageNodeEvent.messageNodeType = messageNodeType.BUBBLE;
-								}
-								else {
-									messageNodeEvent.messageNodeType = messageNodeType.ALTERNATIVE;
-								}
-								
-								messageNodeEvent.messageID = $messageNode.find('.timsChatText').data('messageID');
-								messageNodeEvent.messageText = $messageNode.find('.timsChatText').text().trim();
-								messageNodeEvent.senderUsername = $messageNode.find('.timsChatUsernameContainer span:not(.icon, .receiver)').text().trim();
-								
-								if (messageNodeEvent.messageType === messageType.WHISPER) {
-									messageNodeEvent.receiverUsername = $messageNode.find('.timsChatUsernameContainer .receiver').text().trim();
-								}
-							}
-							else if ($messageNode.hasClass('timsChatText')) {
-								messageNodeEvent.messageNodeType = messageNodeType.BUBBLEFOLLOWUP;
-								messageNodeEvent.messageID = $messageNode.data('messageID');
-								
-								$messageNode.contents().toArray().forEach((node) => {
-									if (node.nodeType === 3) {
-										messageNodeEvent.messageText += node.nodeValue;
-									}
-								});
-								
-								messageNodeEvent.messageText = messageNodeEvent.messageText.trim();
-								messageNodeEvent.senderUsername = $messageNode.closest('.timsChatInnerMessage').find('.timsChatUsernameContainer span:not(.icon, .receiver)').text().trim();
-								
-								if (messageNodeEvent.messageType === messageType.WHISPER) {
-									messageNodeEvent.receiverUsername = $messageNode.closest('.timsChatInnerMessage').find('.timsChatUsernameContainer .receiver').text().trim();
-								}
-							}
-							else {
-								throw new Error('Unrecognized message node type added.');
+							if (messageNodeEvent.messageType === messageType.WHISPER) {
+								messageNodeEvent.receiverUsername = $messageNode.find('.timsChatUsernameContainer .receiver').text().trim();
 							}
 							
 							bcplusEvents.messageAdded.fire(messageNodeEvent);
@@ -556,10 +511,6 @@ var BisaChatPlus = (function() {
 		
 		get messageType() {
 			return messageType;
-		},
-		
-		get messageNodeType() {
-			return messageNodeType;
 		}
 	};
 })();

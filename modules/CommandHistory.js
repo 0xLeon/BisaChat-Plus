@@ -30,8 +30,8 @@ Modules.CommandHistory = (function() {
 		});
 	};
 	
-	var pushCommand = function(entry) {
-		lastCommand = entry;
+	var pushCommand = function(command) {
+		lastCommand = command;
 	};
 	
 	return {

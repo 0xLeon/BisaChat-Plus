@@ -24,6 +24,8 @@ Modules.Update = (function() {
 		
 		$('<dt></dt><dd><span>BisaChat Plus ' + bcplus.getVersion() + '</span></dd>').insertBefore($('#bcplus-update dl dt').first());
 		$updateInfoBox = $('<p id="bcplus-updateInfo" class="info invisible"><span id="bcplus-updateInfoCloser" class="icon icon16 icon-remove jsTooltip" title="Update-Information ausblenden"></span><span>BisaChat Plus <span id="bcplus-newVersion"></span> ist verfügbar.<br /><a href="#" title="">Update starten</a></span></p>').insertAfter($('#timsChatTopic'));
+		
+		WCF.DOMNodeInsertedHandler.execute();
 	};
 	
 	var addEventListeners = function() {

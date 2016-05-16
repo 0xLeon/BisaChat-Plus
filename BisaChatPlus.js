@@ -269,6 +269,8 @@ var BisaChatPlus = (function() {
 			$optionsDialog.wcfDialog('open');
 		});
 		$optionsButton.appendTo('#timsChatOptions .buttonGroup');
+		
+		WCF.DOMNodeInsertedHandler.execute();
 	};
 	
 	var initModules = function() {
@@ -372,6 +374,8 @@ var BisaChatPlus = (function() {
 		}));
 		
 		$('.timsChatMessageContainer.active > ul').append($infoMessage);
+		
+		WCF.DOMNodeInsertedHandler.execute();
 	};
 	
 	var addEventListener = function(eventName, callback) {
@@ -409,6 +413,8 @@ var BisaChatPlus = (function() {
 			}
 		});
 		$category.find('dl').append($option);
+		
+		WCF.DOMNodeInsertedHandler.execute();
 	};
 	
 	var addTextOption = function(optionID, optionText, optionType, categoryID, categoryName, defaultValue, onChange) {
@@ -434,6 +440,8 @@ var BisaChatPlus = (function() {
 			}
 		});
 		$category.find('dl').append($option);
+		
+		WCF.DOMNodeInsertedHandler.execute();
 		
 		// TODO: when to save?
 	};

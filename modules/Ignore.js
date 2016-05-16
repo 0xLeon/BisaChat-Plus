@@ -74,6 +74,8 @@ Modules.Ignore = (function() {
 			$ignoreDialog.wcfDialog('open');
 		});
 		$ignoreButton.insertBefore($('#timsChatClear').closest('li'));
+		
+		WCF.DOMNodeInsertedHandler.execute();
 	};
 	
 	var updateStyleRule = function() {

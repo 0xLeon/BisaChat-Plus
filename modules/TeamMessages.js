@@ -102,8 +102,6 @@ Modules.TeamMessages = (function() {
 				}
 			}
 		}, 6000000);
-		
-		// bcplus.addExternalCommand();
 	};
 	
 	var findTeamMembers = function() {

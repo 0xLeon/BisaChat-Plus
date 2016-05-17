@@ -98,10 +98,6 @@ Modules.Highlighting = (function() {
 	var addEventListeners = function() {
 		bcplus.addEventListener('messageReceived', function(message) {
 			if (highlightingConditions.every((cond) => cond(message, bcplus))) {
-				if (regExp === null) {
-					builRegExp();
-				}
-				
 				if ((bcplus.getOptionValue('highlightingWhisperAlways', true) && (message.type === bcplus.messageType.WHISPER) && !message.teamMessage) || (bcplus.getOptionValue('highlightingTeamAlways', false) && !!message.teamMessage) || regExp.test(message.plainText)) {
 					highlight(message);
 				}

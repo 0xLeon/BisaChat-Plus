@@ -82,7 +82,16 @@ Modules.Highlighting = (function() {
 	};
 	
 	var buildUI = function() {
-		bcplus.addBoolOption('highlightingActive', 'Highlighting aktivieren', 'highlighting', 'Highlighting', true, getNotificationPermission);
+		bcplus.addBoolOption('highlightingActive', 'Highlighting aktivieren', 'highlighting', 'Highlighting', true, function(event) {
+			getNotificationPermission();
+			
+			if ($(event.target).prop('checked')) {
+				$('#bcplus-highlighting input').enable();
+			}
+			else {
+				$('#bcplus-highlighting input:not(#bcplus-highlightingActive)').disable();
+			}
+		});
 		bcplus.addTextOption('highlightingText', 'Highlighting bei', 'text', 'highlighting', null, WCF.User.username, builRegExp);
 		bcplus.addBoolOption('highlightingSound', 'Sound aktivieren', 'highlighting', null, true);
 		bcplus.addBoolOption('highlightingNotification', 'Desktop Notification anzeigen', 'highlighting', null, true);
@@ -92,6 +101,10 @@ Modules.Highlighting = (function() {
 		
 		if (Modules.hasOwnProperty('TeamMessages') && Modules.TeamMessages.getTeamMembers().hasOwnProperty(WCF.User.userID)) {
 			bcplus.addBoolOption('highlightingTeamAlways', 'Bei Team-Nachrichten immer benachrichtigen', 'highlighting', null, false);
+		}
+		
+		if (!bcplus.getOptionValue('highlightingActive', true)) {
+			$('#bcplus-highlighting input:not(#bcplus-highlightingActive)').disable();
 		}
 	};
 	

@@ -91,7 +91,7 @@ Modules.Highlighting = (function() {
 		bcplus.addBoolOption('highlightingWhisperAlways', 'Bei privaten Nachrichten immer benachrichtigen', 'highlighting', null, true);
 		
 		if (Modules.hasOwnProperty('TeamMessages') && Modules.TeamMessages.getTeamMembers().hasOwnProperty(WCF.User.userID)) {
-			bcplus.addBoolOption('highlightingTeamAlways', 'Beai Team-Nachrichten immer benachrichtigen', 'highlighting', null, false);
+			bcplus.addBoolOption('highlightingTeamAlways', 'Bei Team-Nachrichten immer benachrichtigen', 'highlighting', null, false);
 		}
 	};
 	

@@ -13,7 +13,6 @@ Modules.MessageFilters = (function() {
 		bcplus.addStyle('.timsChatMessage.noAvatar .timsChatAvatarContainer { display: none !important; width: 0px !important; }');
 		bcplus.addStyle('.timsChatMessage.noAvatar .timsChatInnerMessage { margin-left: 18px !important; }');
 		bcplus.addStyle('.timsChatMessage.noAvatar .bubble .timsChatInnerMessage::before, .timsChatMessage.noAvatar .bubble .timsChatInnerMessage::after { border-style: none !important; }');
-		bcplus.addStyle('.timsChatMessage.colorlessNickname .timsChatUsernameContainer span { color: inherit !important; }');
 	};
 	
 	var buildUI = function() {
@@ -46,6 +45,10 @@ Modules.MessageFilters = (function() {
 					message.formattedMessage = formattedMessage;
 				}
 			}
+			
+			if (bcplus.getOptionValue('colorlessNickname', false)) {
+				message.formattedUsername = '<span>' + $('<p />').html(message.formattedUsername).text() + '</span>';
+			}
 		});
 		bcplus.addEventListener('messageAdded', function(messageNodeEvent) {
 			var $messageNode = messageNodeEvent.messageNode;
@@ -60,11 +63,6 @@ Modules.MessageFilters = (function() {
 			
 			if (bcplus.getOptionValue('hideAvatar', false)) {
 				$messageNode.addClass('noAvatar');
-			}
-			
-			// TODO: rather set class defaultColor
-			if (bcplus.getOptionValue('colorlessNickname', false)) {
-				$messageNode.addClass('colorlessNickname');
 			}
 			
 			if (bcplus.getOptionValue('hideLogin', false) && ((messageNodeEvent.messageType === bcplus.messageType.JOIN) || (messageNodeEvent.messageType === bcplus.messageType.LEAVE))) {

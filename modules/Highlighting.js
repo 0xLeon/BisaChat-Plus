@@ -36,6 +36,7 @@ Modules.Highlighting = (function() {
 		
 		removeExisting();
 		getNotificationPermission();
+		builRegExp();
 		buildUI();
 		addEventListeners();
 	};

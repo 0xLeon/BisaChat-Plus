@@ -117,24 +117,6 @@ Modules.Highlighting = (function() {
 				}
 			}
 		});
-		
-		// bcplus.addEventListener('messageAdded', function(messageNodeEvent) {
-		// 	// if message should be highlighted AND waypoint not attached
-		// 	if ((messageIDs.indexOf(messageNodeEvent.messageID) > -1) && !messageNodeEvent.messageNode.closest('.timsChatMessage').data('highlightingWaypointAttached')) {
-		// 		messageNodeEvent.messageNode.closest('.timsChatMessage').data('highlightingWaypointAttached', true);
-		// 		
-		// 		new Waypoint.Inview({
-		// 			context: messageNodeEvent.messageNode.closest('.timsChatMessageContainer').get(0),
-		// 			element: messageNodeEvent.messageNode.closest('.timsChatMessage').find('.timsChatInnerMessage').get(0),
-		// 			entered: function() {
-		// 				if (document.hasFocus() && !bcplus.getAwayStatus().isAway) {
-		// 					$(this.element).effect('highlight', {}, 1e3);
-		// 					this.destroy();
-		// 				}
-		// 			}
-		// 		});
-		// 	}
-		// });
 	};
 	
 	var highlight = function(message) {
@@ -162,20 +144,52 @@ Modules.Highlighting = (function() {
 				return;
 			}
 			
-			listenerFunction = function(awayStatus) {
-				$.unique($(messageIDs.map(function(e) {
-					return $('.timsChatText[data-message-id="' + e.toString() + '"]').closest('.timsChatInnerMessage').get(0);
-				}))).effect('highlight', {}, 1e3);
-				
-				messageIDs.length = 0;
-				updateDocTitle();
-				
-				bcplus.removeEventListener(eventName, listenerFunction);
-				listenerFunction = null;
-				eventName = null;
-			};
+			listenerFunction = highlightingListenerFunction;
+			listenerFunction.eventName = eventName;
 			bcplus.addEventListener(eventName, listenerFunction);
 		}
+	};
+	
+	var highlightingListenerFunction = function() {
+		$.unique($(messageIDs.map(function(messageID) {
+			return $('.timsChatText[data-message-id="' + messageID.toString(10) + '"]').closest('.timsChatInnerMessage').get(0);
+		}))).each(function(index, message) {
+			var docViewTop = $(message).closest('.timsChatMessageContainer').scrollTop();
+			var docViewBottom = docViewTop + $(message).closest('.timsChatMessageContainer').height();
+			
+			var elemTop = $(message).offset().top;
+			var elemBottom = elemTop + $(message).height();
+			
+			if ((elemBottom <= docViewBottom) && (elemTop >= docViewTop)) {
+				// is visible in scroll, highlight directly
+				$(message).effect('highlight', {}, 1e3);
+			}
+			else {
+				// not visible, attach waypoint
+				// TODO: screw waypoints, this shit is still not working :(
+				if ($(message).data('waypoint') !== undefined) {
+					return;
+				}
+				
+				var wp = new Waypoint.Inview({
+					context: $(message).closest('.timsChatMessageContainer').get(0),
+					element: $(message).closest('.timsChatMessage').get(0),
+					entered: function() {
+						$(this.element).effect('highlight', {}, 1e3);
+						this.destroy();
+					}
+				});
+				
+				$(message).data('waypoint', wp);
+			}
+		});
+		
+		messageIDs.length = 0;
+		updateDocTitle();
+		
+		bcplus.removeEventListener(listenerFunction.eventName, listenerFunction);
+		delete listenerFunction.eventName;
+		listenerFunction = null;
 	};
 	
 	var updateDocTitle = function() {

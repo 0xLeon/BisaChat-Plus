@@ -110,7 +110,7 @@ Modules.Highlighting = (function() {
 	
 	var addEventListeners = function() {
 		bcplus.addEventListener('messageReceived', function(message) {
-			if (highlightingConditions.every((cond) => cond(message, bcplus))) {
+			if (highlightingConditions.every(function(cond) { return cond(message, bcplus); })) {
 				if ((bcplus.getOptionValue('highlightingWhisperAlways', true) && (message.type === bcplus.messageType.WHISPER) && !message.teamMessage) || (bcplus.getOptionValue('highlightingTeamAlways', false) && !!message.teamMessage) || regExp.test(message.plainText)) {
 					highlight(message);
 				}
@@ -215,7 +215,9 @@ Modules.Highlighting = (function() {
 	
 	var builRegExp = function() {
 		var highlightingString = bcplus.getOptionValue('highlightingText', WCF.User.username);
-		var regExpString = highlightingString.split(',').map((item) => RegExp.escape(item.trim())).join('|');
+		var regExpString = highlightingString.split(',').map(function(item) {
+			return RegExp.escape(item.trim());
+		}).join('|');
 		
 		regExp = null;
 		regExp = new RegExp('\\b(' + regExpString + ')\\b', 'i');

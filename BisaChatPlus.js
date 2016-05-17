@@ -471,7 +471,7 @@ var BisaChatPlus = (function() {
 			commandName = [commandName];
 		}
 		
-		if (Object.keys(commandsObject).filter((n) => commandName.indexOf(n) != -1).length > 0) {
+		if (Object.keys(commandsObject).filter(function(n) { return (commandName.indexOf(n) !== -1); }).length > 0) {
 			throw new Error('Command with name »' + commandName.joing(', ') + '« already exists!');
 		}
 		
@@ -490,7 +490,9 @@ var BisaChatPlus = (function() {
 		
 		commandFunction.restricted = restricted;
 		
-		commandName.forEach((name) => commandsObject[name] = commandFunction);
+		commandName.forEach(function(name) {
+			commandsObject[name] = commandFunction;
+		});
 	};
 	
 	var addCommand = function(commandName, commandAction) {

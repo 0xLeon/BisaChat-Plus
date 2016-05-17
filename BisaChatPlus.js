@@ -141,7 +141,7 @@ var BisaChatPlus = (function() {
 		privateRoomObserver.observe($('#timsChatMessageTabMenu').get(0), privateRoomObserverConfig);
 		
 		Window.be.bastelstu.Chat.listener.add('newMessage', function(message) {
-			message.plainText = $('<div>' + message.formattedMessage + '</div>').text().trim();
+			message.plainText = $('<div />').html(message.formattedMessage).text().trim();
 			message.ownMessage = (message.sender === WCF.User.userID);
 			
 			bcplusEvents.messageReceived.fire(message);

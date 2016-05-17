@@ -27,7 +27,7 @@ Modules.MessageFilters = (function() {
 	var addEventListeners = function() {
 		bcplus.addEventListener('messageReceived', function(message) {
 			if (!bcplus.getOptionValue('smilies', true)) {
-				var $messageNodeObj = $('<div>' + message.formattedMessage + '</div>');
+				var $messageNodeObj = $('<div />').html(message.formattedMessage);
 				
 				if ($messageNodeObj.find('img').length > 0) {
 					var formattedMessage = '';
@@ -41,7 +41,7 @@ Modules.MessageFilters = (function() {
 						}
 					});
 					
-					message.plainText = $('<div>' + formattedMessage + '</div>').text().trim();
+					message.plainText = $('<div />').html(formattedMessage).text().trim();
 					message.formattedMessage = formattedMessage;
 				}
 			}

@@ -544,3 +544,4 @@ if (Window.com.leon === undefined) {
 }
 
 Window.com.leon.BCPlus = BisaChatPlus;
+Window.com.leon.BCPlus.Modules = Modules;

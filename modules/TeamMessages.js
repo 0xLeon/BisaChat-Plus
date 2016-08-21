@@ -1,6 +1,14 @@
 Modules.TeamMessages = (function() {
 	var bcplus = null;
-	var teamMembers = {};
+	
+	var isReady = false;
+	
+	var onlineUserRequestProxy = null;
+	var teamMemberListRequester = null;
+	
+	var teamMemberList = {};
+	var onlineTeamMemberList = {};
+	var onlineUserList = {};
 	var optOutTeam = {};
 	
 	var teamMessageRegex = /^#team#(.*?)#(.*)$/;
@@ -21,18 +29,18 @@ Modules.TeamMessages = (function() {
 	};
 	
 	var buildUI = function() {
-		if (!teamMembers.hasOwnProperty(WCF.User.userID)) {
-			return;
-		}
-		
 		bcplus.addBoolOption('teamIgnore', 'Team-Nachrichten ignorieren', 'teamMessages', 'Team-Nachrichten', false, null);
 	};
 	
 	var addEventListeners = function() {
-		bcplus.addEventListener('messageAdded', findTeamMembers);
-		
 		bcplus.addCommand(['team', 't'], function() {
-			if (!teamMembers.hasOwnProperty(WCF.User.userID)) {
+			if (!isReady) {
+				bcplus.showInfoMessage('Der team-Befehl ist noch nicht einsatzbereit. Warte noch einige Sekunden.');
+				
+				return null;
+			}
+			
+			if (!teamMemberList.hasOwnProperty(WCF.User.userID)) {
 				bcplus.showInfoMessage('Du hast nicht die Berechtigung den team-Befehl zu verwenden!');
 				
 				return null;
@@ -40,9 +48,9 @@ Modules.TeamMessages = (function() {
 			
 			var message = '#team#' + String.generateUUID().slice(0, 8) + '#' + $.makeArray(arguments).join(', ');
 			
-			Object.keys(teamMembers).forEach(function(userID) {
-				if ((!optOutTeam.hasOwnProperty(userID)) && (WCF.User.userID.toString(10) !== userID)) {
-					bcplus.sendMessage('/f ' + teamMembers[userID] + ', ' + message);
+			Object.keys(onlineTeamMemberList).forEach(function(userID) {
+				if ((!optOutTeam.hasOwnProperty(userID)) && (WCF.User.userID !== userID)) {
+					bcplus.sendMessage('/f ' + onlineTeamMemberList[userID] + ', ' + message);
 				}
 			});
 			
@@ -53,8 +61,22 @@ Modules.TeamMessages = (function() {
 			return null;
 		});
 		
+		bcplus.addCommand(['teamupdate', 'tu'], function() {
+			bcplus.showInfoMessage('Team Messages: Lade die Team-Liste neu');
+			
+			teamMemberListRequester.restart();
+			teamMemberListRequester._execute();
+		});
+		
+		bcplus.addExternalCommand(['teamupdate', 'tu'], function() {
+			bcplus.showInfoMessage('Team Messages: Lade die Team-Liste neu');
+			
+			teamMemberListRequester.restart();
+			teamMemberListRequester._execute();
+		});
+		
 		bcplus.addEventListener('messageReceived', function(message) {
-			if ((message.type === bcplus.messageType.WHISPER) && teamMembers.hasOwnProperty(message.sender) && message.plainText.startsWith('#team#')) {
+			if ((message.type === bcplus.messageType.WHISPER) && teamMemberList.hasOwnProperty(message.sender) && message.plainText.startsWith('#team#')) {
 				message.teamMessage = true;
 				message.isInPrivateChannel = false;
 				message.plainText = message.plainText.slice(15);
@@ -63,7 +85,7 @@ Modules.TeamMessages = (function() {
 		});
 		
 		bcplus.addEventListener('messageAdded', function(messageNodeEvent) {
-			if ((messageNodeEvent.messageType === bcplus.messageType.WHISPER) && teamMembers.hasOwnProperty(messageNodeEvent.sender)) {
+			if ((messageNodeEvent.messageType === bcplus.messageType.WHISPER) && teamMemberList.hasOwnProperty(messageNodeEvent.sender)) {
 				var match = messageNodeEvent.messageText.match(teamMessageRegex);
 				
 				if (null !== match) {
@@ -101,33 +123,109 @@ Modules.TeamMessages = (function() {
 					receivedTeamMessages.shift();
 				}
 			}
-		}, 6000000);
+		}, 600000);
 	};
 	
-	var findTeamMembers = function() {
-		var userList = Window.be.bastelstu.Chat.getUserList().allTime;
-		
-		Object.keys(userList).forEach(function(userID) {
-			if (userList[userID].mod) {
-				if (!teamMembers.hasOwnProperty(userID)) {
-					teamMembers[userID] = userList[userID].username;
+	var findTeamMembers = function() {		
+		teamMemberListRequester = new WCF.PeriodicalExecuter(function() {
+			$.ajax({
+				url: 'https://projects.0xleon.com/userscripts/bcplus/resources/team.js',
+				dataType: 'json',
+				success: function(data, textStatus, xqXHR) {
+					if (!!data && !!data.signature && !!data.data) {
+						// TODO: signature check
+						teamMemberList = JSON.parse(data.data);
+						onlineTeamMemberList = {};
+						
+						Object.keys(teamMemberList).forEach(function(userID) {
+							if (onlineUserList.hasOwnProperty(userID)) {
+								onlineTeamMemberList[userID] = onlineUserList[userID];
+							}
+						});
+					}
+					else {
+						bcplus.showInfoMessage('Team Messages: Couldn\'t load team members');
+					}
 				}
-			}
-			else if (teamMembers.hasOwnProperty(userID)) {
-				delete teamMembers[userID];
+			});
+		}, 600000);
+		
+		onlineUserRequestProxy = new WCF.Action.Proxy({
+			data: {
+				actionName: 'getBoxRoomList',
+				className: 'chat\\data\\room\\RoomAction',
+				parameters: {
+					showEmptyRooms: 0
+				}
+			},
+			showLoadingOverlay: false,
+			suppressErrors: true,
+			success: function(data) {
+				onlineUserList = {};
+				onlineTeamMemberList = {};
+				
+				$(data.returnValues.template).find('.userLink').each(function() {
+					var $link = $(this);
+					var userID = $link.data('user-id');
+					var username = $link.text()
+					
+					onlineUserList[userID] = username;
+					
+					if (teamMemberList.hasOwnProperty(userID)) {
+						onlineTeamMemberList[userID] = username;
+					}
+				});
+				
+				isReady = true;
 			}
 		});
 		
-		teamMembers[13391] = 'Leon';
-		teamMembers[114853] = 'BCPlus Test User';
+		
+		(new Promise(function(resolve, reject) {
+			$.ajax({
+				url: 'https://projects.0xleon.com/userscripts/bcplus/resources/team.js',
+				dataType: 'json',
+				success: function(data, textStatus, xqXHR) {
+					if (!!data && !!data.signature && !!data.data) {
+						// TODO: signature check
+						teamMemberList = JSON.parse(data.data);
+						
+						resolve();
+					}
+					else {
+						reject();
+					}
+				},
+				error: function(jqXHR, textStatus, errorThrown) {
+					reject();
+				}
+			});
+		})).then(
+			function() {
+				onlineUserRequestProxy.sendRequest();
+			},
+			function() {
+				bcplus.showInfoMessage('Team Messages: Couldn\'t load team members');
+			}
+		);
+		
+		$(document).ready(function() {
+			window.be.bastelstu.wcf.push.onMessage('be.bastelstu.chat.join', onlineUserRequestProxy.sendRequest.bind(onlineUserRequestProxy));
+			window.be.bastelstu.wcf.push.onMessage('be.bastelstu.chat.leave', onlineUserRequestProxy.sendRequest.bind(onlineUserRequestProxy));
+		});
 	};
 	
-	var getTeamMembers = function() {
-		return teamMembers;
+	var getAllTeamMembers = function() {
+		return teamMemberList;
+	};
+	
+	var getOnlineTeamMembers = function() {
+		return onlineTeamMemberList;
 	};
 	
 	return {
-		initialize:	initialize,
-		getTeamMembers:	getTeamMembers
+		initialize:		initialize,
+		getAllTeamMembers:	getAllTeamMembers,
+		getOnlineTeamMembers:	getOnlineTeamMembers
 	};
 })();

@@ -3,7 +3,7 @@
 /**
  * Buildscript for BisaChatPlus
  * 
- * @author Tim Düsterhus
+ * @author Tim Düsterhus, Stefan Hahn
  */
 if (strtolower(php_sapi_name()) != 'cli') die("The build-script has to be invoked from cli\n");
 

@@ -1,8 +1,10 @@
 Modules.LastfmConnect = (function() {
 	var bcplus = null;
+	var apiKey = null;
 	
 	var initialize = function(_bcplus) {
 		bcplus = _bcplus;
+		apiKey = Window.atob('NDk0Mjk2MzMxNzJlNzRkZWU2OGM3YTNlN2E2Zjc5N2U=');
 		
 		buildUI();
 		addEventListeners();
@@ -21,7 +23,7 @@ Modules.LastfmConnect = (function() {
 					url: 'https://ws.audioscrobbler.com/2.0/',
 					dataType: 'json',
 					data: {
-						api_key: Window.atob('NDk0Mjk2MzMxNzJlNzRkZWU2OGM3YTNlN2E2Zjc5N2U='),
+						api_key: apiKey,
 						format: 'json',
 						method: 'user.getRecentTracks',
 						user: lastfmUsername,

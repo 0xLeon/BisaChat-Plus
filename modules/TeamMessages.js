@@ -210,8 +210,8 @@ Modules.TeamMessages = (function() {
 		);
 		
 		$(document).ready(function() {
-			window.be.bastelstu.wcf.push.onMessage('be.bastelstu.chat.join', onlineUserRequestProxy.sendRequest.bind(onlineUserRequestProxy));
-			window.be.bastelstu.wcf.push.onMessage('be.bastelstu.chat.leave', onlineUserRequestProxy.sendRequest.bind(onlineUserRequestProxy));
+			Window.be.bastelstu.wcf.push.onMessage('be.bastelstu.chat.join', onlineUserRequestProxy.sendRequest.bind(onlineUserRequestProxy));
+			Window.be.bastelstu.wcf.push.onMessage('be.bastelstu.chat.leave', onlineUserRequestProxy.sendRequest.bind(onlineUserRequestProxy));
 		});
 	};
 	

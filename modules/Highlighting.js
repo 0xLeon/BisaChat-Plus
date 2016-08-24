@@ -100,7 +100,7 @@ Modules.Highlighting = (function() {
 		bcplus.addBoolOption('highlightingNp', 'NP-Nachrichten ausschließen', 'highlighting', null, true);
 		bcplus.addBoolOption('highlightingWhisperAlways', 'Bei privaten Nachrichten immer benachrichtigen', 'highlighting', null, true);
 		
-		if (Modules.hasOwnProperty('TeamMessages') && Modules.TeamMessages.getTeamMembers().hasOwnProperty(WCF.User.userID)) {
+		if (Modules.hasOwnProperty('TeamMessages')) {
 			bcplus.addBoolOption('highlightingTeamAlways', 'Bei Team-Nachrichten immer benachrichtigen', 'highlighting', null, false);
 		}
 		

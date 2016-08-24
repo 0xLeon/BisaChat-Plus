@@ -1,7 +1,6 @@
 Modules.Ignore = (function() {
 	var bcplus = null;
 	var ignoredUserIDs = null;
-	var cachedUserProfiles = null;
 	
 	var $ignoreButton = null;
 	var $ignoreDialog = null;
@@ -10,7 +9,6 @@ Modules.Ignore = (function() {
 	var initialize = function(_bcplus) {
 		bcplus = _bcplus;
 		ignoredUserIDs = bcplus.getStorage().getValue('ignoredUserIDs', []);
-		cachedUserProfiles = [];
 		
 		addStyles();
 		buildUI();
@@ -106,71 +104,56 @@ Modules.Ignore = (function() {
 			return;
 		}
 		
-		ignoredUserIDs.forEach(function(userID) {
-			console.log(userID);
-			
-			var $userData = null;
-			
-			if (!!cachedUserProfiles[userID]) {
-				$userData = $(cachedUserProfiles[userID]);
-			}
-			else {
-				(new WCF.Action.Proxy({
-					showLoadingOverlay: false,
-					async: false,
-					data: {
-						actionName: 'getUserProfile',
-						className: 'wcf\\data\\user\\UserProfileAction',
-						objectIDs: [userID]
-					},
-					success: function(data, textStatus, jqXHR) {
-						cachedUserProfiles[userID] = data.returnValues.template;
-						$userData = $(cachedUserProfiles[userID]);
-					}
-				})).sendRequest();
-			}
-			
-			var $userIcon = $('<li><a class="framed jsTooltip" href="#" title="" target="_blank"><img class="userAvatarImage" src="#" srcset="" alt="" /></a><span class="bcplus-userUnignoreButton icon icon32 icon-remove jsTooltip" title="Benutzer nicht mehr ignorieren"></span></li>');
-			var avatarPath = $userData.find('.userAvatarImage').attr('src').replace(/(^.*\/\d+-.*?)(?:-\d+)?(\..*$)/, '$1$2');
-			
-			$userIcon.children('a').attr({
-				href: $userData.children('a').attr('href'),
-				title: $userData.children('a').attr('title')
-			});
-			$userIcon.find('img').attr({
-				src: avatarPath,
-				srcset: avatarPath + ' 2x'
-			});
-			$userIcon.children('.bcplus-userUnignoreButton').on('click', function(event) {
-				event.preventDefault();
-				event.stopPropagation();
-				
-				var i = ignoredUserIDs.indexOf($(this).data('userID'));
-				
-				if (i > -1) {
-					ignoredUserIDs.splice(i, 1);
-					bcplus.getStorage().setValue('ignoredUserIDs', ignoredUserIDs);
+		UserCache.getUsers(ignoredUserIDs).then(
+			function(users) {
+				for (var userID in users) {
+					var user = users[userID];
+					var $userIcon = $('<li><a class="framed jsTooltip" href="#" title="" target="_blank"><img class="userAvatarImage" src="#" srcset="" alt="" /></a><span class="bcplus-userUnignoreButton icon icon32 icon-remove jsTooltip" title="Benutzer nicht mehr ignorieren"></span></li>');
 					
-					updateStyleRule();
+					$userIcon.children('a').attr({
+						href: user.profile,
+						title: user.username
+					});
+					$userIcon.find('img').attr({
+						src: user.avatar,
+						srcset: user.avatar + ' 2x'
+					});
+					$userIcon.children('.bcplus-userUnignoreButton').data({
+						userID: userID
+					}).on('click', eventHandlerRemoveIgnoredUser);
+					
+					$userIcon.appendTo($iconList);
 				}
 				
-				if (ignoredUserIDs.length > 0) {
-					$(this).closest('li').remove();
-				}
-				else {
-					$(this).closest('ul').remove();
-					$('<p>Keine ignorierten Benutzer</p>').appendTo($ignoreDialog.find('#bcplusIgnoreDialogUserList'));
-				}
-			});
-			$userIcon.children('.bcplus-userUnignoreButton').data({
-				userID: userID
-			});
-			
-			$userIcon.appendTo($iconList);
-			WCF.DOMNodeInsertedHandler.execute();
-		});
+				$iconList.appendTo($userList);
+				WCF.DOMNodeInsertedHandler.execute();
+			},
+			function(e) {
+				console.error(e);
+			}
+		);
+	};
+	
+	var eventHandlerRemoveIgnoredUser = function(event) {
+		event.preventDefault();
+		event.stopPropagation();
 		
-		$iconList.appendTo($userList);
+		var i = ignoredUserIDs.indexOf(parseInt($(this).data('userID'), 10));
+		
+		if (i > -1) {
+			ignoredUserIDs.splice(i, 1);
+			bcplus.getStorage().setValue('ignoredUserIDs', ignoredUserIDs);
+			
+			updateStyleRule();
+		}
+		
+		if (ignoredUserIDs.length > 0) {
+			$(this).closest('li').remove();
+		}
+		else {
+			$(this).closest('ul').remove();
+			$('<p>Keine ignorierten Benutzer</p>').appendTo($ignoreDialog.find('#bcplusIgnoreDialogUserList'));
+		}
 	};
 	
 	return {

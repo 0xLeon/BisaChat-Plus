@@ -17,6 +17,7 @@ var UserCache = (function() {
 						userID:		data.returnValues.userID,
 						username:	$userData.find('.userInformation .containerHeadline a').text(),
 						rank:		$userData.find('.badge.userTitleBadge').text(),
+						profile:	$userData.find('.userInformation .containerHeadline a').attr('href'),
 						avatar:		$userData.find('.userAvatarImage').attr('src').replace(/(^.*\/\d+-.*?)(?:-\d+)?(\..*$)/, '$1$2'),
 						
 						rawData:	$userData

@@ -11,7 +11,7 @@ Modules.TeamMessages = (function() {
 	var onlineUserList = {};
 	var optOutTeam = {};
 	
-	var teamMessageRegex = /^#team#(.*?)#(.*)$/;
+	var teamMessageRegex = /^#team#(.{8})#(.*)$/;
 	var receivedTeamMessages = [];
 	var receivedTeamMessagesClearer = null;
 	

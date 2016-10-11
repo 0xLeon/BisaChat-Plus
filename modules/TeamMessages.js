@@ -29,7 +29,7 @@ Modules.TeamMessages = (function() {
 	};
 	
 	var buildUI = function() {
-		bcplus.addBoolOption('teamIgnore', 'Team-Nachrichten ignorieren', 'teamMessages', 'Team-Nachrichten', false, null);
+		bcplus.addBoolOption('teamIgnore', 'Team-Nachrichten ausblenden', 'teamMessages', 'Team-Nachrichten', false, null);
 	};
 	
 	var addEventListeners = function() {

@@ -46,7 +46,7 @@ Modules.TeamMessages = (function() {
 				return null;
 			}
 			
-			var message = '#team#' + String.generateUUID().slice(0, 8) + '#' + $.makeArray(arguments).join(', ');
+			var message = '#team#' + String.generateUUID().slice(0, 8) + '# ' + $.makeArray(arguments).join(', ');
 			
 			Object.keys(onlineTeamMemberList).forEach(function(userID) {
 				if ((!optOutTeam.hasOwnProperty(userID)) && (WCF.User.userID !== userID)) {
@@ -97,12 +97,12 @@ Modules.TeamMessages = (function() {
 					else {
 						receivedTeamMessages.push(match[1]);
 						
-						messageNodeEvent.messageText = messageNodeEvent.messageText.slice(15);
+						messageNodeEvent.messageText = messageNodeEvent.messageText.slice(16).trim();
 						messageNodeEvent.messageType = bcplus.messageType.TEAM;
 						
 						messageNodeEvent.messageNode.removeClass('timsChatMessage' + bcplus.messageType.WHISPER.toString(10));
 						messageNodeEvent.messageNode.addClass('timsChatMessage' + bcplus.messageType.TEAM.toString(10));
-						messageNodeEvent.messageNode.find('.timsChatText').html(messageNodeEvent.messageNode.find('.timsChatText').html().trim().slice(15));
+						messageNodeEvent.messageNode.find('.timsChatText').html(messageNodeEvent.messageNode.find('.timsChatText').html().trim().slice(16));
 						messageNodeEvent.messageNode.find('.timsChatUsernameContainer').off('click').on('click', function() {
 							Window.be.bastelstu.Chat.insertText('/team ', {
 								prepend: false,

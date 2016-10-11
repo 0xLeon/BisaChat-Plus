@@ -76,11 +76,16 @@ Modules.TeamMessages = (function() {
 		});
 		
 		bcplus.addEventListener('messageReceived', function(message) {
-			if ((message.type === bcplus.messageType.WHISPER) && teamMemberList.hasOwnProperty(message.sender) && message.plainText.startsWith('#team#')) {
-				message.teamMessage = true;
-				message.isInPrivateChannel = false;
-				message.plainText = message.plainText.slice(15).trim();
-				message.additionalData.receiverUsername = 'Team';
+			if ((message.type === bcplus.messageType.WHISPER) && teamMemberList.hasOwnProperty(message.sender)) {
+				var match = message.plainText.match(teamMessageRegex);
+
+				if (null !== match) {
+					message.teamMessage = true;
+					message.teamMessageID = match[1];
+					message.isInPrivateChannel = false;
+					message.plainText = message.plainText.slice(15).trim();
+					message.additionalData.receiverUsername = 'Team';
+				}
 			}
 		});
 		

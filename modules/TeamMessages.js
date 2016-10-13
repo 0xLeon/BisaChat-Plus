@@ -5,6 +5,24 @@ Modules.TeamMessages = (function() {
 	
 	var onlineUserRequestProxy = null;
 	var teamMemberListRequester = null;
+
+	var publicKeyDescriptor = {
+		name: 'RSASSA-PKCS1-v1_5',
+		modulusLength: 2048,
+		publicExponent: new Uint8Array([1, 0, 1]),
+		hash: {
+			name: 'SHA-256'
+		}
+	};
+	var publicKeyRaw = {
+		alg:		'RS256',
+		e:		'AQAB',
+		ext:		true,
+		key_ops:	['verify'],
+		kty:		'RSA',
+		n:		'tigWhInIPPJfT0paj9YofXaqcYgXuBzOrILr1-6a_b0cJuy2-4kychlYem2LO1QSe1anYZ86qyj-fSG-eXbsSBDA8nRPcb5tvGsoRnkbJPH767a4sZjl7G-PlKoPrgK_Urun3pHtmWIMGZH5qb9_R3-pvpO6ygwiVtLlFAeHk2sZ1i0_JHAG_g4dG9uJimxTgQ-tewfBaJ32w8EokjipyvPhrUnDoVo_3FpBaFMAk-ENo4v44c_6ofvIxz7GAiarB4um3veSajR2cevXPub8-_LhSeZ39OAnVx1NDDPRzQn4lNf_8Vya_fBxwkm3hNE0bHqugOhyg451niAkv5gYYQ'
+	};
+	var publicKeyID = null;
 	
 	var teamMemberList = {};
 	var onlineTeamMemberList = {};
@@ -18,10 +36,13 @@ Modules.TeamMessages = (function() {
 	var initialize = function(_bcplus) {
 		bcplus = _bcplus;
 		
-		findTeamMembers();
 		addStyles();
 		buildUI();
 		addEventListeners();
+
+		loadKey().then(function() {
+			findTeamMembers();
+		});
 	};
 	
 	var addStyles = function() {
@@ -130,28 +151,23 @@ Modules.TeamMessages = (function() {
 			}
 		}, 600000);
 	};
+
+	var loadKey = function() {
+		return Util.Crypto.loadKey('jwk', publicKeyRaw, publicKeyDescriptor, true, ['verify']).then(function(keyID) {
+			return (publicKeyID = keyID);
+		});
+	};
 	
 	var findTeamMembers = function() {		
 		teamMemberListRequester = new WCF.PeriodicalExecuter(function() {
-			$.ajax({
-				url: 'https://projects.0xleon.com/userscripts/bcplus/resources/team.js',
-				dataType: 'json',
-				success: function(data, textStatus, xqXHR) {
-					if (!!data && !!data.signature && !!data.data) {
-						// TODO: signature check
-						teamMemberList = JSON.parse(data.data);
-						onlineTeamMemberList = {};
+			requestTeamMemberList().then(function() {
+				onlineTeamMemberList = {};
 						
-						Object.keys(teamMemberList).forEach(function(userID) {
-							if (onlineUserList.hasOwnProperty(userID)) {
-								onlineTeamMemberList[userID] = onlineUserList[userID];
-							}
-						});
+				Object.keys(teamMemberList).forEach(function(userID) {
+					if (onlineUserList.hasOwnProperty(userID)) {
+						onlineTeamMemberList[userID] = onlineUserList[userID];
 					}
-					else {
-						bcplus.showInfoMessage('Team Messages: Couldn\'t load team members');
-					}
-				}
+				});
 			});
 		}, 600000);
 		
@@ -172,7 +188,7 @@ Modules.TeamMessages = (function() {
 				$(data.returnValues.template).find('.userLink').each(function() {
 					var $link = $(this);
 					var userID = $link.data('user-id');
-					var username = $link.text()
+					var username = $link.text();
 					
 					onlineUserList[userID] = username;
 					
@@ -186,38 +202,58 @@ Modules.TeamMessages = (function() {
 		});
 		
 		
-		(new Promise(function(resolve, reject) {
-			$.ajax({
-				url: 'https://projects.0xleon.com/userscripts/bcplus/resources/team.js',
-				dataType: 'json',
-				success: function(data, textStatus, xqXHR) {
-					if (!!data && !!data.signature && !!data.data) {
-						// TODO: signature check
-						teamMemberList = JSON.parse(data.data);
-						
-						resolve();
-					}
-					else {
-						reject();
-					}
-				},
-				error: function(jqXHR, textStatus, errorThrown) {
-					reject();
-				}
-			});
-		})).then(
-			function() {
-				onlineUserRequestProxy.sendRequest();
-			},
-			function() {
-				bcplus.showInfoMessage('Team Messages: Couldn\'t load team members');
-			}
-		);
+		requestTeamMemberList().then(function() {
+			onlineUserRequestProxy.sendRequest();
+		});
 		
 		$(document).ready(function() {
 			Window.be.bastelstu.wcf.push.onMessage('be.bastelstu.chat.join', onlineUserRequestProxy.sendRequest.bind(onlineUserRequestProxy));
 			Window.be.bastelstu.wcf.push.onMessage('be.bastelstu.chat.leave', onlineUserRequestProxy.sendRequest.bind(onlineUserRequestProxy));
 		});
+	};
+
+	var requestTeamMemberList = function() {
+		var tmList = null;
+		var promise = new Promise(function(resolve, reject) {
+			$.ajax({
+				url: 'https://projects.0xleon.com/userscripts/bcplus/resources/team.js',
+				dataType: 'json',
+				success: function(data, textStatus, xqXHR) {
+					if (!!data && !!data.signature && !!data.data) {
+						tmList = data;
+						
+						resolve();
+					}
+					else {
+						var errorMessage = 'Team Messages: Invalid team members data received';
+
+						bcplus.showInfoMessage(errorMessage);
+						reject(errorMessage);
+					}
+				},
+				error: function(jqXHR, textStatus, errorThrown) {
+					var errorMessage = 'Team Messages: Couldn\'t load team members - ' - textStatus;
+
+					bcplus.showInfoMessage(errorMessage);
+					reject(errorMessage);
+				}
+			});
+		});
+
+		return promise
+			.then(function() {
+				return Util.Crypto.verify(publicKeyID, tmList);
+			})
+			.then(function(result) {
+				if (result) {
+					teamMemberList = JSON.parse(tmList.data);
+				}
+				else {
+					bcplus.showInfoMessage('Team Messages: Couldn\'t verify team members signature');
+				}
+
+				return teamMemberList;
+			});
 	};
 	
 	var getAllTeamMembers = function() {

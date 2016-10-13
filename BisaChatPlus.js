@@ -369,17 +369,45 @@ var BisaChatPlus = (function() {
 	};
 	
 	var showInfoMessage = function(messageText) {
-		messageText = $('<div />').text(messageText).html();
+		var messageTextNode = $('<div />').text(messageText);
 		var time = new Date();
+		var messageObject = {
+			additionalData:		null,
+			altLayout:		true,
+			avatar:			null,
+			formattedMessage:	messageTextNode.html(),
+			formattedTime:		('00' + time.getHours().toString()).slice(-2) + ':' + ('00' + time.getMinutes().toString()).slice(-2) + ':' + ('00' + time.getSeconds().toString()).slice(-2),
+			formattedUsername:	'Information',
+			isFollowUp:		false,
+			isInPrivateChannel:	false,
+			message:		messageTextNode.text(),
+			messageID:		0,
+			ownMessage:		true,
+			plainText:		messageTextNode.text(),
+			receiver:		WCF.User.userID,
+			roomID:			Window.be.bastelstu.Chat.getRoomList().active.roomID,
+			sender:			WCF.User.userID,
+			separator:		':',
+			time:			Math.floor(time.getTime() / 1000),
+			type:			8,
+			username:		'Information'
+		};
+
+		bcplusEvents.messageReceived.fire(messageObject);
+
 		var $infoMessage = $(infoMessageTemplate.fetch({
-			userID:		WCF.User.userID,
-			time:		('00' + time.getHours().toString()).slice(-2) + ':' + ('00' + time.getMinutes().toString()).slice(-2) + ':' + ('00' + time.getSeconds().toString()).slice(-2),
-			text:		messageText
+			userID:		messageObject.receiver,
+			time:		messageObject.formattedTime,
+			text:		messageObject.formattedMessage
 		}));
 		
 		$('.timsChatMessageContainer.active > ul').append($infoMessage);
 		
 		WCF.DOMNodeInsertedHandler.execute();
+
+		if ($('#timsChatAutoscroll').data('status') === 1) {
+			$('.timsChatMessageContainer.active').scrollTop($('.timsChatMessageContainer.active').prop('scrollHeight'));
+		}
 	};
 	
 	var addEventListener = function(eventName, callback) {

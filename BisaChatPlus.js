@@ -1,6 +1,6 @@
 var BisaChatPlus = (function() {
 	var bcplus = null;
-	var storage = Storage.getInterface('bcplus');
+	var storage = Util.Storage.getInterface('bcplus');
 	var bcplusEvents = {
 		chatBlur: $.Callbacks(),
 		chatFocus: $.Callbacks(),

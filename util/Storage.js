@@ -2,7 +2,7 @@
  * Storage engine for persistent value storage
  * Copyright (C) 2011-2015 Stefan Hahn
  */
-var Storage = (function() {
+Util.Storage = (function() {
 	// TODO: make storageinterface a real class again
 	var StorageInterface = ((function(initNamespace) {
 		var namespace = initNamespace;

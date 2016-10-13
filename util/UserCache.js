@@ -1,4 +1,4 @@
-var UserCache = (function() {
+Util.UserCache = (function() {
 	var __cache = {};
 	
 	var loadUser = function(userID, resolve, reject) {

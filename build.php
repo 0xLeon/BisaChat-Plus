@@ -51,8 +51,8 @@ if ($argc === 1) {
 // build
 // find namespaces
 $namespaces = glob('namespaces/*');
-// find tools
-$tools = glob('tools/*.js');
+// find utils
+$utils = glob('util/*.js');
 // find media resources
 $mediaResources = glob('media/*');
 
@@ -68,12 +68,12 @@ $util = trim(file_get_contents('util.js'));
 // read in namespaces
 $result = file_get_contents('namespaces.js')."\n";
 
-// read in tools
-sort($tools, SORT_NATURAL | SORT_FLAG_CASE);
-foreach ($tools as $tool) {
-	echo "Adding tool: ".basename($tool, '.js')."\n";
+// read in utils
+sort($utils, SORT_NATURAL | SORT_FLAG_CASE);
+foreach ($utils as $util) {
+	echo "Adding util: ".basename($util, '.js')."\n";
 	
-	$result .= file_get_contents($tool)."\n";
+	$result .= file_get_contents($util)."\n";
 }
 
 // add media resources

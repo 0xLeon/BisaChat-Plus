@@ -104,7 +104,7 @@ Modules.Ignore = (function() {
 			return;
 		}
 		
-		UserCache.getUsers(ignoredUserIDs).then(
+		Util.UserCache.getUsers(ignoredUserIDs).then(
 			function(users) {
 				for (var userID in users) {
 					var user = users[userID];

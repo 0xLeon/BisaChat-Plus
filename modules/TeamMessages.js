@@ -81,6 +81,24 @@ Modules.TeamMessages = (function() {
 			
 			return null;
 		});
+
+		bcplus.addCommand(['teamonline', 'to'], function() {
+			if (!isReady) {
+				bcplus.showInfoMessage('Der teamdebug-Befehl ist noch nicht einsatzbereit. Warte noch einige Sekunden.');
+				
+				return null;
+			}
+
+			var teamMembers = '';
+
+			Object.keys(onlineTeamMemberList).forEach(function(userID) {
+				teamMembers += onlineTeamMemberList[userID] + ', ';
+			});
+
+			bcplus.showInfoMessage('Anwesende Team-Mitglieder: ' + teamMembers.slice(0, -2));
+
+			return null;
+		});
 		
 		bcplus.addCommand(['teamupdate', 'tu'], function() {
 			bcplus.showInfoMessage('Team Messages: Lade die Team-Liste neu');

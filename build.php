@@ -69,6 +69,7 @@ $util = trim(file_get_contents('util.js'));
 $result = file_get_contents('namespaces.js')."\n";
 
 // read in tools
+sort($tools, SORT_NATURAL | SORT_FLAG_CASE);
 foreach ($tools as $tool) {
 	echo "Adding tool: ".basename($tool, '.js')."\n";
 	

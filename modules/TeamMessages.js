@@ -89,13 +89,32 @@ Modules.TeamMessages = (function() {
 				return null;
 			}
 
-			var teamMembers = '';
+			Util.UserCache.getUsers(Object.keys(onlineTeamMemberList)).then(
+				function(users) {
+					var $teamMembers = $('<span>Anwesende Team-Mitglieder: </span>');
+					var first = true;
 
-			Object.keys(onlineTeamMemberList).forEach(function(userID) {
-				teamMembers += onlineTeamMemberList[userID] + ', ';
-			});
+					for (var userID in users) {
+						var user = users[userID];
+						
+						if (!first) {
+							$teamMembers.append(document.createTextNode(', '));
+						}
 
-			bcplus.showInfoMessage('Anwesende Team-Mitglieder: ' + teamMembers.slice(0, -2));
+						first = false;
+
+						$('<a />').attr({
+							href:	user.profile,
+							target:	'_blank'
+						}).text(user.username).appendTo($teamMembers);
+					}
+
+					bcplus.showInfoMessage($teamMembers.html(), true);
+				},
+				function(e) {
+					console.error(new Error(e));
+				}
+			);
 
 			return null;
 		});

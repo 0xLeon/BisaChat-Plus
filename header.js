@@ -26,7 +26,7 @@ catch (e) {
 (function(Window, $, WCF) {
 	'use strict';
 	
-	/*{util}*/
+	/*{functions}*/
 	
 	try {
 		/*{content}*/

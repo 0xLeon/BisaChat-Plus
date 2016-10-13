@@ -62,8 +62,8 @@ $finfo = new finfo(FILEINFO_MIME_TYPE);
 // read in header
 $header = file_get_contents('header.js');
 
-// read in util
-$util = trim(file_get_contents('util.js'));
+// read in functions
+$functions = trim(file_get_contents('functions.js'));
 
 // read in namespaces
 $result = file_get_contents('namespaces.js')."\n";
@@ -111,7 +111,7 @@ $result .= file_get_contents('BisaChatPlus.js');
 $result = trim($result);
 $result = str_replace("\n", "\n\t\t", $result);
 $result = str_replace("/*{content}*/", $result, $header);
-$result = str_replace("/*{util}*/", str_replace("\n", "\n\t", $util), $result);
+$result = str_replace("/*{functions}*/", str_replace("\n", "\n\t", $functions), $result);
 $result = str_replace('{version}', $options['version'].'-'.$options['build'], $result);
 
 

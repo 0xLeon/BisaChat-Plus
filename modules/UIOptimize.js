@@ -16,6 +16,7 @@ Modules.UIOptimize = (function() {
 		bcplus.addStyle('.timsChatMessage .altLayout time.timeLeft { float: none !important; }');
 		bcplus.addStyle('.timsChatMessage .timsChatMessageIcon { display: table; text-align: center; min-height: 100%; }');
 		bcplus.addStyle('.timsChatMessage .timsChatMessageIcon .icon, .timsChatMessage .timsChatMessageIcon .icon::before { vertical-align: middle; }');
+		bcplus.addStyle('.timsChatMessage8 .timsChatUsernameContainer { font-weight: bold !important; }');
 		hideAwayUsersStyle = bcplus.addStyle('#timsChatUserList .away:not(.you) { display: none !important; visibility: hidden !important; }');
 		
 		if (!bcplus.getOptionValue('UIOptimizeHideAwayUsers', false)) {

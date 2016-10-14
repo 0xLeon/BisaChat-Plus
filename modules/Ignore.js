@@ -97,7 +97,7 @@ Modules.Ignore = (function() {
 		}
 		
 		ignoredUserIDs.forEach(function(userID) {
-			ignoredUserClasses.push('.user' + userID.toString(10) + ':not(.timsChatMessage5):not(.timsChatMessage8):not(.timsChatMessage10):not(.timsChatMessage11):not(.timsChatMessage12)');
+			ignoredUserClasses.push('.timsChatMessage.user' + userID.toString(10) + ':not(.timsChatMessage5):not(.timsChatMessage8):not(.timsChatMessage10):not(.timsChatMessage11):not(.timsChatMessage12)');
 		});
 		
 		$ignoreStyleNode.text(ignoredUserClasses.join(', ') + ' { display: none !important; visibility: hidden !important; }');

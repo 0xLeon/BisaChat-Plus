@@ -17,6 +17,7 @@ Modules.UIOptimize = (function() {
 		bcplus.addStyle('.timsChatMessage .timsChatMessageIcon { display: table; text-align: center; min-height: 100%; }');
 		bcplus.addStyle('.timsChatMessage .timsChatMessageIcon .icon, .timsChatMessage .timsChatMessageIcon .icon::before { vertical-align: middle; }');
 		bcplus.addStyle('.timsChatMessage8 .timsChatUsernameContainer, .timsChatMessage1 > .timsChatInnerMessageContainer, .timsChatMessage2 > .timsChatInnerMessageContainer, .timsChatMessage2 > .timsChatInnerMessageContainer, .timsChatMessage4 > .timsChatInnerMessageContainer, .timsChatMessage6 > .timsChatInnerMessageContainer { font-weight: bold !important; }');
+		bcplus.addStyle('.bcplusAwayMarker hr { width: 80%; }');
 		hideAwayUsersStyle = bcplus.addStyle('#timsChatUserList .away:not(.you) { display: none !important; visibility: hidden !important; }');
 		
 		if (!bcplus.getOptionValue('UIOptimizeHideAwayUsers', false)) {
@@ -27,6 +28,12 @@ Modules.UIOptimize = (function() {
 	var buildUI = function() {
 		bcplus.addBoolOption('UIOptimizeTimeBeforeName', 'Zeitstempel vor dem Benutzername', 'UIOptimize', 'User Interface', false);
 		bcplus.addBoolOption('UIOptimizeShowSeconds', 'Zeitstempel mit Sekundenangabe', 'UIOptimize', null, false);
+		bcplus.addBoolOption('UIOptimizeAwayMarker', 'Marker beim Tab-/Fenster-Wechsel setzen', 'UIOptimize', null, true, function(event) {
+			if (!bcplus.getOptionValue('UIOptimizeAwayMarker', true)) {
+				$('.timsChatMessageContainer li.bcplusAwayMarker').remove();
+				bcplus.handleStreamScroll();
+			}
+		});
 		bcplus.addBoolOption('UIOptimizeHideExternalLinkConfirm', 'Bestätigungs-Dialog bei externen Links überspringen', 'UIOptimize', null, false);
 		bcplus.addBoolOption('UIOptimizeHideAwayUsers', 'Abwesende Benutzer ausblenden', 'UIOptimize', null, false, function(event) {
 			if (bcplus.getOptionValue('UIOptimizeHideAwayUsers', false)) {
@@ -57,6 +64,14 @@ Modules.UIOptimize = (function() {
 			characterData: true,
 			subtree: true,
 			attributeFilter: ['class']
+		});
+
+		bcplus.addEventListener('chatBlur', function() {
+			if (bcplus.getOptionValue('UIOptimizeAwayMarker', true)) {
+				$('.timsChatMessageContainer li.bcplusAwayMarker').remove();
+				$('.timsChatMessageContainer > ul').append($('<li class="bcplusAwayMarker"><hr /></li>'));
+				bcplus.handleStreamScroll();
+			}
 		});
 		
 		bcplus.addEventListener('messageReceived', function(message) {

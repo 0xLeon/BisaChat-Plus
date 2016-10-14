@@ -70,6 +70,7 @@ var BisaChatPlus = (function() {
 			getVersion:		getVersion,
 			getStorage:		getStorage,
 			getAwayStatus:		getAwayStatus,
+			handleStreamScroll:	handleStreamScroll,
 			sendMessage:		sendMessage,
 			showInfoMessage:	showInfoMessage,
 			addEventListener:	addEventListener,
@@ -346,6 +347,12 @@ var BisaChatPlus = (function() {
 	var getAwayStatus = function() {
 		return awayStatus;
 	};
+
+	var handleStreamScroll = function() {
+		if (1 === $('#timsChatAutoscroll').data('status')) {
+			$('.timsChatMessageContainer.active').scrollTop($('.timsChatMessageContainer.active').prop('scrollHeight'));
+		}
+	};
 	
 	var sendMessage = function(messageText, fireEvent) {
 		if ((fireEvent === undefined) || !!fireEvent) {
@@ -405,9 +412,7 @@ var BisaChatPlus = (function() {
 		
 		WCF.DOMNodeInsertedHandler.execute();
 
-		if ($('#timsChatAutoscroll').data('status') === 1) {
-			$('.timsChatMessageContainer.active').scrollTop($('.timsChatMessageContainer.active').prop('scrollHeight'));
-		}
+		handleStreamScroll();
 	};
 	
 	var addEventListener = function(eventName, callback) {
@@ -545,6 +550,7 @@ var BisaChatPlus = (function() {
 		getVersion:		getVersion,
 		getStorage:		getStorage,
 		getAwayStatus:		getAwayStatus,
+		handleStreamScroll:	handleStreamScroll,
 		sendMessage:		sendMessage,
 		showInfoMessage:	showInfoMessage,
 		addEventListener:	addEventListener,
@@ -574,3 +580,4 @@ if (Window.com.leon === undefined) {
 Window.com.leon.BCPlus = BisaChatPlus;
 Window.com.leon.BCPlus.Modules = Modules;
 Window.com.leon.BCPlus.Media = Media;
+Window.com.leon.BCPlus.Util = Util;

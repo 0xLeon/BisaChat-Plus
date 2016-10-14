@@ -101,6 +101,8 @@ Modules.Ignore = (function() {
 		});
 		
 		$ignoreStyleNode.text(ignoredUserClasses.join(', ') + ' { display: none !important; visibility: hidden !important; }');
+
+		bcplus.handleStreamScroll();
 	};
 	
 	var buildUserList = function() {

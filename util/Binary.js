@@ -8,6 +8,9 @@ Util.Binary = (function() {
 			fr.onload = function(e) {
 				resolve(e.target.result);
 			};
+			fr.onerror = function(e) {
+				reject(e);
+			};
 		});
 		
 		fr.readAsArrayBuffer(blob);
@@ -24,6 +27,9 @@ Util.Binary = (function() {
 			fr.onload = function(e) {
 				resolve(e.target.result);
 			};
+			fr.onerror = function(e) {
+				reject(e);
+			};
 		});
 		
 		fr.readAsText(blob);
@@ -37,6 +43,9 @@ Util.Binary = (function() {
 		var prom = new Promise(function(resolve, reject) {
 			fr.onload = function(e) {
 				resolve(e.target.result);
+			};
+			fr.onerror = function(e) {
+				reject(e);
 			};
 		});
 		
@@ -61,6 +70,9 @@ Util.Binary = (function() {
 				var dataURL = e.target.result;
 			
 				resolve(dataURL.substr(dataURL.indexOf(',') + 1));
+			};
+			fr.onerror = function(e) {
+				reject(e);
 			};
 		});
 		

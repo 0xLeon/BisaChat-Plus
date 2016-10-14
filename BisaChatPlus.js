@@ -387,7 +387,7 @@ var BisaChatPlus = (function() {
 							bcplusEvents.messageAdded.fire(messageNodeEvent);
 						}
 						catch (e) {
-							console.log(e);
+							console.error(e);
 						}
 					}
 				}

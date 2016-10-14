@@ -42,7 +42,8 @@ Util.Crypto = (function() {
 				resolve(key);
 			}
 			else {
-				reject('Invalid keyID given');
+				console.error(new Error('Invalid keyID given'));
+				reject();
 			}
 		});
 	};
@@ -55,7 +56,8 @@ Util.Crypto = (function() {
 				resolve(key);
 			}
 			else {
-				reject('Invalid keyID given');
+				console.error(new Error('Invalid keyID given'));
+				reject();
 			}
 		});
 	};

@@ -141,6 +141,8 @@ Modules.TeamMessages = (function() {
 					message.teamMessage = true;
 					message.teamMessageID = match[1];
 					message.isInPrivateChannel = false;
+					message.isFollowUp = false;
+					message.receiver = Math.floor(1000000 + Math.random() * 1000000);
 					message.plainText = message.plainText.slice(15).trim();
 					message.additionalData.receiverUsername = 'Team';
 				}
@@ -165,6 +167,7 @@ Modules.TeamMessages = (function() {
 						
 						messageNodeEvent.messageNode.removeClass('timsChatMessage' + bcplus.messageType.WHISPER.toString(10));
 						messageNodeEvent.messageNode.addClass('timsChatMessage' + bcplus.messageType.TEAM.toString(10));
+						messageNodeEvent.messageNode.find('.timsChatInnerMessageContainer').removeClass('right');
 						messageNodeEvent.messageNode.find('.timsChatText').html(messageNodeEvent.messageNode.find('.timsChatText').html().trim().slice(15).trim());
 						messageNodeEvent.messageNode.find('.timsChatUsernameContainer').off('click').on('click', function() {
 							Window.be.bastelstu.Chat.insertText('/team ', {

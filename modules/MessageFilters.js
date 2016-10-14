@@ -53,15 +53,22 @@ Modules.MessageFilters = (function() {
 		bcplus.addEventListener('messageAdded', function(messageNodeEvent) {
 			var $messageNode = messageNodeEvent.messageNode;
 			
-			if (bcplus.getOptionValue('greentext', true)) {
-				if (messageNodeEvent.messageText.startsWith('>')) {
-					$messageNode.find('.timsChatText').css({
-						color: '#792'
-					});
+			if (bcplus.getOptionValue('greentext', true) && messageNodeEvent.messageText.startsWith('>')) {
+				var $targetNode = null;
+				
+				if (messageNodeEvent.messageNodeType === bcplus.messageNodeType.BUBBLEFOLLOWUP) {
+					$targetNode = $messageNode.find('.timsChatFollowUpMessageBody');
 				}
+				else {
+					$targetNode = $messageNode.find('.timsChatText');
+				}
+
+				$targetNode.css({
+					color: '#792'
+				});
 			}
 			
-			if (bcplus.getOptionValue('hideAvatar', false)) {
+			if (bcplus.getOptionValue('hideAvatar', false) && (bcplus.messageNodeType.BUBBLEFOLLOWUP !== messageNodeEvent.messageNodeType)) {
 				$messageNode.addClass('noAvatar');
 			}
 			

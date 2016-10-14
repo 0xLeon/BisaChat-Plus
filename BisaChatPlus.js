@@ -40,6 +40,7 @@ var BisaChatPlus = (function() {
 	var externalCommandRegex = /(?:!)(.*?)(?:\s(.*)|$)/;
 	var externalCommands = { };
 	
+	// TODO: maybe add bubble version of info template
 	var infoMessageTemplate = new WCF.Template('<li class="timsChatMessage timsChatMessage8 user{$userID} ownMessage">	\n	<div class="timsChatInnerMessageContainer altLayout">\n		<div class="timsChatAvatarContainer">\n			<div class="userAvatar framed">\n				<span class="icon icon16 icon-info-sign"></span>\n			</div>\n		</div>\n		<div class="timsChatInnerMessage">\n			<time>{$time}</time>\n			<span class="timsChatUsernameContainer">Information:</span>\n			<div class="timsChatTextContainer">\n				<span class="timsChatText">\n					{@$text}\n				</span>\n			</div>\n		</div>\n	</div>\n</li>');
 	
 	var messageTypeRegex = /\btimsChatMessage(\d+)\b/;
@@ -59,6 +60,12 @@ var BisaChatPlus = (function() {
 		get TEAM()	{ return 10; },
 		get GLOBAL()	{ return 11; },
 		get ATTACH()	{ return 12; }
+	};
+
+	var messageNodeType = {
+		get ALTERNATIVE()	{ return 0; },
+		get BUBBLE()		{ return 1; },
+		get BUBBLEFOLLOWUP()	{ return 2; }
 	};
 	
 	var getVersion = function() {
@@ -85,6 +92,10 @@ var BisaChatPlus = (function() {
 			
 			get messageType() {
 				return messageType;
+			},
+
+			get messageNodeType() {
+				return messageNodeType;
 			}
 		};
 		
@@ -308,25 +319,72 @@ var BisaChatPlus = (function() {
 			mutations.forEach(function(mutation) {
 				for (var i = 0, l = mutation.addedNodes.length; i < l; i++) {
 					var $messageNode = $(mutation.addedNodes[i]);
-					
-					if (($messageNode.get(0).nodeType === 1) && $messageNode.hasClass('timsChatMessage')) {
+
+					if (($messageNode.get(0).nodeType === 1) && ($messageNode.hasClass('timsChatMessage') || $messageNode.hasClass('timsChatText'))) {
 						try {
 							var messageNodeEvent = {
 								messageNode:		$messageNode,
-								messageType:		parseInt($messageNode.attr('class').match(messageTypeRegex)[1], 10),
-								messageID:		$messageNode.find('.timsChatText').data('messageID'),
+								messageType:		null,
+								messageID:		null,
 								ownMessage:		false,
-								sender:			parseInt($messageNode.attr('class').match(messageUserIdRegex)[1], 10),
-								senderUsername:		$messageNode.find('.timsChatUsernameContainer span:not(.icon, .receiver)').text().trim(),
+								sender:			null,
+								senderUsername:		null,
 								receiverUsername:	null,
-								messageText:		$messageNode.find('.timsChatText').text().trim()
+								messageText:		null,
+								messageNodeType:	null
 							};
+
+							// TODO: what if one bubble contains several messages of one user?
+							if ($messageNode.hasClass('timsChatMessage')) {
+								if ($messageNode.find('.bubble').length > 0) {
+									messageNodeEvent.messageNodeType = messageNodeType.BUBBLE;
+								}
+								else {
+									messageNodeEvent.messageNodeType = messageNodeType.ALTERNATIVE;
+								}
+								
+								messageNodeEvent.messageType = parseInt($messageNode.attr('class').match(messageTypeRegex)[1], 10);
+								messageNodeEvent.messageID = $messageNode.find('.timsChatText').data('messageID');
+								messageNodeEvent.messageText = $messageNode.find('.timsChatText').text().trim();
+								messageNodeEvent.sender = parseInt($messageNode.attr('class').match(messageUserIdRegex)[1], 10);
+								messageNodeEvent.senderUsername = $messageNode.find('.timsChatUsernameContainer span:not(.icon, .receiver)').text().trim();
+								
+								if (messageNodeEvent.messageType === messageType.WHISPER) {
+									messageNodeEvent.receiverUsername = $messageNode.find('.timsChatUsernameContainer .receiver').text().trim();
+								}
+							}
+							else if ($messageNode.hasClass('timsChatText')) {
+								messageNodeEvent.messageNodeType = messageNodeType.BUBBLEFOLLOWUP;
+								messageNodeEvent.messageType = parseInt($messageNode.closest('.timsChatMessage').attr('class').match(messageTypeRegex)[1], 10);
+								messageNodeEvent.messageID = $messageNode.data('messageID');
+
+								var $div = $('<div />');
+								var $message = $('<span class="timsChatFollowUpMessageBody" />');
+
+								$messageNode.find('*').detach().appendTo($div);
+								$message.html($messageNode.html().trim());
+
+								$messageNode.empty()
+									.append($div.find('time').detach())
+									.append($message)
+									.append($div.find('input').detach());
+
+								messageNodeEvent.messageText = $message.text().trim();
+
+								messageNodeEvent.sender = parseInt($messageNode.closest('.timsChatMessage').attr('class').match(messageUserIdRegex)[1], 10);
+								messageNodeEvent.senderUsername = $messageNode.closest('.timsChatInnerMessage').find('.timsChatUsernameContainer span:not(.icon, .receiver)').text().trim();
+								
+								if (messageNodeEvent.messageType === messageType.WHISPER) {
+									messageNodeEvent.receiverUsername = $messageNode.closest('.timsChatInnerMessage').find('.timsChatUsernameContainer .receiver').text().trim();
+								}
+							}
+							else {
+								throw new Error('Unrecognized message node type');
+							}
 							
 							messageNodeEvent.ownMessage = (messageNodeEvent.sender === WCF.User.userID);
-							
-							if (messageNodeEvent.messageType === messageType.WHISPER) {
-								messageNodeEvent.receiverUsername = $messageNode.find('.timsChatUsernameContainer .receiver').text().trim();
-							}
+
+							console.log(messageNodeEvent);
 							
 							bcplusEvents.messageAdded.fire(messageNodeEvent);
 						}
@@ -573,6 +631,10 @@ var BisaChatPlus = (function() {
 		
 		get messageType() {
 			return messageType;
+		},
+
+		get messageNodeType() {
+			return messageNodeType;
 		}
 	};
 })();

@@ -88,11 +88,19 @@ var BisaChatPlus = (function() {
 			}
 		};
 		
+		checkSecureConnection();
 		initEvents();
 		buildUI();
 		initModules();
 		
 		addCommand('mp3', '/me *winamptret*');
+	};
+
+	var checkSecureConnection = function() {
+		if (Window.location.protocol !== 'https:') {
+			    window.location.href = 'https:' + window.location.href.substring(window.location.protocol.length);
+			    throw new Error('Reloading chat over secure connection');
+		}
 	};
 	
 	var initEvents = function() {

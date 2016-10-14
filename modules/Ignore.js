@@ -12,7 +12,7 @@ Modules.Ignore = (function() {
 		
 		addStyles();
 		buildUI();
-		// addEventListeners();
+		addEventListeners();
 	};
 	
 	var addStyles = function() {
@@ -74,6 +74,18 @@ Modules.Ignore = (function() {
 		$ignoreButton.insertBefore($('#timsChatClear').closest('li'));
 		
 		WCF.DOMNodeInsertedHandler.execute();
+	};
+
+	var addEventListeners = function() {
+		bcplus.addExternalCommand(['doignore', 'di'], function(message) {
+			var answer = '/f ' + message.username + ', @\'' + WCF.User.username + '\' ignoriert dich';
+
+			if (-1 === ignoredUserIDs.indexOf(message.sender)) {
+				answer += ' nicht';
+			}
+			
+			bcplus.sendMessage(answer);
+		}, false);
 	};
 	
 	var updateStyleRule = function() {

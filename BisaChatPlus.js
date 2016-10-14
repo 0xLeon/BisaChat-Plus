@@ -384,8 +384,6 @@ var BisaChatPlus = (function() {
 							
 							messageNodeEvent.ownMessage = (messageNodeEvent.sender === WCF.User.userID);
 
-							console.log(messageNodeEvent);
-							
 							bcplusEvents.messageAdded.fire(messageNodeEvent);
 						}
 						catch (e) {

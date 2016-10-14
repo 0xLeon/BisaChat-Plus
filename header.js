@@ -32,6 +32,6 @@ catch (e) {
 		/*{content}*/
 	}
 	catch (e) {
-		console.log(e);
+		console.error(e);
 	}
 })(browserWindow, browserWindow.jQuery, browserWindow.WCF);

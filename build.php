@@ -70,7 +70,14 @@ class Builder {
 		
 		if (!$this->silent) echo "Deploying to ftp host " . $this->config->ftp->host . "\n";
 		
-		$ftp = ftp_connect($this->config->ftp->host);
+		$ftp = null;
+		
+		if (function_exists('ftp_ssl_connect')) {
+			$ftp = ftp_ssl_connect($this->config->ftp->host);
+		}
+		else {
+			$ftp = ftp_connect($this->config->ftp->host);
+		}
 		
 		if (false === $ftp) {
 			throw new \Exception('Couldn\'t create ftp connection');

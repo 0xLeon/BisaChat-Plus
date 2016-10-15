@@ -1,89 +1,183 @@
 #!/usr/bin/php
 <?php
+namespace com\leon\bcplus\build;
+
 /**
- * Buildscript for BisaChatPlus
+ * Build class used to create an installable userscript from BCPlus source
  * 
- * @author Tim Düsterhus, Stefan Hahn
+ * @author	Stefan Hahn
+ * @copyright	2016 Stefan Hahn
+ * @license	GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  */
-if (strtolower(php_sapi_name()) != 'cli') die("The build-script has to be invoked from cli\n");
-
-
-echo "Welcome to Buildscript for Bisachat-Plus\n";
-$options = parseParams($argv);
-
-if ($options['version'] === '') {
-	if (file_exists('builds/.lastversion')) {
-		$options['version'] = file_get_contents('builds/.lastversion');
-	}
-	else {
-		$options['version'] = 'Unknown'; 
-	}
-}
-
-if ($argc === 1) {
-	echo "Which version do you want to build (Last was ".$options['version'].")?\n";
-	echo "Version number strings should follow the 'PHP-standarized' version \nnumber string guidline.\n";
-	echo "Enter version string and press enter:\n";
-	echo "> ";
-	$options['version'] = trim(fread(STDIN, 1024));
-	echo "I will use ".$options['version']." as version number\n";
+class Builder {
+	const DEFAULT_CONFIG_FILE = './buildconfig.json';
 	
-	do {
-		echo "Do you want to include all available modules? (Y/N)\n";
-		echo "> ";
-		$input = strtoupper(trim(fread(STDIN, 1024)));
+	protected $configFile = '';
+	protected $config = null;
+	protected $silent = false;
+	
+	protected $fInfo = null;
+	
+	protected $namespaces = '';
+	protected $header = '';
+	protected $functions = '';
+	protected $bcplus = '';
+	
+	protected $utils = [];
+	protected $mediaResources = [];
+	protected $modules = [];
+	
+	protected $buildResult = '';
+	protected $buildResultFile = '';
+	
+	public function __construct($configFile = Builder::DEFAULT_CONFIG_FILE, $silent = false) {
+		$this->configFile = $configFile;
+		$this->silent = $silent;
+		$this->fInfo = new \finfo(FILEINFO_MIME_TYPE);
 		
-		if ($input === 'Y') {
-			$options['modules'] = array_map(function($item) {
-				return basename($item, '.js');
-			}, glob('modules/*.js'));
-		}
-	} while ($input !== 'Y' && $input !== 'N');
-	
-	echo "I have everything i need, starting build";
-	for ($i = 0; $i < 3; $i++) {
-		echo ".";
-		usleep(1E6/2);
+		if (!$this->silent) echo "BCPlus build script\n";
+		
+		$this->loadConfig();
+		$this->validateConfig();
 	}
-	echo "\n\n";
-}
-
-// build
-// find namespaces
-$namespaces = glob('namespaces/*');
-// find utils
-$utils = glob('util/*.js');
-// find media resources
-$mediaResources = glob('media/*');
-
-// fileinfo object
-$finfo = new finfo(FILEINFO_MIME_TYPE);
-
-// read in header
-$header = file_get_contents('header.js');
-
-// read in functions
-$functions = trim(file_get_contents('functions.js'));
-
-// read in namespaces
-$result = file_get_contents('namespaces.js')."\n";
-
-// read in utils
-sort($utils, SORT_NATURAL | SORT_FLAG_CASE);
-foreach ($utils as $util) {
-	echo "Adding util: ".basename($util, '.js')."\n";
 	
-	$result .= file_get_contents($util)."\n";
-}
-
-// add media resources
-foreach ($mediaResources as $mediaResource) {
-	echo "Adding resource: ".$mediaResource."\n";
+	public function run() {
+		if (!$this->silent) echo "Starting build process\n";
+		
+		$this->loadFrame();
+		$this->loadUtils();
+		$this->loadMediaResources();
+		$this->loadModules();
+		
+		$this->build();
+		$this->saveBuildResult();
+	}
 	
-	$name = substr(basename($mediaResource), 0, strrpos(basename($mediaResource), '.'));
-	$mimeType = $finfo->file($mediaResource);
-	$base64Content = base64_encode(file_get_contents($mediaResource));
-	$result .= <<<MEDIA
+	public function getBuildResult() {
+		return $this->buildResult;
+	}
+	
+	public function deployFtp() {
+		if (!isset($this->config->ftp)) {
+			throw new \Exception('FTP config not set');
+		}
+		
+		if (isset($this->config->ftp->deployDev) && !$this->config->ftp->deployDev && (false !== strpos($this->config->version, 'dev'))) {
+			if (!$this->silent) echo "Not deploying dev version to ftp host due to configuration\n";
+			
+			return;
+		}
+		
+		if (!$this->silent) echo "Deploying to ftp host " . $this->config->ftp->host . "\n";
+		
+		$ftp = ftp_connect($this->config->ftp->host);
+		
+		if (false === $ftp) {
+			throw new \Exception('Couldn\'t create ftp connection');
+		}
+		
+		if (false === ftp_login($ftp, $this->config->ftp->username, $this->config->ftp->password)) {
+			throw new \Exception('Invalid ftp credentials');
+		}
+		
+		if (false === ftp_pasv($ftp, true)) {
+			throw new \Exception('Couldn\'t enter ftp passive mode');
+		}
+		
+		if (false === ftp_put($ftp, $this->config->ftp->path . basename($this->buildResultFile), $this->buildResultFile, FTP_BINARY)) {
+			throw new \Exception('Couldn\'t upload build result to ftp server');
+		}
+		
+		ftp_close($ftp);
+	}
+	
+	public function deployLocal() {
+		if (!isset($this->config->deploy)) {
+			throw new \Exception('Deploy config not set');
+		}
+		
+		$filename = str_replace(' ', '_', basename($this->buildResultFile));
+		
+		foreach ($this->config->deploy->paths as $deployPath) {
+			if (!is_dir($deployPath)) {
+				continue;
+			}
+			
+			$existingFile = glob($deployPath . '*.user.js');
+			
+			if (1 === count($existingFile)) {
+				if (!$this->silent) echo "Deploying to local path " . $existingFile[0] . "\n";
+				
+				if (false === copy($this->buildResultFile, $existingFile[0])) {
+					file_put_contents('php://stderr', "Couldn't deploy to " . $existingFile[0] . "\n");
+				}
+			}
+			else if (empty($existingFile)) {
+				if (!$this->silent) echo "Deploying to local path " . $deployPath . $filename . "\n";
+				
+				if (false === copy($this->buildResultFile, $deployPath . $filename)) {
+					file_put_contents('php://stderr', "Couldn't deploy to " . $deployPath . $filename . "\n");
+				}
+			}
+			else {
+				file_put_contents('php://stderr', "Couldn't deploy to " . $deployPath . "\n");
+				continue;
+			}
+		}
+	}
+	
+	protected function loadConfig() {
+		if (!$this->silent) echo "Loading build config\n";
+		
+		if (!file_exists($this->configFile)) {
+			throw new \Exception('Config file doesn\'t exist.');
+		}
+		
+		$this->config = json_decode(file_get_contents($this->configFile));
+	}
+	
+	protected function validateConfig() {
+		if (!$this->silent) echo "Validating build config\n";
+		
+		$this->validateVersion();
+		$this->validateBuildpath();
+		$this->validateModules();
+		$this->validateFtp();
+		$this->validateDeploy();
+	}
+	
+	protected function loadFrame() {
+		$this->loadNamespaces();
+		$this->loadHeader();
+		$this->loadFunctions();
+		$this->loadBCPlus();
+	}
+	
+	protected function loadUtils() {
+		$utilPaths = glob('util/*.js');
+		
+		sort($utilPaths, SORT_NATURAL | SORT_FLAG_CASE);
+		foreach ($utilPaths as $utilPath) {
+			if (!$this->silent) echo "Loading util " . basename($utilPath, '.js') . "\n";
+			
+			$utilContent = file_get_contents($utilPath);
+			
+			if (!empty($utilContent)) {
+				$this->utils[] = $utilContent;
+			}
+		}
+	}
+	
+	protected function loadMediaResources() {
+		$mediaResourcePaths = glob('media/*');
+		
+		foreach ($mediaResourcePaths as $mediaResourcePath) {
+			if (!$this->silent) echo "Loading media resource " . basename($mediaResourcePath) . "\n";
+			
+			$name = substr(basename($mediaResourcePath), 0, strrpos(basename($mediaResourcePath), '.'));
+			$mimeType = $this->fInfo->file($mediaResourcePath);
+			$base64Content = base64_encode(file_get_contents($mediaResourcePath));
+			$this->mediaResources[] = <<<MEDIA
 Media.$name = {
 	mimeType: '$mimeType',
 	content: '$base64Content',
@@ -91,77 +185,158 @@ Media.$name = {
 		return 'data:' + this.mimeType + ';base64,' + this.content;
 	}
 };
-
-
 MEDIA;
-}
-
-// add modules
-foreach ($options['modules'] as $module) {
-	if (file_exists('./modules/'.$module.'.js')) {
-		echo "Adding module: ".$module."\n";
-		$result .= file_get_contents('./modules/'.$module.'.js')."\n";
-	}
-	else {
-		echo "Module ".$module." doesn't exist!\n";
-	}
-}
-
-$result .= file_get_contents('BisaChatPlus.js');
-$result = trim($result);
-$result = str_replace("\n", "\n\t\t", $result);
-$result = str_replace("/*{content}*/", $result, $header);
-$result = str_replace("/*{functions}*/", str_replace("\n", "\n\t", $functions), $result);
-$result = str_replace('{version}', $options['version'].'-'.$options['build'], $result);
-
-
-echo "Writing file builds/BisaChat Plus ".$options['version'].".user.js\n";
-// Write file
-file_put_contents('builds/BisaChat Plus '.$options['version'].'.user.js', $result);
-// save version
-file_put_contents('builds/.lastversion', $options['version']);
-
-if (file_exists('./deploy.cmd')) {
-	echo "Deploying build result\n";
-	exec('deploy.cmd');
-}
-
-echo "Finished\n";
-
-if ($argc == 1) {
-	echo "Press Enter to exit...";
-	fread(STDIN, 1024); 
-}
-
-
-function parseParams($argv) {
-	$options = array(
-		'version' => '',
-		'build' => 0,
-		'modules' => array()
-	);
-	
-	for ($i = 1, $length = count($argv); $i < $length; $i++) {
-		$command = substr($argv[$i], 2, (((strrpos($argv[$i], '-')-1) > 2) ? (strrpos($argv[$i], '-')-1) : (strlen($argv[$i])-1)));
-		
-		if (strrpos($command, '-') === (strlen($command)-1)) {
-			$command = substr($command, 0, strlen($command)-1);
-		}
-		
-		switch ($command) {
-			case 'version':
-				$options['version'] = substr($argv[$i], strrpos($argv[$i], '-')+1);
-				break;
-			case 'with-module':
-				$options['modules'][] = substr($argv[$i], strrpos($argv[$i], '-')+1);
-				break;
 		}
 	}
 	
-	$time = explode(' ', microtime());
-	$options['build'] = bcadd(($time[0] * 1000), bcmul($time[1], 1000));
+	protected function loadModules() {
+		foreach ($this->config->modules as $module) {
+			if (!$this->silent) echo "Loading module " . $module . "\n";
+			
+			if (!file_exists('./modules/' . $module . '.js')) {
+				throw new \Exception('Module ' . $module . ' doesn\'t exist');
+			}
+			
+			$moduleContent = file_get_contents('./modules/' . $module . '.js');
+			
+			if (empty($moduleContent)) {
+				throw new \Exception('Module ' . $module . ' is empty');
+			}
+			
+			$this->modules[] = $moduleContent;
+		}
+	}
 	
-	$options['modules'] = array_unique($options['modules']);
+	protected function build() {
+		if (!$this->silent) echo "Start building\n";
+		
+		$content = '';
+		
+		$content .= $this->namespaces . "\n";
+		$content .= implode("\n", $this->utils) . "\n";
+		$content .= implode("\n", $this->mediaResources) . "\n";
+		$content .= implode("\n", $this->modules) . "\n";
+		$content .= $this->bcplus;
+		
+		$content = trim($content);
+		$content = str_replace("\n", "\n\t\t", $content);
+		
+		$this->buildResult = $this->header;
+		$this->buildResult = str_replace('/*{content}*/', $content, $this->buildResult);
+		$this->buildResult = str_replace('/*{functions}*/', str_replace("\n", "\n\t", trim($this->functions)), $this->buildResult);
+		$this->buildResult = str_replace('/*{version}*/', $this->config->version, $this->buildResult);
+	}
 	
-	return $options;
+	protected function saveBuildResult() {
+		$this->buildResultFile = $this->config->buildpath . 'BisaChat Plus ' . $this->config->version .'.user.js';
+		
+		if (!$this->silent) echo "Writing build result file " . $this->buildResultFile . "\n";
+		
+		if (false === file_put_contents($this->buildResultFile, $this->getBuildResult())) {
+			throw new \Exception('Couldn\'t write build result file');
+		}
+	}
+	
+	protected function validateVersion() {
+		if (!isset($this->config->version)) {
+			throw new \Exception('No version given');
+		}
+		
+		if (1 !== preg_match('/^(\d+\.\d+\.\d+)(?:(dev|a|b|rc)(\d+(dev)?)?)?$/', $this->config->version)) {
+			throw new \Exception('Invalid version given');
+		}
+	}
+	
+	protected function validateBuildpath() {
+		if (!isset($this->config->buildpath)) {
+			throw new \Exception('No buildpath given');
+		}
+	}
+	
+	protected function validateModules() {
+		if (!isset($this->config->modules) || !is_array($this->config->modules)) {
+			throw new \Exception('Invalid modules list');
+		}
+	}
+	
+	protected function validateFtp() {
+		if (isset($this->config->ftp)) {
+			if (!isset($this->config->ftp->host) || !isset($this->config->ftp->username) || !isset($this->config->ftp->password) || !isset($this->config->ftp->path)) {
+				throw new \Exception('Invalid ftp config');
+			}
+		}
+	}
+	
+	protected function validateDeploy() {
+		if (isset($this->config->deploy)) {
+			if (!isset($this->config->deploy->paths) || !is_array($this->config->deploy->paths)) {
+				throw new \Exception('Invalid deploy config');
+			}
+		}
+	}
+	
+	protected function loadNamespaces() {
+		if (file_exists('./namespaces.js')) {
+			if (!$this->silent) echo "Loading namespaces\n";
+			
+			$this->namespaces = file_get_contents('./namespaces.js');
+		}
+	}
+	
+	protected function loadHeader() {
+		if (!$this->silent) echo "Loading header\n";
+		
+		if (!file_exists('./namespaces.js')) {
+			throw new \Exception('Header file doesn\'t exist');
+		}
+		
+		$this->header = file_get_contents('./header.js');
+		
+		if (empty($this->header)) {
+			throw new \Exception('Header file is empty');
+		}
+	}
+	
+	protected function loadFunctions() {
+		if (file_exists('./functions.js')) {
+			if (!$this->silent) echo "Loading functions\n";
+			
+			$this->functions = file_get_contents('./functions.js');
+		}
+	}
+	
+	protected function loadBCPlus() {
+		if (!$this->silent) echo "Loading BisaChatPlus\n";
+		
+		if (!file_exists('./BisaChatPlus.js')) {
+			throw new \Exception('BisaChatPlus file doesn\'t exist');
+		}
+		
+		$this->bcplus = file_get_contents('./BisaChatPlus.js');
+		
+		if (empty($this->bcplus)) {
+			throw new \Exception('BisaChatPlus file is empty');
+		}
+	}
+}
+
+try {
+	if ('cli' !== strtolower(php_sapi_name())) {
+		throw new \Exception('Build script has to be called from CLI SAPI');
+	}
+	
+	$b = new Builder();
+	
+	$b->run();
+	
+	if (false === array_search('--no-ftp-deploy', $argv, true)) {
+		$b->deployFtp();
+	}
+	
+	if (false === array_search('--no-local-deploy', $argv, true)) {
+		$b->deployLocal();
+	}
+}
+catch (\Exception $e) {
+	echo $e;
 }

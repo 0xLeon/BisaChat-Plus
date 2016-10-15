@@ -51,9 +51,6 @@ nbactions.xml
 # Aptana
 .externalToolBuilders/
 
-# WCF Package Builder
-builds/
-
 # Community Framework
 templatepatch/
 *.tar
@@ -61,9 +58,9 @@ templatepatch/
 requirements/*.tar
 requirements/*.tar.gz
 
-# Deployment
-deploy.cmd
-deploy
+# Building
+build/
+buildconfig.json
 
 # Stuff
 screenshots/

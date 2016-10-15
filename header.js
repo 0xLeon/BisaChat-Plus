@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           BisaChat Plus
 // @description    Add's a few more comfortable functions to BisaChat
-// @version        {version}
+// @version        /*{version}*/
 // @author         Stefan Hahn
 // @copyright      2011-2015, Stefan Hahn
 // @license        GNU General Public License, version 2

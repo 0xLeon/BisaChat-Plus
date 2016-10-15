@@ -69,7 +69,7 @@ var BisaChatPlus = (function() {
 	};
 	
 	var getVersion = function() {
-		return '{version}';
+		return '/*{version}*/';
 	};
 	
 	var init = function() {

@@ -272,7 +272,7 @@ Modules.TeamMessages = (function() {
 					}
 				},
 				error: function(jqXHR, textStatus, errorThrown) {
-					var errorMessage = 'Team Messages: Couldn\'t load team members - ' - textStatus;
+					var errorMessage = 'Team Messages: Couldn\'t load team members - ' + textStatus;
 
 					bcplus.showInfoMessage(errorMessage);
 					reject(errorMessage);

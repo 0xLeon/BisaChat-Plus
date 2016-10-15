@@ -209,7 +209,7 @@ Modules.TeamMessages = (function() {
 					}
 				});
 			});
-		}, 600000);
+		}, 3600000);
 		
 		onlineUserRequestProxy = new WCF.Action.Proxy({
 			data: {

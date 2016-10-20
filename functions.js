@@ -1,6 +1,7 @@
 (function() {
 	var uuidUtilRegExp = /[xy]/g;
 	var escapeRegExp = /[.?*+^$[\]\\(){}|-]/g;
+	var htmlCleanRegExp = /\s{2,}/g;
 	
 	/**
 	 *  @see	http://stackoverflow.com/a/8809472
@@ -21,6 +22,22 @@
 	 */
 	RegExp.escape = function(str) {
 		return str.replace(escapeRegExp, '\\$&');
+	};
+
+	/**
+	 * 
+	 */
+	$.fn.htmlClean = function() {
+		this.contents().each(function() {
+			if (3 !== this.nodeType) {
+				$(this).htmlClean();
+			}
+			else {
+				this.textContent = this.textContent.replace(htmlCleanRegExp, ' ');
+			}
+		});
+
+		return this;
 	};
 	
 	if (!String.prototype.includes && !!String.prototype.contains) {

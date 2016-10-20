@@ -321,6 +321,8 @@ var BisaChatPlus = (function() {
 					var $messageNode = $(mutation.addedNodes[i]);
 
 					if (($messageNode.get(0).nodeType === 1) && ($messageNode.hasClass('timsChatMessage') || $messageNode.hasClass('timsChatText'))) {
+						$messageNode.htmlClean();
+						
 						try {
 							var messageNodeEvent = {
 								messageNode:		$messageNode,

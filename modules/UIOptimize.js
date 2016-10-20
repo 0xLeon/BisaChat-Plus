@@ -16,7 +16,7 @@ Modules.UIOptimize = (function() {
 		bcplus.addStyle('.timsChatMessage .altLayout time.timeLeft { float: none !important; }');
 		bcplus.addStyle('.timsChatMessage .timsChatMessageIcon { display: table; text-align: center; min-height: 100%; }');
 		bcplus.addStyle('.timsChatMessage .timsChatMessageIcon .icon, .timsChatMessage .timsChatMessageIcon .icon::before { vertical-align: middle; }');
-		bcplus.addStyle('.timsChatMessage8 .timsChatUsernameContainer, .timsChatMessage1 > .timsChatInnerMessageContainer, .timsChatMessage2 > .timsChatInnerMessageContainer, .timsChatMessage2 > .timsChatInnerMessageContainer, .timsChatMessage4 > .timsChatInnerMessageContainer, .timsChatMessage6 > .timsChatInnerMessageContainer { font-weight: bold !important; }');
+		bcplus.addStyle('.timsChatMessage8 .timsChatUsernameContainer, .timsChatMessage7 .timsChatUsernameContainer, .timsChatMessage1 > .timsChatInnerMessageContainer, .timsChatMessage2 > .timsChatInnerMessageContainer, .timsChatMessage2 > .timsChatInnerMessageContainer, .timsChatMessage4 > .timsChatInnerMessageContainer, .timsChatMessage6 > .timsChatInnerMessageContainer { font-weight: bold !important; }');
 		bcplus.addStyle('.bcplusAwayMarker hr { width: 80%; }');
 		hideAwayUsersStyle = bcplus.addStyle('#timsChatUserList .away:not(.you) { display: none !important; visibility: hidden !important; }');
 		
@@ -83,25 +83,22 @@ Modules.UIOptimize = (function() {
 		bcplus.addEventListener('messageAdded', function(messageNodeEvent) {
 			var $messageNode = messageNodeEvent.messageNode;
 			var $timeNode = null;
-			var $timeTargetNode = null;
  			
 			if (bcplus.messageNodeType.BUBBLEFOLLOWUP === messageNodeEvent.messageNodeType) {
 				$timeNode = $messageNode.find('time');
-				$timeTargetNode = $messageNode;
 			}
 			else {
 				$timeNode = $messageNode.find('.timsChatInnerMessage time');
-				$timeTargetNode = $messageNode.find('.timsChatInnerMessage');
 				
 				if (bcplus.getOptionValue('UIOptimizeTimeBeforeName', false) && (bcplus.messageNodeType.ALTERNATIVE === messageNodeEvent.messageNodeType)) {
-					$timeNode.addClass('timeLeft');
+					$timeNode.addClass('timeLeft').detach().prependTo($messageNode.find('.timsChatInnerMessage'));
 				}
 			}
 			
-			$timeNode.text('[' + $timeNode.text().trim() + ']').detach().prependTo($timeTargetNode);
+			$timeNode.text('[' + $timeNode.text().trim() + ']');
 			
 			if ((bcplus.messageNodeType.BUBBLEFOLLOWUP !== messageNodeEvent.messageNodeType) && ((messageNodeEvent.messageType < bcplus.messageType.MODERATE) || (messageNodeEvent.messageType === bcplus.messageType.WHISPER))) {
-				$messageNode.find('.timsChatUsernameContainer').find('.icon.pointer').off('click').prop('onclick', null);
+				$messageNode.find('.timsChatUsernameContainer').find('.icon.pointer').off('click').prop('onclick', null).removeClass('icon icon16 icon-double-angle-right').text('»');
 				$messageNode.find('.timsChatUsernameContainer').data('username', ((messageNodeEvent.messageType === bcplus.messageType.WHISPER) && messageNodeEvent.ownMessage) ? messageNodeEvent.receiverUsername : messageNodeEvent.senderUsername);
 				$messageNode.find('.timsChatUsernameContainer').addClass('pointer').on('click', function() {
 					Window.be.bastelstu.Chat.insertText('/whisper ' + $(this).data('username') + ', ', {
@@ -117,31 +114,126 @@ Modules.UIOptimize = (function() {
 			}
 		});
 		
-		$('#timsChatMessageContainer0').get(0).addEventListener('copy', streamCopyListener, false);
+		Window.document.addEventListener('copy', streamCopyListener, false);
 		Window.document.addEventListener('keypress', streamSelectAllListener, false);
-		
-		bcplus.addEventListener('privateRoomAdded', function($privateRoom) {
-			$privateRoom.get(0).addEventListener('copy', streamCopyListener, false);
-		});
-		
-		bcplus.addEventListener('privateRoomRemoved', function($privateRoom) {
-			$privateRoom.get(0).removeEventListener('copy', streamCopyListener, false);
-		});
 	};
 	
+	/**
+	 * @param	{ClipboardEvent}	event
+	 */
 	var streamCopyListener = function(event) {
+		if (!Window.getSelection().containsNode($('#timsChatMessageTabMenu').get(0), true)) {
+			return;
+		}
+
+		/** @type {String} */    var text = '';
+		/** @type {Selection} */ var selection = Window.getSelection();
+
 		event.preventDefault();
-		
-		var selection = Window.getSelection();
-		var selectedText = selection.toString();
-		
-		// TODO: check with timestamps with date (0:00 pm rollover)
-		selectedText = selectedText.trim()
-			.replace(/^\s+|\s+$/gm, "\n")				// white space on start and end of lines
-			.replace(/\n{2,}/g, "\n")				// multiple sequential line feeds
-			.replace(/^(\d{2})(\:\d{2})(\:\d{2})?/gm, '[$1$2$3]');	// enclose timestamp in brackets
-		
-		event.clipboardData.setData('text/plain', selectedText);
+
+		for (var i = 0, l = selection.rangeCount; i < l; ++i) {
+			/** @type {Range} */ var range = selection.getRangeAt(i);
+			var $start = $(range.startContainer);
+			var $startMessageNode = $start.closest('.timsChatMessage');
+			var $end = $(range.endContainer);
+			var $endMessageNode = $end.closest('.timsChatMessage');
+			var $ancestor = $(range.commonAncestorContainer);
+
+			if (range.collapsed || ((0 === $ancestor.closest('.timsChatMessageContainer').length) && (0 === $ancestor.find('.timsChatMessageContainer').length))) {
+				// range neither contains chat stream nor is contained within chat stream
+				text += range.toString();
+				continue;
+			}
+
+			if ($end.hasClass('timsChatMessageIcon') || ($end.hasClass('userAvatar') && ($end.find('.icon').length > 0))) {
+				// problem when selection covers CSS generated pseudo elments in
+				// font awesome icons; ignore end node and assume previous
+				// message node as end node
+				$endMessageNode = $($endMessageNode[0].previousElementSibling);
+				$end = $endMessageNode;
+			}
+
+			if ($start.closest('.bcplusAwayMarker').length > 0) {
+				// start is away marker, jump to next message
+				$startMessageNode = $($end.closest('.bcplusAwayMarker')[0].nextElementSibling);
+				$start = $startMessageNode;
+			}
+
+			if ($end.closest('.bcplusAwayMarker').length > 0) {
+				// end is away marker, jump to previous message
+				$endMessageNode = $($end.closest('.bcplusAwayMarker')[0].previousElementSibling);
+				$end = $endMessageNode;
+			}
+
+			if (($startMessageNode.length > 0) && ($endMessageNode.length > 0)) {
+				// start end end are both message nodes
+				text += handleCopyStartMessageEndMessage(selection, range, $start, $startMessageNode, $end, $endMessageNode, $ancestor);
+			}
+
+			// TODO: handle when start and/or end aren't messages but messages are still selected
+		}
+
+		event.clipboardData.setData('text/plain', text.trim());
+	};
+
+	/**
+	 * @param	{Selection}	selection
+	 * @param	{Range}		range
+	 * @param	{jQuery}	$start
+	 * @param	{jQuery}	$startMessageNode
+	 * @param	{jQuery}	$end
+	 * @param	{jQuery}	$endMessageNode
+	 * @param	{jQuery}	$ancestor
+	 */
+	var handleCopyStartMessageEndMessage = function(selection, range, $start, $startMessageNode, $end, $endMessageNode, $ancestor) {
+		/** @type {String} */	var text = '';
+		/** @type {Element} */	var currentMessageNode = $startMessageNode.get(0);
+		/** @type {jQuery} */	var $currentMessageNode = $startMessageNode;
+
+		do {
+			if ($currentMessageNode.find('.timsChatInnerMessageContainer').hasClass('altLayout')) {
+				// current node is alt message, handle directly
+				text += 
+					$currentMessageNode.find('time').text().trim() + ' ' +
+					$currentMessageNode.find('.timsChatUsernameContainer').text().trim() + ' ' + 
+					$currentMessageNode.find('.timsChatTextContainer').text().trim() + "\n";
+			}
+			else if ($currentMessageNode.find('.timsChatInnerMessageContainer').hasClass('bubble')) {
+				// current node is bubble, loop over messages in bubble
+				var username = $currentMessageNode.find('.timsChatUsernameContainer').text().trim() + ':';
+
+				$currentMessageNode.find('.timsChatText').each(function() {
+					if (selection.containsNode(this, true)) {
+						var $timeNode = null;
+						var $textNode = $(this);
+
+						if ($textNode.find('time').length > 0) {
+							$timeNode = $textNode.find('time');
+							$textNode = $textNode.find('.timsChatFollowUpMessageBody');
+						}
+						else {
+							$timeNode = $currentMessageNode.find('.timsChatInnerMessage > time');
+						}
+
+						text += 
+							$timeNode.text().trim() + ' ' + 
+							username + ' ' + 
+							$textNode.text().trim() + "\n";
+					}
+				});
+			}
+
+			if (currentMessageNode === $endMessageNode.get(0)) {
+				// reached last message node in range, leave loop
+				break;
+			}
+
+			currentMessageNode = currentMessageNode.nextElementSibling;
+			$currentMessageNode = $(currentMessageNode);
+		}
+		while (!!currentMessageNode);
+
+		return text;
 	};
 	
 	var streamSelectAllListener = function(event) {

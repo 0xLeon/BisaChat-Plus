@@ -204,21 +204,12 @@ Modules.UIOptimize = (function() {
 
 				$currentMessageNode.find('.timsChatText').each(function() {
 					if (selection.containsNode(this, true)) {
-						var $timeNode = null;
-						var $textNode = $(this);
-
-						if ($textNode.find('time').length > 0) {
-							$timeNode = $textNode.find('time');
-							$textNode = $textNode.find('.timsChatFollowUpMessageBody');
-						}
-						else {
-							$timeNode = $currentMessageNode.find('.timsChatInnerMessage > time');
-						}
-
+						var $this = $(this);
+						
 						text += 
-							$timeNode.text().trim() + ' ' + 
+							$this.find('time').text().trim() + ' ' + 
 							username + ' ' + 
-							$textNode.text().trim() + "\n";
+							$this.find('.bcplusBubbleMessageText').text().trim() + "\n";
 					}
 				});
 			}

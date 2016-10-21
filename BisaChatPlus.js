@@ -340,6 +340,16 @@ var BisaChatPlus = (function() {
 							if ($messageNode.hasClass('timsChatMessage')) {
 								if ($messageNode.find('.bubble').length > 0) {
 									messageNodeEvent.messageNodeType = messageNodeType.BUBBLE;
+
+									var $message = $('<span class="bcplusBubbleMessageText" />');
+									var $input = $messageNode.find('.timsChatText').find('input').detach();
+
+									$message.html($messageNode.find('.timsChatText').html().trim());
+									
+									$messageNode.find('.timsChatText').empty()
+										.append($message)
+										.append($messageNode.find('.timsChatInnerMessage > time').detach())
+										.append($input);
 								}
 								else {
 									messageNodeEvent.messageNodeType = messageNodeType.ALTERNATIVE;
@@ -367,8 +377,8 @@ var BisaChatPlus = (function() {
 								$message.html($messageNode.html().trim());
 
 								$messageNode.empty()
-									.append($div.find('time').detach())
 									.append($message)
+									.append($div.find('time').detach())
 									.append($div.find('input').detach());
 
 								messageNodeEvent.messageText = $message.text().trim();

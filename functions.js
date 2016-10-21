@@ -39,6 +39,11 @@
 
 		return this;
 	};
+
+	/**
+	 * @see		http://stackoverflow.com/a/5386150/1128707
+	 */
+	$.fn.reverse = Array.prototype.reverse;
 	
 	if (!String.prototype.includes && !!String.prototype.contains) {
 		String.prototype.includes = String.prototype.contains;

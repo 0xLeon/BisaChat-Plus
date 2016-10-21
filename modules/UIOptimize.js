@@ -190,6 +190,32 @@ Modules.UIOptimize = (function() {
 		/** @type {Element} */	var currentMessageNode = $startMessageNode.get(0);
 		/** @type {jQuery} */	var $currentMessageNode = $startMessageNode;
 
+		// Set start of selection to the beginning of the first partly selected message
+		if ($startMessageNode.find('.timsChatInnerMessageContainer').hasClass('altLayout')) {
+			range.setStart($startMessageNode.find('time')[0].firstChild, 0);
+		}
+		else if ($startMessageNode.find('.timsChatInnerMessageContainer').hasClass('bubble')) {
+			$startMessageNode.find('.timsChatText').each(function() {
+				if (selection.containsNode(this, true)) {
+					range.setStart(this.firstChild, 0);
+					return false;
+				}
+			});
+		}
+
+		// Set end of selection to the end of the last partly selected message
+		if ($endMessageNode.find('.timsChatInnerMessageContainer').hasClass('altLayout')) {
+			range.setEnd($endMessageNode.find('.timsChatText')[0].firstChild, $endMessageNode.find('.timsChatText')[0].firstChild.nodeValue.length);
+		}
+		else if ($endMessageNode.find('.timsChatInnerMessageContainer').hasClass('bubble')) {
+			$endMessageNode.find('.timsChatText').reverse().each(function() {
+				if (selection.containsNode(this, true)) {
+					range.setEnd($(this).find('time')[0].firstChild, $(this).find('time')[0].firstChild.nodeValue.length);
+					return false;
+				}
+			});
+		}
+
 		do {
 			if ($currentMessageNode.find('.timsChatInnerMessageContainer').hasClass('altLayout')) {
 				// current node is alt message, handle directly

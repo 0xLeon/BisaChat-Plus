@@ -42,6 +42,11 @@ Modules.CommandLine = (function() {
 		bcplus.addCommand('catch', function() {
 			$('#fish').remove();
 		});
+		bcplus.addCommand(['spoiler', 'sm'], function() {
+			if (arguments.length > 0) {
+				return 'SPOILER: [sm]' + Array.prototype.join.apply(arguments, [', ']) + '[/sm]';
+			}
+		});
 	};
 	
 	return {

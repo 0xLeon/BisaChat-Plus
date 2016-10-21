@@ -57,7 +57,7 @@ Modules.MessageFilters = (function() {
 				var $targetNode = null;
 				
 				if (messageNodeEvent.messageNodeType === bcplus.messageNodeType.BUBBLEFOLLOWUP) {
-					$targetNode = $messageNode.find('.timsChatFollowUpMessageBody');
+					$targetNode = $messageNode.find('.bcplusBubbleMessageText');
 				}
 				else {
 					$targetNode = $messageNode.find('.timsChatText');

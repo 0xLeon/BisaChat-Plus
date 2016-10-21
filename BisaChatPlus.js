@@ -361,7 +361,7 @@ var BisaChatPlus = (function() {
 								messageNodeEvent.messageID = $messageNode.data('messageID');
 
 								var $div = $('<div />');
-								var $message = $('<span class="timsChatFollowUpMessageBody" />');
+								var $message = $('<span class="bcplusBubbleMessageText" />');
 
 								$messageNode.find('*').detach().appendTo($div);
 								$message.html($messageNode.html().trim());

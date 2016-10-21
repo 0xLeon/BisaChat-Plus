@@ -200,6 +200,7 @@ Modules.UIOptimize = (function() {
 			}
 			else if ($currentMessageNode.find('.timsChatInnerMessageContainer').hasClass('bubble')) {
 				// current node is bubble, loop over messages in bubble
+				// and find messages which are at least partly selected
 				var username = $currentMessageNode.find('.timsChatUsernameContainer').text().trim() + ':';
 
 				$currentMessageNode.find('.timsChatText').each(function() {

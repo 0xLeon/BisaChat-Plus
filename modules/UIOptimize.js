@@ -222,7 +222,7 @@ Modules.UIOptimize = (function() {
 				text += 
 					$currentMessageNode.find('time').text().trim() + ' ' +
 					$currentMessageNode.find('.timsChatUsernameContainer').text().trim() + ' ' + 
-					$currentMessageNode.find('.timsChatTextContainer').text().trim() + "\n";
+					elementToText($currentMessageNode.find('.timsChatTextContainer')[0].firstChild).trim() + "\n";
 			}
 			else if ($currentMessageNode.find('.timsChatInnerMessageContainer').hasClass('bubble')) {
 				// current node is bubble, loop over messages in bubble
@@ -236,7 +236,7 @@ Modules.UIOptimize = (function() {
 						text += 
 							$this.find('time').text().trim() + ' ' + 
 							username + ' ' + 
-							$this.find('.bcplusBubbleMessageText').text().trim() + "\n";
+							elementToText($this.find('.bcplusBubbleMessageText')[0].firstChild).trim() + "\n";
 					}
 				});
 			}
@@ -250,6 +250,37 @@ Modules.UIOptimize = (function() {
 			$currentMessageNode = $(currentMessageNode);
 		}
 		while (!!currentMessageNode);
+
+		return text;
+	};
+
+	/**
+	 * @param	{Element}	element
+	 * @returns	{string}
+	 */
+	var elementToText = function(element) {
+		var text = '';
+		
+		if (!element) {
+			return '';
+		}
+
+		do {
+			switch (element.nodeType) {
+				case Node.TEXT_NODE:
+					text += element.nodeValue;
+					break;
+				case Node.ELEMENT_NODE:
+					if (('img' === element.nodeName.toLowerCase()) && !!element.getAttribute('alt')) {
+						text += element.getAttribute('alt');
+					}
+					else {
+						text += elementToText(element.firstChild);
+					}
+					break;
+			}
+		}
+		while (!!(element = element.nextSibling));
 
 		return text;
 	};

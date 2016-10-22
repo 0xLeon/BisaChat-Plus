@@ -192,12 +192,12 @@ Modules.UIOptimize = (function() {
 
 		// Set start of selection to the beginning of the first partly selected message
 		if ($startMessageNode.find('.timsChatInnerMessageContainer').hasClass('altLayout')) {
-			range.setStart($startMessageNode.find('time')[0].firstChild, 0);
+			range.setStartBefore($startMessageNode[0]);
 		}
 		else if ($startMessageNode.find('.timsChatInnerMessageContainer').hasClass('bubble')) {
 			$startMessageNode.find('.timsChatText').each(function() {
 				if (selection.containsNode(this, true)) {
-					range.setStart(this.firstChild, 0);
+					range.setStartBefore(this);
 					return false;
 				}
 			});
@@ -205,12 +205,12 @@ Modules.UIOptimize = (function() {
 
 		// Set end of selection to the end of the last partly selected message
 		if ($endMessageNode.find('.timsChatInnerMessageContainer').hasClass('altLayout')) {
-			range.setEnd($endMessageNode.find('.timsChatText')[0].firstChild, $endMessageNode.find('.timsChatText')[0].firstChild.nodeValue.length);
+			range.setEndAfter($endMessageNode[0]);
 		}
 		else if ($endMessageNode.find('.timsChatInnerMessageContainer').hasClass('bubble')) {
 			$endMessageNode.find('.timsChatText').reverse().each(function() {
 				if (selection.containsNode(this, true)) {
-					range.setEnd($(this).find('time')[0].firstChild, $(this).find('time')[0].firstChild.nodeValue.length);
+					range.setEndAfter(this);
 					return false;
 				}
 			});

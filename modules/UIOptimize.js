@@ -1,6 +1,7 @@
 Modules.UIOptimize = (function() {
 	var bcplus = null;
 	var hideAwayUsersStyle = null;
+	var faWhisperIcon = null;
 	
 	var initialize = function(_bcplus) {
 		bcplus = _bcplus;
@@ -18,6 +19,7 @@ Modules.UIOptimize = (function() {
 		bcplus.addStyle('.timsChatMessage.timsChatMessage8 time:not(.timeLeft) { position: absolute; top: 0px; right: 0px;}');
 		bcplus.addStyle('.timsChatMessage .timsChatMessageIcon { display: table; text-align: center; min-height: 100%; }');
 		bcplus.addStyle('.timsChatMessage .timsChatMessageIcon .icon, .timsChatMessage .timsChatMessageIcon .icon::before { vertical-align: middle; }');
+		bcplus.addStyle('.timsChatUsernameContainer .icon { -moz-user-select: text !important; }');
 		bcplus.addStyle('.timsChatMessage8 .timsChatUsernameContainer, .timsChatMessage7 .timsChatUsernameContainer, .timsChatMessage1 > .timsChatInnerMessageContainer, .timsChatMessage2 > .timsChatInnerMessageContainer, .timsChatMessage2 > .timsChatInnerMessageContainer, .timsChatMessage4 > .timsChatInnerMessageContainer, .timsChatMessage6 > .timsChatInnerMessageContainer { font-weight: bold !important; }');
 		bcplus.addStyle('.bcplusAwayMarker hr { width: 80%; }');
 		hideAwayUsersStyle = bcplus.addStyle('#timsChatUserList .away:not(.you) { display: none !important; visibility: hidden !important; }');
@@ -45,6 +47,8 @@ Modules.UIOptimize = (function() {
 				hideAwayUsersStyle.detach();
 			}
 		});
+
+		faWhisperIcon = String.fromCodePoint(String.faUnicode('double-angle-right'));
 		
 		$('#timsChatAltLayout').closest('li').detach().insertAfter($('#timsChatSmilies').closest('li'));
 		
@@ -100,7 +104,7 @@ Modules.UIOptimize = (function() {
 			$timeNode.text('[' + $timeNode.text().trim() + ']');
 			
 			if ((bcplus.messageNodeType.BUBBLEFOLLOWUP !== messageNodeEvent.messageNodeType) && ((messageNodeEvent.messageType < bcplus.messageType.MODERATE) || (messageNodeEvent.messageType === bcplus.messageType.WHISPER))) {
-				$messageNode.find('.timsChatUsernameContainer').find('.icon.pointer').off('click').prop('onclick', null).removeClass('icon icon16 icon-double-angle-right').text('»');
+				$messageNode.find('.timsChatUsernameContainer').find('.icon.pointer').off('click').prop('onclick', null).removeClass('icon-double-angle-right').text(faWhisperIcon);
 				$messageNode.find('.timsChatUsernameContainer').data('username', ((messageNodeEvent.messageType === bcplus.messageType.WHISPER) && messageNodeEvent.ownMessage) ? messageNodeEvent.receiverUsername : messageNodeEvent.senderUsername);
 				$messageNode.find('.timsChatUsernameContainer').addClass('pointer').on('click', function() {
 					Window.be.bastelstu.Chat.insertText('/whisper ' + $(this).data('username') + ', ', {
@@ -223,13 +227,13 @@ Modules.UIOptimize = (function() {
 				// current node is alt message, handle directly
 				text += 
 					$currentMessageNode.find('time').text().trim() + ' ' +
-					$currentMessageNode.find('.timsChatUsernameContainer').text().trim() + ' ' + 
+					$currentMessageNode.find('.timsChatUsernameContainer').text().trim().replace(faWhisperIcon, '»') + ' ' + 
 					elementToText($currentMessageNode.find('.timsChatTextContainer')[0].firstChild).trim() + "\n";
 			}
 			else if ($currentMessageNode.find('.timsChatInnerMessageContainer').hasClass('bubble')) {
 				// current node is bubble, loop over messages in bubble
 				// and find messages which are at least partly selected
-				var username = $currentMessageNode.find('.timsChatUsernameContainer').text().trim() + ':';
+				var username = $currentMessageNode.find('.timsChatUsernameContainer').text().trim().replace(faWhisperIcon, '»') + ':';
 
 				$currentMessageNode.find('.timsChatText').each(function() {
 					if (selection.containsNode(this, true)) {

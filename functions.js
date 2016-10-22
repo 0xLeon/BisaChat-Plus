@@ -44,6 +44,29 @@
 	 * @see		http://stackoverflow.com/a/5386150/1128707
 	 */
 	$.fn.reverse = Array.prototype.reverse;
+
+	(function() {
+		var clearRegex = /'|"/g;
+		var faTestParent = $('<div id="fa-test-element" style="display: none; visibility: hidden;" />');
+		var faTestElement = $('<span />');
+		
+		faTestParent.append(faTestElement);
+		$('body').append(faTestParent);
+		
+		faTestElement = faTestElement[0];
+		
+		/**
+		 * @param	{string}	name
+		 * @returns	{number}
+		 */
+		function faUnicode(name) {
+			faTestElement.className = 'icon icon-' + name;
+
+			return Window.getComputedStyle(faTestElement, '::before' ).content.replace(clearRegex, '').codePointAt(0);
+		}
+		
+		String.faUnicode = faUnicode;
+	})();
 	
 	if (!String.prototype.includes && !!String.prototype.contains) {
 		String.prototype.includes = String.prototype.contains;

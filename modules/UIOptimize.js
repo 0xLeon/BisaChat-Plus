@@ -14,6 +14,8 @@ Modules.UIOptimize = (function() {
 		bcplus.addStyle('.timsChatMessageContainer { padding-left: 15px !important; padding-right: 15px !important; }');
 		bcplus.addStyle('.timsChatMessage time { font-weight: normal !important; }');
 		bcplus.addStyle('.timsChatMessage .altLayout time.timeLeft { float: none !important; }');
+		bcplus.addStyle('.timsChatMessage.timsChatMessage8 .timsChatTextContainer { position: relative; }');
+		bcplus.addStyle('.timsChatMessage.timsChatMessage8 time:not(.timeLeft) { position: absolute; top: 0px; right: 0px;}');
 		bcplus.addStyle('.timsChatMessage .timsChatMessageIcon { display: table; text-align: center; min-height: 100%; }');
 		bcplus.addStyle('.timsChatMessage .timsChatMessageIcon .icon, .timsChatMessage .timsChatMessageIcon .icon::before { vertical-align: middle; }');
 		bcplus.addStyle('.timsChatMessage8 .timsChatUsernameContainer, .timsChatMessage7 .timsChatUsernameContainer, .timsChatMessage1 > .timsChatInnerMessageContainer, .timsChatMessage2 > .timsChatInnerMessageContainer, .timsChatMessage2 > .timsChatInnerMessageContainer, .timsChatMessage4 > .timsChatInnerMessageContainer, .timsChatMessage6 > .timsChatInnerMessageContainer { font-weight: bold !important; }');

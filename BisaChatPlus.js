@@ -647,7 +647,7 @@ var BisaChatPlus = (function() {
 			return messageNodeType;
 		}
 	};
-})();
+});
 
 if (Window.com === undefined) {
 	Window.com = { };
@@ -657,7 +657,7 @@ if (Window.com.leon === undefined) {
 	Window.com.leon = { };
 }
 
-Window.com.leon.BCPlus = BisaChatPlus;
+Window.com.leon.BCPlus = BisaChatPlus();
 Window.com.leon.BCPlus.Modules = Modules;
 Window.com.leon.BCPlus.Media = Media;
 Window.com.leon.BCPlus.Util = Util;

@@ -29,7 +29,7 @@
 	 */
 	$.fn.htmlClean = function() {
 		this.contents().each(function() {
-			if (3 !== this.nodeType) {
+			if (Node.TEXT_NODE !== this.nodeType) {
 				$(this).htmlClean();
 			}
 			else {

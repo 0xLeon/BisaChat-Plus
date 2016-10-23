@@ -176,7 +176,7 @@ Modules.TeamMessages = (function() {
 								submit: false
 							});
 						});
-						messageNodeEvent.messageNode.find('.timsChatUsernameContainer .icon-double-angle-right').data('tooltip', 'Schreibt');
+						messageNodeEvent.messageNode.find('.timsChatUsernameContainer .icon').data('tooltip', 'Schreibt');
 						$('<div class="timsChatMessageIcon"><span class="icon icon16 icon-user icon-users" /></div>').insertBefore(messageNodeEvent.messageNode.find('.timsChatInnerMessageContainer'));
 					}
 				}

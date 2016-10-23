@@ -350,14 +350,16 @@ var BisaChatPlus = (function() {
 										.append($message)
 										.append($messageNode.find('.timsChatInnerMessage > time').detach())
 										.append($input);
+									
+									messageNodeEvent.messageText = $message.text().trim();
 								}
 								else {
 									messageNodeEvent.messageNodeType = messageNodeType.ALTERNATIVE;
+									messageNodeEvent.messageText = $messageNode.find('.timsChatText').text().trim();
 								}
 								
 								messageNodeEvent.messageType = parseInt($messageNode.attr('class').match(messageTypeRegex)[1], 10);
 								messageNodeEvent.messageID = $messageNode.find('.timsChatText').data('messageID');
-								messageNodeEvent.messageText = $messageNode.find('.timsChatText').text().trim();
 								messageNodeEvent.sender = parseInt($messageNode.attr('class').match(messageUserIdRegex)[1], 10);
 								messageNodeEvent.senderUsername = $messageNode.find('.timsChatUsernameContainer span:not(.icon, .receiver)').text().trim();
 								

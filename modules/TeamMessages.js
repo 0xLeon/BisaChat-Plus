@@ -168,7 +168,7 @@ Modules.TeamMessages = (function() {
 						messageNodeEvent.messageNode.removeClass('timsChatMessage' + bcplus.messageType.WHISPER.toString(10));
 						messageNodeEvent.messageNode.addClass('timsChatMessage' + bcplus.messageType.TEAM.toString(10));
 						messageNodeEvent.messageNode.find('.timsChatInnerMessageContainer').removeClass('right');
-						messageNodeEvent.messageNode.find('.timsChatText').html(messageNodeEvent.messageNode.find('.timsChatText').html().trim().slice(15).trim());
+						messageNodeEvent.messageNode.find('.bubble .bcplusBubbleMessageText, .altLayout .timsChatText').first().html(messageNodeEvent.messageNode.find('.bubble .bcplusBubbleMessageText, .altLayout .timsChatText').first().html().trim().slice(15).trim());
 						messageNodeEvent.messageNode.find('.timsChatUsernameContainer').off('click').on('click', function() {
 							Window.be.bastelstu.Chat.insertText('/team ', {
 								prepend: false,

@@ -47,6 +47,9 @@ Modules.CommandLine = (function() {
 				return 'SPOILER: [sm]' + Array.prototype.join.apply(arguments, [', ']) + '[/sm]';
 			}
 		});
+		bcplus.addCommand(['layout', 'la'], function() {
+			$('#timsChatAltLayout').toggleClass('active').data('status', !$('#timsChatAltLayout').data('status'));
+		});
 	};
 	
 	return {

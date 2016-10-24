@@ -1,5 +1,8 @@
 Modules.CommandLine = (function() {
 	var bcplus = null;
+
+	var optionBooleans = ['true', 'false'];
+	var optionNumberRegex = /\D/;
 	
 	var initialize = function(_bcplus) {
 		bcplus = _bcplus;
@@ -58,6 +61,23 @@ Modules.CommandLine = (function() {
 			}
 
 			$('#timsChatAltLayout').toggleClass('active').data('status', newStatus);
+		});
+
+		bcplus.addCommand(['set'], function(optionName, optionValue) {
+			var originalValue = bcplus.getOptionValue(optionName, undefined);
+			var newValue = null;
+
+			if (undefined === originalValue) {
+				bcplus.showInfoMessage('»' + optionName + '« ist kein gültiger Optionen-Bezeichner.');
+			}
+			else {
+				newValue = (optionBooleans.indexOf(optionValue.toLowerCase()) > -1) ? ('true' === optionValue) : null;
+				newValue = (null === newValue) ? (!(optionNumberRegex.test(optionValue)) ? parseInt(optionValue, 10) : null) : newValue;
+				newValue = (null === newValue) ? optionValue : newValue;
+
+				bcplus.setOptionValue(optionName, newValue);
+				bcplus.showInfoMessage('Neuer Wert für »' + optionName + '« wurde gespeichert.');
+			}
 		});
 	};
 	

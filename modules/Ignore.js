@@ -78,6 +78,10 @@ Modules.Ignore = (function() {
 
 	var addEventListeners = function() {
 		bcplus.addExternalCommand(['doignore', 'di'], function(message) {
+			if (bcplus.messageType.WHISPER !== message.type) {
+				return;
+			}
+
 			var answer = '/f ' + message.username + ', @\'' + WCF.User.username + '\' ignoriert dich';
 
 			if (-1 === ignoredUserIDs.indexOf(message.sender)) {

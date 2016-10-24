@@ -27,6 +27,7 @@ var BisaChatPlus = (function() {
 			$('#timsChatInput').focus();
 		}
 	});
+	var optionIdentifiers = [];
 	var awayStatus = {
 		isAway: false,
 		message: ''
@@ -86,6 +87,7 @@ var BisaChatPlus = (function() {
 			addTextOption:		addTextOption,
 			getOptionValue:		getOptionValue,
 			setOptionValue:		setOptionValue,
+			getOptionIDs:		getOptionIDs,
 			addCommand:		addCommand,
 			addExternalCommand:	addExternalCommand,
 			addStyle:		addStyle,
@@ -544,6 +546,7 @@ var BisaChatPlus = (function() {
 			}
 		});
 		$category.find('dl').append($option);
+		optionIdentifiers.push(optionID);
 		
 		WCF.DOMNodeInsertedHandler.execute();
 	};
@@ -571,6 +574,7 @@ var BisaChatPlus = (function() {
 			}
 		});
 		$category.find('dl').append($option);
+		optionIdentifiers.push(optionID);
 		
 		WCF.DOMNodeInsertedHandler.execute();
 		
@@ -583,6 +587,10 @@ var BisaChatPlus = (function() {
 	
 	var setOptionValue = function(optionName, optionValue) {
 		storage.setValue(optionName + 'Option', optionValue);
+	};
+
+	var getOptionIDs = function() {
+		return optionIdentifiers; 
 	};
 	
 	var _addCommandToCommandsObject = function(commandsObject, commandName, commandAction, restricted) {
@@ -653,6 +661,7 @@ var BisaChatPlus = (function() {
 		addTextOption:		addTextOption,
 		getOptionValue:		getOptionValue,
 		setOptionValue:		setOptionValue,
+		getOptionIDs:		getOptionIDs,
 		addCommand:		addCommand,
 		addExternalCommand:	addExternalCommand,
 		addStyle:		addStyle,

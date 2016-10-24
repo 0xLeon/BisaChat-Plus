@@ -79,6 +79,9 @@ Modules.CommandLine = (function() {
 				bcplus.showInfoMessage('Neuer Wert für »' + optionName + '« wurde gespeichert.');
 			}
 		});
+		bcplus.addCommand(['listoptions', 'lo'], function() {
+			bcplus.showInfoMessage('Verfügbare Optionen: ' + bcplus.getOptionIDs().join(', '));
+		});
 	};
 	
 	return {

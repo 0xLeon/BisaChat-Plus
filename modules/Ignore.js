@@ -84,7 +84,7 @@ Modules.Ignore = (function() {
 				answer += ' nicht';
 			}
 			
-			bcplus.sendMessage(answer);
+			return answer;
 		}, false);
 	};
 	

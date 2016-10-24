@@ -272,7 +272,7 @@ var BisaChatPlus = (function() {
 					if ($.type(returnValue) === 'string') {
 						var _awayStatus = $.extend({}, awayStatus);
 						
-						if (message.type === messageType.WHISPER) {
+						if ((message.type === messageType.WHISPER) && !returnValue.startsWith('/')) {
 							returnValue = '/whisper ' + message.username + ', ' + returnValue;
 						}
 						

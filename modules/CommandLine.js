@@ -48,7 +48,16 @@ Modules.CommandLine = (function() {
 			}
 		});
 		bcplus.addCommand(['layout', 'la'], function() {
-			$('#timsChatAltLayout').toggleClass('active').data('status', !$('#timsChatAltLayout').data('status'));
+			var newStatus = Number(!$('#timsChatAltLayout').data('status'));
+
+			if (0 === newStatus) {
+				bcplus.showInfoMessage('Bubble-Layout aktiviert.');
+			}
+			else {
+				bcplus.showInfoMessage('Alternatives Layout aktiviert.');
+			}
+
+			$('#timsChatAltLayout').toggleClass('active').data('status', newStatus);
 		});
 	};
 	

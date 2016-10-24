@@ -99,12 +99,28 @@ var BisaChatPlus = (function() {
 			}
 		};
 		
+		if (checkIndexPage()) {
+			return;
+		}
+
 		checkSecureConnection();
 		initEvents();
 		buildUI();
 		initModules();
 		
 		addCommand('mp3', '/me *winamptret*');
+	};
+
+	var checkIndexPage = function() {
+		/** @type {RegExp} */ var indexPageRegex = /^https?:\/\/chat\.bisaboard\.de($|(?:\/index\.php\/Chat\/(?:$|\?s=(\w+$))))/;
+		/** @type {Boolean} */ var isIndexPage = indexPageRegex.test(Window.location.href);
+
+		if (isIndexPage && !!Modules.Update) {
+			Modules.Update.initialize(bcplus);
+			addStyle('#bcplus-updateInfoCloser { display: none !important; visibility: hidden !important; }');
+		}
+
+		return isIndexPage;
 	};
 
 	var checkSecureConnection = function() {

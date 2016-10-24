@@ -6,8 +6,8 @@
 // @copyright      2011-2015, Stefan Hahn
 // @license        GNU General Public License, version 2
 // @namespace      http://projects.0xleon.com/userscripts/bcplus
-// @match          http://chat.bisaboard.de/index.php/Chat/*/*
-// @match          https://chat.bisaboard.de/index.php/Chat/*/*
+// @match          http://chat.bisaboard.de/*
+// @match          https://chat.bisaboard.de/*
 // @require        http://projects.0xleon.com/userscripts/bcplus/resources/scripts/waypoints.noframework.min.js
 // @require        http://projects.0xleon.com/userscripts/bcplus/resources/scripts/waypoints.inview.min.js
 // @grant          none

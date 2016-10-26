@@ -436,10 +436,16 @@ var BisaChatPlus = (function() {
 		return messageObserver;
 	};
 	
+	/**
+	 * @returns	{Object}
+	 */
 	var getStorage = function() {
 		return storage;
 	};
 	
+	/**
+	 * @returns	{Object}
+	 */
 	var getAwayStatus = function() {
 		return awayStatus;
 	};
@@ -450,6 +456,10 @@ var BisaChatPlus = (function() {
 		}
 	};
 	
+	/**
+	 * @param	{string}	messageText
+	 * @param	{boolean}	[fireEvent]
+	 */
 	var sendMessage = function(messageText, fireEvent) {
 		if ((undefined === fireEvent) || !!fireEvent) {
 			bcplusEvents.messageSubmit.fire({
@@ -471,6 +481,10 @@ var BisaChatPlus = (function() {
 		});
 	};
 	
+	/**
+	 * @param	{string}	messageText
+	 * @param	{boolean}	[parseHtml]
+	 */
 	var showInfoMessage = function(messageText, parseHtml) {
 		var messageTextNode = (!!parseHtml) ? $('<div />').html(messageText) : $('<div />').text(messageText);
 		var time = new Date();
@@ -511,6 +525,10 @@ var BisaChatPlus = (function() {
 		handleStreamScroll();
 	};
 	
+	/**
+	 * @param	{string}	eventName
+	 * @param	{function}	callback
+	 */
 	var addEventListener = function(eventName, callback) {
 		if (!bcplusEvents.hasOwnProperty(eventName)) {
 			throw new Error('Unknown event »' + eventName + '«.');
@@ -519,6 +537,10 @@ var BisaChatPlus = (function() {
 		bcplusEvents[eventName].add(callback);
 	};
 	
+	/**
+	 * @param	{string}	eventName
+	 * @param	{function}	callback
+	 */
 	var removeEventListener = function(eventName, callback) {
 		if (!bcplusEvents.hasOwnProperty(eventName)) {
 			throw new Error('Unknown event »' + eventName + '«.');
@@ -527,6 +549,14 @@ var BisaChatPlus = (function() {
 		bcplusEvents[eventName].remove(callback);
 	};
 	
+	/**
+	 * @param	{string}	optionID
+	 * @param	{string}	optionText
+	 * @param	{string}	categoryID
+	 * @param	{string}	[categoryName]
+	 * @param	{booleanb}	[defaultValue]
+	 * @param	{function}	[onChange]
+	 */
 	var addBoolOption = function(optionID, optionText, categoryID, categoryName, defaultValue, onChange) {
 		if (!!$('#bcplus-' + optionID)[0]) {
 			throw new Error('Option »' + optionID + '« already exists!');
@@ -551,6 +581,15 @@ var BisaChatPlus = (function() {
 		WCF.DOMNodeInsertedHandler.execute();
 	};
 	
+	/**
+	 * @param	{string}	optionID
+	 * @param	{string}	optionText
+	 * @param	{string}	optionType
+	 * @param	{string}	categoryID
+	 * @param	{string}	[categoryName]
+	 * @param	{mixed}		[defaultValue]
+	 * @param	{function}	[onChange]
+	 */
 	var addTextOption = function(optionID, optionText, optionType, categoryID, categoryName, defaultValue, onChange) {
 		if (!!$('#bcplus-' + optionID)[0]) {
 			throw new Error('Option »' + optionID + '« already exists!');
@@ -581,14 +620,25 @@ var BisaChatPlus = (function() {
 		// TODO: when to save?
 	};
 	
+	/**
+	 * @param	{string}	optionName
+	 * @param	{mixed}		[defaultValue]
+	 */
 	var getOptionValue = function(optionName, defaultValue) {
 		return storage.getValue(optionName + 'Option', defaultValue);
 	};
 	
+	/**
+	 * @param	{string}	optionName
+	 * @param	{mixed}		optionValue
+	 */
 	var setOptionValue = function(optionName, optionValue) {
 		storage.setValue(optionName + 'Option', optionValue);
 	};
-
+	
+	/**
+	 * @returns	{Array.<string>}
+	 */
 	var getOptionIDs = function() {
 		return optionIdentifiers; 
 	};
@@ -630,10 +680,19 @@ var BisaChatPlus = (function() {
 		});
 	};
 	
+	/**
+	 * @param	{string|Array.<string>}		commandName
+	 * @param	{function}			commandAction
+	 */
 	var addCommand = function(commandName, commandAction) {
 		_addCommandToCommandsObject(commands, commandName, commandAction, false);
 	};
 	
+	/**
+	 * @param	{string|Array.<string>}		commandName
+	 * @param	{function|string}		commandAction
+	 * @param	{boolean}			[restricted]
+	 */
 	var addExternalCommand = function(commandName, commandAction, restricted) {
 		if (restricted === undefined) {
 			restricted = true;
@@ -642,6 +701,10 @@ var BisaChatPlus = (function() {
 		_addCommandToCommandsObject(externalCommands, commandName, commandAction, restricted);
 	};
 	
+	/**
+	 * @param	{string}	cssRules
+	 * @returns	{jQuery}
+	 */
 	var addStyle = function(cssRules) {
 		return $('<style type="text/css" />').text(cssRules).appendTo('head');
 	};

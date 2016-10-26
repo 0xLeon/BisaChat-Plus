@@ -16,6 +16,9 @@ class Builder {
 	protected $config = null;
 	protected $silent = false;
 	
+	/**
+	 * @var \finfo
+	 */
 	protected $fInfo = null;
 	
 	protected $namespaces = '';

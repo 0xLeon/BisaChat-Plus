@@ -1,9 +1,12 @@
 Modules.Selection = (function() {
 	var bcplus = null;
+	
+	var faWhisperIcon = '';
 
 	var initialize = function(_bcplus) {
 		bcplus = _bcplus;
-
+		faWhisperIcon = String.fromCodePoint(String.faUnicode('double-angle-right'));
+		
 		addEventListeners();
 	};
 

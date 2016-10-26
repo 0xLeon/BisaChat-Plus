@@ -152,7 +152,7 @@ Modules.Highlighting = (function() {
 	
 	var highlightingListenerFunction = function() {
 		$.unique($(messageIDs.map(function(messageID) {
-			return $('.timsChatText[data-message-id="' + messageID.toString(10) + '"]').closest('.timsChatInnerMessage').get(0);
+			return $('.timsChatText[data-message-id="' + messageID.toString(10) + '"]').closest('.timsChatInnerMessage')[0];
 		}))).each(function(index, message) {
 			var docViewTop = $(message).closest('.timsChatMessageContainer').scrollTop();
 			var docViewBottom = docViewTop + $(message).closest('.timsChatMessageContainer').height();
@@ -172,8 +172,8 @@ Modules.Highlighting = (function() {
 				}
 				
 				var wp = new Waypoint.Inview({
-					context: $(message).closest('.timsChatMessageContainer').get(0),
-					element: $(message).closest('.timsChatMessage').get(0),
+					context: $(message).closest('.timsChatMessageContainer')[0],
+					element: $(message).closest('.timsChatMessage')[0],
 					entered: function() {
 						$(this.element).effect('highlight', {}, 1e3);
 						this.destroy();

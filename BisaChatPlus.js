@@ -161,7 +161,7 @@ var BisaChatPlus = (function() {
 						if ($addedNode.hasClass('timsChatMessageContainer')) {
 							uuid = String.generateUUID();
 							
-							$addedNode.get(0).setAttribute('data-uuid', uuid);
+							$addedNode[0].setAttribute('data-uuid', uuid);
 							privateRoomObservers[uuid] = addStreamObserver($addedNode.find('ul'));
 							
 							bcplusEvents.privateRoomAdded.fire($addedNode);
@@ -191,7 +191,7 @@ var BisaChatPlus = (function() {
 			characterData: false,
 			subtree: false
 		};
-		privateRoomObserver.observe($('#timsChatMessageTabMenu').get(0), privateRoomObserverConfig);
+		privateRoomObserver.observe($('#timsChatMessageTabMenu')[0], privateRoomObserverConfig);
 		
 		Window.be.bastelstu.Chat.listener.add('newMessage', function(message) {
 			message.plainText = $('<div />').html(message.formattedMessage).text().trim();
@@ -342,7 +342,7 @@ var BisaChatPlus = (function() {
 	};
 	
 	var addStreamObserver = function($stream) {
-		var stream = $($stream).get(0);
+		var stream = $($stream)[0];
 		
 		if ('ul' !== stream.nodeName.toLowerCase()) {
 			throw new Error('Can\'t observe stream of node type »' + stream.nodeName.toLowerCase() + '«.');
@@ -353,7 +353,7 @@ var BisaChatPlus = (function() {
 				for (var i = 0, l = mutation.addedNodes.length; i < l; i++) {
 					var $messageNode = $(mutation.addedNodes[i]);
 					
-					if ((Node.ELEMENT_NODE === $messageNode.get(0).nodeType) && ($messageNode.hasClass('timsChatMessage') || $messageNode.hasClass('timsChatText'))) {
+					if ((Node.ELEMENT_NODE === $messageNode[0].nodeType) && ($messageNode.hasClass('timsChatMessage') || $messageNode.hasClass('timsChatText'))) {
 						$messageNode.htmlClean();
 						
 						try {

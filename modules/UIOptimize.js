@@ -64,7 +64,7 @@ Modules.UIOptimize = (function() {
 		
 		(new MutationObserver(function(mutations) {
 			$(Window).resize();
-		})).observe($('#timsChatTopic').get(0), {
+		})).observe($('#timsChatTopic')[0], {
 			attributes: true,
 			childList: true,
 			characterData: true,

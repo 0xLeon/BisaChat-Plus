@@ -19,7 +19,7 @@ Modules.Selection = (function() {
 	 * @param	{ClipboardEvent}	event
 	 */
 	var streamCopyListener = function(event) {
-		if (!Window.getSelection().containsNode($('#timsChatMessageTabMenu').get(0), true)) {
+		if (!Window.getSelection().containsNode($('#timsChatMessageTabMenu')[0], true)) {
 			return;
 		}
 		
@@ -84,7 +84,7 @@ Modules.Selection = (function() {
 	 */
 	var handleCopyStartMessageEndMessage = function(selection, range, $start, $startMessageNode, $end, $endMessageNode, $ancestor) {
 		/** @type {String} */	var text = '';
-		/** @type {Element} */	var currentMessageNode = $startMessageNode.get(0);
+		/** @type {Element} */	var currentMessageNode = $startMessageNode[0];
 		/** @type {jQuery} */	var $currentMessageNode = $startMessageNode;
 		
 		// Set start of selection to the beginning of the first partly selected message
@@ -138,7 +138,7 @@ Modules.Selection = (function() {
 				});
 			}
 			
-			if (currentMessageNode === $endMessageNode.get(0)) {
+			if (currentMessageNode === $endMessageNode[0]) {
 				// reached last message node in range, leave loop
 				break;
 			}
@@ -192,7 +192,7 @@ Modules.Selection = (function() {
 			var selection = Window.getSelection();
 			var selectionRange = Window.document.createRange();
 			
-			selectionRange.selectNode($roomNode.get(0));
+			selectionRange.selectNode($roomNode[0]);
 			selection.removeAllRanges();
 			selection.addRange(selectionRange);
 		}

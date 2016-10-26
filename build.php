@@ -10,7 +10,7 @@ namespace com\leon\bcplus\build;
  * @license	GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
  */
 class Builder {
-	const DEFAULT_CONFIG_FILE = './buildconfig.json';
+	const DEFAULT_CONFIG_FILE = './.buildconfig.json';
 	
 	protected $configFile = '';
 	protected $config = null;

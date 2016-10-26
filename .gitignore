@@ -60,7 +60,7 @@ requirements/*.tar.gz
 
 # Building
 build/
-buildconfig.json
+.buildconfig.json
 
 # Stuff
 screenshots/

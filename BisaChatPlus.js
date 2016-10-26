@@ -135,6 +135,21 @@ var BisaChatPlus = (function() {
 	var initEvents = function() {
 		addStreamObserver($('#timsChatMessageContainer0').find('ul'));
 		
+		addEventListener('optionsOpened', function() {
+			$optionsDialog.find('input[id^="bcplus"]').each(function() {
+				/** @type {jQuery} */ var $this = $(this);
+				
+				if ('checkbox' === $this.attr('type')) {
+					$this.prop({
+						checked: getOptionValue($this.data('optionid'))
+					});
+				}
+				else {
+					$this.val(getOptionValue($this.data('optionid')));
+				}
+			});
+		});
+		
 		var privateRoomObserver = new MutationObserver(function(mutations) {
 			mutations.forEach(function(mutation) {
 				var uuid = null;
@@ -563,7 +578,7 @@ var BisaChatPlus = (function() {
 		}
 		
 		var $category = $($('#bcplus-' + categoryID)[0] || $('<fieldset id="bcplus-' + categoryID + '"><legend>' + categoryName + '</legend><dl></dl></fieldset>').appendTo('#bcplusOptionsDialogContent'));
-		var $option = $('<dt></dt><dd><label><input type="checkbox" id="bcplus-' + optionID + '"/> ' + optionText + '</label></dd>');
+		var $option = $('<dt></dt><dd><label><input type="checkbox" id="bcplus-' + optionID + '" data-optionid="' + optionID + '" /> ' + optionText + '</label></dd>');
 		var optionValue = storage.getValue(optionID + 'Option', !!defaultValue);
 		
 		$option.find('input').prop({
@@ -600,7 +615,7 @@ var BisaChatPlus = (function() {
 		}
 		
 		var $category = $($('#bcplus-' + categoryID)[0] || $('<fieldset id="bcplus-' + categoryID + '"><legend>' + categoryName + '</legend><dl></dl></fieldset>').appendTo('#bcplusOptionsDialogContent'));
-		var $option = $('<dt><label for="bcplus-' + optionID + '">' + optionText + '</label></dt><dd><input type="' + optionType.toLowerCase() + '" id=bcplus-"' + optionID + '"/></dd>');
+		var $option = $('<dt><label for="bcplus-' + optionID + '">' + optionText + '</label></dt><dd><input type="' + optionType.toLowerCase() + '" id=bcplus-"' + optionID + '" data-optionid="' + optionID + '" /></dd>');
 		var optionValue = storage.getValue(optionID + 'Option', defaultValue);
 		
 		$option.find('input').val(optionValue).on('blur', function(event) {

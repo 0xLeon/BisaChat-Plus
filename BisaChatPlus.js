@@ -656,7 +656,7 @@ var BisaChatPlus = (function() {
 			commandName = [commandName];
 		}
 		
-		if (Object.keys(commandsObject).filter(function(n) { return (-1 === commandName.indexOf(n)); }).length > 0) {
+		if (Object.keys(commandsObject).filter(function(n) { return (-1 !== commandName.indexOf(n)); }).length > 0) {
 			throw new Error('Command with name »' + commandName.join(', ') + '« already exists!');
 		}
 		

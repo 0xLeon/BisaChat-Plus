@@ -112,7 +112,7 @@ Modules.Highlighting = (function() {
 	var addEventListeners = function() {
 		bcplus.addEventListener('messageReceived', function(message) {
 			if (highlightingConditions.every(function(cond) { return cond(message, bcplus); })) {
-				if ((bcplus.getOptionValue('highlightingWhisperAlways', true) && (message.type === bcplus.messageType.WHISPER) && !message.teamMessage) || (bcplus.getOptionValue('highlightingTeamAlways', false) && !!message.teamMessage) || regExp.test(message.plainText)) {
+				if ((bcplus.getOptionValue('highlightingWhisperAlways', true) && (bcplus.messageType.WHISPER === message.type) && !message.teamMessage) || (bcplus.getOptionValue('highlightingTeamAlways', false) && !!message.teamMessage) || regExp.test(message.plainText)) {
 					highlight(message);
 				}
 			}

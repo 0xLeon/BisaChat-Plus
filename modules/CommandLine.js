@@ -26,7 +26,7 @@ Modules.CommandLine = (function() {
 					return ($(element).data('roomID') === roomID);
 				});
 				
-				if (roomLink.length === 0) {
+				if (0 === roomLink.length) {
 					throw new Error('Raum-ID »' + roomID + '« existiert nicht.');
 				}
 				

@@ -62,7 +62,7 @@ Modules.MessageFilters = (function() {
 				else {
 					$targetNode = $messageNode.find('.timsChatText');
 				}
-
+				
 				$targetNode.css({
 					color: '#792'
 				});

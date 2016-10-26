@@ -62,7 +62,7 @@ var BisaChatPlus = (function() {
 		get GLOBAL()	{ return 11; },
 		get ATTACH()	{ return 12; }
 	};
-
+	
 	var messageNodeType = {
 		get ALTERNATIVE()	{ return 0; },
 		get BUBBLE()		{ return 1; },
@@ -95,7 +95,7 @@ var BisaChatPlus = (function() {
 			get messageType() {
 				return messageType;
 			},
-
+			
 			get messageNodeType() {
 				return messageNodeType;
 			}
@@ -104,7 +104,7 @@ var BisaChatPlus = (function() {
 		if (checkIndexPage()) {
 			return;
 		}
-
+		
 		checkSecureConnection();
 		initEvents();
 		buildUI();
@@ -112,19 +112,19 @@ var BisaChatPlus = (function() {
 		
 		addCommand('mp3', '/me *winamptret*');
 	};
-
+	
 	var checkIndexPage = function() {
 		/** @type {RegExp} */ var indexPageRegex = /^https?:\/\/chat\.bisaboard\.de($|(?:\/index\.php\/Chat\/(?:$|\?s=(\w+$))))/;
 		/** @type {Boolean} */ var isIndexPage = indexPageRegex.test(Window.location.href);
-
+		
 		if (isIndexPage && !!Modules.Update) {
 			Modules.Update.initialize(bcplus);
 			addStyle('#bcplus-updateInfoCloser { display: none !important; visibility: hidden !important; }');
 		}
-
+		
 		return isIndexPage;
 	};
-
+	
 	var checkSecureConnection = function() {
 		if (Window.location.protocol !== 'https:') {
 			    window.location.href = 'https:' + window.location.href.substring(window.location.protocol.length);
@@ -352,7 +352,7 @@ var BisaChatPlus = (function() {
 			mutations.forEach(function(mutation) {
 				for (var i = 0, l = mutation.addedNodes.length; i < l; i++) {
 					var $messageNode = $(mutation.addedNodes[i]);
-
+					
 					if ((Node.ELEMENT_NODE === $messageNode.get(0).nodeType) && ($messageNode.hasClass('timsChatMessage') || $messageNode.hasClass('timsChatText'))) {
 						$messageNode.htmlClean();
 						
@@ -368,15 +368,15 @@ var BisaChatPlus = (function() {
 								messageText:		null,
 								messageNodeType:	null
 							};
-
+							
 							// TODO: what if one bubble contains several messages of one user?
 							if ($messageNode.hasClass('timsChatMessage')) {
 								if ($messageNode.find('.bubble').length > 0) {
 									messageNodeEvent.messageNodeType = messageNodeType.BUBBLE;
-
+									
 									var $message = $('<span class="bcplusBubbleMessageText" />');
 									var $input = $messageNode.find('.timsChatText').find('input').detach();
-
+									
 									$message.html($messageNode.find('.timsChatText').html().trim());
 									
 									$messageNode.find('.timsChatText').empty()
@@ -404,20 +404,20 @@ var BisaChatPlus = (function() {
 								messageNodeEvent.messageNodeType = messageNodeType.BUBBLEFOLLOWUP;
 								messageNodeEvent.messageType = parseInt($messageNode.closest('.timsChatMessage').attr('class').match(messageTypeRegex)[1], 10);
 								messageNodeEvent.messageID = $messageNode.data('messageID');
-
+								
 								var $div = $('<div />');
 								var $message = $('<span class="bcplusBubbleMessageText" />');
-
+								
 								$messageNode.find('*').detach().appendTo($div);
 								$message.html($messageNode.html().trim());
-
+								
 								$messageNode.empty()
 									.append($message)
 									.append($div.find('time').detach())
 									.append($div.find('input').detach());
-
+								
 								messageNodeEvent.messageText = $message.text().trim();
-
+								
 								messageNodeEvent.sender = parseInt($messageNode.closest('.timsChatMessage').attr('class').match(messageUserIdRegex)[1], 10);
 								messageNodeEvent.senderUsername = $messageNode.closest('.timsChatInnerMessage').find('.timsChatUsernameContainer span:not(.icon, .receiver)').text().trim();
 								
@@ -430,7 +430,7 @@ var BisaChatPlus = (function() {
 							}
 							
 							messageNodeEvent.ownMessage = (WCF.User.userID === messageNodeEvent.sender);
-
+							
 							bcplusEvents.messageAdded.fire(messageNodeEvent);
 						}
 						catch (e) {
@@ -464,7 +464,7 @@ var BisaChatPlus = (function() {
 	var getAwayStatus = function() {
 		return awayStatus;
 	};
-
+	
 	var handleStreamScroll = function() {
 		if (1 === $('#timsChatAutoscroll').data('status')) {
 			$('.timsChatMessageContainer.active').scrollTop($('.timsChatMessageContainer.active').prop('scrollHeight'));
@@ -524,9 +524,9 @@ var BisaChatPlus = (function() {
 			type:			8,
 			username:		'Information'
 		};
-
+		
 		bcplusEvents.messageReceived.fire(messageObject);
-
+		
 		var $infoMessage = $(infoMessageTemplate.fetch({
 			userID:		messageObject.receiver,
 			time:		messageObject.formattedTime,
@@ -536,7 +536,7 @@ var BisaChatPlus = (function() {
 		$('.timsChatMessageContainer.active > ul').append($infoMessage);
 		
 		WCF.DOMNodeInsertedHandler.execute();
-
+		
 		handleStreamScroll();
 	};
 	
@@ -747,7 +747,7 @@ var BisaChatPlus = (function() {
 		get messageType() {
 			return messageType;
 		},
-
+		
 		get messageNodeType() {
 			return messageNodeType;
 		}

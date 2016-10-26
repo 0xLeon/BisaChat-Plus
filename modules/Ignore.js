@@ -75,15 +75,15 @@ Modules.Ignore = (function() {
 		
 		WCF.DOMNodeInsertedHandler.execute();
 	};
-
+	
 	var addEventListeners = function() {
 		bcplus.addExternalCommand(['doignore', 'di'], function(message) {
 			if (bcplus.messageType.WHISPER !== message.type) {
 				return;
 			}
-
+			
 			var answer = '/f ' + message.username + ', @\'' + WCF.User.username + '\' ignoriert dich';
-
+			
 			if (-1 === ignoredUserIDs.indexOf(message.sender)) {
 				answer += ' nicht';
 			}
@@ -105,7 +105,7 @@ Modules.Ignore = (function() {
 		});
 		
 		$ignoreStyleNode.text(ignoredUserClasses.join(', ') + ' { display: none !important; visibility: hidden !important; }');
-
+		
 		bcplus.handleStreamScroll();
 	};
 	

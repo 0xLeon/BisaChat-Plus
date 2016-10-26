@@ -1,6 +1,6 @@
 Modules.CommandLine = (function() {
 	var bcplus = null;
-
+	
 	var optionBooleans = ['true', 'false'];
 	var optionNumberRegex = /\D/;
 	
@@ -52,21 +52,21 @@ Modules.CommandLine = (function() {
 		});
 		bcplus.addCommand(['layout', 'la'], function() {
 			var newStatus = Number(!$('#timsChatAltLayout').data('status'));
-
+			
 			if (0 === newStatus) {
 				bcplus.showInfoMessage('Bubble-Layout aktiviert.');
 			}
 			else {
 				bcplus.showInfoMessage('Alternatives Layout aktiviert.');
 			}
-
+			
 			$('#timsChatAltLayout').toggleClass('active').data('status', newStatus);
 		});
-
+		
 		bcplus.addCommand(['set'], function(optionName, optionValue) {
 			var originalValue = bcplus.getOptionValue(optionName, undefined);
 			var newValue = null;
-
+			
 			if (undefined === originalValue) {
 				bcplus.showInfoMessage('»' + optionName + '« ist kein gültiger Optionen-Bezeichner.');
 			}
@@ -74,7 +74,7 @@ Modules.CommandLine = (function() {
 				newValue = (optionBooleans.indexOf(optionValue.toLowerCase()) > -1) ? ('true' === optionValue) : null;
 				newValue = (null === newValue) ? (!(optionNumberRegex.test(optionValue)) ? parseInt(optionValue, 10) : null) : newValue;
 				newValue = (null === newValue) ? optionValue : newValue;
-
+				
 				bcplus.setOptionValue(optionName, newValue);
 				bcplus.showInfoMessage('Neuer Wert für »' + optionName + '« wurde gespeichert.');
 			}

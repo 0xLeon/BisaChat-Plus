@@ -2,19 +2,19 @@ Modules.Selection = (function() {
 	var bcplus = null;
 	
 	var faWhisperIcon = '';
-
+	
 	var initialize = function(_bcplus) {
 		bcplus = _bcplus;
 		faWhisperIcon = String.fromCodePoint(String.faUnicode('double-angle-right'));
 		
 		addEventListeners();
 	};
-
+	
 	var addEventListeners = function() {
 		Window.document.addEventListener('copy', streamCopyListener, false);
 		Window.document.addEventListener('keypress', streamSelectAllListener, false);
 	};
-
+	
 	/**
 	 * @param	{ClipboardEvent}	event
 	 */
@@ -22,12 +22,12 @@ Modules.Selection = (function() {
 		if (!Window.getSelection().containsNode($('#timsChatMessageTabMenu').get(0), true)) {
 			return;
 		}
-
+		
 		/** @type {String} */    var text = '';
 		/** @type {Selection} */ var selection = Window.getSelection();
-
+		
 		event.preventDefault();
-
+		
 		for (var i = 0, l = selection.rangeCount; i < l; ++i) {
 			/** @type {Range} */ var range = selection.getRangeAt(i);
 			var $start = $(range.startContainer);
@@ -35,13 +35,13 @@ Modules.Selection = (function() {
 			var $end = $(range.endContainer);
 			var $endMessageNode = $end.closest('.timsChatMessage');
 			var $ancestor = $(range.commonAncestorContainer);
-
+			
 			if (range.collapsed || ((0 === $ancestor.closest('.timsChatMessageContainer').length) && (0 === $ancestor.find('.timsChatMessageContainer').length))) {
 				// range neither contains chat stream nor is contained within chat stream
 				text += range.toString();
 				continue;
 			}
-
+			
 			if ($end.hasClass('timsChatMessageIcon') || ($end.hasClass('userAvatar') && ($end.find('.icon').length > 0))) {
 				// problem when selection covers CSS generated pseudo elments in
 				// font awesome icons; ignore end node and assume previous
@@ -49,30 +49,30 @@ Modules.Selection = (function() {
 				$endMessageNode = $($endMessageNode[0].previousElementSibling);
 				$end = $endMessageNode;
 			}
-
+			
 			if ($start.closest('.bcplusAwayMarker').length > 0) {
 				// start is away marker, jump to next message
 				$startMessageNode = $($end.closest('.bcplusAwayMarker')[0].nextElementSibling);
 				$start = $startMessageNode;
 			}
-
+			
 			if ($end.closest('.bcplusAwayMarker').length > 0) {
 				// end is away marker, jump to previous message
 				$endMessageNode = $($end.closest('.bcplusAwayMarker')[0].previousElementSibling);
 				$end = $endMessageNode;
 			}
-
+			
 			if (($startMessageNode.length > 0) && ($endMessageNode.length > 0)) {
 				// start end end are both message nodes
 				text += handleCopyStartMessageEndMessage(selection, range, $start, $startMessageNode, $end, $endMessageNode, $ancestor);
 			}
-
+			
 			// TODO: handle when start and/or end aren't messages but messages are still selected
 		}
-
+		
 		event.clipboardData.setData('text/plain', text.trim());
 	};
-
+	
 	/**
 	 * @param	{Selection}	selection
 	 * @param	{Range}		range
@@ -86,7 +86,7 @@ Modules.Selection = (function() {
 		/** @type {String} */	var text = '';
 		/** @type {Element} */	var currentMessageNode = $startMessageNode.get(0);
 		/** @type {jQuery} */	var $currentMessageNode = $startMessageNode;
-
+		
 		// Set start of selection to the beginning of the first partly selected message
 		if ($startMessageNode.find('.timsChatInnerMessageContainer').hasClass('altLayout')) {
 			range.setStartBefore($startMessageNode[0]);
@@ -99,7 +99,7 @@ Modules.Selection = (function() {
 				}
 			});
 		}
-
+		
 		// Set end of selection to the end of the last partly selected message
 		if ($endMessageNode.find('.timsChatInnerMessageContainer').hasClass('altLayout')) {
 			range.setEndAfter($endMessageNode[0]);
@@ -112,7 +112,7 @@ Modules.Selection = (function() {
 				}
 			});
 		}
-
+		
 		do {
 			if ($currentMessageNode.find('.timsChatInnerMessageContainer').hasClass('altLayout')) {
 				// current node is alt message, handle directly
@@ -125,7 +125,7 @@ Modules.Selection = (function() {
 				// current node is bubble, loop over messages in bubble
 				// and find messages which are at least partly selected
 				var username = $currentMessageNode.find('.timsChatUsernameContainer').text().trim().replace(faWhisperIcon, '»') + ':';
-
+				
 				$currentMessageNode.find('.timsChatText').each(function() {
 					if (selection.containsNode(this, true)) {
 						var $this = $(this);
@@ -137,20 +137,20 @@ Modules.Selection = (function() {
 					}
 				});
 			}
-
+			
 			if (currentMessageNode === $endMessageNode.get(0)) {
 				// reached last message node in range, leave loop
 				break;
 			}
-
+			
 			currentMessageNode = currentMessageNode.nextElementSibling;
 			$currentMessageNode = $(currentMessageNode);
 		}
 		while (!!currentMessageNode);
-
+		
 		return text;
 	};
-
+	
 	/**
 	 * @param	{Element}	element
 	 * @returns	{string}
@@ -161,7 +161,7 @@ Modules.Selection = (function() {
 		if (!element) {
 			return '';
 		}
-
+		
 		do {
 			switch (element.nodeType) {
 				case Node.TEXT_NODE:
@@ -178,7 +178,7 @@ Modules.Selection = (function() {
 			}
 		}
 		while (!!(element = element.nextSibling));
-
+		
 		return text;
 	};
 	
@@ -197,7 +197,7 @@ Modules.Selection = (function() {
 			selection.addRange(selectionRange);
 		}
 	};
-
+	
 	return {
 		initialize:	initialize
 	};

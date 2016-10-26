@@ -23,7 +23,7 @@
 	RegExp.escape = function(str) {
 		return str.replace(escapeRegExp, '\\$&');
 	};
-
+	
 	/**
 	 * 
 	 */
@@ -36,15 +36,15 @@
 				this.textContent = this.textContent.replace(htmlCleanRegExp, ' ');
 			}
 		});
-
+		
 		return this;
 	};
-
+	
 	/**
 	 * @see		http://stackoverflow.com/a/5386150/1128707
 	 */
 	$.fn.reverse = Array.prototype.reverse;
-
+	
 	(function() {
 		var clearRegex = /'|"/g;
 		var faTestParent = $('<div id="fa-test-element" style="display: none; visibility: hidden;" />');
@@ -61,7 +61,7 @@
 		 */
 		function faUnicode(name) {
 			faTestElement.className = 'icon icon-' + name;
-
+			
 			return Window.getComputedStyle(faTestElement, '::before' ).content.replace(clearRegex, '').codePointAt(0);
 		}
 		

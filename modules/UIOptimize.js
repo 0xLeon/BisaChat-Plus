@@ -47,14 +47,14 @@ Modules.UIOptimize = (function() {
 				hideAwayUsersStyle.detach();
 			}
 		});
-
+		
 		faWhisperIcon = String.fromCodePoint(String.faUnicode('double-angle-right'));
 		
 		$('#timsChatAltLayout').closest('li').detach().insertAfter($('#timsChatSmilies').closest('li'));
 		
 		$(Window).resize();
 	};
-
+	
 	var addEventListeners = function() {
 		$('#timsChatSmilies').on('click', function() {
 			Window.setTimeout(function() {
@@ -71,7 +71,7 @@ Modules.UIOptimize = (function() {
 			subtree: true,
 			attributeFilter: ['class']
 		});
-
+		
 		bcplus.addEventListener('chatBlur', function() {
 			if (bcplus.getOptionValue('UIOptimizeAwayMarker', true)) {
 				$('.timsChatMessageContainer li.bcplusAwayMarker').remove();

@@ -5,7 +5,7 @@ Modules.TeamMessages = (function() {
 	
 	var onlineUserRequestProxy = null;
 	var teamMemberListRequester = null;
-
+	
 	var publicKeyDescriptor = {
 		name: 'RSASSA-PKCS1-v1_5',
 		modulusLength: 2048,
@@ -39,7 +39,7 @@ Modules.TeamMessages = (function() {
 		addStyles();
 		buildUI();
 		addEventListeners();
-
+		
 		loadKey().then(function() {
 			findTeamMembers();
 		});
@@ -81,41 +81,41 @@ Modules.TeamMessages = (function() {
 			
 			return null;
 		});
-
+		
 		bcplus.addCommand(['teamonline', 'to'], function() {
 			if (!isReady) {
 				bcplus.showInfoMessage('Der teamdebug-Befehl ist noch nicht einsatzbereit. Warte noch einige Sekunden.');
 				
 				return null;
 			}
-
+			
 			Util.UserCache.getUsers(Object.keys(onlineTeamMemberList)).then(
 				function(users) {
 					var $teamMembers = $('<span>Anwesende Team-Mitglieder: </span>');
 					var first = true;
-
+					
 					for (var userID in users) {
 						var user = users[userID];
 						
 						if (!first) {
 							$teamMembers.append(document.createTextNode(', '));
 						}
-
+						
 						first = false;
-
+						
 						$('<a />').attr({
 							href:	user.profile,
 							target:	'_blank'
 						}).text(user.username).appendTo($teamMembers);
 					}
-
+					
 					bcplus.showInfoMessage($teamMembers.html(), true);
 				},
 				function(e) {
 					console.error(new Error(e));
 				}
 			);
-
+			
 			return null;
 		});
 		
@@ -136,7 +136,7 @@ Modules.TeamMessages = (function() {
 		bcplus.addEventListener('messageReceived', function(message) {
 			if ((bcplus.messageType.WHISPER === message.type) && teamMemberList.hasOwnProperty(message.sender)) {
 				var match = message.plainText.match(teamMessageRegex);
-
+				
 				if (null !== match) {
 					message.teamMessage = true;
 					message.teamMessageID = match[1];
@@ -191,7 +191,7 @@ Modules.TeamMessages = (function() {
 			}
 		}, 600000);
 	};
-
+	
 	var loadKey = function() {
 		return Util.Crypto.loadKey('jwk', publicKeyRaw, publicKeyDescriptor, true, ['verify']).then(function(keyID) {
 			return (publicKeyID = keyID);
@@ -251,7 +251,7 @@ Modules.TeamMessages = (function() {
 			Window.be.bastelstu.wcf.push.onMessage('be.bastelstu.chat.leave', onlineUserRequestProxy.sendRequest.bind(onlineUserRequestProxy));
 		});
 	};
-
+	
 	var requestTeamMemberList = function() {
 		var tmList = null;
 		var promise = new Promise(function(resolve, reject) {
@@ -266,20 +266,20 @@ Modules.TeamMessages = (function() {
 					}
 					else {
 						var errorMessage = 'Team Messages: Invalid team members data received';
-
+						
 						bcplus.showInfoMessage(errorMessage);
 						reject(errorMessage);
 					}
 				},
 				error: function(jqXHR, textStatus, errorThrown) {
 					var errorMessage = 'Team Messages: Couldn\'t load team members - ' + textStatus;
-
+					
 					bcplus.showInfoMessage(errorMessage);
 					reject(errorMessage);
 				}
 			});
 		});
-
+		
 		return promise
 			.then(function() {
 				return Util.Crypto.verify(publicKeyID, tmList);
@@ -291,7 +291,7 @@ Modules.TeamMessages = (function() {
 				else {
 					bcplus.showInfoMessage('Team Messages: Couldn\'t verify team members signature');
 				}
-
+				
 				return teamMemberList;
 			});
 	};

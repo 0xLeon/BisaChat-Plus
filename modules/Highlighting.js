@@ -16,13 +16,13 @@ Modules.Highlighting = (function() {
 			return (!message.ownMessage);
 		},
 		function(message, bcplus) {
-			return (bcplus.getStorage().getValue('ignoredUserIDs', []).indexOf(message.sender) === -1);
+			return (-1 === bcplus.getStorage().getValue('ignoredUserIDs', []).indexOf(message.sender));
 		},
 		function(message, bcplus) {
 			return (!!message.teamMessage ? !bcplus.getOptionValue('teamIgnore', false) : true);
 		},
 		function(message, bcplus) {
-			return ((message.sender === 55518) ? !bcplus.getOptionValue('highlightingChatbot', true) : true);
+			return ((55518 === message.sender) ? !bcplus.getOptionValue('highlightingChatbot', true) : true);
 		},
 		function(message, bcplus) {
 			return (message.plainText.startsWith('np:') ? !bcplus.getOptionValue('highlightingNp', true) : true);
@@ -68,16 +68,16 @@ Modules.Highlighting = (function() {
 			display: 'none'
 		});
 		
-		if ($notifyButton.data('status') === 1) {
+		if (1 === $notifyButton.data('status')) {
 			$notifyButton.click();
 		}
 	};
 	
 	var getNotificationPermission = function() {
-		if (bcplus.getOptionValue('highlightingActive', true) && (Window.Notification.permission !== 'granted')) {
+		if (bcplus.getOptionValue('highlightingActive', true) && ('granted' !== Window.Notification.permission)) {
 			return Window.Notification.requestPermission(function(permission) {
 				var n;
-				return (((n = Window.Notification).permission !== null) ? n.permission : (n.permission = permission));
+				return ((null !== (n = Window.Notification).permission) ? n.permission : (n.permission = permission));
 			});
 		}
 	};
@@ -132,7 +132,7 @@ Modules.Highlighting = (function() {
 		
 		updateDocTitle();
 		
-		if (listenerFunction === null) {
+		if (null === listenerFunction) {
 			if (bcplus.getAwayStatus().isAway) {
 				eventName = 'awayStatusChanged';
 			}
@@ -167,7 +167,7 @@ Modules.Highlighting = (function() {
 			else {
 				// not visible, attach waypoint
 				// TODO: screw waypoints, this shit is still not working :(
-				if ($(message).data('waypoint') !== undefined) {
+				if (undefined !== $(message).data('waypoint')) {
 					return;
 				}
 				
@@ -202,8 +202,8 @@ Modules.Highlighting = (function() {
 	};
 	
 	var showNotification = function(message) {
-		if (Window.Notification.permission === 'granted') {
-			var messageIsPrivate = (message.type === bcplus.messageType.WHISPER);
+		if ('granted' === Window.Notification.permission) {
+			var messageIsPrivate = (bcplus.messageType.WHISPER === message.type);
 			var notificationTitle = '[' + $('<div>' + message.formattedTime + '</div>').text() + '] ' + message.username + ' ' + (messageIsPrivate ? !!message.teamMessage ? '» Team' : 'flüstert' : 'schreibt') + message.separator;
 			var notificationBody = (message.plainText.length > 50 ? message.plainText.slice(0, 51) + '\u2026' : message.plainText);
 			var notification = new Window.Notification(notificationTitle, {
@@ -212,7 +212,7 @@ Modules.Highlighting = (function() {
 			});
 			
 			notification.onclick = function() {
-				if (messageIsPrivate && ($('#timsChatMessageTabMenuAnchor' + message.sender).length === 1)) {
+				if (messageIsPrivate && (1 === $('#timsChatMessageTabMenuAnchor' + message.sender).length)) {
 					$('#timsChatMessageTabMenuAnchor' + message.sender).click();
 				}
 				else {

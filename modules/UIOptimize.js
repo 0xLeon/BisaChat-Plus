@@ -103,9 +103,9 @@ Modules.UIOptimize = (function() {
 			
 			$timeNode.text('[' + $timeNode.text().trim() + ']');
 			
-			if ((bcplus.messageNodeType.BUBBLEFOLLOWUP !== messageNodeEvent.messageNodeType) && ((messageNodeEvent.messageType < bcplus.messageType.MODERATE) || (messageNodeEvent.messageType === bcplus.messageType.WHISPER))) {
+			if ((bcplus.messageNodeType.BUBBLEFOLLOWUP !== messageNodeEvent.messageNodeType) && ((messageNodeEvent.messageType < bcplus.messageType.MODERATE) || (bcplus.messageType.WHISPER === messageNodeEvent.messageType))) {
 				$messageNode.find('.timsChatUsernameContainer').find('.icon.pointer').off('click').prop('onclick', null).removeClass('icon-double-angle-right').text(faWhisperIcon);
-				$messageNode.find('.timsChatUsernameContainer').data('username', ((messageNodeEvent.messageType === bcplus.messageType.WHISPER) && messageNodeEvent.ownMessage) ? messageNodeEvent.receiverUsername : messageNodeEvent.senderUsername);
+				$messageNode.find('.timsChatUsernameContainer').data('username', ((bcplus.messageType.WHISPER === messageNodeEvent.messageType) && messageNodeEvent.ownMessage) ? messageNodeEvent.receiverUsername : messageNodeEvent.senderUsername);
 				$messageNode.find('.timsChatUsernameContainer').addClass('pointer').on('click', function() {
 					Window.be.bastelstu.Chat.insertText('/whisper ' + $(this).data('username') + ', ', {
 						prepend: false,

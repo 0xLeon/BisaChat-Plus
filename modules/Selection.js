@@ -180,7 +180,7 @@ Modules.Selection = (function() {
 	};
 	
 	var streamSelectAllListener = function(event) {
-		if (event.ctrlKey && (event.key === 'a') && !(event.altKey || event.shiftKey || event.metaKey) && (Window.document.activeElement.nodeName.toLowerCase() === 'body')) {
+		if (event.ctrlKey && ('a' === event.key) && !(event.altKey || event.shiftKey || event.metaKey) && ('body' === Window.document.activeElement.nodeName.toLowerCase())) {
 			event.preventDefault();
 			
 			// workaround for firefox bug: add list instead of actual node

@@ -33,10 +33,10 @@ Modules.MessageFilters = (function() {
 					var formattedMessage = '';
 					
 					$messageNodeObj.contents().each(function() {
-						if (this.nodeType === 3) {
+						if (Node.TEXT_NODE === this.nodeType) {
 							formattedMessage += this.nodeValue;
 						}
-						else if ((this.nodeType === 1) && (this.nodeName.toLowerCase() === 'img')) {
+						else if ((Node.ELEMENT_NODE === this.nodeType) && ('img' === this.nodeName.toLowerCase())) {
 							formattedMessage += $(this).attr('alt');
 						}
 					});
@@ -56,7 +56,7 @@ Modules.MessageFilters = (function() {
 			if (bcplus.getOptionValue('greentext', true) && messageNodeEvent.messageText.startsWith('>')) {
 				var $targetNode = null;
 				
-				if (messageNodeEvent.messageNodeType === bcplus.messageNodeType.BUBBLEFOLLOWUP) {
+				if (bcplus.messageNodeType.BUBBLEFOLLOWUP === messageNodeEvent.messageNodeType) {
 					$targetNode = $messageNode.find('.bcplusBubbleMessageText');
 				}
 				else {
@@ -72,11 +72,11 @@ Modules.MessageFilters = (function() {
 				$messageNode.addClass('noAvatar');
 			}
 			
-			if (bcplus.getOptionValue('hideLogin', false) && ((messageNodeEvent.messageType === bcplus.messageType.JOIN) || (messageNodeEvent.messageType === bcplus.messageType.LEAVE))) {
+			if (bcplus.getOptionValue('hideLogin', false) && ((bcplus.messageType.JOIN === messageNodeEvent.messageType) || (bcplus.messageType.LEAVE === messageNodeEvent.messageType))) {
 				$messageNode.addClass('invisible');
 			}
 			
-			if (bcplus.getOptionValue('hideStatus', false) && ((messageNodeEvent.messageType === bcplus.messageType.AWAY) || (messageNodeEvent.messageType === bcplus.messageType.BACK))) {
+			if (bcplus.getOptionValue('hideStatus', false) && ((bcplus.messageType.AWAY === messageNodeEvent.messageType) || (bcplus.messageType.BACK === messageNodeEvent.messageType))) {
 				$messageNode.addClass('invisible');
 			}
 		});

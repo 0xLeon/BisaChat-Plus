@@ -18,7 +18,7 @@ Modules.LastfmConnect = (function() {
 		bcplus.addCommand(['nowplaying', 'np'], function() {
 			var lastfmUsername = bcplus.getOptionValue('lastfmUsername', '');
 			
-			if (lastfmUsername !== '') {
+			if ('' !== lastfmUsername) {
 				$.ajax({
 					url: 'https://ws.audioscrobbler.com/2.0/',
 					dataType: 'json',
@@ -31,7 +31,7 @@ Modules.LastfmConnect = (function() {
 					},
 					success: function (data, textStatus, xqXHR) {
 						if (data && data.recenttracks && data.recenttracks.track) {
-							if (data.recenttracks.track[0] && data.recenttracks.track[0]['@attr'] && data.recenttracks.track[0]['@attr'].nowplaying && data.recenttracks.track[0]['@attr'].nowplaying == 'true') {
+							if (data.recenttracks.track[0] && data.recenttracks.track[0]['@attr'] && data.recenttracks.track[0]['@attr'].nowplaying && ('true' === data.recenttracks.track[0]['@attr'].nowplaying)) {
 								var title = data.recenttracks.track[0].name;
 								var album = data.recenttracks.track[0].album['#text'];
 								var artist = data.recenttracks.track[0].artist['#text'];

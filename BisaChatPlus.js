@@ -185,7 +185,7 @@ var BisaChatPlus = (function() {
 			bcplusEvents.messageReceived.fire(message);
 			
 			if (message.ownMessage) {
-				if (message.type === messageType.AWAY) {
+				if (messageType.AWAY === message.type) {
 					awayStatus.isAway = true;
 					awayStatus.message = (message.plainText.includes(':') ? message.plainText.substring(message.plainText.indexOf(':') + 1).trim() : '');
 					
@@ -207,14 +207,14 @@ var BisaChatPlus = (function() {
 			
 			var messageText = $('#timsChatInput').val().trim();
 			
-			if (messageText.startsWith('/') && (messageText[1] !== '/')) {
+			if (messageText.startsWith('/') && ('/' !== messageText[1])) {
 				var matchResult = messageText.match(commandRegex);
 				var commandName = matchResult[1];
 				var commandParameters = (matchResult[2] || '').replace(commandParameterRegex, function() {
 					return ((!arguments[2]) ? '' : ',');
 				}).trim();
 				
-				if (commandParameters === '') {
+				if ('' === commandParameters) {
 					commandParameters = [];
 				}
 				else {
@@ -230,7 +230,7 @@ var BisaChatPlus = (function() {
 					
 					var returnValue = commands[commandName].apply(null, commandParameters);
 					
-					if ($.type(returnValue) === 'string') {
+					if ('string' === $.type(returnValue)) {
 						sendMessage(returnValue);
 					}
 					
@@ -246,14 +246,14 @@ var BisaChatPlus = (function() {
 		}, true);
 		
 		addEventListener('messageReceived', function(message) {
-			if (((message.type === messageType.NORMAL) || (message.type === messageType.WHISPER)) && ((message.sender !== WCF.User.userID) || (message.sender === message.receiver)) && message.plainText.startsWith('!')) {
+			if (((messageType.NORMAL === message.type) || (messageType.WHISPER === message.type)) && ((WCF.User.userID !== message.sender) || (message.sender === message.receiver)) && message.plainText.startsWith('!')) {
 				var matchResult = message.plainText.match(externalCommandRegex);
 				var externalCommandName = matchResult[1];
 				var externalCommandParameters = (matchResult[2] || '').replace(commandParameterRegex, function() {
 					return ((!arguments[2]) ? '' : ',');
 				}).trim();
 				
-				if (externalCommandParameters === '') {
+				if ('' === externalCommandParameters) {
 					externalCommandParameters = [];
 				}
 				else {
@@ -271,10 +271,10 @@ var BisaChatPlus = (function() {
 					
 					var returnValue = externalCommands[externalCommandName].apply(null, externalCommandParameters);
 					
-					if ($.type(returnValue) === 'string') {
+					if ('string' === $.type(returnValue)) {
 						var _awayStatus = $.extend({}, awayStatus);
 						
-						if ((message.type === messageType.WHISPER) && !returnValue.startsWith('/')) {
+						if ((messageType.WHISPER === message.type) && !returnValue.startsWith('/')) {
 							returnValue = '/whisper ' + message.username + ', ' + returnValue;
 						}
 						
@@ -283,7 +283,7 @@ var BisaChatPlus = (function() {
 						if (_awayStatus.isAway) {
 							var text = '/away';
 							
-							if (_awayStatus.message !== '') {
+							if ('' !== _awayStatus.message) {
 								text += ' ' + _awayStatus.message;
 							}
 							
@@ -329,7 +329,7 @@ var BisaChatPlus = (function() {
 	var addStreamObserver = function($stream) {
 		var stream = $($stream).get(0);
 		
-		if (stream.nodeName.toLowerCase() !== 'ul') {
+		if ('ul' !== stream.nodeName.toLowerCase()) {
 			throw new Error('Can\'t observe stream of node type »' + stream.nodeName.toLowerCase() + '«.');
 		}
 		
@@ -338,7 +338,7 @@ var BisaChatPlus = (function() {
 				for (var i = 0, l = mutation.addedNodes.length; i < l; i++) {
 					var $messageNode = $(mutation.addedNodes[i]);
 
-					if (($messageNode.get(0).nodeType === 1) && ($messageNode.hasClass('timsChatMessage') || $messageNode.hasClass('timsChatText'))) {
+					if ((Node.ELEMENT_NODE === $messageNode.get(0).nodeType) && ($messageNode.hasClass('timsChatMessage') || $messageNode.hasClass('timsChatText'))) {
 						$messageNode.htmlClean();
 						
 						try {
@@ -381,7 +381,7 @@ var BisaChatPlus = (function() {
 								messageNodeEvent.sender = parseInt($messageNode.attr('class').match(messageUserIdRegex)[1], 10);
 								messageNodeEvent.senderUsername = $messageNode.find('.timsChatUsernameContainer span:not(.icon, .receiver)').text().trim();
 								
-								if (messageNodeEvent.messageType === messageType.WHISPER) {
+								if (messageType.WHISPER === messageNodeEvent.messageType) {
 									messageNodeEvent.receiverUsername = $messageNode.find('.timsChatUsernameContainer .receiver').text().trim();
 								}
 							}
@@ -406,7 +406,7 @@ var BisaChatPlus = (function() {
 								messageNodeEvent.sender = parseInt($messageNode.closest('.timsChatMessage').attr('class').match(messageUserIdRegex)[1], 10);
 								messageNodeEvent.senderUsername = $messageNode.closest('.timsChatInnerMessage').find('.timsChatUsernameContainer span:not(.icon, .receiver)').text().trim();
 								
-								if (messageNodeEvent.messageType === messageType.WHISPER) {
+								if (messageType.WHISPER === messageNodeEvent.messageType) {
 									messageNodeEvent.receiverUsername = $messageNode.closest('.timsChatInnerMessage').find('.timsChatUsernameContainer .receiver').text().trim();
 								}
 							}
@@ -414,7 +414,7 @@ var BisaChatPlus = (function() {
 								throw new Error('Unrecognized message node type');
 							}
 							
-							messageNodeEvent.ownMessage = (messageNodeEvent.sender === WCF.User.userID);
+							messageNodeEvent.ownMessage = (WCF.User.userID === messageNodeEvent.sender);
 
 							bcplusEvents.messageAdded.fire(messageNodeEvent);
 						}
@@ -451,7 +451,7 @@ var BisaChatPlus = (function() {
 	};
 	
 	var sendMessage = function(messageText, fireEvent) {
-		if ((fireEvent === undefined) || !!fireEvent) {
+		if ((undefined === fireEvent) || !!fireEvent) {
 			bcplusEvents.messageSubmit.fire({
 				messageText:	messageText
 			});
@@ -602,17 +602,17 @@ var BisaChatPlus = (function() {
 			throw new Error('Invalid command action!');
 		}
 		
-		if ($.type(commandName) !== 'array') {
+		if ('array' !== $.type(commandName)) {
 			commandName = [commandName];
 		}
 		
-		if (Object.keys(commandsObject).filter(function(n) { return (commandName.indexOf(n) !== -1); }).length > 0) {
 			throw new Error('Command with name »' + commandName.joing(', ') + '« already exists!');
+		if (Object.keys(commandsObject).filter(function(n) { return (-1 === commandName.indexOf(n)); }).length > 0) {
 		}
 		
 		var commandFunction = null;
 		
-		if ($.type(commandAction) === 'string') {
+		if ('string' === $.type(commandAction)) {
 			commandFunction = (function(commandString) {
 				return (function() {
 					return commandString;
@@ -676,11 +676,11 @@ var BisaChatPlus = (function() {
 	};
 });
 
-if (Window.com === undefined) {
+if (undefined === Window.com) {
 	Window.com = { };
 }
 
-if (Window.com.leon === undefined) {
+if (undefined === Window.com.leon) {
 	Window.com.leon = { };
 }
 

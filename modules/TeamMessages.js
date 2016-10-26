@@ -134,7 +134,7 @@ Modules.TeamMessages = (function() {
 		});
 		
 		bcplus.addEventListener('messageReceived', function(message) {
-			if ((message.type === bcplus.messageType.WHISPER) && teamMemberList.hasOwnProperty(message.sender)) {
+			if ((bcplus.messageType.WHISPER === message.type) && teamMemberList.hasOwnProperty(message.sender)) {
 				var match = message.plainText.match(teamMessageRegex);
 
 				if (null !== match) {
@@ -150,7 +150,7 @@ Modules.TeamMessages = (function() {
 		});
 		
 		bcplus.addEventListener('messageAdded', function(messageNodeEvent) {
-			if ((messageNodeEvent.messageType === bcplus.messageType.WHISPER) && teamMemberList.hasOwnProperty(messageNodeEvent.sender)) {
+			if ((bcplus.messageType.WHISPER === messageNodeEvent.messageType) && teamMemberList.hasOwnProperty(messageNodeEvent.sender)) {
 				var match = messageNodeEvent.messageText.match(teamMessageRegex);
 				
 				if (null !== match) {

@@ -52,7 +52,7 @@ Modules.Ignore = (function() {
 		new WCF.Search.User('#bcplusIgnoreDialogUsernameInput', function(user) {
 			this._searchInput.val('');
 			
-			if (ignoredUserIDs.indexOf(user.objectID) === -1) {
+			if (-1 === ignoredUserIDs.indexOf(user.objectID)) {
 				ignoredUserIDs.push(user.objectID);
 				ignoredUserIDs.sort(function(a, b) {
 					return (a - b);
@@ -117,7 +117,7 @@ Modules.Ignore = (function() {
 			$userList.empty();
 		}
 		
-		if (ignoredUserIDs.length === 0) {
+		if (0 === ignoredUserIDs.length) {
 			$('<p>Keine ignorierten Benutzer</p>').appendTo($userList);
 			return;
 		}

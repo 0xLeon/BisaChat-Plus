@@ -18,7 +18,7 @@ var BisaChatPlus = (function() {
 		autoOpen: false,
 		title: 'BisaChat Plus – Optionen',
 		
-		onOpen: function() {
+		onShow: function() {
 			bcplusEvents.optionsOpened.fire();
 		},
 		onClose: function() {

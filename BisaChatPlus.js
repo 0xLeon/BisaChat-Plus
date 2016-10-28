@@ -1,7 +1,7 @@
-var BisaChatPlus = (function() {
-	var bcplus = null;
-	var storage = Util.Storage.getInterface('bcplus');
-	var bcplusEvents = {
+let BisaChatPlus = (function() {
+	let bcplus = null;
+	let storage = Util.Storage.getInterface('bcplus');
+	let bcplusEvents = {
 		chatBlur: $.Callbacks(),
 		chatFocus: $.Callbacks(),
 		privateRoomAdded: $.Callbacks(),
@@ -13,8 +13,8 @@ var BisaChatPlus = (function() {
 		optionsOpened: $.Callbacks(),
 		optionsClosed: $.Callbacks()
 	};
-	var privateRoomObservers = { };
-	var $optionsDialog = $('<div id="bcplusOptionsDialogContent" class="container containerPadding"></div>').appendTo('body').wcfDialog({
+	let privateRoomObservers = { };
+	let $optionsDialog = $('<div id="bcplusOptionsDialogContent" class="container containerPadding"></div>').appendTo('body').wcfDialog({
 		autoOpen: false,
 		title: 'BisaChat Plus – Optionen',
 		
@@ -27,27 +27,27 @@ var BisaChatPlus = (function() {
 			$('#timsChatInput').focus();
 		}
 	});
-	var optionIdentifiers = [];
-	var awayStatus = {
+	let optionIdentifiers = [];
+	let awayStatus = {
 		isAway: false,
 		message: ''
 	};
 	
-	var commandRegex = /^(?:\/)(.*?)(?:\s(.*)|$)/;
-	var commands = { };
+	let commandRegex = /^(?:\/)(.*?)(?:\s(.*)|$)/;
+	let commands = { };
 	
-	var commandParameterRegex = /((?:^,+)|(?:,+$))|(,{2,})/g;
+	let commandParameterRegex = /((?:^,+)|(?:,+$))|(,{2,})/g;
 	
-	var externalCommandRegex = /(?:!)(.*?)(?:\s(.*)|$)/;
-	var externalCommands = { };
+	let externalCommandRegex = /(?:!)(.*?)(?:\s(.*)|$)/;
+	let externalCommands = { };
 	
 	// TODO: maybe add bubble version of info template
-	var infoMessageTemplate = new WCF.Template('<li class="timsChatMessage timsChatMessage8 user{$userID} ownMessage">	\n	<div class="timsChatInnerMessageContainer altLayout">\n		<div class="timsChatAvatarContainer">\n			<div class="userAvatar framed">\n				<span class="icon icon16 icon-info-sign"></span>\n			</div>\n		</div>\n		<div class="timsChatInnerMessage">\n			<time>{$time}</time>\n			<span class="timsChatUsernameContainer">Information:</span>\n			<div class="timsChatTextContainer">\n				<span class="timsChatText">\n					{@$text}\n				</span>\n			</div>\n		</div>\n	</div>\n</li>');
+	let infoMessageTemplate = new WCF.Template('<li class="timsChatMessage timsChatMessage8 user{$userID} ownMessage">	\n	<div class="timsChatInnerMessageContainer altLayout">\n		<div class="timsChatAvatarContainer">\n			<div class="userAvatar framed">\n				<span class="icon icon16 icon-info-sign"></span>\n			</div>\n		</div>\n		<div class="timsChatInnerMessage">\n			<time>{$time}</time>\n			<span class="timsChatUsernameContainer">Information:</span>\n			<div class="timsChatTextContainer">\n				<span class="timsChatText">\n					{@$text}\n				</span>\n			</div>\n		</div>\n	</div>\n</li>');
 	
-	var messageTypeRegex = /\btimsChatMessage(\d+)\b/;
-	var messageUserIdRegex = /\buser(\d+)\b/;
+	let messageTypeRegex = /\btimsChatMessage(\d+)\b/;
+	let messageUserIdRegex = /\buser(\d+)\b/;
 	
-	var messageType = {
+	let messageType = {
 		get NORMAL()	{ return  0; },
 		get JOIN()	{ return  1; },
 		get LEAVE()	{ return  2; },
@@ -63,17 +63,17 @@ var BisaChatPlus = (function() {
 		get ATTACH()	{ return 12; }
 	};
 	
-	var messageNodeType = {
+	let messageNodeType = {
 		get ALTERNATIVE()	{ return 0; },
 		get BUBBLE()		{ return 1; },
 		get BUBBLEFOLLOWUP()	{ return 2; }
 	};
 	
-	var getVersion = function() {
+	let getVersion = function() {
 		return '/*{version}*/';
 	};
 	
-	var init = function() {
+	let init = function() {
 		bcplus = {
 			getVersion:		getVersion,
 			getStorage:		getStorage,
@@ -113,9 +113,9 @@ var BisaChatPlus = (function() {
 		addCommand('mp3', '/me *winamptret*');
 	};
 	
-	var checkIndexPage = function() {
-		/** @type {RegExp} */ var indexPageRegex = /^https?:\/\/chat\.bisaboard\.de($|(?:\/index\.php\/Chat\/(?:$|\?s=(\w+$))))/;
-		/** @type {Boolean} */ var isIndexPage = indexPageRegex.test(Window.location.href);
+	let checkIndexPage = function() {
+		/** @type {RegExp} */ let indexPageRegex = /^https?:\/\/chat\.bisaboard\.de($|(?:\/index\.php\/Chat\/(?:$|\?s=(\w+$))))/;
+		/** @type {Boolean} */ let isIndexPage = indexPageRegex.test(Window.location.href);
 		
 		if (isIndexPage && !!Modules.Update) {
 			Modules.Update.initialize(bcplus);
@@ -125,19 +125,19 @@ var BisaChatPlus = (function() {
 		return isIndexPage;
 	};
 	
-	var checkSecureConnection = function() {
+	let checkSecureConnection = function() {
 		if (Window.location.protocol !== 'https:') {
 			window.location.href = 'https:' + window.location.href.substring(window.location.protocol.length);
 			throw new Error('Reloading chat over secure connection');
 		}
 	};
 	
-	var initEvents = function() {
+	let initEvents = function() {
 		addStreamObserver($('#timsChatMessageContainer0').find('ul'));
 		
 		addEventListener('optionsOpened', function() {
 			$optionsDialog.find('input[id^="bcplus"]').each(function() {
-				/** @type {jQuery} */ var $this = $(this);
+				/** @type {jQuery} */ let $this = $(this);
 				
 				if ('checkbox' === $this.attr('type')) {
 					$this.prop({
@@ -150,13 +150,13 @@ var BisaChatPlus = (function() {
 			});
 		});
 		
-		var privateRoomObserver = new MutationObserver(function(mutations) {
+		let privateRoomObserver = new MutationObserver(function(mutations) {
 			mutations.forEach(function(mutation) {
-				var uuid = null;
+				let uuid = null;
 				
 				if (mutation.addedNodes.length > 0) {
-					for (var i = 0, l = mutation.addedNodes.length; i < l; i++) {
-						var $addedNode = $(mutation.addedNodes[i]);
+					for (let i = 0, l = mutation.addedNodes.length; i < l; i++) {
+						let $addedNode = $(mutation.addedNodes[i]);
 						
 						if ($addedNode.hasClass('timsChatMessageContainer')) {
 							uuid = String.generateUUID();
@@ -170,8 +170,8 @@ var BisaChatPlus = (function() {
 				}
 				
 				if (mutation.removedNodes.length > 0) {
-					for (var j = 0, m = mutation.removedNodes.length; j < m; j++) {
-						var $removedNode = $(mutation.removedNodes[j]);
+					for (let j = 0, m = mutation.removedNodes.length; j < m; j++) {
+						let $removedNode = $(mutation.removedNodes[j]);
 						
 						if ($removedNode.hasClass('timsChatMessageContainer')) {
 							uuid = $removedNode.data('uuid');
@@ -185,7 +185,7 @@ var BisaChatPlus = (function() {
 				}
 			});
 		});
-		var privateRoomObserverConfig = {
+		let privateRoomObserverConfig = {
 			childList: true,
 			attributes: false,
 			characterData: false,
@@ -220,12 +220,12 @@ var BisaChatPlus = (function() {
 				return true;
 			}
 			
-			var messageText = $('#timsChatInput').val().trim();
+			let messageText = $('#timsChatInput').val().trim();
 			
 			if (messageText.startsWith('/') && ('/' !== messageText[1])) {
-				var matchResult = messageText.match(commandRegex);
-				var commandName = matchResult[1];
-				var commandParameters = (matchResult[2] || '').replace(commandParameterRegex, function() {
+				let matchResult = messageText.match(commandRegex);
+				let commandName = matchResult[1];
+				let commandParameters = (matchResult[2] || '').replace(commandParameterRegex, function() {
 					return ((!arguments[2]) ? '' : ',');
 				}).trim();
 				
@@ -243,7 +243,7 @@ var BisaChatPlus = (function() {
 					event.stopPropagation();
 					$('#timsChatInput').val('');
 					
-					var returnValue = commands[commandName].apply(null, commandParameters);
+					let returnValue = commands[commandName].apply(null, commandParameters);
 					
 					if ('string' === $.type(returnValue)) {
 						sendMessage(returnValue);
@@ -262,9 +262,9 @@ var BisaChatPlus = (function() {
 		
 		addEventListener('messageReceived', function(message) {
 			if (((messageType.NORMAL === message.type) || (messageType.WHISPER === message.type)) && ((WCF.User.userID !== message.sender) || (message.sender === message.receiver)) && message.plainText.startsWith('!')) {
-				var matchResult = message.plainText.match(externalCommandRegex);
-				var externalCommandName = matchResult[1];
-				var externalCommandParameters = (matchResult[2] || '').replace(commandParameterRegex, function() {
+				let matchResult = message.plainText.match(externalCommandRegex);
+				let externalCommandName = matchResult[1];
+				let externalCommandParameters = (matchResult[2] || '').replace(commandParameterRegex, function() {
 					return ((!arguments[2]) ? '' : ',');
 				}).trim();
 				
@@ -284,10 +284,10 @@ var BisaChatPlus = (function() {
 						return;
 					}
 					
-					var returnValue = externalCommands[externalCommandName].apply(null, externalCommandParameters);
+					let returnValue = externalCommands[externalCommandName].apply(null, externalCommandParameters);
 					
 					if ('string' === $.type(returnValue)) {
-						var _awayStatus = $.extend({}, awayStatus);
+						let _awayStatus = $.extend({}, awayStatus);
 						
 						if ((messageType.WHISPER === message.type) && !returnValue.startsWith('/')) {
 							returnValue = '/whisper ' + message.username + ', ' + returnValue;
@@ -296,7 +296,7 @@ var BisaChatPlus = (function() {
 						sendMessage(returnValue);
 						
 						if (_awayStatus.isAway) {
-							var text = '/away';
+							let text = '/away';
 							
 							if ('' !== _awayStatus.message) {
 								text += ' ' + _awayStatus.message;
@@ -320,8 +320,8 @@ var BisaChatPlus = (function() {
 		});
 	};
 	
-	var buildUI = function() {
-		var $optionsButton = $('<li><a id="bcplusOptions" class="button jsTooltip" title="BisaChat Plus – Optionen"><span class="icon icon16 icon-cog"></span><span class="invisible">BisaChat Plus – Optionen</span></a></li>');
+	let buildUI = function() {
+		let $optionsButton = $('<li><a id="bcplusOptions" class="button jsTooltip" title="BisaChat Plus – Optionen"><span class="icon icon16 icon-cog"></span><span class="invisible">BisaChat Plus – Optionen</span></a></li>');
 		$optionsButton.find('a').on('click', function() {
 			$optionsDialog.wcfDialog('open');
 		});
@@ -330,7 +330,7 @@ var BisaChatPlus = (function() {
 		WCF.DOMNodeInsertedHandler.execute();
 	};
 	
-	var initModules = function() {
+	let initModules = function() {
 		$.each(Modules, function(moduleName, moduleObject) {
 			try {
 				moduleObject.initialize(bcplus);
@@ -341,23 +341,23 @@ var BisaChatPlus = (function() {
 		});
 	};
 	
-	var addStreamObserver = function($stream) {
-		var stream = $($stream)[0];
+	let addStreamObserver = function($stream) {
+		let stream = $($stream)[0];
 		
 		if ('ul' !== stream.nodeName.toLowerCase()) {
 			throw new Error('Can\'t observe stream of node type »' + stream.nodeName.toLowerCase() + '«.');
 		}
 		
-		var messageObserver = new MutationObserver(function(mutations) {
+		let messageObserver = new MutationObserver(function(mutations) {
 			mutations.forEach(function(mutation) {
-				for (var i = 0, l = mutation.addedNodes.length; i < l; i++) {
-					var $messageNode = $(mutation.addedNodes[i]);
+				for (let i = 0, l = mutation.addedNodes.length; i < l; i++) {
+					let $messageNode = $(mutation.addedNodes[i]);
 					
 					if ((Node.ELEMENT_NODE === $messageNode[0].nodeType) && ($messageNode.hasClass('timsChatMessage') || $messageNode.hasClass('timsChatText'))) {
 						$messageNode.htmlClean();
 						
 						try {
-							var messageNodeEvent = {
+							let messageNodeEvent = {
 								messageNode:		$messageNode,
 								messageType:		null,
 								messageID:		null,
@@ -374,8 +374,8 @@ var BisaChatPlus = (function() {
 								if ($messageNode.find('.bubble').length > 0) {
 									messageNodeEvent.messageNodeType = messageNodeType.BUBBLE;
 									
-									var $message = $('<span class="bcplusBubbleMessageText" />');
-									var $input = $messageNode.find('.timsChatText').find('input').detach();
+									let $message = $('<span class="bcplusBubbleMessageText" />');
+									let $input = $messageNode.find('.timsChatText').find('input').detach();
 									
 									$message.html($messageNode.find('.timsChatText').html().trim());
 									
@@ -405,8 +405,8 @@ var BisaChatPlus = (function() {
 								messageNodeEvent.messageType = parseInt($messageNode.closest('.timsChatMessage').attr('class').match(messageTypeRegex)[1], 10);
 								messageNodeEvent.messageID = $messageNode.data('messageID');
 								
-								var $div = $('<div />');
-								var $message = $('<span class="bcplusBubbleMessageText" />');
+								let $div = $('<div />');
+								let $message = $('<span class="bcplusBubbleMessageText" />');
 								
 								$messageNode.find('*').detach().appendTo($div);
 								$message.html($messageNode.html().trim());
@@ -440,7 +440,7 @@ var BisaChatPlus = (function() {
 				}
 			});
 		});
-		var messageObserverConfig = {
+		let messageObserverConfig = {
 			childList: true,
 			subtree: true,
 			attributes: false,
@@ -454,18 +454,18 @@ var BisaChatPlus = (function() {
 	/**
 	 * @returns	{Object}
 	 */
-	var getStorage = function() {
+	let getStorage = function() {
 		return storage;
 	};
 	
 	/**
 	 * @returns	{Object}
 	 */
-	var getAwayStatus = function() {
+	let getAwayStatus = function() {
 		return awayStatus;
 	};
 	
-	var handleStreamScroll = function() {
+	let handleStreamScroll = function() {
 		if (1 === $('#timsChatAutoscroll').data('status')) {
 			$('.timsChatMessageContainer.active').scrollTop($('.timsChatMessageContainer.active').prop('scrollHeight'));
 		}
@@ -475,7 +475,7 @@ var BisaChatPlus = (function() {
 	 * @param	{string}	messageText
 	 * @param	{boolean}	[fireEvent]
 	 */
-	var sendMessage = function(messageText, fireEvent) {
+	let sendMessage = function(messageText, fireEvent) {
 		if ((undefined === fireEvent) || !!fireEvent) {
 			bcplusEvents.messageSubmit.fire({
 				messageText:	messageText
@@ -500,10 +500,10 @@ var BisaChatPlus = (function() {
 	 * @param	{string}	messageText
 	 * @param	{boolean}	[parseHtml]
 	 */
-	var showInfoMessage = function(messageText, parseHtml) {
-		var messageTextNode = (!!parseHtml) ? $('<div />').html(messageText) : $('<div />').text(messageText);
-		var time = new Date();
-		var messageObject = {
+	let showInfoMessage = function(messageText, parseHtml) {
+		let messageTextNode = (!!parseHtml) ? $('<div />').html(messageText) : $('<div />').text(messageText);
+		let time = new Date();
+		let messageObject = {
 			additionalData:		null,
 			altLayout:		true,
 			avatar:			null,
@@ -527,7 +527,7 @@ var BisaChatPlus = (function() {
 		
 		bcplusEvents.messageReceived.fire(messageObject);
 		
-		var $infoMessage = $(infoMessageTemplate.fetch({
+		let $infoMessage = $(infoMessageTemplate.fetch({
 			userID:		messageObject.receiver,
 			time:		messageObject.formattedTime,
 			text:		messageObject.formattedMessage
@@ -544,7 +544,7 @@ var BisaChatPlus = (function() {
 	 * @param	{string}	eventName
 	 * @param	{function}	callback
 	 */
-	var addEventListener = function(eventName, callback) {
+	let addEventListener = function(eventName, callback) {
 		if (!bcplusEvents.hasOwnProperty(eventName)) {
 			throw new Error('Unknown event »' + eventName + '«.');
 		}
@@ -556,7 +556,7 @@ var BisaChatPlus = (function() {
 	 * @param	{string}	eventName
 	 * @param	{function}	callback
 	 */
-	var removeEventListener = function(eventName, callback) {
+	let removeEventListener = function(eventName, callback) {
 		if (!bcplusEvents.hasOwnProperty(eventName)) {
 			throw new Error('Unknown event »' + eventName + '«.');
 		}
@@ -572,14 +572,14 @@ var BisaChatPlus = (function() {
 	 * @param	{booleanb}	[defaultValue]
 	 * @param	{function}	[onChange]
 	 */
-	var addBoolOption = function(optionID, optionText, categoryID, categoryName, defaultValue, onChange) {
+	let addBoolOption = function(optionID, optionText, categoryID, categoryName, defaultValue, onChange) {
 		if (!!$('#bcplus-' + optionID)[0]) {
 			throw new Error('Option »' + optionID + '« already exists!');
 		}
 		
-		var $category = $($('#bcplus-' + categoryID)[0] || $('<fieldset id="bcplus-' + categoryID + '"><legend>' + categoryName + '</legend><dl></dl></fieldset>').appendTo('#bcplusOptionsDialogContent'));
-		var $option = $('<dt></dt><dd><label><input type="checkbox" id="bcplus-' + optionID + '" data-optionid="' + optionID + '" /> ' + optionText + '</label></dd>');
-		var optionValue = storage.getValue(optionID + 'Option', !!defaultValue);
+		let $category = $($('#bcplus-' + categoryID)[0] || $('<fieldset id="bcplus-' + categoryID + '"><legend>' + categoryName + '</legend><dl></dl></fieldset>').appendTo('#bcplusOptionsDialogContent'));
+		let $option = $('<dt></dt><dd><label><input type="checkbox" id="bcplus-' + optionID + '" data-optionid="' + optionID + '" /> ' + optionText + '</label></dd>');
+		let optionValue = storage.getValue(optionID + 'Option', !!defaultValue);
 		
 		$option.find('input').prop({
 			checked: optionValue
@@ -605,7 +605,7 @@ var BisaChatPlus = (function() {
 	 * @param	{mixed}		[defaultValue]
 	 * @param	{function}	[onChange]
 	 */
-	var addTextOption = function(optionID, optionText, optionType, categoryID, categoryName, defaultValue, onChange) {
+	let addTextOption = function(optionID, optionText, optionType, categoryID, categoryName, defaultValue, onChange) {
 		if (!!$('#bcplus-' + optionID)[0]) {
 			throw new Error('Option »' + optionID + '« already exists!');
 		}
@@ -614,9 +614,9 @@ var BisaChatPlus = (function() {
 			throw new Error('Invalid option type »' + optionType.toLowerCase() + '« given!');
 		}
 		
-		var $category = $($('#bcplus-' + categoryID)[0] || $('<fieldset id="bcplus-' + categoryID + '"><legend>' + categoryName + '</legend><dl></dl></fieldset>').appendTo('#bcplusOptionsDialogContent'));
-		var $option = $('<dt><label for="bcplus-' + optionID + '">' + optionText + '</label></dt><dd><input type="' + optionType.toLowerCase() + '" id=bcplus-"' + optionID + '" data-optionid="' + optionID + '" /></dd>');
-		var optionValue = storage.getValue(optionID + 'Option', defaultValue);
+		let $category = $($('#bcplus-' + categoryID)[0] || $('<fieldset id="bcplus-' + categoryID + '"><legend>' + categoryName + '</legend><dl></dl></fieldset>').appendTo('#bcplusOptionsDialogContent'));
+		let $option = $('<dt><label for="bcplus-' + optionID + '">' + optionText + '</label></dt><dd><input type="' + optionType.toLowerCase() + '" id=bcplus-"' + optionID + '" data-optionid="' + optionID + '" /></dd>');
+		let optionValue = storage.getValue(optionID + 'Option', defaultValue);
 		
 		$option.find('input').val(optionValue).on('blur', function(event) {
 			storage.setValue(optionID + 'Option', $(this).val());
@@ -639,7 +639,7 @@ var BisaChatPlus = (function() {
 	 * @param	{string}	optionName
 	 * @param	{mixed}		[defaultValue]
 	 */
-	var getOptionValue = function(optionName, defaultValue) {
+	let getOptionValue = function(optionName, defaultValue) {
 		return storage.getValue(optionName + 'Option', defaultValue);
 	};
 	
@@ -647,18 +647,18 @@ var BisaChatPlus = (function() {
 	 * @param	{string}	optionName
 	 * @param	{mixed}		optionValue
 	 */
-	var setOptionValue = function(optionName, optionValue) {
+	let setOptionValue = function(optionName, optionValue) {
 		storage.setValue(optionName + 'Option', optionValue);
 	};
 	
 	/**
 	 * @returns	{Array.<string>}
 	 */
-	var getOptionIDs = function() {
+	let getOptionIDs = function() {
 		return optionIdentifiers; 
 	};
 	
-	var _addCommandToCommandsObject = function(commandsObject, commandName, commandAction, restricted) {
+	let _addCommandToCommandsObject = function(commandsObject, commandName, commandAction, restricted) {
 		if (!commandName) {
 			throw new Error('Invalid command name!');
 		}
@@ -675,7 +675,7 @@ var BisaChatPlus = (function() {
 			throw new Error('Command with name »' + commandName.join(', ') + '« already exists!');
 		}
 		
-		var commandFunction = null;
+		let commandFunction = null;
 		
 		if ('string' === $.type(commandAction)) {
 			commandFunction = (function(commandString) {
@@ -699,7 +699,7 @@ var BisaChatPlus = (function() {
 	 * @param	{string|Array.<string>}		commandName
 	 * @param	{function}			commandAction
 	 */
-	var addCommand = function(commandName, commandAction) {
+	let addCommand = function(commandName, commandAction) {
 		_addCommandToCommandsObject(commands, commandName, commandAction, false);
 	};
 	
@@ -708,7 +708,7 @@ var BisaChatPlus = (function() {
 	 * @param	{function|string}		commandAction
 	 * @param	{boolean}			[restricted]
 	 */
-	var addExternalCommand = function(commandName, commandAction, restricted) {
+	let addExternalCommand = function(commandName, commandAction, restricted) {
 		if (restricted === undefined) {
 			restricted = true;
 		}
@@ -720,7 +720,7 @@ var BisaChatPlus = (function() {
 	 * @param	{string}	cssRules
 	 * @returns	{jQuery}
 	 */
-	var addStyle = function(cssRules) {
+	let addStyle = function(cssRules) {
 		return $('<style type="text/css" />').text(cssRules).appendTo('head');
 	};
 	

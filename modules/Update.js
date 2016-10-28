@@ -1,9 +1,9 @@
 Modules.Update = (function() {
-	var bcplus = null;
+	let bcplus = null;
 	
-	var $updateInfoBox = null;
+	let $updateInfoBox = null;
 	
-	var initialize = function(_bcplus) {
+	let initialize = function(_bcplus) {
 		bcplus =  _bcplus;
 		
 		addStyles();
@@ -13,12 +13,12 @@ Modules.Update = (function() {
 		checkVersion();
 	};
 	
-	var addStyles = function() {
+	let addStyles = function() {
 		bcplus.addStyle('#bcplus-updateInfo { position: relative; }');
 		bcplus.addStyle('#bcplus-updateInfoCloser { position: absolute; top: 7px; right: 7px; cursor: pointer; }');
 	};
 	
-	var buildUI = function() {
+	let buildUI = function() {
 		bcplus.addBoolOption('checkForUpdates', 'Nach Updates suchen', 'update', 'Update', true);
 		bcplus.addBoolOption('useUnstable', 'Vorabversionen einbeziehen', 'update', null, false);
 		
@@ -28,20 +28,20 @@ Modules.Update = (function() {
 		WCF.DOMNodeInsertedHandler.execute();
 	};
 	
-	var addEventListeners = function() {
+	let addEventListeners = function() {
 		$updateInfoBox.find('#bcplus-updateInfoCloser').on('click', function() {
 			$updateInfoBox.addClass('invisible');
 			$(Window).resize();
 		});
 	};
 	
-	var addCommands = function() {
+	let addCommands = function() {
 		bcplus.addCommand(['update', 'u'], function() {
 			checkVersion();
 		});
 	};
 	
-	var checkVersion = function() {
+	let checkVersion = function() {
 		if (!bcplus.getOptionValue('checkForUpdates', true)) {
 			return;
 		}

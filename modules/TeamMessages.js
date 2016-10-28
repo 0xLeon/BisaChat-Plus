@@ -1,12 +1,12 @@
 Modules.TeamMessages = (function() {
-	var bcplus = null;
+	let bcplus = null;
 	
-	var isReady = false;
+	let isReady = false;
 	
-	var onlineUserRequestProxy = null;
-	var teamMemberListRequester = null;
+	let onlineUserRequestProxy = null;
+	let teamMemberListRequester = null;
 	
-	var publicKeyDescriptor = {
+	let publicKeyDescriptor = {
 		name: 'RSASSA-PKCS1-v1_5',
 		modulusLength: 2048,
 		publicExponent: new Uint8Array([1, 0, 1]),
@@ -14,7 +14,7 @@ Modules.TeamMessages = (function() {
 			name: 'SHA-256'
 		}
 	};
-	var publicKeyRaw = {
+	let publicKeyRaw = {
 		alg:		'RS256',
 		e:		'AQAB',
 		ext:		true,
@@ -22,18 +22,18 @@ Modules.TeamMessages = (function() {
 		kty:		'RSA',
 		n:		'tigWhInIPPJfT0paj9YofXaqcYgXuBzOrILr1-6a_b0cJuy2-4kychlYem2LO1QSe1anYZ86qyj-fSG-eXbsSBDA8nRPcb5tvGsoRnkbJPH767a4sZjl7G-PlKoPrgK_Urun3pHtmWIMGZH5qb9_R3-pvpO6ygwiVtLlFAeHk2sZ1i0_JHAG_g4dG9uJimxTgQ-tewfBaJ32w8EokjipyvPhrUnDoVo_3FpBaFMAk-ENo4v44c_6ofvIxz7GAiarB4um3veSajR2cevXPub8-_LhSeZ39OAnVx1NDDPRzQn4lNf_8Vya_fBxwkm3hNE0bHqugOhyg451niAkv5gYYQ'
 	};
-	var publicKeyID = null;
+	let publicKeyID = null;
 	
-	var teamMemberList = {};
-	var onlineTeamMemberList = {};
-	var onlineUserList = {};
-	var optOutTeam = {};
+	let teamMemberList = {};
+	let onlineTeamMemberList = {};
+	let onlineUserList = {};
+	let optOutTeam = {};
 	
-	var teamMessageRegex = /^#team#(.{8})#(.*)$/;
-	var receivedTeamMessages = [];
-	var receivedTeamMessagesClearer = null;
+	let teamMessageRegex = /^#team#(.{8})#(.*)$/;
+	let receivedTeamMessages = [];
+	let receivedTeamMessagesClearer = null;
 	
-	var initialize = function(_bcplus) {
+	let initialize = function(_bcplus) {
 		bcplus = _bcplus;
 		
 		addStyles();
@@ -45,15 +45,15 @@ Modules.TeamMessages = (function() {
 		});
 	};
 	
-	var addStyles = function() {
+	let addStyles = function() {
 		bcplus.addStyle('.timsChatMessage' + bcplus.messageType.TEAM.toString(10) + ' .timsChatUsernameContainer { font-weight: bold; }');
 	};
 	
-	var buildUI = function() {
+	let buildUI = function() {
 		bcplus.addBoolOption('teamIgnore', 'Team-Nachrichten ausblenden', 'teamMessages', 'Team-Nachrichten', false, null);
 	};
 	
-	var addEventListeners = function() {
+	let addEventListeners = function() {
 		bcplus.addCommand(['team', 't'], function() {
 			if (!isReady) {
 				bcplus.showInfoMessage('Der team-Befehl ist noch nicht einsatzbereit. Warte noch einige Sekunden.');
@@ -67,7 +67,7 @@ Modules.TeamMessages = (function() {
 				return null;
 			}
 			
-			var message = '#team#' + String.generateUUID().slice(0, 8) + '# ' + $.makeArray(arguments).join(', ');
+			let message = '#team#' + String.generateUUID().slice(0, 8) + '# ' + $.makeArray(arguments).join(', ');
 			
 			Object.keys(onlineTeamMemberList).forEach(function(userID) {
 				if ((!optOutTeam.hasOwnProperty(userID)) && (WCF.User.userID !== userID)) {
@@ -91,11 +91,11 @@ Modules.TeamMessages = (function() {
 			
 			Util.UserCache.getUsers(Object.keys(onlineTeamMemberList)).then(
 				function(users) {
-					var $teamMembers = $('<span>Anwesende Team-Mitglieder: </span>');
-					var first = true;
+					let $teamMembers = $('<span>Anwesende Team-Mitglieder: </span>');
+					let first = true;
 					
-					for (var userID in users) {
-						var user = users[userID];
+					for (let userID in users) {
+						let user = users[userID];
 						
 						if (!first) {
 							$teamMembers.append(document.createTextNode(', '));
@@ -135,7 +135,7 @@ Modules.TeamMessages = (function() {
 		
 		bcplus.addEventListener('messageReceived', function(message) {
 			if ((bcplus.messageType.WHISPER === message.type) && teamMemberList.hasOwnProperty(message.sender)) {
-				var match = message.plainText.match(teamMessageRegex);
+				let match = message.plainText.match(teamMessageRegex);
 				
 				if (null !== match) {
 					message.teamMessage = true;
@@ -151,7 +151,7 @@ Modules.TeamMessages = (function() {
 		
 		bcplus.addEventListener('messageAdded', function(messageNodeEvent) {
 			if ((bcplus.messageType.WHISPER === messageNodeEvent.messageType) && teamMemberList.hasOwnProperty(messageNodeEvent.sender)) {
-				var match = messageNodeEvent.messageText.match(teamMessageRegex);
+				let match = messageNodeEvent.messageText.match(teamMessageRegex);
 				
 				if (null !== match) {
 					if (bcplus.getOptionValue('teamIgnore', false) || (receivedTeamMessages.indexOf(match[1]) > -1)) {
@@ -185,20 +185,20 @@ Modules.TeamMessages = (function() {
 		
 		receivedTeamMessagesClearer = new WCF.PeriodicalExecuter(function() {
 			if (receivedTeamMessages.length > 10) {
-				for (var i = receivedTeamMessages.length, m = Math.floor(receivedTeamMessages.length / 2); i > m; i--) {
+				for (let i = receivedTeamMessages.length, m = Math.floor(receivedTeamMessages.length / 2); i > m; i--) {
 					receivedTeamMessages.shift();
 				}
 			}
 		}, 600000);
 	};
 	
-	var loadKey = function() {
+	let loadKey = function() {
 		return Util.Crypto.loadKey('jwk', publicKeyRaw, publicKeyDescriptor, true, ['verify']).then(function(keyID) {
 			return (publicKeyID = keyID);
 		});
 	};
 	
-	var findTeamMembers = function() {		
+	let findTeamMembers = function() {		
 		teamMemberListRequester = new WCF.PeriodicalExecuter(function() {
 			requestTeamMemberList().then(function() {
 				onlineTeamMemberList = {};
@@ -226,9 +226,9 @@ Modules.TeamMessages = (function() {
 				onlineTeamMemberList = {};
 				
 				$(data.returnValues.template).find('.userLink').each(function() {
-					var $link = $(this);
-					var userID = $link.data('user-id');
-					var username = $link.text();
+					let $link = $(this);
+					let userID = $link.data('user-id');
+					let username = $link.text();
 					
 					onlineUserList[userID] = username;
 					
@@ -252,9 +252,9 @@ Modules.TeamMessages = (function() {
 		});
 	};
 	
-	var requestTeamMemberList = function() {
-		var tmList = null;
-		var promise = new Promise(function(resolve, reject) {
+	let requestTeamMemberList = function() {
+		let tmList = null;
+		let promise = new Promise(function(resolve, reject) {
 			$.ajax({
 				url: 'https://projects.0xleon.com/userscripts/bcplus/resources/team.js',
 				dataType: 'json',
@@ -265,14 +265,14 @@ Modules.TeamMessages = (function() {
 						resolve();
 					}
 					else {
-						var errorMessage = 'Team Messages: Invalid team members data received';
+						let errorMessage = 'Team Messages: Invalid team members data received';
 						
 						bcplus.showInfoMessage(errorMessage);
 						reject(errorMessage);
 					}
 				},
 				error: function(jqXHR, textStatus, errorThrown) {
-					var errorMessage = 'Team Messages: Couldn\'t load team members - ' + textStatus;
+					let errorMessage = 'Team Messages: Couldn\'t load team members - ' + textStatus;
 					
 					bcplus.showInfoMessage(errorMessage);
 					reject(errorMessage);
@@ -296,11 +296,11 @@ Modules.TeamMessages = (function() {
 			});
 	};
 	
-	var getAllTeamMembers = function() {
+	let getAllTeamMembers = function() {
 		return teamMemberList;
 	};
 	
-	var getOnlineTeamMembers = function() {
+	let getOnlineTeamMembers = function() {
 		return onlineTeamMemberList;
 	};
 	

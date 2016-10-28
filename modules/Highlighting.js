@@ -1,11 +1,11 @@
 Modules.Highlighting = (function() {
-	var bcplus = null;
-	var messageIDs = null;
-	var regExp = null;
-	var docTitle = null;
-	var listenerFunction = null;
-	var eventName = null;
-	var highlightingConditions = [
+	let bcplus = null;
+	let messageIDs = null;
+	let regExp = null;
+	let docTitle = null;
+	let listenerFunction = null;
+	let eventName = null;
+	let highlightingConditions = [
 		function(message, bcplus) {
 			return bcplus.getOptionValue('highlightingActive', true);
 		},
@@ -29,7 +29,7 @@ Modules.Highlighting = (function() {
 		}
 	];
 	
-	var initialize = function(_bcplus) {
+	let initialize = function(_bcplus) {
 		bcplus = _bcplus;
 		messageIDs = [];
 		docTitle = Window.document.title;
@@ -41,7 +41,7 @@ Modules.Highlighting = (function() {
 		addEventListeners();
 	};
 	
-	var addHighlightingCondition = function(condition) {
+	let addHighlightingCondition = function(condition) {
 		if (!$.isFunction(condition)) {
 			throw new Error('Condition must be a function.');
 		}
@@ -49,12 +49,12 @@ Modules.Highlighting = (function() {
 		return highlightingConditions.push(condition);
 	};
 	
-	var removeHighlightingCondition = function(condition) {
+	let removeHighlightingCondition = function(condition) {
 		if (!$.isFunction(condition)) {
 			throw new Error('Invalid parameter!');
 		}
 		
-		var index = highlightingConditions.indexOf(condition);
+		let index = highlightingConditions.indexOf(condition);
 		
 		if (index < 0) {
 			throw new Error('Condition not found!');
@@ -63,8 +63,8 @@ Modules.Highlighting = (function() {
 		highlightingConditions.splice(index, 1);
 	};
 	
-	var removeExisting = function() {
-		var $notifyButton = $('#timsChatNotify').css({
+	let removeExisting = function() {
+		let $notifyButton = $('#timsChatNotify').css({
 			display: 'none'
 		});
 		
@@ -73,16 +73,16 @@ Modules.Highlighting = (function() {
 		}
 	};
 	
-	var getNotificationPermission = function() {
+	let getNotificationPermission = function() {
 		if (bcplus.getOptionValue('highlightingActive', true) && ('granted' !== Window.Notification.permission)) {
 			return Window.Notification.requestPermission(function(permission) {
-				var n;
+				let n;
 				return ((null !== (n = Window.Notification).permission) ? n.permission : (n.permission = permission));
 			});
 		}
 	};
 	
-	var buildUI = function() {
+	let buildUI = function() {
 		bcplus.addBoolOption('highlightingActive', 'Highlighting aktivieren', 'highlighting', 'Highlighting', true, function(event) {
 			getNotificationPermission();
 			
@@ -109,7 +109,7 @@ Modules.Highlighting = (function() {
 		}
 	};
 	
-	var addEventListeners = function() {
+	let addEventListeners = function() {
 		bcplus.addEventListener('messageReceived', function(message) {
 			if (highlightingConditions.every(function(cond) { return cond(message, bcplus); })) {
 				if ((bcplus.getOptionValue('highlightingWhisperAlways', true) && (bcplus.messageType.WHISPER === message.type) && !message.teamMessage) || (bcplus.getOptionValue('highlightingTeamAlways', false) && !!message.teamMessage) || regExp.test(message.plainText)) {
@@ -119,7 +119,7 @@ Modules.Highlighting = (function() {
 		});
 	};
 	
-	var highlight = function(message) {
+	let highlight = function(message) {
 		messageIDs.push(message.messageID);
 		
 		if (bcplus.getOptionValue('highlightingSound', true)) {
@@ -150,15 +150,15 @@ Modules.Highlighting = (function() {
 		}
 	};
 	
-	var highlightingListenerFunction = function() {
+	let highlightingListenerFunction = function() {
 		$.unique($(messageIDs.map(function(messageID) {
 			return $('.timsChatText[data-message-id="' + messageID.toString(10) + '"]').closest('.timsChatInnerMessage')[0];
 		}))).each(function(index, message) {
-			var docViewTop = $(message).closest('.timsChatMessageContainer').scrollTop();
-			var docViewBottom = docViewTop + $(message).closest('.timsChatMessageContainer').height();
+			let docViewTop = $(message).closest('.timsChatMessageContainer').scrollTop();
+			let docViewBottom = docViewTop + $(message).closest('.timsChatMessageContainer').height();
 			
-			var elemTop = $(message).offset().top;
-			var elemBottom = elemTop + $(message).height();
+			let elemTop = $(message).offset().top;
+			let elemBottom = elemTop + $(message).height();
 			
 			if ((elemBottom <= docViewBottom) && (elemTop >= docViewTop)) {
 				// is visible in scroll, highlight directly
@@ -171,7 +171,7 @@ Modules.Highlighting = (function() {
 					return;
 				}
 				
-				var wp = new Waypoint.Inview({
+				let wp = new Waypoint.Inview({
 					context: $(message).closest('.timsChatMessageContainer')[0],
 					element: $(message).closest('.timsChatMessage')[0],
 					entered: function() {
@@ -192,7 +192,7 @@ Modules.Highlighting = (function() {
 		listenerFunction = null;
 	};
 	
-	var updateDocTitle = function() {
+	let updateDocTitle = function() {
 		if (messageIDs.length > 0) {
 			Window.document.title = '(' + messageIDs.length.toString() + ') ' + docTitle;
 		}
@@ -201,12 +201,12 @@ Modules.Highlighting = (function() {
 		}
 	};
 	
-	var showNotification = function(message) {
+	let showNotification = function(message) {
 		if ('granted' === Window.Notification.permission) {
-			var messageIsPrivate = (bcplus.messageType.WHISPER === message.type);
-			var notificationTitle = '[' + $('<div>' + message.formattedTime + '</div>').text() + '] ' + message.username + ' ' + (messageIsPrivate ? !!message.teamMessage ? '» Team' : 'flüstert' : 'schreibt') + message.separator;
-			var notificationBody = (message.plainText.length > 50 ? message.plainText.slice(0, 51) + '\u2026' : message.plainText);
-			var notification = new Window.Notification(notificationTitle, {
+			let messageIsPrivate = (bcplus.messageType.WHISPER === message.type);
+			let notificationTitle = '[' + $('<div>' + message.formattedTime + '</div>').text() + '] ' + message.username + ' ' + (messageIsPrivate ? !!message.teamMessage ? '» Team' : 'flüstert' : 'schreibt') + message.separator;
+			let notificationBody = (message.plainText.length > 50 ? message.plainText.slice(0, 51) + '\u2026' : message.plainText);
+			let notification = new Window.Notification(notificationTitle, {
 				body: notificationBody,
 				icon: $(message.avatar['48']).attr('src')
 			});
@@ -228,9 +228,9 @@ Modules.Highlighting = (function() {
 		}
 	};
 	
-	var builRegExp = function() {
-		var highlightingString = bcplus.getOptionValue('highlightingText', WCF.User.username);
-		var regExpString = highlightingString.split(',').map(function(item) {
+	let builRegExp = function() {
+		let highlightingString = bcplus.getOptionValue('highlightingText', WCF.User.username);
+		let regExpString = highlightingString.split(',').map(function(item) {
 			return RegExp.escape(item.trim());
 		}).join('|');
 		

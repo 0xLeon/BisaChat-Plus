@@ -1,3 +1,3 @@
-var Modules = {};
-var Media = {};
-var Util = {};
+let Modules = {};
+let Media = {};
+let Util = {};

@@ -1,9 +1,9 @@
 Modules.UIOptimize = (function() {
-	var bcplus = null;
-	var hideAwayUsersStyle = null;
-	var faWhisperIcon = null;
+	let bcplus = null;
+	let hideAwayUsersStyle = null;
+	let faWhisperIcon = null;
 	
-	var initialize = function(_bcplus) {
+	let initialize = function(_bcplus) {
 		bcplus = _bcplus;
 		
 		addStyles();
@@ -11,7 +11,7 @@ Modules.UIOptimize = (function() {
 		addEventListeners();
 	};
 	
-	var addStyles = function() {
+	let addStyles = function() {
 		bcplus.addStyle('.timsChatMessageContainer { padding-left: 15px !important; padding-right: 15px !important; }');
 		bcplus.addStyle('.timsChatMessage time { font-weight: normal !important; }');
 		bcplus.addStyle('.timsChatMessage .altLayout time.timeLeft { float: none !important; }');
@@ -29,7 +29,7 @@ Modules.UIOptimize = (function() {
 		}
 	};
 	
-	var buildUI = function() {
+	let buildUI = function() {
 		bcplus.addBoolOption('UIOptimizeTimeBeforeName', 'Zeitstempel vor dem Benutzername', 'UIOptimize', 'User Interface', false);
 		bcplus.addBoolOption('UIOptimizeShowSeconds', 'Zeitstempel mit Sekundenangabe', 'UIOptimize', null, false);
 		bcplus.addBoolOption('UIOptimizeAwayMarker', 'Marker beim Tab-/Fenster-Wechsel setzen', 'UIOptimize', null, true, function(event) {
@@ -55,7 +55,7 @@ Modules.UIOptimize = (function() {
 		$(Window).resize();
 	};
 	
-	var addEventListeners = function() {
+	let addEventListeners = function() {
 		$('#timsChatSmilies').on('click', function() {
 			Window.setTimeout(function() {
 				$(Window).resize();
@@ -87,8 +87,8 @@ Modules.UIOptimize = (function() {
 		});
 		
 		bcplus.addEventListener('messageAdded', function(messageNodeEvent) {
-			var $messageNode = messageNodeEvent.messageNode;
-			var $timeNode = null;
+			let $messageNode = messageNodeEvent.messageNode;
+			let $timeNode = null;
  			
 			if (bcplus.messageNodeType.BUBBLEFOLLOWUP === messageNodeEvent.messageNodeType) {
 				$timeNode = $messageNode.find('time');

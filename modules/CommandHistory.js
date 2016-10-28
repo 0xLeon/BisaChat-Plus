@@ -1,14 +1,14 @@
 Modules.CommandHistory = (function() {
-	var bcplus = null;
-	var lastCommand = null;
+	let bcplus = null;
+	let lastCommand = null;
 	
-	var initialize = function(_bcplus) {
+	let initialize = function(_bcplus) {
 		bcplus = _bcplus;
 		
 		addEventListener();
 	};
 	
-	var addEventListener = function() {
+	let addEventListener = function() {
 		$('#timsChatInput').on('keydown', function(event) {
 			if ((null !== lastCommand) && (38 === event.which) && !(event.ctrlKey || event.altKey || event.shiftKey || event.metaKey)) {
 				Window.be.bastelstu.Chat.insertText(lastCommand + ' ', {
@@ -30,7 +30,7 @@ Modules.CommandHistory = (function() {
 		});
 	};
 	
-	var pushCommand = function(command) {
+	let pushCommand = function(command) {
 		lastCommand = command;
 	};
 	

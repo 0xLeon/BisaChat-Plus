@@ -1,17 +1,17 @@
 Modules.Record = (function() {
-	var bcplus = null;
+	let bcplus = null;
 	
-	var recording = false;
-	var currentSessionID = '';
-	var sessions = {};
+	let recording = false;
+	let currentSessionID = '';
+	let sessions = {};
 	
-	var initialize = function(_bcplus) {
+	let initialize = function(_bcplus) {
 		bcplus = _bcplus;
 		
 		addEventListeners();
 	};
 	
-	var addEventListeners = function() {
+	let addEventListeners = function() {
 		bcplus.addCommand(['record', 'rec'], function() {
 			if (recording) {
 				stopRecording();
@@ -30,7 +30,7 @@ Modules.Record = (function() {
 		});
 	};
 	
-	var startRecording = function() {
+	let startRecording = function() {
 		if (recording) {
 			bcplus.showInfoMessage('Already recording');
 			return;
@@ -45,7 +45,7 @@ Modules.Record = (function() {
 		return currentSessionID;
 	};
 	
-	var stopRecording = function() {
+	let stopRecording = function() {
 		if (!recording) {
 			return;
 		}
@@ -56,7 +56,7 @@ Modules.Record = (function() {
 		bcplus.showInfoMessage('Recording stopped');
 	};
 	
-	var getRecordingSession = function(sessionID) {
+	let getRecordingSession = function(sessionID) {
 		return sessions[sessionID];
 	};
 	

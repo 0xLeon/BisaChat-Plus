@@ -1,16 +1,16 @@
 Modules.Selection = (function() {
-	var bcplus = null;
+	let bcplus = null;
 	
-	var faWhisperIcon = '';
+	let faWhisperIcon = '';
 	
-	var initialize = function(_bcplus) {
+	let initialize = function(_bcplus) {
 		bcplus = _bcplus;
 		faWhisperIcon = String.fromCodePoint(String.faUnicode('double-angle-right'));
 		
 		addEventListeners();
 	};
 	
-	var addEventListeners = function() {
+	let addEventListeners = function() {
 		Window.document.addEventListener('copy', streamCopyListener, false);
 		Window.document.addEventListener('keypress', streamSelectAllListener, false);
 	};
@@ -18,23 +18,23 @@ Modules.Selection = (function() {
 	/**
 	 * @param	{ClipboardEvent}	event
 	 */
-	var streamCopyListener = function(event) {
+	let streamCopyListener = function(event) {
 		if (!Window.getSelection().containsNode($('#timsChatMessageTabMenu')[0], true)) {
 			return;
 		}
 		
-		/** @type {String} */    var text = '';
-		/** @type {Selection} */ var selection = Window.getSelection();
+		/** @type {String} */    let text = '';
+		/** @type {Selection} */ let selection = Window.getSelection();
 		
 		event.preventDefault();
 		
-		for (var i = 0, rangeCount = selection.rangeCount; i < rangeCount; ++i) {
-			/** @type {Range} */ var range = selection.getRangeAt(i);
-			var $start = $(range.startContainer);
-			var $startMessageNode = $start.closest('.timsChatMessage');
-			var $end = $(range.endContainer);
-			var $endMessageNode = $end.closest('.timsChatMessage');
-			var $ancestor = $(range.commonAncestorContainer);
+		for (let i = 0, rangeCount = selection.rangeCount; i < rangeCount; ++i) {
+			/** @type {Range} */ let range = selection.getRangeAt(i);
+			let $start = $(range.startContainer);
+			let $startMessageNode = $start.closest('.timsChatMessage');
+			let $end = $(range.endContainer);
+			let $endMessageNode = $end.closest('.timsChatMessage');
+			let $ancestor = $(range.commonAncestorContainer);
 			
 			if (range.collapsed || ((0 === $ancestor.closest('.timsChatMessageContainer').length) && (0 === $ancestor.find('.timsChatMessageContainer').length))) {
 				// range neither contains chat stream nor is contained within chat stream
@@ -89,10 +89,10 @@ Modules.Selection = (function() {
 	 * @param	{jQuery}	$endMessageNode
 	 * @param	{jQuery}	$ancestor
 	 */
-	var handleCopyStartMessageEndMessage = function(selection, range, $start, $startMessageNode, $end, $endMessageNode, $ancestor) {
-		/** @type {String} */	var text = '';
-		/** @type {Element} */	var currentMessageNode = $startMessageNode[0];
-		/** @type {jQuery} */	var $currentMessageNode = $startMessageNode;
+	let handleCopyStartMessageEndMessage = function(selection, range, $start, $startMessageNode, $end, $endMessageNode, $ancestor) {
+		/** @type {String} */	let text = '';
+		/** @type {Element} */	let currentMessageNode = $startMessageNode[0];
+		/** @type {jQuery} */	let $currentMessageNode = $startMessageNode;
 		
 		// Set start of selection to the beginning of the first partly selected message
 		if ($startMessageNode.find('.timsChatInnerMessageContainer').hasClass('altLayout')) {
@@ -131,11 +131,11 @@ Modules.Selection = (function() {
 			else if ($currentMessageNode.find('.timsChatInnerMessageContainer').hasClass('bubble')) {
 				// current node is bubble, loop over messages in bubble
 				// and find messages which are at least partly selected
-				var username = $currentMessageNode.find('.timsChatUsernameContainer').text().trim().replace(faWhisperIcon, '»') + ':';
+				let username = $currentMessageNode.find('.timsChatUsernameContainer').text().trim().replace(faWhisperIcon, '»') + ':';
 				
 				$currentMessageNode.find('.timsChatText').each(function() {
 					if (selection.containsNode(this, true)) {
-						var $this = $(this);
+						let $this = $(this);
 						
 						text += 
 							$this.find('time').text().trim() + ' ' + 
@@ -162,8 +162,8 @@ Modules.Selection = (function() {
 	 * @param	{Element}	element
 	 * @returns	{string}
 	 */
-	var elementToText = function(element) {
-		var text = '';
+	let elementToText = function(element) {
+		let text = '';
 		
 		if (!element) {
 			return '';
@@ -189,15 +189,15 @@ Modules.Selection = (function() {
 		return text;
 	};
 	
-	var streamSelectAllListener = function(event) {
+	let streamSelectAllListener = function(event) {
 		if (event.ctrlKey && ('a' === event.key) && !(event.altKey || event.shiftKey || event.metaKey) && ('body' === Window.document.activeElement.nodeName.toLowerCase())) {
 			event.preventDefault();
 			
 			// workaround for firefox bug: add list instead of actual node
 			// because otherwise copy event wouldn't fire
-			var $roomNode = $('.timsChatMessageContainer.active ul');
-			var selection = Window.getSelection();
-			var selectionRange = Window.document.createRange();
+			let $roomNode = $('.timsChatMessageContainer.active ul');
+			let selection = Window.getSelection();
+			let selectionRange = Window.document.createRange();
 			
 			selectionRange.selectNode($roomNode[0]);
 			selection.removeAllRanges();

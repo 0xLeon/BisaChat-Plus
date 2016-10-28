@@ -1,12 +1,12 @@
 Modules.Ignore = (function() {
-	var bcplus = null;
-	var ignoredUserIDs = null;
+	let bcplus = null;
+	let ignoredUserIDs = null;
 	
-	var $ignoreButton = null;
-	var $ignoreDialog = null;
-	var $ignoreStyleNode = null;
+	let $ignoreButton = null;
+	let $ignoreDialog = null;
+	let $ignoreStyleNode = null;
 	
-	var initialize = function(_bcplus) {
+	let initialize = function(_bcplus) {
 		bcplus = _bcplus;
 		ignoredUserIDs = bcplus.getStorage().getValue('ignoredUserIDs', []);
 		
@@ -15,7 +15,7 @@ Modules.Ignore = (function() {
 		addEventListeners();
 	};
 	
-	var addStyles = function() {
+	let addStyles = function() {
 		bcplus.addStyle('#bcplusIgnoreDialogUserList .framedIconList li { display: inline-block; position: relative; }');
 		bcplus.addStyle('#bcplusIgnoreDialogUserList .framedIconList a { display: inline-block; }');
 		bcplus.addStyle('#bcplusIgnoreDialogUserList .framedIconList .bcplus-userUnignoreButton { display: none; position: absolute; z-index: 400; top: 8px; left: 8px; cursor: pointer; opacity: 0.75; transition: opacity 0.2s; }');
@@ -27,7 +27,7 @@ Modules.Ignore = (function() {
 		updateStyleRule();
 	};
 	
-	var buildUI = function() {
+	let buildUI = function() {
 		$ignoreDialog = $('<div id="bcplusIgnoreDialogContent">\n	<fieldset>\n		<legend>Benutzer suchen</legend>\n		\n		<dl class="marginTop">\n			<dt><label for="username">Benutzername</label></dt>\n			<dd>\n				<span>\n					<input type="text" id="bcplusIgnoreDialogUsernameInput" name="username" class="medium" value="" autocomplete="off" />\n				</span>\n			</dd>\n		</dl>\n	</fieldset>\n	<fieldset>\n		<legend>Ignorierte Benutzer</legend>\n		<div id="bcplusIgnoreDialogUserList"></div>\n	</fieldset>\n</div>\n').appendTo('body').wcfDialog({
 			autoOpen: false,
 			title: 'Benutzer ignorieren',
@@ -76,13 +76,13 @@ Modules.Ignore = (function() {
 		WCF.DOMNodeInsertedHandler.execute();
 	};
 	
-	var addEventListeners = function() {
+	let addEventListeners = function() {
 		bcplus.addExternalCommand(['doignore', 'di'], function(message) {
 			if (bcplus.messageType.WHISPER !== message.type) {
 				return;
 			}
 			
-			var answer = '/f ' + message.username + ', @\'' + WCF.User.username + '\' ignoriert dich';
+			let answer = '/f ' + message.username + ', @\'' + WCF.User.username + '\' ignoriert dich';
 			
 			if (-1 === ignoredUserIDs.indexOf(message.sender)) {
 				answer += ' nicht';
@@ -92,8 +92,8 @@ Modules.Ignore = (function() {
 		}, false);
 	};
 	
-	var updateStyleRule = function() {
-		var ignoredUserClasses = [];
+	let updateStyleRule = function() {
+		let ignoredUserClasses = [];
 		
 		if (ignoredUserIDs.length < 1) {
 			$ignoreStyleNode.text('');
@@ -109,9 +109,9 @@ Modules.Ignore = (function() {
 		bcplus.handleStreamScroll();
 	};
 	
-	var buildUserList = function() {
-		var $userList = $ignoreDialog.find('#bcplusIgnoreDialogUserList');
-		var $iconList = $('<ul class="framedIconList" />');
+	let buildUserList = function() {
+		let $userList = $ignoreDialog.find('#bcplusIgnoreDialogUserList');
+		let $iconList = $('<ul class="framedIconList" />');
 		
 		if ($userList.children().length > 0) {
 			$userList.empty();
@@ -124,9 +124,9 @@ Modules.Ignore = (function() {
 		
 		Util.UserCache.getUsers(ignoredUserIDs).then(
 			function(users) {
-				for (var userID in users) {
-					var user = users[userID];
-					var $userIcon = $('<li><a class="framed jsTooltip" href="#" title="" target="_blank"><img class="userAvatarImage" src="#" srcset="" alt="" /></a><span class="bcplus-userUnignoreButton icon icon32 icon-remove jsTooltip" title="Benutzer nicht mehr ignorieren"></span></li>');
+				for (let userID in users) {
+					let user = users[userID];
+					let $userIcon = $('<li><a class="framed jsTooltip" href="#" title="" target="_blank"><img class="userAvatarImage" src="#" srcset="" alt="" /></a><span class="bcplus-userUnignoreButton icon icon32 icon-remove jsTooltip" title="Benutzer nicht mehr ignorieren"></span></li>');
 					
 					$userIcon.children('a').attr({
 						href: user.profile,
@@ -152,11 +152,11 @@ Modules.Ignore = (function() {
 		);
 	};
 	
-	var eventHandlerRemoveIgnoredUser = function(event) {
+	let eventHandlerRemoveIgnoredUser = function(event) {
 		event.preventDefault();
 		event.stopPropagation();
 		
-		var i = ignoredUserIDs.indexOf(parseInt($(this).data('userID'), 10));
+		let i = ignoredUserIDs.indexOf(parseInt($(this).data('userID'), 10));
 		
 		if (i > -1) {
 			ignoredUserIDs.splice(i, 1);

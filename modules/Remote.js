@@ -1,13 +1,13 @@
 Modules.Remote = (function() {
-	var bcplus = null;
+	let bcplus = null;
 	
-	var initialize = function(_bcplus) {
+	let initialize = function(_bcplus) {
 		bcplus = _bcplus;
 		
 		addEventListeners();
 	};
 	
-	var addEventListeners = function() {
+	let addEventListeners = function() {
 		bcplus.addExternalCommand(['version', 'v'], 'BCPlus ' + bcplus.getVersion());
 		bcplus.addExternalCommand(['browser', 'b'], (function() {
 			if ($.browser.mozilla) {

@@ -1,16 +1,16 @@
 Modules.CommandLine = (function() {
-	var bcplus = null;
+	let bcplus = null;
 	
-	var optionBooleans = ['true', 'false'];
-	var optionNumberRegex = /\D/;
+	let optionBooleans = ['true', 'false'];
+	let optionNumberRegex = /\D/;
 	
-	var initialize = function(_bcplus) {
+	let initialize = function(_bcplus) {
 		bcplus = _bcplus;
 		
 		addCommands();
 	};
 	
-	var addCommands = function() {
+	let addCommands = function() {
 		bcplus.addCommand(['clear', 'c'], function() {
 			$('#timsChatClear').click();
 		});
@@ -22,7 +22,7 @@ Modules.CommandLine = (function() {
 					throw new Error('Ungültige Raum-ID.');
 				}
 				
-				var roomLink = $('.timsChatRoom a').filter(function(index, element) {
+				let roomLink = $('.timsChatRoom a').filter(function(index, element) {
 					return ($(element).data('roomID') === roomID);
 				});
 				
@@ -51,7 +51,7 @@ Modules.CommandLine = (function() {
 			}
 		});
 		bcplus.addCommand(['layout', 'la'], function() {
-			var newStatus = Number(!$('#timsChatAltLayout').data('status'));
+			let newStatus = Number(!$('#timsChatAltLayout').data('status'));
 			
 			if (0 === newStatus) {
 				bcplus.showInfoMessage('Bubble-Layout aktiviert.');
@@ -64,8 +64,8 @@ Modules.CommandLine = (function() {
 		});
 		
 		bcplus.addCommand(['set'], function(optionName, optionValue) {
-			var originalValue = bcplus.getOptionValue(optionName, undefined);
-			var newValue = null;
+			let originalValue = bcplus.getOptionValue(optionName, undefined);
+			let newValue = null;
 			
 			if (undefined === originalValue) {
 				bcplus.showInfoMessage('»' + optionName + '« ist kein gültiger Optionen-Bezeichner.');

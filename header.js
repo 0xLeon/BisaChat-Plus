@@ -14,7 +14,7 @@
 // @run-at         document-end
 // ==/UserScript==
 
-var browserWindow = null;
+let browserWindow = null;
 
 try {
 	browserWindow = unsafeWindow;

@@ -1,7 +1,7 @@
 Modules.MessageFilters = (function() {
-	var bcplus = null;
+	let bcplus = null;
 	
-	var initialize = function(_bcplus) {
+	let initialize = function(_bcplus) {
 		bcplus = _bcplus;
 		
 		addStyles();
@@ -9,13 +9,13 @@ Modules.MessageFilters = (function() {
 		addEventListeners();
 	};
 	
-	var addStyles = function() {
+	let addStyles = function() {
 		bcplus.addStyle('.timsChatMessage.noAvatar .timsChatAvatarContainer { display: none !important; width: 0px !important; }');
 		bcplus.addStyle('.timsChatMessage.noAvatar .timsChatInnerMessage { margin-left: 18px !important; }');
 		bcplus.addStyle('.timsChatMessage.noAvatar .bubble .timsChatInnerMessage::before, .timsChatMessage.noAvatar .bubble .timsChatInnerMessage::after { border-style: none !important; }');
 	};
 	
-	var buildUI = function() {
+	let buildUI = function() {
 		bcplus.addBoolOption('greentext', 'Greentext aktivieren', 'prefilters', 'Prefilter', true);
 		bcplus.addBoolOption('smilies', 'Grafische Smileys aktivieren', 'prefilters', null, true);
 		bcplus.addBoolOption('hideAvatar', 'Avatare ausblenden', 'prefilters', null, false);
@@ -24,13 +24,13 @@ Modules.MessageFilters = (function() {
 		bcplus.addBoolOption('hideStatus', 'Statusnachrichten ausblenden', 'prefilters', null, false);
 	};
 	
-	var addEventListeners = function() {
+	let addEventListeners = function() {
 		bcplus.addEventListener('messageReceived', function(message) {
 			if (!bcplus.getOptionValue('smilies', true)) {
-				var $messageNodeObj = $('<div />').html(message.formattedMessage);
+				let $messageNodeObj = $('<div />').html(message.formattedMessage);
 				
 				if ($messageNodeObj.find('img').length > 0) {
-					var formattedMessage = '';
+					let formattedMessage = '';
 					
 					$messageNodeObj.contents().each(function() {
 						if (Node.TEXT_NODE === this.nodeType) {
@@ -51,10 +51,10 @@ Modules.MessageFilters = (function() {
 			}
 		});
 		bcplus.addEventListener('messageAdded', function(messageNodeEvent) {
-			var $messageNode = messageNodeEvent.messageNode;
+			let $messageNode = messageNodeEvent.messageNode;
 			
 			if (bcplus.getOptionValue('greentext', true) && messageNodeEvent.messageText.startsWith('>')) {
-				var $targetNode = null;
+				let $targetNode = null;
 				
 				if (bcplus.messageNodeType.BUBBLEFOLLOWUP === messageNodeEvent.messageNodeType) {
 					$targetNode = $messageNode.find('.bcplusBubbleMessageText');

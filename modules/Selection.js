@@ -70,11 +70,43 @@ Modules.Selection = (function() {
 			}
 			
 			if (($startMessageNode.length > 0) && ($endMessageNode.length > 0)) {
-				// start end end are both message nodes
+				// both start end end are message nodes
 				text += handleCopyStartMessageEndMessage(selection, range, $start, $startMessageNode, $end, $endMessageNode, $ancestor);
 			}
-			
-			// TODO: handle when start and/or end aren't messages but messages are still selected
+			else if (($startMessageNode.length > 0) && (0 === $endMessageNode.length)) {
+				// start is message node, but end isn't
+				/** @type {Range} */ let remainingRange = document.createRange();
+				
+				remainingRange.setStartAfter($startMessageNode.closest('ul')[0]);
+				remainingRange.setEnd(range.endContainer, range.endOffset);
+				range.setEndAfter($startMessageNode.closest('ul')[0]);
+				
+				$endMessageNode = $startMessageNode.closest('ul').find('.timsChatMessage .timsChatText').last();
+				$end = $endMessageNode;
+				$ancestor = $(range.commonAncestorContainer);
+				
+				selection.addRange(remainingRange);
+				
+				text += handleCopyStartMessageEndMessage(selection, range, $start, $startMessageNode, $end, $endMessageNode, $ancestor);
+				text += remainingRange.toString();
+			}
+			else if (($endMessageNode.length > 0) && (0 === $startMessageNode.length)) {
+				// start isn't message node, but end is
+				/** @type {Range} */ let remainingRange = document.createRange();
+				
+				remainingRange.setStart(range.startContainer, range.startOffset);
+				remainingRange.setEndBefore($endMessageNode.closest('ul')[0]);
+				range.setStartBefore($endMessageNode.closest('ul')[0]);
+				
+				$startMessageNode = $endMessageNode.closest('ul').find('.timsChatMessage .timsChatText').first();
+				$start = $startMessageNode;
+				$ancestor = $(range.commonAncestorContainer);
+				
+				selection.addRange(remainingRange);
+				
+				text += remainingRange.toString();
+				text += handleCopyStartMessageEndMessage(selection, range, $start, $startMessageNode, $end, $endMessageNode, $ancestor);
+			}
 		}
 		
 		event.clipboardData.setData('text/plain', text.trim());

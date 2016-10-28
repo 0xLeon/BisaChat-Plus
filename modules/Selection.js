@@ -197,7 +197,7 @@ Modules.Selection = (function() {
 	let elementToText = function(element) {
 		let text = '';
 		
-		if (!element) {
+		if (!element || ((0 === element.offsetWidth) && (0 === element.offsetHeight))) {
 			return '';
 		}
 		

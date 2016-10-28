@@ -28,7 +28,7 @@ Modules.Selection = (function() {
 		
 		event.preventDefault();
 		
-		for (var i = 0, l = selection.rangeCount; i < l; ++i) {
+		for (var i = 0, rangeCount = selection.rangeCount; i < rangeCount; ++i) {
 			/** @type {Range} */ var range = selection.getRangeAt(i);
 			var $start = $(range.startContainer);
 			var $startMessageNode = $start.closest('.timsChatMessage');
@@ -40,6 +40,13 @@ Modules.Selection = (function() {
 				// range neither contains chat stream nor is contained within chat stream
 				text += range.toString();
 				continue;
+			}
+			
+			if ((1 === rangeCount) && ((($startMessageNode.find('.altLayout').length > 0) && ($startMessageNode[0] === $endMessageNode[0])) || (($startMessageNode.find('.bubble')) && ($start.closest('.timsChatText')[0] === $end.closest('.timsChatText')[0])))) {
+				// only one range which only covers parts of one message
+				// don't handle through this stack, just stringify instead
+				text += range.toString();
+				break;
 			}
 			
 			if ($end.hasClass('timsChatMessageIcon') || ($end.hasClass('userAvatar') && ($end.find('.icon').length > 0))) {

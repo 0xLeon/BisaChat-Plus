@@ -120,6 +120,7 @@ Modules.Selection = (function() {
 	 * @param	{jQuery}	$end
 	 * @param	{jQuery}	$endMessageNode
 	 * @param	{jQuery}	$ancestor
+	 * @returns	{string}
 	 */
 	let handleCopyStartMessageEndMessage = function(selection, range, $start, $startMessageNode, $end, $endMessageNode, $ancestor) {
 		/** @type {String} */	let text = '';
@@ -221,6 +222,9 @@ Modules.Selection = (function() {
 		return text;
 	};
 	
+	/**
+	 * @param	{KeyboardEvent}		event
+	 */
 	let streamSelectAllListener = function(event) {
 		if (event.ctrlKey && ('a' === event.key) && !(event.altKey || event.shiftKey || event.metaKey) && ('body' === Window.document.activeElement.nodeName.toLowerCase())) {
 			event.preventDefault();

@@ -10,7 +10,8 @@
     },
     "parserOptions": {
         "ecmaFeatures": {
-            "jsx": true
+            "jsx": true,
+            "impliedStrict": true
         },
         "sourceType": "module"
     },
@@ -19,8 +20,48 @@
         "no-this-before-super": "warn",
         "no-undef": "warn",
         "no-unreachable": "warn",
+        "no-unsafe-negation": "warn",
         "no-unused-vars": "warn",
         "constructor-super": "warn",
-        "valid-typeof": "warn"
+        "valid-typeof": "warn",
+        "semi": "warn",
+        "curly": "warn",
+        "eqeqeq": "warn",
+        "no-alert": "warn",
+        "no-else-return": "warn",
+        "no-extra-label": "warn",
+        "no-fallthrough": "warn",
+        "no-global-assign": "warn",
+        "no-new-func": "warn",
+        "no-octal-escape": "warn",
+        "no-octal": "warn",
+        "no-self-assign": "warn",
+        "no-self-compare": "warn",
+        "radix": "warn",
+        "wrap-iife": ["warn", "inside"],
+        
+        "no-eval": "error",
+        "no-implied-eval": "error",
+        "no-redeclare": "error",
+        "no-script-url": "error",
+        
+        "array-bracket-spacing": "warn",
+        "block-spacing": "warn",
+        "brace-style": ["warn", "stroustrup"],
+        "camelcase": "warn",
+        "comma-spacing": "warn",
+        "computed-property-spacing": "warn",
+        "eol-last": "error",
+        "func-call-spacing": "warn",
+        "indent": ["warn", "tab", { "SwitchCase": 1 }],
+        "linebreak-style": "error",
+        "new-parens": "warn",
+        "no-lonely-if": "warn",
+        "no-mixed-spaces-and-tabs": "error",
+        "one-var": ["warn", "never"],
+        "padded-blocks": ["warn", "never"],
+        "quotes": ["warn", "single"],
+        "space-before-function-paren": ["warn", "never"],
+        "unicode-bom": "warn"
     }
 }

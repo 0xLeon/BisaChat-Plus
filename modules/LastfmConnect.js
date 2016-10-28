@@ -29,7 +29,7 @@ Modules.LastfmConnect = (function() {
 						user: lastfmUsername,
 						limit: 1
 					},
-					success: function (data, textStatus, xqXHR) {
+					success: function(data, textStatus, xqXHR) {
 						if (data && data.recenttracks && data.recenttracks.track) {
 							if (data.recenttracks.track[0] && data.recenttracks.track[0]['@attr'] && data.recenttracks.track[0]['@attr'].nowplaying && ('true' === data.recenttracks.track[0]['@attr'].nowplaying)) {
 								var title = data.recenttracks.track[0].name;
@@ -52,7 +52,7 @@ Modules.LastfmConnect = (function() {
 							bcplus.showInfoMessage('Last.fm Connect: Invalid data received!');
 						}
 					},
-					error: function (xqXHR, textStatus, errorThrown) {
+					error: function(xqXHR, textStatus, errorThrown) {
 						bcplus.showInfoMessage('Last.fm Connect: ' + textStatus + ' - ' + errorThrown);
 					}
 				});

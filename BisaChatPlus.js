@@ -127,8 +127,8 @@ var BisaChatPlus = (function() {
 	
 	var checkSecureConnection = function() {
 		if (Window.location.protocol !== 'https:') {
-			    window.location.href = 'https:' + window.location.href.substring(window.location.protocol.length);
-			    throw new Error('Reloading chat over secure connection');
+			window.location.href = 'https:' + window.location.href.substring(window.location.protocol.length);
+			throw new Error('Reloading chat over secure connection');
 		}
 	};
 	

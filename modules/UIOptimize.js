@@ -89,7 +89,7 @@ Modules.UIOptimize = (function() {
 		bcplus.addEventListener('messageAdded', function(messageNodeEvent) {
 			let $messageNode = messageNodeEvent.messageNode;
 			let $timeNode = null;
- 			
+			
 			if (bcplus.messageNodeType.BUBBLEFOLLOWUP === messageNodeEvent.messageNodeType) {
 				$timeNode = $messageNode.find('time');
 			}

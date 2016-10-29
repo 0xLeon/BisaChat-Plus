@@ -56,11 +56,11 @@ Modules.MessageFilters = (function() {
 			if (bcplus.getOptionValue('greentext', true) && messageNodeEvent.messageText.startsWith('>')) {
 				let $targetNode = null;
 				
-				if (bcplus.messageNodeType.BUBBLEFOLLOWUP === messageNodeEvent.messageNodeType) {
-					$targetNode = $messageNode.find('.bcplusBubbleMessageText');
+				if (bcplus.messageNodeType.ALTERNATIVE === messageNodeEvent.messageNodeType) {
+					$targetNode = $messageNode.find('.timsChatText');
 				}
 				else {
-					$targetNode = $messageNode.find('.timsChatText');
+					$targetNode = $messageNode.find('.bcplusBubbleMessageText').first();
 				}
 				
 				$targetNode.css({

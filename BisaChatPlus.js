@@ -369,19 +369,18 @@ let BisaChatPlus = (function() {
 								messageNodeType:	null
 							};
 							
-							// TODO: what if one bubble contains several messages of one user?
 							if ($messageNode.hasClass('timsChatMessage')) {
 								if ($messageNode.find('.bubble').length > 0) {
 									messageNodeEvent.messageNodeType = messageNodeType.BUBBLE;
 									
 									let $message = $('<span class="bcplusBubbleMessageText" />');
-									let $input = $messageNode.find('.timsChatText').find('input').detach();
+									let $input = $messageNode.find('.timsChatText').first().find('input').detach();
 									
-									$message.html($messageNode.find('.timsChatText').html().trim());
+									$message.html($messageNode.find('.timsChatText').first().html().trim());
 									
-									$messageNode.find('.timsChatText').empty()
+									$messageNode.find('.timsChatText').first().empty()
 										.append($message)
-										.append($messageNode.find('.timsChatInnerMessage > time').detach())
+										.append($messageNode.find('.timsChatInnerMessage > time').first().detach())
 										.append($input);
 									
 									messageNodeEvent.messageText = $message.text().trim();
@@ -392,7 +391,7 @@ let BisaChatPlus = (function() {
 								}
 								
 								messageNodeEvent.messageType = parseInt($messageNode.attr('class').match(messageTypeRegex)[1], 10);
-								messageNodeEvent.messageID = $messageNode.find('.timsChatText').data('messageID');
+								messageNodeEvent.messageID = $messageNode.find('.timsChatText').first().data('messageID');
 								messageNodeEvent.sender = parseInt($messageNode.attr('class').match(messageUserIdRegex)[1], 10);
 								messageNodeEvent.senderUsername = $messageNode.find('.timsChatUsernameContainer span:not(.icon, .receiver)').text().trim();
 								

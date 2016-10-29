@@ -94,7 +94,7 @@ Modules.UIOptimize = (function() {
 				$timeNode = $messageNode.find('time');
 			}
 			else {
-				$timeNode = $messageNode.find('.timsChatInnerMessage time');
+				$timeNode = $messageNode.find('.timsChatInnerMessage time').first();
 				
 				if (bcplus.getOptionValue('UIOptimizeTimeBeforeName', false) && (bcplus.messageNodeType.ALTERNATIVE === messageNodeEvent.messageNodeType)) {
 					$timeNode.addClass('timeLeft').detach().prependTo($messageNode.find('.timsChatInnerMessage'));

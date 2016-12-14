@@ -111,6 +111,7 @@ let BisaChatPlus = (function() {
 		initModules();
 		
 		addCommand('mp3', '/me *winamptret*');
+		addCommand(['gold'], '[Diese Nachricht kann nur mit BisaChat Gold gelesen werden]');
 	};
 	
 	let checkIndexPage = function() {

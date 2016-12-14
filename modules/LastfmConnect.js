@@ -37,7 +37,7 @@ Modules.LastfmConnect = (function() {
 								let artist = data.recenttracks.track[0].artist['#text'];
 								
 								// TODO: dynamic string getting
-								let message = 'np: ' + artist + ' – ' + title/* + ' (' + album + ')'*/;
+								let message = '/me hört gerade: ' + artist + ' – ' + title/* + ' (' + album + ')'*/;
 								
 								bcplus.sendMessage(message);
 							}

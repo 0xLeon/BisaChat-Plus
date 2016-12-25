@@ -26,6 +26,7 @@ Modules.Selection = (function() {
 		
 		/** @type {String} */    let text = '';
 		/** @type {Selection} */ let selection = Window.getSelection();
+		/** @type {Range[]} */   let additionalRanges = [];
 		
 		event.preventDefault();
 		
@@ -55,19 +56,19 @@ Modules.Selection = (function() {
 				// font awesome icons; ignore end node and assume previous
 				// message node as end node
 				$endMessageNode = $($endMessageNode[0].previousElementSibling);
-				$end = $endMessageNode;
+				$end = $endMessageNode.lastLeaf();
 			}
 			
 			if ($start.closest('.bcplusAwayMarker').length > 0) {
 				// start is away marker, jump to next message
 				$startMessageNode = $($end.closest('.bcplusAwayMarker')[0].nextElementSibling);
-				$start = $startMessageNode;
+				$start = $startMessageNode.firstLeaf();
 			}
 			
 			if ($end.closest('.bcplusAwayMarker').length > 0) {
 				// end is away marker, jump to previous message
 				$endMessageNode = $($end.closest('.bcplusAwayMarker')[0].previousElementSibling);
-				$end = $endMessageNode;
+				$end = $endMessageNode.lastLeaf();
 			}
 			
 			if (($startMessageNode.length > 0) && ($endMessageNode.length > 0)) {
@@ -80,16 +81,17 @@ Modules.Selection = (function() {
 				
 				remainingRange.setStartAfter($startMessageNode.closest('ul')[0]);
 				remainingRange.setEnd(range.endContainer, range.endOffset);
-				range.setEndAfter($startMessageNode.closest('ul')[0]);
 				
-				$endMessageNode = $startMessageNode.closest('ul').find('.timsChatMessage .timsChatText').last();
-				$end = $endMessageNode;
+				$endMessageNode = $startMessageNode.closest('ul').find('.timsChatMessage').last();
+				$end = $endMessageNode.lastLeaf();
+				range.setEnd($end[0], (Node.TEXT_NODE === $end[0].nodeType) ? $end[0].nodeValue.length : 0);
 				$ancestor = $(range.commonAncestorContainer);
 				
-				selection.addRange(remainingRange);
+				remainingRange.uuid = String.generateUUID();
+				additionalRanges.push(remainingRange);
 				
 				text += handleCopyStartMessageEndMessage(selection, range, $start, $startMessageNode, $end, $endMessageNode, $ancestor);
-				text += remainingRange.toString();
+				text += '[' + remainingRange.uuid + ']';
 			}
 			else if (($endMessageNode.length > 0) && (0 === $startMessageNode.length)) {
 				// start isn't message node, but end is
@@ -97,18 +99,24 @@ Modules.Selection = (function() {
 				
 				remainingRange.setStart(range.startContainer, range.startOffset);
 				remainingRange.setEndBefore($endMessageNode.closest('ul')[0]);
-				range.setStartBefore($endMessageNode.closest('ul')[0]);
 				
-				$startMessageNode = $endMessageNode.closest('ul').find('.timsChatMessage .timsChatText').first();
-				$start = $startMessageNode;
+				$startMessageNode = $endMessageNode.closest('ul').find('.timsChatMessage').first();
+				$start = $startMessageNode.firstLeaf();
+				range.setStart($start[0], 0);
 				$ancestor = $(range.commonAncestorContainer);
 				
-				selection.addRange(remainingRange);
+				remainingRange.uuid = String.generateUUID();
+				additionalRanges.push(remainingRange);
 				
-				text += remainingRange.toString();
+				text += '[' + remainingRange.uuid + ']';
 				text += handleCopyStartMessageEndMessage(selection, range, $start, $startMessageNode, $end, $endMessageNode, $ancestor);
 			}
 		}
+		
+		additionalRanges.forEach(function(range) {
+			selection.addRange(range);
+			text.replace('[' + range.uuid + ']', rangeToText(range, selection));
+		});
 		
 		event.clipboardData.setData('text/plain', text.trim().replace(multiWhitespaceRegex, ' '));
 	};
@@ -130,12 +138,12 @@ Modules.Selection = (function() {
 		
 		// Set start of selection to the beginning of the first partly selected message
 		if ($startMessageNode.find('.timsChatInnerMessageContainer').hasClass('altLayout')) {
-			range.setStartBefore($startMessageNode[0]);
+			range.setStart($startMessageNode.firstLeaf()[0], 0);
 		}
 		else if ($startMessageNode.find('.timsChatInnerMessageContainer').hasClass('bubble')) {
 			$startMessageNode.find('.timsChatText').each(function() {
 				if (selection.containsNode(this, true)) {
-					range.setStartBefore(this);
+					range.setStart($(this).firstLeaf()[0], 0);
 					return false;
 				}
 			});
@@ -143,12 +151,14 @@ Modules.Selection = (function() {
 		
 		// Set end of selection to the end of the last partly selected message
 		if ($endMessageNode.find('.timsChatInnerMessageContainer').hasClass('altLayout')) {
-			range.setEndAfter($endMessageNode[0]);
+			/** @type {Node} */ let leaf = $endMessageNode.lastLeaf()[0];
+			range.setEnd(leaf, (Node.TEXT_NODE === leaf.nodeType) ? leaf.nodeValue.length : 0);
 		}
 		else if ($endMessageNode.find('.timsChatInnerMessageContainer').hasClass('bubble')) {
 			$endMessageNode.find('.timsChatText').reverse().each(function() {
 				if (selection.containsNode(this, true)) {
-					range.setEndAfter(this);
+					/** @type {Node} */ let leaf = $(this).lastLeaf()[0];
+					range.setEnd(leaf, (Node.TEXT_NODE === leaf.nodeType) ? leaf.nodeValue.length : 0);
 					return false;
 				}
 			});

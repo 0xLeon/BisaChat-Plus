@@ -45,6 +45,30 @@
 	 */
 	$.fn.reverse = Array.prototype.reverse;
 	
+	$.fn.firstLeaf = function() {
+		return this.map(function(i, node) {
+			/** @type {Node} */ let leaf = node;
+		
+			while (!!leaf.firstChild) {
+				leaf = leaf.firstChild;
+			}
+			
+			return leaf;
+		});
+	};
+
+	$.fn.lastLeaf = function() {
+		return this.map(function(i, node) {
+			/** @type {Node} */ let leaf = node;
+		
+			while (!!leaf.lastChild) {
+				leaf = leaf.lastChild;
+			}
+			
+			return leaf;
+		});
+	};
+	
 	(function() {
 		let clearRegex = /'|"/g;
 		let faTestParent = $('<div id="fa-test-element" style="display: none; visibility: hidden;" />');

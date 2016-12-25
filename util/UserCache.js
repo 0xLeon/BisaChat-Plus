@@ -75,7 +75,7 @@ Util.UserCache = (function() {
 				}
 			};
 			
-			userIDs.forEach(function(userID, index) {
+			userIDs.forEach(function(userID) {
 				loadUser(userID, finisher, failurerer);
 			});
 		});

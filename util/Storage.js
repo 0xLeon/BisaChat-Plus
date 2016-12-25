@@ -18,7 +18,10 @@ Util.Storage = (function() {
 		 */
 		function getValue(key, defaultValue) {
 			if (localStorage.getItem(namespace + key) === null) {
-				if (typeof(defaultValue) !== 'undefined') this.setValue(key, defaultValue);
+				if (typeof(defaultValue) !== 'undefined') {
+					this.setValue(key, defaultValue);
+				}
+				
 				return defaultValue;
 			}
 			
@@ -102,7 +105,9 @@ Util.Storage = (function() {
 		 * @returns	{undefined}	Returns nothing
 		 */
 		function importSettings(obj) {
-			if (typeof obj !== 'object') throw new TypeError('obj has to be an object type');
+			if (typeof obj !== 'object') {
+				throw new TypeError('obj has to be an object type');
+			}
 			
 			var keys = Object.keys(obj);
 			

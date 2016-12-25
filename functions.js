@@ -86,7 +86,7 @@
 		function faUnicode(name) {
 			faTestElement.className = 'icon icon-' + name;
 			
-			return Window.getComputedStyle(faTestElement, '::before' ).content.replace(clearRegex, '').codePointAt(0);
+			return Window.getComputedStyle(faTestElement, '::before').content.replace(clearRegex, '').codePointAt(0);
 		}
 		
 		String.faUnicode = faUnicode;

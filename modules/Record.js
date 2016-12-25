@@ -36,7 +36,7 @@ Modules.Record = (function() {
 			return;
 		}
 		
-		currentSessionID = String().generateUUID();
+		currentSessionID = String.generateUUID();
 		sessions[currentSessionID] = [];
 		recording = true;
 		

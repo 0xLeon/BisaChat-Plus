@@ -257,7 +257,7 @@ Modules.TeamMessages = (function() {
 			$.ajax({
 				url: 'https://projects.0xleon.com/userscripts/bcplus/resources/team.js',
 				dataType: 'json',
-				success: function(data, textStatus, xqXHR) {
+				success: function(data, textStatus, jqXHR) {
 					if (!!data && !!data.signature && !!data.data) {
 						tmList = data;
 						

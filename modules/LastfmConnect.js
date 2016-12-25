@@ -29,7 +29,7 @@ Modules.LastfmConnect = (function() {
 						user: lastfmUsername,
 						limit: 1
 					},
-					success: function(data, textStatus, xqXHR) {
+					success: function(data, textStatus, jqXHR) {
 						if (data && data.recenttracks && data.recenttracks.track) {
 							if (data.recenttracks.track[0] && data.recenttracks.track[0]['@attr'] && data.recenttracks.track[0]['@attr'].nowplaying && ('true' === data.recenttracks.track[0]['@attr'].nowplaying)) {
 								let title = data.recenttracks.track[0].name;

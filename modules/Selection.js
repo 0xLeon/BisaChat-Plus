@@ -2,6 +2,7 @@ Modules.Selection = (function() {
 	let bcplus = null;
 	
 	let faWhisperIcon = '';
+	let multiWhitespaceRegex = /\s{2,}/g;
 	
 	let initialize = function(_bcplus) {
 		bcplus = _bcplus;
@@ -109,7 +110,7 @@ Modules.Selection = (function() {
 			}
 		}
 		
-		event.clipboardData.setData('text/plain', text.trim());
+		event.clipboardData.setData('text/plain', text.trim().replace(multiWhitespaceRegex, ' '));
 	};
 	
 	/**

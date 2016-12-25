@@ -159,7 +159,7 @@ Modules.Selection = (function() {
 				text += 
 					$currentMessageNode.find('time').text().trim() + ' ' +
 					$currentMessageNode.find('.timsChatUsernameContainer').text().trim().replace(faWhisperIcon, '»') + ' ' + 
-					elementToText($currentMessageNode.find('.timsChatTextContainer')[0].firstChild).trim() + "\n";
+					elementToText($currentMessageNode.find('.timsChatTextContainer')[0].firstChild).trim() + '\x0A';
 			}
 			else if ($currentMessageNode.find('.timsChatInnerMessageContainer').hasClass('bubble')) {
 				// current node is bubble, loop over messages in bubble
@@ -173,7 +173,7 @@ Modules.Selection = (function() {
 						text += 
 							$this.find('time').text().trim() + ' ' + 
 							username + ' ' + 
-							elementToText($this.find('.bcplusBubbleMessageText')[0].firstChild).trim() + "\n";
+							elementToText($this.find('.bcplusBubbleMessageText')[0].firstChild).trim() + '\x0A';
 					}
 				});
 			}

@@ -296,7 +296,7 @@ MEDIA;
 	protected function loadHeader() {
 		if (!$this->silent) echo "Loading header\n";
 		
-		if (!file_exists('./namespaces.js')) {
+		if (!file_exists('./header.js')) {
 			throw new \Exception('Header file doesn\'t exist');
 		}
 		

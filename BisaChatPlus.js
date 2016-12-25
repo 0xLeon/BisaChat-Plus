@@ -615,7 +615,7 @@ let BisaChatPlus = (function() {
 		}
 		
 		let $category = $($('#bcplus-' + categoryID)[0] || $('<fieldset id="bcplus-' + categoryID + '"><legend>' + categoryName + '</legend><dl></dl></fieldset>').appendTo('#bcplusOptionsDialogContent'));
-		let $option = $('<dt><label for="bcplus-' + optionID + '">' + optionText + '</label></dt><dd><input type="' + optionType.toLowerCase() + '" id=bcplus-"' + optionID + '" data-optionid="' + optionID + '" /></dd>');
+		let $option = $('<dt><label for="bcplus-' + optionID + '">' + optionText + '</label></dt><dd><input type="' + optionType.toLowerCase() + '" id="bcplus-' + optionID + '" data-optionid="' + optionID + '" /></dd>');
 		let optionValue = storage.getValue(optionID + 'Option', defaultValue);
 		
 		$option.find('input').val(optionValue).on('blur', function(event) {

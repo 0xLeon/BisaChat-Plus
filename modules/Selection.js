@@ -39,7 +39,7 @@ Modules.Selection = (function() {
 			
 			if (range.collapsed || ((0 === $ancestor.closest('.timsChatMessageContainer').length) && (0 === $ancestor.find('.timsChatMessageContainer').length))) {
 				// range neither contains chat stream nor is contained within chat stream
-				text += range.toString();
+				text += rangeToText(range, selection);
 				continue;
 			}
 			
@@ -221,6 +221,66 @@ Modules.Selection = (function() {
 		while (!!(element = element.nextSibling));
 		
 		return text;
+	};
+	
+	/**
+	 * @param	{Range}		range
+	 * @param	{Selection}	selection
+	 * @returns	{string}
+	 */
+	let rangeToText = function(range, selection) {
+		/**
+		 * @param	{Node}		node
+		 */
+		let traversTillStart = function(node) {
+			while (!!node) {
+				if (selection.containsNode(node, true)) {
+					return node;
+				}
+				
+				node = node.nextSibling;
+			}
+		};
+		
+		/**
+		 * @param	{Element}	element
+		 * @returns	{string}
+		 */
+		let traverseSubtree = function(element) {
+			/** @type {string} */ let text = '';
+			
+			do {
+				switch (element.nodeType) {
+					case Node.ELEMENT_NODE:
+						// TODO: check if offsets need to be checked here as well
+						if (('img' === element.nodeName.toLowerCase()) && !!element.getAttribute('alt')) {
+							text += element.getAttribute('alt');
+						}
+						else if ((0 !== element.offsetWidth) || (0 !== element.offsetHeight)) {
+							text += traverseSubtree(element.firstChild);
+						}
+						break;
+					case Node.TEXT_NODE:
+						if (range.startContainer === element) {
+							text += element.nodeValue.substr(range.startOffset);
+						}
+						else if (range.endContainer === element) {
+							text += element.nodeValue.substr(0, range.endOffset);
+						}
+						else {
+							text += element.nodeValue;
+						}
+						break;
+				}
+				
+				element = element.nextSibling;
+			}
+			while (!!element && (selection.containsNode(element, true)));
+			
+			return text;
+		};
+		
+		return traverseSubtree(traversTillStart(range.commonAncestorContainer.firstChild));
 	};
 	
 	/**

@@ -408,7 +408,7 @@ let BisaChatPlus = (function() {
 								let $div = $('<div />');
 								let $message = $('<span class="bcplusBubbleMessageText" />');
 								
-								$messageNode.find('*').detach().appendTo($div);
+								$messageNode.find('time, input').detach().appendTo($div);
 								$message.html($messageNode.html().trim());
 								
 								$messageNode.empty()

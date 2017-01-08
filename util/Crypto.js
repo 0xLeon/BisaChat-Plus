@@ -1,10 +1,10 @@
 Util.Crypto = (function() {
-	var keys = [];
+	let keys = [];
 
-	var generateKey = function(algorithm, extractable, usages) {
+	let generateKey = function(algorithm, extractable, usages) {
 		return window.crypto.subtle.generateKey(algorithm, extractable, usages).then(
 			function(keyPair) {
-				var keyIDs = {};
+				let keyIDs = {};
 
 				if (keyPair instanceof CryptoKeyPair) {
 					keyIDs.private = (keys.push(keyPair.privateKey) - 1);
@@ -22,7 +22,7 @@ Util.Crypto = (function() {
 		);
 	};
 
-	var loadKey = function(format, keyData, algorithm, extractable, usages) {
+	let loadKey = function(format, keyData, algorithm, extractable, usages) {
 		return window.crypto.subtle.importKey(format, keyData, algorithm, extractable, usages).then(
 			function(cryptoKey) {
 				return (keys.push(cryptoKey) - 1);
@@ -33,9 +33,9 @@ Util.Crypto = (function() {
 		);
 	};
 
-	var unloadKey = function(keyID) {
+	let unloadKey = function(keyID) {
 		return new Promise(function(resolve, reject) {
-			var key = keys[keyID];
+			let key = keys[keyID];
 
 			if (!!key) {
 				delete keys[keyID];
@@ -48,9 +48,9 @@ Util.Crypto = (function() {
 		});
 	};
 
-	var getKey = function(keyID) {
+	let getKey = function(keyID) {
 		return new Promise(function(resolve, reject) {
-			var key = keys[keyID];
+			let key = keys[keyID];
 
 			if (!!key) {
 				resolve(key);
@@ -62,8 +62,8 @@ Util.Crypto = (function() {
 		});
 	};
 
-	var sign = function(keyID, data) {
-		var signedObject = {
+	let sign = function(keyID, data) {
+		let signedObject = {
 			data: JSON.stringify(data),
 			signature: ''
 		};
@@ -86,9 +86,9 @@ Util.Crypto = (function() {
 			});
 	};
 
-	var verify = function(keyID, signedObject) {
-		var dataBuffer = null;
-		var signBuffer = null;
+	let verify = function(keyID, signedObject) {
+		let dataBuffer = null;
+		let signBuffer = null;
 
 		if (!keys[keyID]) {
 			throw new Error('Invalid keyID given');

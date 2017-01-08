@@ -1,10 +1,10 @@
 Util.Binary = (function() {
-	var stringToArrayBuffer = function(str) {
-		var fr = new FileReader();
-		var blob = new Blob([str], {
+	let stringToArrayBuffer = function(str) {
+		let fr = new FileReader();
+		let blob = new Blob([str], {
 			type: 'text/plain'
 		});
-		var prom = new Promise(function(resolve, reject) {
+		let prom = new Promise(function(resolve, reject) {
 			fr.onload = function(e) {
 				resolve(e.target.result);
 			};
@@ -18,12 +18,12 @@ Util.Binary = (function() {
 		return prom;
 	};
 
-	var arrayBufferToString = function(buf) {
-		var fr = new FileReader();
-		var blob = new Blob([buf], {
+	let arrayBufferToString = function(buf) {
+		let fr = new FileReader();
+		let blob = new Blob([buf], {
 			type: 'application/octet-binary'
 		});
-		var prom = new Promise(function(resolve, reject) {
+		let prom = new Promise(function(resolve, reject) {
 			fr.onload = function(e) {
 				resolve(e.target.result);
 			};
@@ -37,10 +37,10 @@ Util.Binary = (function() {
 		return prom;
 	};
 
-	var base64ToArrayBuffer = function(str) {
-		var url = 'data:text/plain;base64,' + str;
-		var fr = new FileReader();
-		var prom = new Promise(function(resolve, reject) {
+	let base64ToArrayBuffer = function(str) {
+		let url = 'data:text/plain;base64,' + str;
+		let fr = new FileReader();
+		let prom = new Promise(function(resolve, reject) {
 			fr.onload = function(e) {
 				resolve(e.target.result);
 			};
@@ -60,14 +60,14 @@ Util.Binary = (function() {
 		return prom;
 	};
 
-	var arrayBufferToBase64 = function(buf) {
-		var fr = new FileReader();
-		var blob = new Blob([buf], {
+	let arrayBufferToBase64 = function(buf) {
+		let fr = new FileReader();
+		let blob = new Blob([buf], {
 			type: 'application/octet-binary'
 		});
-		var prom = new Promise(function(resolve, reject) {
+		let prom = new Promise(function(resolve, reject) {
 			fr.onload = function(e) {
-				var dataURL = e.target.result;
+				let dataURL = e.target.result;
 			
 				resolve(dataURL.substr(dataURL.indexOf(',') + 1));
 			};

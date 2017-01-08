@@ -1,7 +1,7 @@
 Util.UserCache = (function() {
-	var __cache = {};
+	let __cache = {};
 	
-	var loadUser = function(userID, resolve, reject) {
+	let loadUser = function(userID, resolve, reject) {
 		(new WCF.Action.Proxy({
 			showLoadingOverlay: false,
 			data: {
@@ -10,7 +10,7 @@ Util.UserCache = (function() {
 				objectIDs: [userID]
 			},
 			success: function(data, textStatus, jqXHR) {
-				var $userData = $(data.returnValues.template);
+				let $userData = $(data.returnValues.template);
 				
 				if ($userData.find('.userInformation').length > 0) {				
 					__cache[data.returnValues.userID] = {
@@ -41,7 +41,7 @@ Util.UserCache = (function() {
 		})).sendRequest();
 	};
 	
-	var getUser = function(userID) {
+	let getUser = function(userID) {
 		return new Promise(function(resolve, reject) {
 			if (__cache.hasOwnProperty(userID)) {
 				resolve(__cache[userID]);
@@ -52,14 +52,14 @@ Util.UserCache = (function() {
 		});
 	};
 	
-	var getUsers = function(userIDs) {
+	let getUsers = function(userIDs) {
 		return new Promise(function(resolve, reject) {
-			var users = {};
+			let users = {};
 			
-			var finishCounter = 0;
-			var endCounter = userIDs.length;
+			let finishCounter = 0;
+			let endCounter = userIDs.length;
 			
-			var finisher = function(user) {
+			let finisher = function(user) {
 				finishCounter++;
 				users[user.userID] = user;
 				
@@ -67,7 +67,7 @@ Util.UserCache = (function() {
 					resolve(users);
 				}
 			};
-			var failurerer = function() {
+			let failurerer = function() {
 				endCounter--;
 				
 				if (endCounter === 0) {

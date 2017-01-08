@@ -4,8 +4,8 @@
  */
 Util.Storage = (function() {
 	// TODO: make storageinterface a real class again
-	var StorageInterface = ((function(initNamespace) {
-		var namespace = initNamespace;
+	let StorageInterface = ((function(initNamespace) {
+		let namespace = initNamespace;
 		
 		function initialize() { }
 		
@@ -55,8 +55,8 @@ Util.Storage = (function() {
 		 * @returns	{Array}
 		 */
 		function keys() {
-			var length = localStorage.length;
-			var keysArray = [];
+			let length = localStorage.length;
+			let keysArray = [];
 			
 			while (length--) {
 				if (localStorage.key(length).startsWith(namespace)) {
@@ -73,8 +73,8 @@ Util.Storage = (function() {
 		 * @returns	{Number}
 		 */
 		function size() {
-			var length = localStorage.length;
-			var i = 0;
+			let length = localStorage.length;
+			let i = 0;
 			
 			while (length--) {
 				if (localStorage.key(length).startsWith(namespace)) {
@@ -91,7 +91,7 @@ Util.Storage = (function() {
 		 * @returns	{undefined}
 		 */
 		function clear() {
-			var keys = this.keys();
+			let keys = this.keys();
 			
 			keys.forEach(function(key) {
 				this.unsetValue(key);
@@ -109,7 +109,7 @@ Util.Storage = (function() {
 				throw new TypeError('obj has to be an object type');
 			}
 			
-			var keys = Object.keys(obj);
+			let keys = Object.keys(obj);
 			
 			this.clear();
 			keys.forEach(function(key) {
@@ -123,8 +123,8 @@ Util.Storage = (function() {
 		 * @returns	{Object}	Hash-like object with every key as property
 		 */
 		function exportSettings() {
-			var obj = {};
-			var keys = this.keys();
+			let obj = {};
+			let keys = this.keys();
 			
 			keys.forEach(function(key) {
 				obj[key] = this.getValue(key);
@@ -147,15 +147,15 @@ Util.Storage = (function() {
 		};
 	}));
 	
-	var namespaces = { };
+	let namespaces = { };
 	
 	function getInterface() {
 		if (arguments.length < 1) {
 			throw new Error('No namespace given');
 		}
 		
-		var namespace = '';
-		var namespaceValidationPattern = /^[a-zA-Z_$][a-zA-Z\d_$]*$/;
+		let namespace = '';
+		let namespaceValidationPattern = /^[a-zA-Z_$][a-zA-Z\d_$]*$/;
 		
 		$.each(arguments, function(index, namespaceItem) {
 			if (!namespaceItem.match(namespaceValidationPattern)) {

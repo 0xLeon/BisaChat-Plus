@@ -1,8 +1,9 @@
 Util.Crypto = (function() {
 	let keys = [];
+	/** @type {Crypto} */ let crypto = window.crypto || window.msCrypto;
 
 	let generateKey = function(algorithm, extractable, usages) {
-		return window.crypto.subtle.generateKey(algorithm, extractable, usages).then(
+		return crypto.subtle.generateKey(algorithm, extractable, usages).then(
 			function(keyPair) {
 				let keyIDs = {};
 
@@ -23,7 +24,7 @@ Util.Crypto = (function() {
 	};
 
 	let loadKey = function(format, keyData, algorithm, extractable, usages) {
-		return window.crypto.subtle.importKey(format, keyData, algorithm, extractable, usages).then(
+		return crypto.subtle.importKey(format, keyData, algorithm, extractable, usages).then(
 			function(cryptoKey) {
 				return (keys.push(cryptoKey) - 1);
 			},
@@ -74,7 +75,7 @@ Util.Crypto = (function() {
 
 		return Util.Binary.strToBuf(signedObject.data)
 			.then(function(buf) {
-				return window.crypto.subtle.sign(keys[keyID].algorithm, keys[keyID], buf);
+				return crypto.subtle.sign(keys[keyID].algorithm, keys[keyID], buf);
 			})
 			.then(function(signature) {
 				return Util.Binary.bufToB64(signature);
@@ -105,7 +106,7 @@ Util.Crypto = (function() {
 				return (signBuffer = buf);
 			})
 			.then(function() {
-				return window.crypto.subtle.verify(keys[keyID].algorithm, keys[keyID], signBuffer, dataBuffer);
+				return crypto.subtle.verify(keys[keyID].algorithm, keys[keyID], signBuffer, dataBuffer);
 			});
 	};
 

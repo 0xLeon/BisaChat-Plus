@@ -254,9 +254,13 @@ let BisaChatPlus = (function() {
 				}
 			}
 			
-			bcplusEvents.messageSubmit.fire({
+			let message = {
 				messageText:	messageText
-			});
+			};
+			
+			bcplusEvents.messageSubmit.fire(message);
+			
+			$('#timsChatInput').val(message.messageText);
 			
 			return true;
 		}, true);
@@ -477,9 +481,13 @@ let BisaChatPlus = (function() {
 	 */
 	let sendMessage = function(messageText, fireEvent) {
 		if ((undefined === fireEvent) || !!fireEvent) {
-			bcplusEvents.messageSubmit.fire({
-				messageText:	messageText
-			});
+			let message = {
+				messageText: messageText
+			};
+			
+			bcplusEvents.messageSubmit.fire(message);
+			
+			messageText = message.messageText;
 		}
 		
 		new WCF.Action.Proxy({

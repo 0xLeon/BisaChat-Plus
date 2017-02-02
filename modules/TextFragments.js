@@ -65,6 +65,11 @@ Modules.TextFragments = (function() {
 			addFragment(fragmentKey, fragmentContent, true);
 			buildFragmentsList();
 		});
+		$fragmentDialog.find('#bcplusFragmentsDialogFragmentKeyInput, #bcplusFragmentsDialogFragmentContentInput').on('keypress', function(event) {
+			if (13 === event.keyCode) {
+				$fragmentDialog.find('.formSubmit > button[data-type="save"]').trigger('click');
+			}
+		});
 		
 		$fragmentButton = $('<li><a id="bcplusFragmentsOptions" class="button jsTooltip" title="Textfragmente bearbeiten"><span class="icon icon16 icon-font"></span><span class="invisible">Textfragmente bearbeiten</span></a></li>')
 		$fragmentButton.find('a').on('click', function() {

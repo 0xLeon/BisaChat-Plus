@@ -118,7 +118,7 @@ Modules.TextFragments = (function() {
 			
 			$('<dt />').data({
 				fragmentKey: fragmentKey
-			}).text(fragmentKey).appendTo($fragmentList);
+			}).append($('<span class="badge label" />').text(fragmentKey)).appendTo($fragmentList);
 			$('<dd />').data({
 				fragmentKey: fragmentKey
 			}).text(fragments[fragmentKey]).append($fragmentNav).appendTo($fragmentList);

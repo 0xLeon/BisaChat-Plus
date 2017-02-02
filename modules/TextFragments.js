@@ -28,11 +28,11 @@ Modules.TextFragments = (function() {
 	};
 	
 	let addStyles = function() {
-		bcplus.addStyle('#bcplusFragmentsDialogFragmentList dd { position: relative; }');
-		bcplus.addStyle('#bcplusFragmentsDialogFragmentList .buttonGroupNavigation { position: absolute; top: 4px; right: 10px; }');
+		bcplus.addStyle('#bcplusFragmentsDialogFragmentList dd, #bcplusFragmentsDialogFragmentList dt { position: relative; }');
+		bcplus.addStyle('#bcplusFragmentsDialogFragmentList .buttonGroupNavigation { position: absolute; top: 4px; left: 10px; }');
 		bcplus.addStyle('#bcplusFragmentsDialogFragmentList .buttonGroupNavigation > ul > li { float: left; opacity: 0; transition: opacity 0.1s linear; }');
 		bcplus.addStyle('#bcplusFragmentsDialogFragmentList .buttonGroupNavigation > ul > li > a { padding: 4px; }');
-		bcplus.addStyle('#bcplusFragmentsDialogFragmentList dd:hover > .buttonGroupNavigation > ul > li { opacity: 1; }');
+		bcplus.addStyle('#bcplusFragmentsDialogFragmentList dt:hover > .buttonGroupNavigation > ul > li { opacity: 1; }');
 	};
 	
 	let buildUI = function() {
@@ -110,18 +110,18 @@ Modules.TextFragments = (function() {
 				
 				removeFragment($(this).closest('dt, dd').data('fragmentKey'));
 				
-				$(this).closest('dd').prev('dt').first().remove();
-				$(this).closest('dd').remove();
+				$(this).closest('dt').next('dd').first().remove();
+				$(this).closest('dt').remove();
 				
 				checkFragmentListEmpty();
 			});
 			
 			$('<dt />').data({
 				fragmentKey: fragmentKey
-			}).append($('<span class="badge label" />').text(fragmentKey)).appendTo($fragmentList);
+			}).append($('<span class="badge label" />').text(fragmentKey)).append($fragmentNav).appendTo($fragmentList);
 			$('<dd />').data({
 				fragmentKey: fragmentKey
-			}).text(fragments[fragmentKey]).append($fragmentNav).appendTo($fragmentList);
+			}).text(fragments[fragmentKey]).appendTo($fragmentList);
 		});
 		
 		$fragmentList.appendTo($fragmentListContainer);

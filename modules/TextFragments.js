@@ -45,6 +45,7 @@ Modules.TextFragments = (function() {
 			},
 			
 			onClose: function() {
+				clearFragmentForm();
 				$('#timsChatInput').focus();
 			}
 		});
@@ -62,6 +63,7 @@ Modules.TextFragments = (function() {
 				return;
 			}
 			
+			clearFragmentForm();
 			addFragment(fragmentKey, fragmentContent, true);
 			buildFragmentsList();
 		});
@@ -138,6 +140,11 @@ Modules.TextFragments = (function() {
 		if (0 === fragmentKeys.length) {
 			$('<p>Keine Textfragmente vorhanden</p>').appendTo($fragmentDialog.find('#bcplusFragmentsDialogFragmentList'));
 		}
+	};
+	
+	let clearFragmentForm = function() {
+		$fragmentDialog.find('#bcplusFragmentsDialogFragmentKeyInput').val('');
+		$fragmentDialog.find('#bcplusFragmentsDialogFragmentContentInput').val('');
 	};
 	
 	let addFragment = function(fragmentKey, fragment, overwrite) {

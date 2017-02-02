@@ -142,20 +142,18 @@ Modules.TextFragments = (function() {
 	
 	let addFragment = function(fragmentKey, fragment, overwrite) {
 		if (typeof(fragmentKey) !== 'string') {
-			// TODO: error
+			throw new TypeError('fragmentKey must be a string.');
 		}
 		
 		if (typeof(fragment) !== 'string') {
-			// TODO: error
+			throw new TypeError('fragment must be a string.')
 		}
 		
 		fragmentKey = fragmentKey.toLowerCase();
 		
-		if (fragmentKeys.indexOf(fragmentKey) > -1) {
-			// TODO: error
+		if (!overwrite && (fragmentKeys.indexOf(fragmentKey) > -1)) {
+			throw new Error('fragmentKey »' + fragmentKey + '« already exists but overwrite is set to false.');
 		}
-		
-		// TODO: character check
 		
 		fragments[fragmentKey] = fragment;
 		bcplus.getStorage().setValue('textFragments', fragments);
@@ -167,13 +165,13 @@ Modules.TextFragments = (function() {
 	
 	let removeFragment = function(fragmentKey) {
 		if (typeof(fragmentKey) !== 'string') {
-			// TODO: error
+			throw new TypeError('fragmentKey must be a string.');
 		}
 		
 		fragmentKey = fragmentKey.toLowerCase();
 		
 		if (fragmentKeys.indexOf(fragmentKey) === -1) {
-			// TODO: error
+			throw new Error('fragmentKey »' + fragmentKey + '« doesn\'t exist.');
 		}
 		
 		delete fragments[fragmentKey];

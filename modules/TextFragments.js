@@ -36,6 +36,8 @@ Modules.TextFragments = (function() {
 	};
 	
 	let buildUI = function() {
+		bcplus.addBoolOption('textFragments', 'Textfragmente aktivieren', 'prefilters', 'Prefilter', true);
+		
 		$fragmentDialog = $('<div id="bcplusFragmentsDialogContent">\n	<fieldset>\n		<legend>Textfragmente bearbeiten</legend>\n		\n		<dl class="marginTop">\n			<dt><label for="bcplusFragmentsDialogFragmentKeyInput">Fragmentbezeichner</label></dt>\n			<dd>\n				<span>\n					<input type="text" id="bcplusFragmentsDialogFragmentKeyInput" name="bcplusFragmentsDialogFragmentKeyInput" class="medium" value="" autocomplete="off" />\n				</span>\n			</dd>\n			\n			<dt><label for="bcplusFragmentsDialogFragmentContentInput">Fragmentinhalt</label></dt>\n			<dd>\n				<span>\n					<input type="text" id="bcplusFragmentsDialogFragmentContentInput" name="bcplusFragmentsDialogFragmentContentInput" class="medium" value="" autocomplete="off" />\n				</span>\n			</dd>\n		</dl>\n	</fieldset>\n	<div class="formSubmit">\n		<button class="buttonPrimary" data-type="save">Speichern</button>\n	</div>\n	<fieldset>\n		<legend>Textfragmente</legend>\n		<div id="bcplusFragmentsDialogFragmentList"></div>\n	</fieldset>\n</div>').appendTo('body').wcfDialog({
 			autoOpen: false,
 			title: 'Textfragmente bearbeiten',
@@ -84,9 +86,11 @@ Modules.TextFragments = (function() {
 	
 	let addEventListeners = function() {
 		bcplus.addEventListener('messageSubmit', function(message) {
-			message.messageText = message.messageText.replace(fragmentKeysRegex, function(match) {
-				return fragments[match];
-			});
+			if (bcplus.getOptionValue('textFragments', true)) {
+				message.messageText = message.messageText.replace(fragmentKeysRegex, function(match) {
+					return fragments[match];
+				});
+			}
 		});
 	};
 	

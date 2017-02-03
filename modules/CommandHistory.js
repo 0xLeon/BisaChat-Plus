@@ -1,6 +1,7 @@
 Modules.CommandHistory = (function() {
 	let bcplus = null;
-	let lastCommand = null;
+	let commandHistory = [];
+	let currentIndex = -1;
 	
 	let initialize = function(_bcplus) {
 		bcplus = _bcplus;
@@ -10,8 +11,10 @@ Modules.CommandHistory = (function() {
 	
 	let addEventListener = function() {
 		$('#timsChatInput').on('keydown', function(event) {
-			if ((null !== lastCommand) && (38 === event.which) && !(event.ctrlKey || event.altKey || event.shiftKey || event.metaKey)) {
-				Window.be.bastelstu.Chat.insertText(lastCommand + ' ', {
+			if ((commandHistory.length > 0) && (38 === event.which) && !(event.ctrlKey || event.altKey || event.shiftKey || event.metaKey)) {
+				currentIndex = (currentIndex + 1) % commandHistory.length;
+				
+				Window.be.bastelstu.Chat.insertText(commandHistory[currentIndex] + ' ', {
 					prepend: false,
 					append: false,
 					submit: false
@@ -19,6 +22,9 @@ Modules.CommandHistory = (function() {
 				
 				return false;
 			}
+		});
+		$('#timsChatForm').on('submit', function() {
+			currentIndex = -1;
 		});
 		
 		bcplus.addCommand(['f', 'whispher'], function(username) {
@@ -31,7 +37,19 @@ Modules.CommandHistory = (function() {
 	};
 	
 	let pushCommand = function(command) {
-		lastCommand = command;
+		if (commandHistory[0] === command) {
+			return;
+		}
+		
+		commandHistory.unshift(command);
+		
+		if ((commandHistory.length > 10)) {
+			commandHistory.pop();
+		}
+		
+		while ((commandHistory.length > 1) && (commandHistory[0] === commandHistory[commandHistory.length - 1])) {
+			commandHistory.pop();
+		}
 	};
 	
 	return {

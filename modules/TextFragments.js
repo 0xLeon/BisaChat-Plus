@@ -49,7 +49,7 @@ Modules.TextFragments = (function() {
 				$('#timsChatInput').focus();
 			}
 		});
-		$fragmentDialog.find('.formSubmit > button[data-type="save"]').on('click', function(event) {
+		$fragmentDialog.find('.formSubmit > button[data-type="save"]').on('click', function() {
 			let fragmentKey = $('#bcplusFragmentsDialogFragmentKeyInput').val();
 			let fragmentContent = $('#bcplusFragmentsDialogFragmentContentInput').val();
 			
@@ -73,7 +73,7 @@ Modules.TextFragments = (function() {
 			}
 		});
 		
-		$fragmentButton = $('<li><a id="bcplusFragmentsOptions" class="button jsTooltip" title="Textfragmente bearbeiten"><span class="icon icon16 icon-font"></span><span class="invisible">Textfragmente bearbeiten</span></a></li>')
+		$fragmentButton = $('<li><a id="bcplusFragmentsOptions" class="button jsTooltip" title="Textfragmente bearbeiten"><span class="icon icon16 icon-font"></span><span class="invisible">Textfragmente bearbeiten</span></a></li>');
 		$fragmentButton.find('a').on('click', function() {
 			$fragmentDialog.wcfDialog('open');
 		});
@@ -153,7 +153,7 @@ Modules.TextFragments = (function() {
 		}
 		
 		if (typeof(fragment) !== 'string') {
-			throw new TypeError('fragment must be a string.')
+			throw new TypeError('fragment must be a string.');
 		}
 		
 		fragmentKey = fragmentKey.toLowerCase();

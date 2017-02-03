@@ -16,9 +16,8 @@ Modules.Remote = (function() {
 			else if ($.browser.chrome) {
 				return 'Google Chrome ' + $.browser.version;
 			}
-			else {
-				return 'Unknown Browser';
-			}
+			
+			return 'Unknown Browser';
 		})());
 	};
 	

@@ -57,17 +57,21 @@ Modules.TextFragments = (function() {
 			
 			if ('' === fragmentKey) {
 				Window.alert('Der Fragmentbezeichner darf nicht leer sein!');
+				$('#bcplusFragmentsDialogFragmentKeyInput').focus();
 				return;
 			}
 			
 			if ('' === fragmentContent) {
 				Window.alert('Der Fragmentinhalt darf nicht leer sein!');
+				$('#bcplusFragmentsDialogFragmentContentInput').focus();
 				return;
 			}
 			
 			clearFragmentForm();
 			addFragment(fragmentKey, fragmentContent, true);
 			buildFragmentsList();
+			
+			$('#bcplusFragmentsDialogFragmentKeyInput').focus();
 		});
 		$fragmentDialog.find('#bcplusFragmentsDialogFragmentKeyInput, #bcplusFragmentsDialogFragmentContentInput').on('keypress', function(event) {
 			if (13 === event.keyCode) {

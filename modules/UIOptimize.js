@@ -12,6 +12,7 @@ Modules.UIOptimize = (function() {
 	};
 	
 	let addStyles = function() {
+		bcplus.addStyle('.dialogContent fieldset { display: block !important; }');
 		bcplus.addStyle('.timsChatMessageContainer { padding-left: 15px !important; padding-right: 15px !important; }');
 		bcplus.addStyle('.timsChatMessage time { font-weight: normal !important; }');
 		bcplus.addStyle('.timsChatMessage .altLayout time.timeLeft { float: none !important; }');

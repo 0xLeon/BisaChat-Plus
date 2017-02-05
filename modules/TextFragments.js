@@ -44,6 +44,7 @@ Modules.TextFragments = (function() {
 			
 			onShow: function() {
 				buildFragmentsList();
+				$('#bcplusFragmentsDialogFragmentKeyInput').focus();
 			},
 			
 			onClose: function() {

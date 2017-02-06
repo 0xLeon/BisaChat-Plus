@@ -70,6 +70,8 @@ Modules.TeamMessages = (function() {
 			let message = '#team#' + String.generateUUID().slice(0, 8) + '# ' + $.makeArray(arguments).join(', ');
 			
 			Object.keys(onlineTeamMemberList).forEach(function(userID) {
+				userID = parseInt(userID, 10);
+				
 				if ((!optOutTeam.hasOwnProperty(userID)) && (WCF.User.userID !== userID)) {
 					bcplus.sendMessage('/f ' + onlineTeamMemberList[userID] + ', ' + message);
 				}

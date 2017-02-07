@@ -77,6 +77,10 @@ Util.UserCache = (function() {
 				if (endCounter === 0) {
 					reject();
 				}
+				
+				if (finishCounter === endCounter) {
+					resolve(users);
+				}
 			};
 			
 			let delay = 0;

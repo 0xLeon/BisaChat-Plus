@@ -29,13 +29,13 @@ Util.UserCache = (function() {
 				}
 				else {
 					if ($.isFunction(reject)) {
-						reject();
+						reject(userID);
 					}
 				}
 			},
 			error: function() {
 				if ($.isFunction(reject)) {
-					reject();
+					reject(userID);
 				}
 			}
 		});
@@ -58,7 +58,14 @@ Util.UserCache = (function() {
 	
 	let getUsers = function(userIDs) {
 		return new Promise(function(resolve, reject) {
-			let users = {};
+			let users = Object.create(Object.prototype, {
+				failed: {
+					value: [],
+					configurable: false,
+					enumerable: false,
+					writable: false
+				}
+			});
 			
 			let finishCounter = 0;
 			let endCounter = userIDs.length;
@@ -71,8 +78,9 @@ Util.UserCache = (function() {
 					resolve(users);
 				}
 			};
-			let failurerer = function() {
+			let failurerer = function(userID) {
 				endCounter--;
+				users.failed.push(userID);
 				
 				if (endCounter === 0) {
 					reject();

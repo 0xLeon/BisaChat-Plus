@@ -68,12 +68,18 @@ Modules.TeamMessages = (function() {
 			}
 			
 			let message = '#team#' + String.generateUUID().slice(0, 8) + '# ' + $.makeArray(arguments).join(', ');
+			let delay = 0;
 			
 			Object.keys(onlineTeamMemberList).forEach(function(userID) {
 				userID = parseInt(userID, 10);
 				
 				if ((!optOutTeam.hasOwnProperty(userID)) && (WCF.User.userID !== userID)) {
-					bcplus.sendMessage('/f ' + onlineTeamMemberList[userID] + ', ' + message);
+					window.setTimeout((function(userID, message) {
+						return (function() {
+							bcplus.sendMessage('/f ' + onlineTeamMemberList[userID] + ', ' + message);
+						});
+					})(userID, message), delay);
+					delay += 50;
 				}
 			});
 			

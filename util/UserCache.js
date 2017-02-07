@@ -1,8 +1,8 @@
 Util.UserCache = (function() {
 	let __cache = {};
 	
-	let loadUser = function(userID, resolve, reject) {
-		(new WCF.Action.Proxy({
+	let loadUser = function(userID, resolve, reject, delay) {
+		let proxy = new WCF.Action.Proxy({
 			showLoadingOverlay: false,
 			data: {
 				actionName: 'getUserProfile',
@@ -38,7 +38,11 @@ Util.UserCache = (function() {
 					reject();
 				}
 			}
-		})).sendRequest();
+		});
+		
+		window.setTimeout((function(proxy) {
+			proxy.sendRequest();
+		})(proxy), delay || 0);
 	};
 	
 	let getUser = function(userID) {
@@ -75,8 +79,11 @@ Util.UserCache = (function() {
 				}
 			};
 			
+			let delay = 0;
+			
 			userIDs.forEach(function(userID) {
-				loadUser(userID, finisher, failurerer);
+				loadUser(userID, finisher, failurerer, delay);
+				delay += 50;
 			});
 		});
 	};

@@ -41,7 +41,9 @@ Util.UserCache = (function() {
 		});
 		
 		window.setTimeout((function(proxy) {
-			proxy.sendRequest();
+			return (function() {
+				proxy.sendRequest();
+			});
 		})(proxy), delay || 0);
 	};
 	

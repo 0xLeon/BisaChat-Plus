@@ -3,7 +3,7 @@
 // @description    Add's a few more comfortable functions to BisaChat
 // @version        /*{version}*/
 // @author         Stefan Hahn
-// @copyright      2011-2015, Stefan Hahn
+// @copyright      2011-2017, Stefan Hahn
 // @license        GNU General Public License, version 2
 // @namespace      http://projects.0xleon.com/userscripts/bcplus
 // @match          http://chat.bisaboard.de/*

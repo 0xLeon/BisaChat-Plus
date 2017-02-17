@@ -6,7 +6,10 @@
         "es6": true
     },
     "globals": {
-        "WCF": true
+        "WCF": false,
+        "Media": false,
+        "Modules": false,
+        "Util": false
     },
     "parserOptions": {
         "ecmaFeatures": {

@@ -20,7 +20,7 @@ Modules.UIOptimize = (function() {
 		bcplus.addStyle('.timsChatMessage.timsChatMessage8 time:not(.timeLeft) { position: absolute; top: 0px; right: 0px;}');
 		bcplus.addStyle('.timsChatMessage .timsChatMessageIcon { display: table; text-align: center; min-height: 100%; }');
 		bcplus.addStyle('.timsChatMessage .timsChatMessageIcon .icon, .timsChatMessage .timsChatMessageIcon .icon::before { vertical-align: middle; }');
-		bcplus.addStyle('.timsChatUsernameContainer .icon { -moz-user-select: text !important; }');
+		bcplus.addStyle('.timsChatMessage .timsChatUsernameContainer .icon { -moz-user-select: text !important; display: inline !important; }');
 		bcplus.addStyle('.timsChatMessage8 .timsChatUsernameContainer, .timsChatMessage7 .timsChatUsernameContainer, .timsChatMessage1 > .timsChatInnerMessageContainer, .timsChatMessage2 > .timsChatInnerMessageContainer, .timsChatMessage2 > .timsChatInnerMessageContainer, .timsChatMessage4 > .timsChatInnerMessageContainer, .timsChatMessage6 > .timsChatInnerMessageContainer { font-weight: bold !important; }');
 		bcplus.addStyle('.bcplusAwayMarker hr { width: 80%; }');
 		hideAwayUsersStyle = bcplus.addStyle('#timsChatUserList .away:not(.you) { display: none !important; visibility: hidden !important; }');
@@ -105,7 +105,7 @@ Modules.UIOptimize = (function() {
 			$timeNode.text('[' + $timeNode.text().trim() + ']');
 			
 			if ((bcplus.messageNodeType.BUBBLEFOLLOWUP !== messageNodeEvent.messageNodeType) && ((messageNodeEvent.messageType < bcplus.messageType.MODERATE) || (bcplus.messageType.WHISPER === messageNodeEvent.messageType))) {
-				$messageNode.find('.timsChatUsernameContainer').find('.icon.pointer').off('click').prop('onclick', null).removeClass('icon-double-angle-right').text(faWhisperIcon);
+				$messageNode.find('.timsChatUsernameContainer').find('.icon.pointer').off('click').prop('onclick', null).removeClass('icon-double-angle-right icon16').text(faWhisperIcon);
 				$messageNode.find('.timsChatUsernameContainer').data('username', ((bcplus.messageType.WHISPER === messageNodeEvent.messageType) && messageNodeEvent.ownMessage) ? messageNodeEvent.receiverUsername : messageNodeEvent.senderUsername);
 				$messageNode.find('.timsChatUsernameContainer').addClass('pointer').on('click', function() {
 					Window.be.bastelstu.Chat.insertText('/whisper ' + $(this).data('username') + ', ', {

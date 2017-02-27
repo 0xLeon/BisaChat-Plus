@@ -47,7 +47,7 @@ Modules.Selection = (function() {
 			if ((1 === rangeCount) && ((($startMessageNode.find('.altLayout').length > 0) && ($startMessageNode[0] === $endMessageNode[0])) || (($startMessageNode.find('.bubble')) && ($start.closest('.timsChatText')[0] === $end.closest('.timsChatText')[0])))) {
 				// only one range which only covers parts of one message
 				// don't handle through this stack, just stringify instead
-				text += range.toString();
+				text += range.toString().trim().replace(faWhisperIcon, '»');
 				break;
 			}
 			

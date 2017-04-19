@@ -42,18 +42,18 @@ Modules.LastfmConnect = (function() {
 								bcplus.sendMessage(message);
 							}
 							else {
-								bcplus.showInfoMessage('Last.fm Connect: No track playing!');
+								bcplus.showInfoMessage('Last.fm Connect: Aktuell wird nichts gescrobelt.');
 							}
 						}
 						else if (data && data.error) {
-							bcplus.showInfoMessage('Last.fm Connect: Error ' + data.error.toString() + ' - ' + data.message);
+							bcplus.showInfoMessage('Last.fm Connect: Fehler - ' + data.error.toString() + ' - ' + data.message);
 						}
 						else {
-							bcplus.showInfoMessage('Last.fm Connect: Invalid data received!');
+							bcplus.showInfoMessage('Last.fm Connect: Ungültige Daten emfpangen.');
 						}
 					},
 					error: function(xqXHR, textStatus, errorThrown) {
-						bcplus.showInfoMessage('Last.fm Connect: ' + textStatus + ' - ' + errorThrown);
+						bcplus.showInfoMessage('Last.fm Connect: Fehler - ' + textStatus + ' - ' + errorThrown);
 					}
 				});
 			}

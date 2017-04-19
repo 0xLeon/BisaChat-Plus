@@ -1,6 +1,7 @@
 Modules.UIOptimize = (function() {
 	let bcplus = null;
 	let hideAwayUsersStyle = null;
+	let hideRoomTopicsStyle = null;
 	let faWhisperIcon = null;
 	
 	let initialize = function(_bcplus) {
@@ -24,9 +25,14 @@ Modules.UIOptimize = (function() {
 		bcplus.addStyle('.timsChatMessage8 .timsChatUsernameContainer, .timsChatMessage7 .timsChatUsernameContainer, .timsChatMessage1 > .timsChatInnerMessageContainer, .timsChatMessage2 > .timsChatInnerMessageContainer, .timsChatMessage2 > .timsChatInnerMessageContainer, .timsChatMessage4 > .timsChatInnerMessageContainer, .timsChatMessage6 > .timsChatInnerMessageContainer { font-weight: bold !important; }');
 		bcplus.addStyle('.bcplusAwayMarker hr { width: 80%; }');
 		hideAwayUsersStyle = bcplus.addStyle('#timsChatUserList .away:not(.you) { display: none !important; visibility: hidden !important; }');
+		hideRoomTopicsStyle = bcplus.addStyle('#timsChatTopic { display: none !important; visibility: hidden !important; }');
 		
 		if (!bcplus.getOptionValue('UIOptimizeHideAwayUsers', false)) {
 			hideAwayUsersStyle.detach();
+		}
+		
+		if (!bcplus.getOptionValue('UIOptimizeHideRoomTopics', false)) {
+			hideRoomTopicsStyle.detach();
 		}
 	};
 	
@@ -46,6 +52,16 @@ Modules.UIOptimize = (function() {
 			}
 			else {
 				hideAwayUsersStyle.detach();
+			}
+		});
+		bcplus.addBoolOption('UIOptimizeHideRoomTopics', 'Raum-Themen ausblenden', 'UIOptimize', null, false, function(event) {
+			if (bcplus.getOptionValue('UIOptimizeHideRoomTopics', false)) {
+				hideRoomTopicsStyle.detach().appendTo('head');
+				$(Window).resize();
+			}
+			else {
+				hideRoomTopicsStyle.detach();
+				$(Window).resize();
 			}
 		});
 		

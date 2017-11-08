@@ -19,7 +19,8 @@ Modules.TextFragments = (function() {
 	
 	let loadData = function() {
 		fragments = bcplus.getStorage().getValue('textFragments', {
-			':shrug:': '¯\\_(ツ)_/¯'
+			':shrug:': '¯\\_(ツ)_/¯',
+			':lenny:': '( ͡° ͜ʖ ͡°)'
 		});
 		fragmentKeys = Object.keys(fragments);
 		fragmentKeysRegex = new RegExp(fragmentKeys.map(function(fragmentKey) {

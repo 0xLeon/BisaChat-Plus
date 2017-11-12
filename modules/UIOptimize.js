@@ -113,8 +113,12 @@ Modules.UIOptimize = (function() {
 			else {
 				$timeNode = $messageNode.find('.timsChatInnerMessage time').first();
 				
-				if (bcplus.getOptionValue('UIOptimizeTimeBeforeName', false) && (bcplus.messageNodeType.ALTERNATIVE === messageNodeEvent.messageNodeType)) {
-					$timeNode.addClass('timeLeft').detach().prependTo($messageNode.find('.timsChatInnerMessage'));
+				if (bcplus.messageNodeType.ALTERNATIVE === messageNodeEvent.messageNodeType) {
+					$timeNode.detach().prependTo($messageNode.find('.timsChatInnerMessage'));
+					
+					if (bcplus.getOptionValue('UIOptimizeTimeBeforeName', false)) {
+						$timeNode.addClass('timeLeft');
+					}
 				}
 			}
 			

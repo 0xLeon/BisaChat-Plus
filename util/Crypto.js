@@ -7,7 +7,7 @@ Util.Crypto = (function() {
 			function(keyPair) {
 				let keyIDs = {};
 
-				if (keyPair instanceof CryptoKeyPair) {
+				if (!(keyPair instanceof CryptoKey) && (keyPair.hasOwnProperty('privateKey')) && (keyPair.hasOwnProperty('publicKey'))) {
 					keyIDs.private = (keys.push(keyPair.privateKey) - 1);
 					keyIDs.public = (keys.push(keyPair.publicKey) - 1);
 				}

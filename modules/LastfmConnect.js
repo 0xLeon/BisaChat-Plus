@@ -1,7 +1,9 @@
 Modules.LastfmConnect = (function() {
 	let bcplus = null;
 	let apiKey = null;
-	
+
+	let npRegex = /(%artist%)|(%tit(?:le|el)%)|(%album%)/gi;
+
 	let initialize = function(_bcplus) {
 		bcplus = _bcplus;
 		apiKey = Window.atob('NDk0Mjk2MzMxNzJlNzRkZWU2OGM3YTNlN2E2Zjc5N2U=');
@@ -12,6 +14,7 @@ Modules.LastfmConnect = (function() {
 	
 	let buildUI = function() {
 		bcplus.addTextOption('lastfmUsername', 'last.fm Username', 'text', 'lastfmConnect', 'last.fm Connect', '');
+		bcplus.addTextOption('lastfmFormatString', 'Format-String', 'text', 'lastfmConnect', null, '/me hört gerade: %artist% - %title%');
 	};
 	
 	let addEventListeners = function() {
@@ -32,13 +35,16 @@ Modules.LastfmConnect = (function() {
 					success: function(data, textStatus, jqXHR) {
 						if (data && data.recenttracks && data.recenttracks.track) {
 							if (data.recenttracks.track[0] && data.recenttracks.track[0]['@attr'] && data.recenttracks.track[0]['@attr'].nowplaying && ('true' === data.recenttracks.track[0]['@attr'].nowplaying)) {
-								let title = data.recenttracks.track[0].name;
-								let album = data.recenttracks.track[0].album['#text'];
-								let artist = data.recenttracks.track[0].artist['#text'];
-								
-								// TODO: dynamic string getting
-								let message = '/me hört gerade: ' + artist + ' – ' + title/* + ' (' + album + ')'*/;
-								
+								let npData = [
+									data.recenttracks.track[0].artist['#text'],	// artist
+									data.recenttracks.track[0].name,		// title
+									data.recenttracks.track[0].album['#text']	// album
+								];
+
+								let message = bcplus.getOptionValue('lastfmFormatString').replace(npRegex, function(m, a, b, c) {
+									return npData[0 * +(a !== undefined) + 1 * +(b !== undefined) + 2 * +(c !== undefined)]
+								});
+
 								bcplus.sendMessage(message);
 							}
 							else {
